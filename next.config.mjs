@@ -5,23 +5,88 @@ const nextConfig = {
     if (process.env.NODE_ENV === "development") {
       return [
         {
-          source: "/dev/:path*/",
+          source: "/devapi/:path*",
           // destination: `${process.env.NEXT_PUBLIC_BASE_URL}/dev/:path*/`,
-          destination: `/api/hello`,
+          destination: `http://localhost:3456/devapi/:path*`,
         },
       ];
     } else {
       return [];
     }
   },
-  trailingSlash: true,
+  trailingSlash: false,
+
+  images: {},
+  webpack: (config, { isServer }) => {
+    // let found = config.module.rules.filter(ru => {
+    //   if (ru.use.some(u => u.includes('post'))) {
+    //     return true
+    //   }
+    //   return false
+    // })
+
+    // console.log(found)
+
+    // config.module.rules.push({
+    //   test: /\.css$/i,
+    //   use: ["style-loader", "css-loader", "postcss-loader"],
+    // })
+
+    // console.log(config.module.rules)
+
+    config.module.rules = config.module.rules.filter((rule) => {
+      return rule.loader !== "next-image-loader";
+    });
+
+    // config.module.rules.push({
+    //   test: /\.(png|jpg|jpeg|gif|webp|avif|ico|bmp|svg)$/i,
+    //   exclude: /node_modules/,
+    //   use: [
+    //     {
+    //       //${config.assetPrefix}
+    //       loader: 'file-loader',
+    //       options: {
+    //         limit: 0, /// config.inlineImageLimit,
+    //         fallback: 'file-loader',
+    //         publicPath: `/_next/static/images/`,
+    //         outputPath: `${isServer ? '../' : ''}static/images/`,
+    //         name: '[name]-[hash].[ext]',
+    //         esModule: config.esModule || false,
+    //       },
+    //     },
+    //   ],
+    // })
+
+    config.module.rules.push({
+      test: /\.(glb|gltf|hdr|exr|fbx|ttf|png|jpg|jpeg|gif|webp|avif|ico|bmp|svg)$/,
+      exclude: /node_modules/,
+      use: [
+        {
+          //${config.assetPrefix}
+          loader: "file-loader",
+          options: {
+            limit: 0, /// config.inlineImageLimit,
+            fallback: "file-loader",
+            publicPath: `/_next/static/images/`,
+            outputPath: `${isServer ? "../" : ""}static/images/`,
+            name: "[name]-[hash].[ext]",
+            esModule: config.esModule || false,
+          },
+        },
+      ],
+    });
+
+    // shader support
+    config.module.rules.push({
+      test: /\.(glsl|vs|fs|vert|frag)$/,
+      exclude: /node_modules/,
+      use: ["raw-loader", "glslify-loader"],
+    });
+
+    return config;
+  },
+
+  //
 };
 
-if (process.env.NODE_ENV === "development") {
-  async function Run() {
-    //
-    //
-  }
-  Run();
-}
 export default nextConfig;
