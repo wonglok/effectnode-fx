@@ -319,6 +319,8 @@ export class EditorCore {
         if (win) {
           win.top = 10;
           win.left = window.innerWidth - win.width - 10;
+          win.width = 500;
+          win.height = 500;
         }
 
         this.setState({
@@ -334,7 +336,7 @@ export class EditorCore {
         let win = wins.find((r) => r.type === "editor");
         if (win) {
           win.width = 500;
-          win.height = 375;
+          win.height = 500;
           win.top = 10;
           win.left = 10;
         }
