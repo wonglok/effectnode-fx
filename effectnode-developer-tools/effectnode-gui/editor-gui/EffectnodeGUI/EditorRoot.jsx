@@ -75,12 +75,8 @@ export const EditorRoot = ({ title }) => {
       core.bootup();
       setVal(core.getReactElement());
 
-      let t0 = 0;
-
       async function save() {
         let st = core.exportBackup();
-        //
-        // console.log(st);
 
         let title = st.spaceID;
         let nodes = st.graph.nodes.filter((r) => r);
@@ -103,6 +99,7 @@ export const EditorRoot = ({ title }) => {
         console.log("ok, saved");
         //
       }
+      let t0 = 0;
       core.onChange((state, before) => {
         clearTimeout(t0);
         t0 = setTimeout(() => {
