@@ -22,10 +22,8 @@ export const setPJGraph = async ({ title, settings, edges, nodes }) => {
   let jsonString = JSON.stringify(
     {
       settings,
-      graph: {
-        nodes,
-        edges,
-      },
+      nodes,
+      edges,
     },
     null,
     "  "

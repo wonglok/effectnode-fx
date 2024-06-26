@@ -34,10 +34,10 @@ function loadProjects(req) {
       let codes = loadCodes({ projectName: projectName });
 
       projectGraphs.push({
+        projectName: projectName,
         ...req(key),
         _id: key,
-        projectName: projectName,
-        js: codes,
+        codes: codes,
       });
     }
   });

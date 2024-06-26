@@ -83,9 +83,10 @@ export const EditorRoot = ({ title }) => {
         let st = core.exportBackup();
 
         let title = st.spaceID;
-        let settings = st.settings;
-        let nodes = st.graph.nodes.filter((r) => r);
-        let edges = st.graph.edges.filter((r) => r);
+        let settings = st.settings.filter((r) => r);
+        let graph = st.graph;
+        let nodes = graph.nodes.filter((r) => r);
+        let edges = graph.edges.filter((r) => r);
 
         edges = edges.filter(
           (ed) =>
@@ -96,10 +97,8 @@ export const EditorRoot = ({ title }) => {
         await useDeveloper.getState().setProjectGraph({
           title,
           settings,
-          graph: {
-            nodes,
-            edges,
-          },
+          nodes,
+          edges,
         });
 
         console.log("ok, saved");

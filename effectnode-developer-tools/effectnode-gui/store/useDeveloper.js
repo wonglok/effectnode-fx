@@ -181,17 +181,18 @@ export const useDeveloper = create((set, get) => {
         })
         .then((response) => {
           //
-
           // console.log(`project/${title}/graph/getProjectGraph`, response);
-
+          //
           return response;
         })
         .catch((r) => {
           console.error(r);
         });
     },
+    //
 
-    setProjectGraph: ({ title, graph, codes }) => {
+    //
+    setProjectGraph: ({ title, nodes, edges, settings }) => {
       return fetch(`/devapi/graph/setProjectGraph`, {
         method: "POST",
         headers: {
@@ -200,8 +201,9 @@ export const useDeveloper = create((set, get) => {
         body: JSON.stringify({
           //
           title: title,
-          graph: graph,
-          codes: codes,
+          nodes: nodes,
+          edges: edges,
+          settings: settings,
           //
         }),
       })
@@ -209,6 +211,8 @@ export const useDeveloper = create((set, get) => {
           return r.json();
         })
         .then((response) => {
+          //
+
           //
 
           // console.log(`project/${title}/graph/getProjectGraph`, response);
