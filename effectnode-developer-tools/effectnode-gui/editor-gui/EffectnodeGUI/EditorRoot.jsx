@@ -84,6 +84,13 @@ export const EditorRoot = ({ title }) => {
         let nodes = st.graph.nodes.filter((r) => r);
         let edges = st.graph.edges.filter((r) => r);
 
+        edges = edges.filter((ed) =>
+          nodes.some((nd) => ed.input.nodeID === nd._id)
+        );
+        edges = edges.filter((ed) =>
+          nodes.some((nd) => ed.output.nodeID === nd._id)
+        );
+
         await useDeveloper.getState().setProjectGraph({
           title,
           graph: {

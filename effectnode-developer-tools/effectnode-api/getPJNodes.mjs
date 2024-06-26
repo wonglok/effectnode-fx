@@ -96,8 +96,6 @@ export const setPJNodes = async ({ title, nodes }) => {
   });
 
   let waits = needsToRemove.map((it) => {
-    //
-
     let pathToRemove = `${join(
       __dirname,
       "../../",
