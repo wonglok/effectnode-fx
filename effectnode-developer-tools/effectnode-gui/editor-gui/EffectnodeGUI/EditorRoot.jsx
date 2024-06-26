@@ -45,6 +45,7 @@ export const EditorRoot = ({ title }) => {
 
     core.setState({
       spaceID: title,
+      codes: [],
       graph: {
         nodes: [],
         edges: [],
@@ -74,6 +75,8 @@ export const EditorRoot = ({ title }) => {
     run().then(() => {
       //
       core.bootup();
+      core.resetWindow();
+
       setVal(core.getReactElement());
 
       async function save() {
@@ -347,6 +350,7 @@ export class EditorCore {
           overlayPop: "",
         });
       }
+
       ///////
     };
 
