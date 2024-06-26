@@ -5,6 +5,7 @@ import { renameProject } from "./renameProject.mjs";
 import { getPJNodes, setPJNodes } from "./getPJNodes.mjs";
 import { getPJGraph, setPJGraph } from "./getPJGraph.mjs";
 import { removeProject } from "./removeProject.mjs";
+import { cloneProject } from "./cloneProject.mjs";
 
 const port = 3456;
 
@@ -68,6 +69,19 @@ app.post("/devapi/project/rename", async (req, res) => {
   let result = await renameProject({ oldTitle: oldTitle, title: title });
 
   res.json({ rename: result });
+});
+
+app.post("/devapi/project/clone", async (req, res) => {
+  let title = req.body.title;
+  let oldTitle = req.body.oldTitle;
+
+  if (oldTitle === title) {
+    return res.status(500).json({ clone: {} });
+  }
+
+  let result = await cloneProject({ oldTitle: oldTitle, title: title });
+
+  res.json({ clone: result });
 });
 
 app.post("/devapi/graph/getProjectGraph", async (req, res) => {

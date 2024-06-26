@@ -114,6 +114,33 @@ export const useDeveloper = create((set, get) => {
         });
     },
 
+    clone: ({ oldTitle, title }) => {
+      return fetch(`/devapi/project/clone`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          //
+          oldTitle: oldTitle,
+          title: title,
+          //
+        }),
+      })
+        .then((r) => {
+          return r.json();
+        })
+        .then((response) => {
+          console.log("project/clone", response);
+
+          return response;
+          //
+        })
+        .catch((r) => {
+          console.error(r);
+        });
+    },
+
     hasOne: ({ title }) => {
       return fetch(`/devapi/project/hasOne`, {
         method: "POST",

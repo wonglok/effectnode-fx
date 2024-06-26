@@ -42,6 +42,24 @@ export function EditorApp({ useStore }) {
     }
   };
 
+  let clone = () => {
+    let newTitle = window.prompt("Clone Workspace new name", spaceID);
+    if (newTitle) {
+      if (newTitle === spaceID) {
+        newTitle = `${newTitle}-${new Date().getTime()}`;
+      }
+      useDeveloper
+        .getState()
+        .clone({
+          oldTitle: spaceID,
+          title: `${newTitle}`,
+        })
+        .then(() => {
+          location.assign(`/dev/projects/${newTitle}`);
+        });
+    }
+  };
+
   return (
     <div className="w-full h-full">
       <div
@@ -79,6 +97,21 @@ export function EditorApp({ useStore }) {
               onClick={rename}
             >
               {` 🖊️ `}
+            </span>
+
+            <span className="mx-2">|</span>
+
+            <span
+              className="underline text-blue-500 cursor-pointer inline-block"
+              onClick={clone}
+            >
+              {`Clone`}
+            </span>
+            <span
+              className="text-xs ml-1 inline-block translate-y-1"
+              onClick={clone}
+            >
+              {`🐾`}
             </span>
           </div>
           <div className=""></div>
