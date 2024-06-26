@@ -76,7 +76,9 @@ export function SocketOne({ idx, type, socket, node, useStore }) {
 
           graphCursorState.socketB = socket;
 
-          let ab = [graphCursorState.socketA, graphCursorState.socketB];
+          let ab = [graphCursorState.socketA, graphCursorState.socketB].filter(
+            (r) => r
+          );
           let hasInput = ab.some((r) => r.type === "input");
           let hasOutput = ab.some((r) => r.type === "output");
 

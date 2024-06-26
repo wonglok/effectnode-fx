@@ -182,7 +182,7 @@ export const useDeveloper = create((set, get) => {
         .then((response) => {
           //
 
-          console.log(`project/${title}/graph/getProjectGraph`, response);
+          // console.log(`project/${title}/graph/getProjectGraph`, response);
 
           return response;
         })
@@ -191,7 +191,7 @@ export const useDeveloper = create((set, get) => {
         });
     },
 
-    setProjectGraph: ({ title, graph }) => {
+    setProjectGraph: ({ title, graph, codes }) => {
       return fetch(`/devapi/graph/setProjectGraph`, {
         method: "POST",
         headers: {
@@ -201,6 +201,7 @@ export const useDeveloper = create((set, get) => {
           //
           title: title,
           graph: graph,
+          codes: codes,
           //
         }),
       })
@@ -210,7 +211,7 @@ export const useDeveloper = create((set, get) => {
         .then((response) => {
           //
 
-          console.log(`project/${title}/graph/getProjectGraph`, response);
+          // console.log(`project/${title}/graph/getProjectGraph`, response);
 
           return response;
         })

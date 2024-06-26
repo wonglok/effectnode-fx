@@ -89,32 +89,23 @@ export function EditorApp({ useStore }) {
             </Link>
             <span className="mx-2">|</span>
 
+            <span className=" cursor-pointer inline-block">{spaceID}</span>
+            <span className="mx-2">|</span>
+
             <span
-              className="underline text-blue-500 cursor-pointer inline-block"
+              className="text-sm underline text-blue-500 cursor-pointer inline-block"
               onClick={rename}
             >
-              {spaceID}
-            </span>
-            <span
-              className="text-xs ml-1 inline-block translate-y-1"
-              onClick={rename}
-            >
-              {` 🖊️ `}
+              {`Rename`}
             </span>
 
             <span className="mx-2">|</span>
 
             <span
-              className="underline text-blue-500 cursor-pointer inline-block"
+              className="text-sm underline text-blue-500 cursor-pointer inline-block"
               onClick={clone}
             >
               {`Clone`}
-            </span>
-            <span
-              className="text-xs ml-1 inline-block translate-y-1"
-              onClick={clone}
-            >
-              {`🐾`}
             </span>
           </div>
           <div className=""></div>

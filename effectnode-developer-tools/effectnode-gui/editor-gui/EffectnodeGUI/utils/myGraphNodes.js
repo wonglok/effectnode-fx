@@ -10,7 +10,7 @@ export function makeGraphNode({ spaceID }) {
     //
     title: "node",
 
-    positon: [0, 0, 0],
+    position: [0, 0, 0],
 
     //
     inputs: [

@@ -78,6 +78,7 @@ export const setPJNodes = async ({ title, nodes }) => {
       node.title,
       "./code.js"
     )}`;
+
     if (await fexists(codeURL)) {
     } else {
       await write(codeURL, "", {
@@ -86,31 +87,34 @@ export const setPJNodes = async ({ title, nodes }) => {
     }
   }
 
-  //
-  let oldNodes = await getPJNodes({ title });
+  /*
+   */
+  // //
+  // let oldNodes = await getPJNodes({ title });
 
-  let needsToRemove = oldNodes.filter((r) => {
-    return !nodes.some((nn) => nn.title === r.title);
-  });
+  // let needsToRemove = oldNodes.filter((r) => {
+  //   return !nodes.some((nn) => nn.title === r.title);
+  // });
 
-  let waits = needsToRemove.map((it) => {
-    let pathToRemove = `${join(
-      __dirname,
-      "../../",
-      "src/effectnode/projects",
-      `${title}`,
-      "/nodes/",
-      it.title,
-      "/"
-    )}`;
+  // let waits = needsToRemove.map((it) => {
+  //   //
+  //   let pathToRemove = `${join(
+  //     __dirname,
+  //     `../../`,
+  //     `src/effectnode/projects`,
+  //     `${title}`,
+  //     `/nodes/`,
+  //     it.title,
+  //     `/`
+  //   )}`;
 
-    return fs.rm(pathToRemove, {
-      recursive: true,
-      force: true,
-    });
-  });
+  //   return fs.rm(pathToRemove, {
+  //     recursive: true,
+  //     force: true,
+  //   });
+  // });
 
-  await Promise.all(waits);
+  // await Promise.all(waits);
 
   return nodes;
 };

@@ -52,15 +52,16 @@ export const EditorRoot = ({ title }) => {
     });
 
     async function run() {
-      let graph = await useDeveloper
+      let json = await useDeveloper
         .getState()
         .getProjectGraph({ title: title });
 
       //
-      console.log(graph);
-
+      let graph = json.graph;
+      let codes = json.codes;
       if (graph) {
         core.setState({
+          codes: codes,
           graph: {
             nodes: graph.nodes,
             edges: graph.edges,
@@ -79,6 +80,7 @@ export const EditorRoot = ({ title }) => {
         let st = core.exportBackup();
 
         let title = st.spaceID;
+        let codes = st.codes;
         let nodes = st.graph.nodes.filter((r) => r);
         let edges = st.graph.edges.filter((r) => r);
 
@@ -90,6 +92,7 @@ export const EditorRoot = ({ title }) => {
 
         await useDeveloper.getState().setProjectGraph({
           title,
+          codes,
           graph: {
             nodes,
             edges,
