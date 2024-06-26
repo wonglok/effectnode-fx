@@ -25,8 +25,6 @@ export function EditorApp({ useStore }) {
     }, 1000);
   }, []);
 
-  //
-
   let rename = () => {
     let newTitle = window.prompt("Rename Workspace title", spaceID);
     if (newTitle) {
@@ -48,6 +46,7 @@ export function EditorApp({ useStore }) {
       if (newTitle === spaceID) {
         newTitle = `${newTitle}-${new Date().getTime()}`;
       }
+
       useDeveloper
         .getState()
         .clone({

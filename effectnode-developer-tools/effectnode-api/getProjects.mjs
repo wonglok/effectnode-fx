@@ -26,7 +26,7 @@ export const getProjects = async () => {
       );
 
       projects.push({
-        _id: `${md5(dirOne)}`,
+        _id: `${md5(__dirname + dirOne)}`,
         createdAt: graphStat.birthtime,
         updatedAt: graphStat.mtime,
         title: dirOne,
