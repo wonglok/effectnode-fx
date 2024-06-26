@@ -1,11 +1,10 @@
 import express, { json } from "express";
 import { getProjects } from "./getProjects.mjs";
-import { recycleProject } from "./recycleProject.mjs";
 import { copyProjectTemplate } from "./copyProjectTemplate.mjs";
-import { hasOneProject } from "./hasOneProject.mjs";
 import { renameProject } from "./renameProject.mjs";
 import { getPJNodes, setPJNodes } from "./getPJNodes.mjs";
 import { getPJGraph, setPJGraph } from "./getPJGraph.mjs";
+import { removeProject } from "./removeProject.mjs";
 
 const port = 3456;
 
@@ -32,7 +31,11 @@ app.post("/devapi/project/create", async (req, res) => {
 app.post("/devapi/project/recycle", async (req, res) => {
   let title = req.body.title;
 
-  await recycleProject({ title: title });
+  if (!title) {
+    res.status(500).json({ error: true });
+    return;
+  }
+  await removeProject({ title: title });
 
   res.json({ ok: true });
 });
@@ -61,23 +64,30 @@ app.post("/devapi/project/rename", async (req, res) => {
 
 app.post("/devapi/graph/getProjectGraph", async (req, res) => {
   //
-  let title = req.body.title;
+  try {
+    let title = req.body.title;
 
-  let graph = await getPJGraph({
-    //
-    title,
-    //
-  });
+    let graph = await getPJGraph({
+      //
+      title,
+      //
+    });
 
-  let nodes = await getPJNodes({
-    //
-    title,
-    //
-  });
+    let nodes = await getPJNodes({
+      //
+      title,
+      //
+    });
 
-  graph.nodes = nodes;
+    graph.nodes = nodes;
 
-  res.json(graph);
+    res.json(graph);
+  } catch (r) {
+    console.log(r);
+    res.status(500).json({
+      failed: "error",
+    });
+  }
   //
 });
 

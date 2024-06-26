@@ -14,23 +14,26 @@ export const getProjects = async () => {
 
   for (let kn in dirAll) {
     let dirOne = dirAll[kn];
+    try {
+      let graphStat = await fs.stat(
+        `${join(
+          __dirname,
+          "../../",
+          "src/effectnode/projects",
+          dirOne,
+          "graph.json"
+        )}`
+      );
 
-    let graphStat = await fs.stat(
-      `${join(
-        __dirname,
-        "../../",
-        "src/effectnode/projects",
-        dirOne,
-        "graph.json"
-      )}`
-    );
-
-    projects.push({
-      _id: `${md5(dirOne)}`,
-      createdAt: graphStat.birthtime,
-      updatedAt: graphStat.mtime,
-      title: dirOne,
-    });
+      projects.push({
+        _id: `${md5(dirOne)}`,
+        createdAt: graphStat.birthtime,
+        updatedAt: graphStat.mtime,
+        title: dirOne,
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return projects;

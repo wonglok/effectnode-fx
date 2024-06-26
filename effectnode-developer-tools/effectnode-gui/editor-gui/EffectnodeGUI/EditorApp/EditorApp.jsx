@@ -37,7 +37,7 @@ export function EditorApp({ useStore }) {
           title: newTitle,
         })
         .then(() => {
-          router.push(`/dev/projects/${newTitle}`);
+          location.assign(`/dev/projects/${newTitle}`);
         });
     }
   };

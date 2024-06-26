@@ -105,12 +105,23 @@ export function Code({ win, useStore }) {
                   (r) => r._id !== win.nodeID
                 );
 
-                graph.edges = graph.edges.filter(
-                  (r) => r.input.nodeID !== win.nodeID
+                let nodes = graph.nodes.filter((r) => r);
+                let edges = graph.edges.filter((r) => r);
+
+                edges = edges.filter(
+                  (ed) =>
+                    nodes.some((nd) => ed.input.nodeID === nd._id) ||
+                    nodes.some((nd) => ed.output.nodeID === nd._id)
                 );
-                graph.edges = graph.edges.filter(
-                  (r) => r.output.nodeID !== win.nodeID
-                );
+
+                graph.edges = edges;
+
+                // graph.edges = graph.edges.filter(
+                //   (r) => r.input.nodeID !== win.nodeID
+                // );
+                // graph.edges = graph.edges.filter(
+                //   (r) => r.output.nodeID !== win.nodeID
+                // );
 
                 useStore.setState({
                   graph: {

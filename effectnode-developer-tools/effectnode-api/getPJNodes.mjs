@@ -8,6 +8,8 @@ import write from "write";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export const getPJNodes = async ({ title }) => {
+  //
+
   let dirAll = await fs.readdir(
     `${join(__dirname, "../../", `src/effectnode/projects/${title}/nodes`)}`
   );

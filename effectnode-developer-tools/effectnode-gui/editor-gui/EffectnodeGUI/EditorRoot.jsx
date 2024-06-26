@@ -90,11 +90,6 @@ export const EditorRoot = ({ title }) => {
             nodes.some((nd) => ed.output.nodeID === nd._id)
         );
 
-        core.store.setState({
-          nodes,
-          edges,
-        });
-
         await useDeveloper.getState().setProjectGraph({
           title,
           graph: {
