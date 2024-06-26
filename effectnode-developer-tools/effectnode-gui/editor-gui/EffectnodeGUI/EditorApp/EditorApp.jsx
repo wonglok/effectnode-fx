@@ -25,6 +25,8 @@ export function EditorApp({ useStore }) {
     }, 1000);
   }, []);
 
+  //
+
   let rename = () => {
     let newTitle = window.prompt("Rename Workspace title", spaceID);
     if (newTitle) {
@@ -50,9 +52,11 @@ export function EditorApp({ useStore }) {
           backgroundImage: `
           linear-gradient(
                 90deg,
-                #f3f3f3,
-                #747474,
-                #f3f3f3
+                #cccccc,
+                #cccccc,
+                #ffffff,
+                #cccccc,
+                #cccccc
          )       
                 `,
         }}

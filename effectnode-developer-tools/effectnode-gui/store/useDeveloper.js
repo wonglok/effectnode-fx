@@ -141,6 +141,61 @@ export const useDeveloper = create((set, get) => {
         });
     },
 
+    getProjectGraph: ({ title }) => {
+      return fetch(`/devapi/graph/getProjectGraph`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          //
+          title: title,
+          //
+        }),
+      })
+        .then((r) => {
+          return r.json();
+        })
+        .then((response) => {
+          //
+
+          console.log(`project/${title}/graph/getProjectGraph`, response);
+
+          return response;
+        })
+        .catch((r) => {
+          console.error(r);
+        });
+    },
+
+    setProjectGraph: ({ title, graph }) => {
+      return fetch(`/devapi/graph/setProjectGraph`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          //
+          title: title,
+          graph: graph,
+          //
+        }),
+      })
+        .then((r) => {
+          return r.json();
+        })
+        .then((response) => {
+          //
+
+          console.log(`project/${title}/graph/getProjectGraph`, response);
+
+          return response;
+        })
+        .catch((r) => {
+          console.error(r);
+        });
+    },
+
     //
   };
 });

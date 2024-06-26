@@ -4,6 +4,8 @@ import { recycleProject } from "./recycleProject.mjs";
 import { copyProjectTemplate } from "./copyProjectTemplate.mjs";
 import { hasOneProject } from "./hasOneProject.mjs";
 import { renameProject } from "./renameProject.mjs";
+import { getPJNodes, setPJNodes } from "./getPJNodes.mjs";
+import { getPJGraph, setPJGraph } from "./getPJGraph.mjs";
 
 const port = 3456;
 
@@ -48,6 +50,53 @@ app.post("/devapi/project/rename", async (req, res) => {
   let result = await renameProject({ oldTitle: oldTitle, title: title });
 
   res.json({ rename: result });
+});
+
+app.post("/devapi/graph/getProjectGraph", async (req, res) => {
+  //
+  let title = req.body.title;
+
+  let graph = await getPJGraph({
+    //
+    title,
+    //
+  });
+
+  let nodes = await getPJNodes({
+    //
+    title,
+    //
+  });
+
+  graph.nodes = nodes;
+
+  res.json(graph);
+  //
+});
+
+app.post("/devapi/graph/setProjectGraph", async (req, res) => {
+  //
+  let title = req.body.title;
+  let graph = req.body.graph;
+  let nodes = graph.nodes;
+  let edges = graph.edges;
+
+  let graphResult = await setPJGraph({
+    //
+    title,
+    edges: edges,
+    //
+  });
+
+  let nodesResult = await setPJNodes({
+    //
+    title,
+    nodes: nodes,
+    //
+  });
+
+  res.json(graph);
+  //
 });
 
 app.listen(port, () => {

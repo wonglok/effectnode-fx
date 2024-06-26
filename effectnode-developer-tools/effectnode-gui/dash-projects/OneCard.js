@@ -1,7 +1,9 @@
 import moment from "moment";
 import Link from "next/link";
 export function OneCard({ data }) {
+  //
   // console.log(data);
+  //
 
   return (
     <>
@@ -12,7 +14,8 @@ export function OneCard({ data }) {
           className="w-full h-full object-cover"
         ></img>
 
-        <div className=" absolute top-0  left-0 w-full h-full bg-gradient-to-t from-gray-900/60 to-gray-900/25"></div>
+        <div className="absolute top-0  left-0 w-full h-full bg-gradient-to-t from-gray-900/60 to-gray-900/25"></div>
+
         <div className="absolute bottom-0 left-0 w-full ">
           <div className="p-4 sm:p-6">
             <a href="#" className="mb-2 inline-block">

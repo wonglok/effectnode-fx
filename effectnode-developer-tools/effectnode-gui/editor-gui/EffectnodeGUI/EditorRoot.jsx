@@ -18,6 +18,7 @@ import { myApps, myWins } from "./utils/myApps";
 import { useRouter } from "next/router";
 // import { getOneWorkspace } from "@/src/pages/api/Workspace";
 import { Vector3 } from "three";
+import { useDeveloper } from "effectnode-developer-tools/effectnode-gui/store/useDeveloper";
 // import localforage from "localforage";
 export const EditorRoot = ({ title }) => {
   //
@@ -40,14 +41,71 @@ export const EditorRoot = ({ title }) => {
 
     let core = new EditorCore();
 
-    core.setState({ spaceID: title });
-    core.onChange((state, before) => {
-      let st = core.exportBackup();
-      console.log(st);
+    core.setState({
+      spaceID: title,
+      graph: {
+        nodes: [],
+        edges: [],
+      },
     });
 
-    core.bootup();
-    setVal(core.getReactElement());
+    async function run() {
+      let graph = await useDeveloper
+        .getState()
+        .getProjectGraph({ title: title });
+
+      //
+      console.log(graph);
+
+      if (graph) {
+        core.setState({
+          graph: {
+            nodes: graph.nodes || [],
+            edges: graph.edges || [],
+          },
+        });
+      }
+      //
+    }
+
+    run().then(() => {
+      //
+      core.bootup();
+      setVal(core.getReactElement());
+
+      let t0 = 0;
+
+      async function save() {
+        let st = core.exportBackup();
+        //
+        // console.log(st);
+
+        let title = st.spaceID;
+        let nodes = st.graph.nodes.filter((r) => r);
+        let edges = st.graph.edges.filter((r) => r);
+
+        await useDeveloper.getState().setProjectGraph({
+          title,
+          graph: {
+            nodes,
+            edges,
+          },
+        });
+
+        console.log("ok, saved");
+        //
+      }
+      core.onChange((state, before) => {
+        clearTimeout(t0);
+        t0 = setTimeout(() => {
+          save();
+        }, 500);
+      });
+    });
+    // core.onChange((state, before) => {
+    //   let st = core.exportBackup();
+    //   console.log(st);
+    // });
 
     //
   }, [router, title]);
