@@ -49,7 +49,7 @@
           "_id": "_1j2xexv_dhuxmjn",
           "label": "baseColor",
           "type": "color",
-          "value": "#ff0000"
+          "value": "#ff6868"
         },
         {
           "_id": "_urjbmov_j0r4xc4",
@@ -68,9 +68,9 @@
         "_id": "_eotzbcc_dmgo7cn",
         "title": "main",
         "position": [
-          -1.3085920405009028,
+          -0.9102758762775278,
           0,
-          -0.767298027104152
+          -0.9911387434776482
         ],
         "inputs": [
           {
@@ -140,11 +140,11 @@
       {
         "spaceID": "new-space",
         "_id": "_1uzib2t_tv9t6lb",
-        "title": "yoyo",
+        "title": "edge",
         "position": [
-          -0.26510239019761617,
+          0.483036448965392,
           0,
-          0.9463955911723234
+          1.2760981096571364
         ],
         "inputs": [
           {
