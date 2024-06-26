@@ -43,12 +43,23 @@ export function EditorApp({ useStore }) {
   return (
     <div className="w-full h-full">
       <div
-        className="w-full from-gray-100 to-gray-500  bg-gradient-to-r"
-        style={{ height: `1.85rem` }}
+        className="w-full"
+        style={{
+          height: `1.85rem`,
+
+          backgroundImage: `
+          linear-gradient(
+                90deg,
+                #f3f3f3,
+                #747474,
+                #f3f3f3
+         )       
+                `,
+        }}
       >
         <div className="w-full h-full flex items-center justify-between px-2 text-sm">
           <div className="flex">
-            <Link href={`/dev`} className="underline">
+            <Link href={`/dev`} className="underline text-black">
               EffectNode FX
             </Link>
             <span className="mx-2">|</span>
@@ -67,7 +78,7 @@ export function EditorApp({ useStore }) {
             </span>
           </div>
           <div className=""></div>
-          <div className="text-white">
+          <div className="text-black">
             <span
               onClick={() => {
                 //
@@ -88,11 +99,10 @@ export function EditorApp({ useStore }) {
                 }
                 //
               }}
-              className=" mr-2 underline inline-block text-xs text-red-200 hover:text-red-500 hover:underline px-3 py-1 hover:bg-white rounded-2xl cursor-pointer"
+              className=" mr-2 underline inline-block text-xs text-red-500 hover:text-red-500 hover:underline px-3 py-1 hover:bg-white rounded-2xl cursor-pointer"
             >
-              Delete Workspace
+              Recycle Workspace
             </span>
-            <span>{dateString}</span>
           </div>
         </div>
       </div>
@@ -123,7 +133,7 @@ export function EditorApp({ useStore }) {
           `,
         }}
       >
-        <BeginBar useStore={useStore}></BeginBar>
+        <BeginBar dateString={dateString} useStore={useStore}></BeginBar>
       </div>
     </div>
   );

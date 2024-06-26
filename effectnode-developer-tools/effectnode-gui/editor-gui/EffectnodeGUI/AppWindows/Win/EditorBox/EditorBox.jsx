@@ -58,6 +58,7 @@ export function EditorBox({ useStore }) {
           style={{ height: `calc(25px)` }}
         >
           {/*  */}
+
           <span
             className=" underline cursor-pointer px-2"
             onClick={() => {
@@ -96,6 +97,8 @@ export function EditorBox({ useStore }) {
           >
             Create Item
           </span>
+
+          {/*  */}
         </div>
         <div className="w-full" style={{ height: `calc(100% - 25px)` }}>
           <EditorCanvas useStore={useStore}></EditorCanvas>

@@ -1,4 +1,5 @@
 import moment from "moment";
+import Link from "next/link";
 export function OneCard({ data }) {
   // console.log(data);
 
@@ -42,11 +43,11 @@ export function OneCard({ data }) {
             */}
 
             <div className="text-right w-full">
-              <a target="_blank" href={`/dev/projects/${data.title}`}>
+              <Link href={`/dev/projects/${data.title}`}>
                 <button className="text-white/95 text-sm p-4 py-1 border border-white rounded-lg hover:bg-gray-800 transition-colors duration-300">
                   Enter
                 </button>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

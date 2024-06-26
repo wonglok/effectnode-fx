@@ -2,7 +2,7 @@ import icon from "./img/effectnode-icon.svg";
 import { myWins } from "../utils/myApps";
 import { getID } from "../utils/getID";
 
-export function BeginBar({ useStore }) {
+export function BeginBar({ dateString, useStore }) {
   let apps = useStore((r) => r.apps);
   let wins = useStore((r) => r.wins);
   let editorAPI = useStore((r) => r.editorAPI);
@@ -11,7 +11,7 @@ export function BeginBar({ useStore }) {
   return (
     <>
       <div className="w-full h-full flex items-center justify-between text-sm">
-        <div className=" w-44 text-white">
+        <div className=" w-52 text-white">
           <div
             onClick={() => {
               editorAPI.resetWindow();
@@ -89,9 +89,8 @@ export function BeginBar({ useStore }) {
             );
           })}
         </div>
-        <div className="w-44 text-white">
+        <div className="w-52 text-white">
           <div className="flex flex-col justify-end mr-2">
-            <div className="text-right">Yo!</div>
             <div
               className="text-right underline cursor-pointer"
               onClick={() => {
@@ -108,6 +107,9 @@ export function BeginBar({ useStore }) {
               }}
             >
               About Credits
+            </div>
+            <div className="text-right">
+              <span>{dateString}</span>
             </div>
           </div>
         </div>
