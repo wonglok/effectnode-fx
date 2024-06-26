@@ -57,9 +57,9 @@ export const EditorRoot = ({ title }) => {
         .getProjectGraph({ title: title });
 
       //
-      let graph = json.graph;
-      let codes = json.codes;
-      if (graph) {
+      let graph = json?.graph;
+      let codes = json?.codes;
+      if (graph && codes) {
         core.setState({
           codes: codes,
           graph: {

@@ -278,7 +278,7 @@ export function Code({ win, useStore }) {
             className="w-full h-full overflow-hidden rounded-b"
           >
             <div className="flex w-full h-full">
-              <div className="h-full" style={{ width: `calc(100% - 300px)` }}>
+              <div className="h-full" style={{ width: `calc(0px)` }}>
                 {/* {code && (
                   <Editor
                     height={`100%`}
@@ -300,7 +300,7 @@ export function Code({ win, useStore }) {
               </div>
               <div
                 className="h-full border-l border-gray-400 bg-gray-400"
-                style={{ width: `calc(300px)` }}
+                style={{ width: `calc(100%)` }}
               >
                 {/*  */}
 
