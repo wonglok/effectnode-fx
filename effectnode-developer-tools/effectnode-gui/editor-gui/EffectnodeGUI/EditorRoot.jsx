@@ -107,13 +107,9 @@ export const EditorRoot = ({ title }) => {
         clearTimeout(t0);
         t0 = setTimeout(() => {
           save();
-        }, 500);
+        }, 150);
       });
     });
-    // core.onChange((state, before) => {
-    //   let st = core.exportBackup();
-    //   console.log(st);
-    // });
 
     //
   }, [router, title]);

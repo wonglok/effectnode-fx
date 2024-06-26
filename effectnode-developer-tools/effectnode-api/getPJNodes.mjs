@@ -33,10 +33,6 @@ export const getPJNodes = async ({ title }) => {
 
     let node = JSON.parse(nodeFile.trim());
 
-    node._id = `${md5(fileURL)}`;
-
-    node.title = dirOne;
-
     array.push(node);
   }
 
