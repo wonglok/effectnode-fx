@@ -61,6 +61,10 @@ app.post("/devapi/project/rename", async (req, res) => {
   let title = req.body.title;
   let oldTitle = req.body.oldTitle;
 
+  if (oldTitle === title) {
+    return res.json({ rename: {} });
+  }
+
   let result = await renameProject({ oldTitle: oldTitle, title: title });
 
   res.json({ rename: result });

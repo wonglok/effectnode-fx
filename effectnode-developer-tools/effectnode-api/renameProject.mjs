@@ -59,10 +59,12 @@ export const renameProject = async ({ oldTitle, title = "yoyo" }) => {
     );
   });
 
-  await fs.rm(fromFolder, {
-    recursive: true,
-    retryDelay: 10,
-  });
+  if (fromFolder !== toFolder) {
+    await fs.rm(fromFolder, {
+      recursive: true,
+      retryDelay: 10,
+    });
+  }
 
   return {};
 };
