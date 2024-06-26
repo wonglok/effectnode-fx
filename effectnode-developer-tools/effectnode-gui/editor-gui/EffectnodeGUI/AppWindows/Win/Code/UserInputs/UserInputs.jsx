@@ -2,7 +2,7 @@ import { getID } from "effectnode-developer-tools/effectnode-gui/editor-gui/Effe
 import { useEffect, useRef, useState } from "react";
 import { Pane } from "tweakpane";
 
-export function UserInputs({ useStore, code, codes, graph }) {
+export function UserInputs({ useStore, code, settings, graph }) {
   let data = code.data || [];
   // console.log(data);
 
@@ -11,7 +11,11 @@ export function UserInputs({ useStore, code, codes, graph }) {
       {/*  */}
       <div className="h-2"></div>
       <div className="mx-2 mb-2">
-        <AddInputs code={code} codes={codes} useStore={useStore}></AddInputs>
+        <AddInputs
+          code={code}
+          settings={settings}
+          useStore={useStore}
+        ></AddInputs>
       </div>
 
       {data.map((dat) => {
@@ -21,11 +25,11 @@ export function UserInputs({ useStore, code, codes, graph }) {
             {dat.type === "range" && (
               <>
                 <Gear
-                  codes={codes}
+                  settings={settings}
                   gear={
                     <RangeGear
                       code={code}
-                      codes={codes}
+                      settings={settings}
                       useStore={useStore}
                       dat={dat}
                     ></RangeGear>
@@ -34,7 +38,7 @@ export function UserInputs({ useStore, code, codes, graph }) {
                   dat={dat}
                 >
                   <RangedInput
-                    codes={codes}
+                    settings={settings}
                     useStore={useStore}
                     dat={dat}
                   ></RangedInput>
@@ -48,17 +52,17 @@ export function UserInputs({ useStore, code, codes, graph }) {
                   gear={
                     <TextGear
                       code={code}
-                      codes={codes}
+                      settings={settings}
                       useStore={useStore}
                       dat={dat}
                     ></TextGear>
                   }
-                  codes={codes}
+                  settings={settings}
                   useStore={useStore}
                   dat={dat}
                 >
                   <TextInput
-                    codes={codes}
+                    settings={settings}
                     useStore={useStore}
                     dat={dat}
                   ></TextInput>
@@ -72,17 +76,17 @@ export function UserInputs({ useStore, code, codes, graph }) {
                   gear={
                     <ColorGear
                       code={code}
-                      codes={codes}
+                      settings={settings}
                       useStore={useStore}
                       dat={dat}
                     ></ColorGear>
                   }
-                  codes={codes}
+                  settings={settings}
                   useStore={useStore}
                   dat={dat}
                 >
                   <ColorInput
-                    codes={codes}
+                    settings={settings}
                     useStore={useStore}
                     dat={dat}
                   ></ColorInput>
@@ -101,7 +105,7 @@ export function UserInputs({ useStore, code, codes, graph }) {
   );
 }
 
-function AddInputs({ useStore, code, codes }) {
+function AddInputs({ useStore, code, settings }) {
   let refValue = useRef();
 
   useEffect(() => {
@@ -168,7 +172,7 @@ function AddInputs({ useStore, code, codes }) {
         _id: getID(),
       });
       useStore.setState({
-        codes: [...codes],
+        settings: [...settings],
       });
       //
       //
@@ -188,7 +192,7 @@ function AddInputs({ useStore, code, codes }) {
   );
 }
 
-function ColorGear({ useStore, code, codes, dat }) {
+function ColorGear({ useStore, code, settings, dat }) {
   let refValue = useRef();
 
   useEffect(() => {
@@ -198,7 +202,7 @@ function ColorGear({ useStore, code, codes, dat }) {
       dat.label = v.value;
 
       useStore.setState({
-        codes: [...codes],
+        settings: [...settings],
       });
     });
 
@@ -214,7 +218,7 @@ function ColorGear({ useStore, code, codes, dat }) {
         code.data = code.data.filter((r) => r._id !== dat._id);
 
         useStore.setState({
-          codes: [...codes],
+          settings: [...settings],
         });
       }
       //
@@ -232,7 +236,7 @@ function ColorGear({ useStore, code, codes, dat }) {
   );
 }
 
-function TextGear({ useStore, code, codes, dat }) {
+function TextGear({ useStore, code, settings, dat }) {
   let refValue = useRef();
 
   useEffect(() => {
@@ -242,7 +246,7 @@ function TextGear({ useStore, code, codes, dat }) {
       dat.label = v.value;
 
       useStore.setState({
-        codes: [...codes],
+        settings: [...settings],
       });
     });
 
@@ -258,7 +262,7 @@ function TextGear({ useStore, code, codes, dat }) {
         code.data = code.data.filter((r) => r._id !== dat._id);
 
         useStore.setState({
-          codes: [...codes],
+          settings: [...settings],
         });
       }
       //
@@ -276,7 +280,7 @@ function TextGear({ useStore, code, codes, dat }) {
   );
 }
 
-function RangeGear({ useStore, code, codes, dat }) {
+function RangeGear({ useStore, code, settings, dat }) {
   let refValue = useRef();
 
   useEffect(() => {
@@ -286,7 +290,7 @@ function RangeGear({ useStore, code, codes, dat }) {
       dat.label = v.value;
 
       useStore.setState({
-        codes: [...codes],
+        settings: [...settings],
       });
     });
 
@@ -299,7 +303,7 @@ function RangeGear({ useStore, code, codes, dat }) {
         dat.value = v.value;
 
         useStore.setState({
-          codes: [...codes],
+          settings: [...settings],
         });
       });
 
@@ -314,7 +318,7 @@ function RangeGear({ useStore, code, codes, dat }) {
         dat.value = v.value;
 
         useStore.setState({
-          codes: [...codes],
+          settings: [...settings],
         });
       });
 
@@ -327,7 +331,7 @@ function RangeGear({ useStore, code, codes, dat }) {
         dat.value = v.value;
 
         useStore.setState({
-          codes: [...codes],
+          settings: [...settings],
         });
       });
 
@@ -343,7 +347,7 @@ function RangeGear({ useStore, code, codes, dat }) {
         code.data = code.data.filter((r) => r._id !== dat._id);
 
         useStore.setState({
-          codes: [...codes],
+          settings: [...settings],
         });
       }
       //
@@ -361,7 +365,7 @@ function RangeGear({ useStore, code, codes, dat }) {
   );
 }
 
-function Gear({ useStore, codes, dat, children, gear = null }) {
+function Gear({ useStore, settings, dat, children, gear = null }) {
   let [show, setShow] = useState(false);
 
   if (!gear) {
@@ -412,7 +416,7 @@ function Gear({ useStore, codes, dat, children, gear = null }) {
   );
 }
 
-function RangedInput({ useStore, codes, dat }) {
+function RangedInput({ useStore, settings, dat }) {
   let refValue = useRef();
 
   useEffect(() => {
@@ -429,7 +433,7 @@ function RangedInput({ useStore, codes, dat }) {
         dat.value = v.value;
 
         useStore.setState({
-          codes: [...codes],
+          settings: [...settings],
         });
       });
 
@@ -445,7 +449,7 @@ function RangedInput({ useStore, codes, dat }) {
   );
 }
 
-function TextInput({ useStore, codes, dat }) {
+function TextInput({ useStore, settings, dat }) {
   let refValue = useRef();
 
   useEffect(() => {
@@ -458,7 +462,7 @@ function TextInput({ useStore, codes, dat }) {
       dat.value = v.value;
 
       useStore.setState({
-        codes: [...codes],
+        settings: [...settings],
       });
     });
 
@@ -476,7 +480,7 @@ function TextInput({ useStore, codes, dat }) {
 
 //
 
-function ColorInput({ useStore, codes, dat }) {
+function ColorInput({ useStore, settings, dat }) {
   let refValue = useRef();
 
   useEffect(() => {
@@ -488,7 +492,7 @@ function ColorInput({ useStore, codes, dat }) {
     pane.addBinding(PARAMS, dat.label, {}).on("change", (v) => {
       dat.value = v.value;
       useStore.setState({
-        codes: [...codes],
+        settings: [...settings],
       });
     });
 

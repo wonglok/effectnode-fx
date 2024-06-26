@@ -131,7 +131,7 @@ app.post("/devapi/graph/getProjectGraph", async (req, res) => {
 app.post("/devapi/graph/setProjectGraph", async (req, res) => {
   //
   let title = req.body.title;
-  let codes = req.body.codes;
+  let settings = req.body.settings;
   let graph = req.body.graph;
   let nodes = graph.nodes;
   let edges = graph.edges;
@@ -139,7 +139,7 @@ app.post("/devapi/graph/setProjectGraph", async (req, res) => {
   let graphResult = await setPJGraph({
     //
     title,
-    codes: codes,
+    settings: settings,
     edges: edges,
     nodes: nodes,
     //

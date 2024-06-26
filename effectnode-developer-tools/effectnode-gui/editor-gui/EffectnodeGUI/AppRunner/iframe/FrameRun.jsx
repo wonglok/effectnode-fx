@@ -9,13 +9,13 @@ export default function FrameRun() {
       return {
         sendParent: () => {},
         graph: false,
-        codes: [],
+        settings: [],
       };
     });
   }, []);
 
   let graph = useCore((r) => r.graph);
-  let codes = useCore((r) => r.codes);
+  let settings = useCore((r) => r.settings);
 
   let readyRef = useRef(false);
 
@@ -51,14 +51,14 @@ export default function FrameRun() {
         if (action === "responseLaunchApp") {
           useCore.setState({
             graph: payload.graph,
-            codes: payload.codes,
+            settings: payload.settings,
           });
         }
         if (action === "pushLatestState") {
           // console.log(action);
           useCore.setState({
             graph: payload.graph,
-            codes: payload.codes,
+            settings: payload.settings,
           });
         }
         if (action === "resize") {
@@ -121,12 +121,12 @@ export default function FrameRun() {
       {graph && useCore && (
         <>
           {graph.nodes.map((it, idx, nodes) => {
-            let code = codes.find((r) => r.nodeID === it._id);
+            let code = settings.find((r) => r.nodeID === it._id);
             return (
               <RunnerNode
                 nameSpaceID={nameSpaceID}
                 edges={graph.edges}
-                codes={codes}
+                settings={settings}
                 nodes={nodes}
                 modules={modules}
                 works={works}
@@ -241,8 +241,8 @@ function RunnerNode({
                     {},
                     {
                       get: (obj, key) => {
-                        let codes = useCore.getState().codes;
-                        let code = codes.find((r) => r.nodeID === node._id);
+                        let settings = useCore.getState().settings;
+                        let code = settings.find((r) => r.nodeID === node._id);
                         let item = code.data.find((r) => r.label === key);
 
                         if (item) {

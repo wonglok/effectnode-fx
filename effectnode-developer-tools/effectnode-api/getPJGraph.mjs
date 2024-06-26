@@ -16,12 +16,12 @@ export const getPJGraph = async ({ title }) => {
 
 //
 
-export const setPJGraph = async ({ title, codes, edges, nodes }) => {
+export const setPJGraph = async ({ title, settings, edges, nodes }) => {
   let url = `${join(__dirname, "../../", `src/effectnode/projects/${title}/graph.json`)}`;
 
   let jsonString = JSON.stringify(
     {
-      codes,
+      settings,
       graph: {
         nodes,
         edges,

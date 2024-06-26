@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom/client";
 import path from "path";
 import { transform } from "sucrase";
 
-export const getCompile = ({ graph, codes }) => {
+export const getCompile = ({ graph, settings }) => {
   return new Promise(async (resolve) => {
     const rollupProm = import("rollup").then((r) => r.rollup); //2.56.3
     rollupProm.then(async (rollup) => {
@@ -106,7 +106,9 @@ export default window.GlobalVariable["${idName}"]["default"]
                         .replace(".jsx", "")
                   );
 
-                  let content = codes.find((r) => r.nodeID === node._id)?.code;
+                  let content = settings.find(
+                    (r) => r.nodeID === node._id
+                  )?.code;
 
                   let tCocde = transform(content, {
                     transforms: ["jsx"],

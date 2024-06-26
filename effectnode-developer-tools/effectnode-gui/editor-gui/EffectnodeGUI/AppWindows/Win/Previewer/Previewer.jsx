@@ -1,23 +1,26 @@
 import { AppRunner } from "effectnode-developer-tools/effectnode-gui/editor-gui/EffectnodeGUI/AppRunner/AppRunner";
 import { useCallback, useEffect, useState } from "react";
+import { EffectNode } from "src/effectnode/runtime/EffectNode";
 
 export function Previewer({ win, useStore }) {
   let spaceID = useStore((r) => r.spaceID);
-  let getState = useCallback(() => {
-    return useStore.getState().editorAPI.exportBackup();
-  }, [useStore]);
+  // let getState = useCallback(() => {
+  //   return useStore.getState().editorAPI.exportBackup();
+  // }, [useStore]);
 
-  let [state, setState] = useState(false);
+  // let [state, setState] = useState(false);
 
-  useEffect(() => {
-    return useStore.subscribe((now, before) => {
-      if (now.codes !== before.codes) {
-        //
-        setState(getState());
-        //
-      }
-    });
-  }, [useStore, getState]);
+  // useEffect(() => {
+  //   return useStore.subscribe((now, before) => {
+  //     if (now.settings !== before.settings) {
+  //       //
+  //       setState(getState());
+  //       //
+  //     }
+  //   });
+  // }, [useStore, getState]);
+
+  //
   return (
     <>
       {/* {spaceID && (
@@ -29,7 +32,10 @@ export function Previewer({ win, useStore }) {
           spaceID={spaceID}
         ></AppRunner>
       )} */}
-      {spaceID}
+      {/* {spaceID} */}
+
+      {/*  */}
+      <EffectNode projectName={spaceID}></EffectNode>
     </>
   );
 }

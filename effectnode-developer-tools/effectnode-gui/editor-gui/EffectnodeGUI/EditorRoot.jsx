@@ -45,7 +45,7 @@ export const EditorRoot = ({ title }) => {
 
     core.setState({
       spaceID: title,
-      codes: [],
+      settings: [],
       graph: {
         nodes: [],
         edges: [],
@@ -59,10 +59,10 @@ export const EditorRoot = ({ title }) => {
 
       //
       let graph = json?.graph;
-      let codes = json?.codes;
-      if (graph && codes) {
+      let settings = json?.settings;
+      if (graph && settings) {
         core.setState({
-          codes: codes,
+          settings: settings,
           graph: {
             nodes: graph.nodes,
             edges: graph.edges,
@@ -83,7 +83,7 @@ export const EditorRoot = ({ title }) => {
         let st = core.exportBackup();
 
         let title = st.spaceID;
-        let codes = st.codes;
+        let settings = st.settings;
         let nodes = st.graph.nodes.filter((r) => r);
         let edges = st.graph.edges.filter((r) => r);
 
@@ -95,7 +95,7 @@ export const EditorRoot = ({ title }) => {
 
         await useDeveloper.getState().setProjectGraph({
           title,
-          codes,
+          settings,
           graph: {
             nodes,
             edges,
@@ -148,7 +148,7 @@ export class EditorCore {
           nodes: [],
           edges: [],
         },
-        codes: [],
+        settings: [],
         //
 
         //////
@@ -224,7 +224,7 @@ export class EditorCore {
       //
       "spaceID",
       "graph",
-      "codes",
+      "settings",
 
       //
       "apps",

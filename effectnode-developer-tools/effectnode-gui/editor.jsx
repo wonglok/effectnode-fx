@@ -10,13 +10,14 @@ export function Editor() {
 
   let title = `${projectID}`;
 
-  let [hasFile, setHasFile] = useState(false);
+  let [hasFile, setHasFile] = useState("loading");
 
   useEffect(() => {
     //
     if (!title) {
       return;
     }
+
     useDeveloper
       .getState()
       .hasOne({
@@ -25,7 +26,9 @@ export function Editor() {
       .then((r) => {
         console.log(r);
         if (r?.hasOne) {
-          setHasFile(true);
+          setHasFile("has");
+        } else {
+          setHasFile("donthave");
         }
       });
     //
@@ -33,9 +36,9 @@ export function Editor() {
 
   return (
     <>
-      {hasFile && <EditorRoot title={title}></EditorRoot>}
-
-      {!hasFile && <>Loading...</>}
+      {hasFile === "has" && <EditorRoot title={title}></EditorRoot>}
+      {hasFile === "loading" && <>Loading...</>}
+      {hasFile === "donthave" && <>Missing Project</>}
     </>
   );
 }

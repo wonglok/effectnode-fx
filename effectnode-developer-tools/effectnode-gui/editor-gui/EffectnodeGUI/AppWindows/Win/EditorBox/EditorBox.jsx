@@ -10,7 +10,7 @@ export function EditorBox({ useStore }) {
   // let wins = useStore((r) => r.wins);
   // let apps = useStore((r) => r.apps);
 
-  let codes = useStore((r) => r.codes) || [];
+  let settings = useStore((r) => r.settings) || [];
   let graph = useStore((r) => r.graph);
   let spaceID = useStore((r) => r.spaceID);
 
@@ -88,7 +88,7 @@ export function EditorBox({ useStore }) {
               graph.nodes.push(newNodeItem);
               useStore.setState({
                 graph: { ...graph },
-                codes: [...codes, newCodeFile],
+                settings: [...settings, newCodeFile],
               });
 
               window.dispatchEvent(

@@ -9,10 +9,10 @@ import { UserInputs } from "./UserInputs/UserInputs";
 export function Code({ win, useStore }) {
   let wins = useStore((r) => r.wins);
   let graph = useStore((r) => r.graph);
-  let codes = useStore((r) => r.codes);
+  let settings = useStore((r) => r.settings);
   let nodes = graph.nodes;
   let node = nodes.find((r) => r._id === win.nodeID);
-  let code = codes.find((r) => r.nodeID === win.nodeID);
+  let code = settings.find((r) => r.nodeID === win.nodeID);
 
   let spaceID = useStore((r) => r.spaceID);
   let [editor, setEditor] = useState(false);
@@ -117,7 +117,7 @@ export function Code({ win, useStore }) {
 
                 useStore.setState({
                   graph: JSON.parse(JSON.stringify(graph)),
-                  codes: codes.filter((r) => r.nodeID !== win.nodeID),
+                  settings: settings.filter((r) => r.nodeID !== win.nodeID),
                   wins: wins.filter((r) => r._id !== win._id),
                 });
               }
@@ -267,7 +267,7 @@ export function Code({ win, useStore }) {
                 }
 
                 useStore.setState({
-                  codes: [...codes],
+                  settings: [...settings],
                 });
               };
 
@@ -278,7 +278,11 @@ export function Code({ win, useStore }) {
             className="w-full h-full overflow-hidden rounded-b"
           >
             <div className="flex w-full h-full">
-              <div className="h-full" style={{ width: `calc(0px)` }}>
+              <div className="h-full" style={{ width: `calc(100% - 300px)` }}>
+                <div
+                  className="w-full h-full code-window"
+                  id={`${win.nodeID}`}
+                ></div>
                 {/* {code && (
                   <Editor
                     height={`100%`}
@@ -292,7 +296,7 @@ export function Code({ win, useStore }) {
                       code.code = text;
 
                       useStore.setState({
-                        codes: [...codes],
+                        settings: [...settings],
                       });
                     }}
                   ></Editor>
@@ -300,15 +304,13 @@ export function Code({ win, useStore }) {
               </div>
               <div
                 className="h-full border-l border-gray-400 bg-gray-400"
-                style={{ width: `calc(100%)` }}
+                style={{ width: `calc(300px)` }}
               >
-                {/*  */}
-
                 {code && (
                   <UserInputs
                     useStore={useStore}
                     graph={graph}
-                    codes={codes}
+                    settings={settings}
                     code={code}
                   ></UserInputs>
                 )}
