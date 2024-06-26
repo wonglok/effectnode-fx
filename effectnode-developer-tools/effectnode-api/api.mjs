@@ -14,7 +14,9 @@ const app = express();
 app.use(json({ limit: "999GB" }));
 
 app.post("/devapi/project/listAll", async (req, res) => {
-  let projects = await getProjects();
+  let title = req.body.title;
+
+  let projects = await getProjects({ title });
 
   res.json(projects);
 });
@@ -37,8 +39,13 @@ app.post("/devapi/project/recycle", async (req, res) => {
 
 app.post("/devapi/project/hasOne", async (req, res) => {
   let title = req.body.title;
+  if (!title) {
+    return { hasOne: false };
+  }
 
-  let result = await hasOneProject({ title: title });
+  let projects = await getProjects({ title });
+
+  let result = projects.some((r) => r.title === title);
 
   res.json({ hasOne: result });
 });

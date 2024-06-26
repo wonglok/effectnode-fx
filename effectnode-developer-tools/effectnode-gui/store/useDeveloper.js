@@ -132,8 +132,6 @@ export const useDeveloper = create((set, get) => {
         .then((response) => {
           console.log("project/hasOne", response);
 
-          //
-
           return response;
         })
         .catch((r) => {

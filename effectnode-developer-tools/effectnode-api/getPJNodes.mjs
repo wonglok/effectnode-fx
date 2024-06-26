@@ -88,29 +88,35 @@ export const setPJNodes = async ({ title, nodes }) => {
     }
   }
 
-  return nodes;
+  //
+  let oldNodes = await getPJNodes({ title });
 
-  // let dirAll = await fs.readdir(
-  //   `${join(__dirname, "../../", `src/effectnode/projects/${title}/nodes`)}`
-  // );
-  // let array = [];
-  // for (let kn in dirAll) {
-  //   let dirOne = dirAll[kn];
-  //   let fileURL = `${join(
-  //     __dirname,
-  //     "../../",
-  //     "src/effectnode/projects",
-  //     `${title}`,
-  //     "/nodes/",
-  //     dirOne,
-  //     "./node.json"
-  //   )}`;
-  //   let nodeFile = await fs.readFile(fileURL, "utf-8");
-  //   let node = JSON.parse(nodeFile);
-  //   node._id = `${md5(fileURL)}`;
-  //   array.push(node);
-  // }
-  // return array;
+  let needsToRemove = oldNodes.filter((r) => {
+    return !nodes.some((nn) => nn.title === r.title);
+  });
+
+  let waits = needsToRemove.map((it) => {
+    //
+
+    let pathToRemove = `${join(
+      __dirname,
+      "../../",
+      "src/effectnode/projects",
+      `${title}`,
+      "/nodes/",
+      it.title,
+      "/"
+    )}`;
+
+    return fs.rm(pathToRemove, {
+      recursive: true,
+      force: true,
+    });
+  });
+
+  await Promise.all(waits);
+
+  return nodes;
 };
 
 //

@@ -31,7 +31,13 @@ export function Editor() {
     //
   }, [title]);
 
-  return <>{hasFile && <EditorRoot title={title}></EditorRoot>}</>;
+  return (
+    <>
+      {hasFile && <EditorRoot title={title}></EditorRoot>}
+
+      {!hasFile && <>Loading...</>}
+    </>
+  );
 }
 
 //

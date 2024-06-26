@@ -1,15 +1,32 @@
-import fs from "fs/promises";
+import fs, { constants } from "fs/promises";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export const hasOneProject = async ({ title }) => {
-  let dirAll = await fs.readdir(
-    `${join(__dirname, "../../", "src/effectnode/projects")}`
-  );
+  //
 
-  let hasDir = dirAll.includes(title);
+  const fexists = async (path) => {
+    try {
+      await access(path);
+      return true;
+    } catch {
+      return false;
+    }
+  };
 
-  return hasDir;
+  let projectURL = `${join(
+    __dirname,
+    "../../",
+    "src/effectnode/projects/",
+    `${title}/`,
+    `graph.json`
+  )}`;
+
+  let url = projectURL;
+
+  console.log(projectURL);
+
+  return await fexists(url);
 };
