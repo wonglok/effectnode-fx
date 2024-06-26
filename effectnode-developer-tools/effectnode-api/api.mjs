@@ -91,7 +91,7 @@ app.post("/devapi/project/clone", async (req, res) => {
   let repeated = projects.some((r) => r.title === title);
 
   if (repeated) {
-    return res.status(406).json({ msg: "nane-taken" });
+    return res.status(406).json({ errorMsg: "nane-taken" });
   }
 
   let result = await cloneProject({ oldTitle: oldTitle, title: title });

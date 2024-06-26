@@ -47,15 +47,15 @@ export function EditorApp({ useStore }) {
   let clone = () => {
     let newTitle = window.prompt("Clone Workspace new name", spaceID);
     if (newTitle) {
-      if (newTitle === spaceID) {
-        newTitle = `${newTitle}-${new Date().getTime()}`;
-      }
-
       useDeveloper
         .getState()
         .clone({
           oldTitle: spaceID,
           title: `${newTitle}`,
+        })
+        .catch((r) => {
+          alert("name taken");
+          return Promise.reject("name taken");
         })
         .then(() => {
           location.assign(`/dev/projects/${newTitle}`);
