@@ -34,6 +34,10 @@ export function EditorApp({ useStore }) {
           oldTitle: spaceID,
           title: newTitle,
         })
+        .catch((r) => {
+          alert("name taken");
+          return Promise.reject("name taken");
+        })
         .then(() => {
           location.assign(`/dev/projects/${newTitle}`);
         });

@@ -48,16 +48,14 @@ export const useDeveloper = create((set, get) => {
         }),
       })
         .then((r) => {
+          if (!r.ok) {
+            throw new Error(`taken`);
+          }
           return r.json();
         })
         .then((response) => {
           console.log("project/create", response);
-
-          return get().listAll();
-          //
-        })
-        .catch((r) => {
-          console.error(r);
+          return response;
         });
     },
 
@@ -101,6 +99,9 @@ export const useDeveloper = create((set, get) => {
         }),
       })
         .then((r) => {
+          if (!r.ok) {
+            throw new Error("name-taken");
+          }
           return r.json();
         })
         .then((response) => {
@@ -108,9 +109,6 @@ export const useDeveloper = create((set, get) => {
 
           return response;
           //
-        })
-        .catch((r) => {
-          console.error(r);
         });
     },
 

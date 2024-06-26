@@ -1,4 +1,4 @@
-import express, { json } from "express";
+import express, { json, response } from "express";
 import { getProjects } from "./getProjects.mjs";
 import { copyProjectTemplate } from "./copyProjectTemplate.mjs";
 import { renameProject } from "./renameProject.mjs";
@@ -24,9 +24,14 @@ app.post("/devapi/project/listAll", async (req, res) => {
 app.post("/devapi/project/create", async (req, res) => {
   let title = req.body.title;
 
-  await copyProjectTemplate({ title: title });
-
-  res.json({ ok: true });
+  let projects = await getProjects({ title });
+  let result = projects.some((r) => r.title === title);
+  if (!result) {
+    await copyProjectTemplate({ title: title });
+    res.json({ ok: true });
+  } else {
+    res.status(406).json({ errorMsg: "name-taken" });
+  }
 });
 
 app.post("/devapi/project/recycle", async (req, res) => {
@@ -59,8 +64,15 @@ app.post("/devapi/project/hasOne", async (req, res) => {
 });
 
 app.post("/devapi/project/rename", async (req, res) => {
-  let title = req.body.title;
   let oldTitle = req.body.oldTitle;
+  let title = req.body.title;
+
+  let projects = await getProjects({ title });
+  let repeated = projects.some((r) => r.title === title);
+  if (repeated) {
+    res.status(406).json({ errorMsg: "name-taken" });
+    return;
+  }
 
   if (oldTitle === title) {
     return res.json({ rename: {} });

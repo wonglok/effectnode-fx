@@ -32,7 +32,15 @@ export function PlusCard({ onReload }) {
                   );
 
                   if (res) {
-                    useDeveloper.getState().create({ title: res });
+                    useDeveloper
+                      .getState()
+                      .create({ title: res })
+                      .catch((r) => {
+                        alert("name taken");
+                      })
+                      .then(() => {
+                        onReload();
+                      });
                   }
 
                   // createWorkspace
