@@ -103,14 +103,14 @@ export const renameProject = async ({ oldTitle, title = "yoyo" }) => {
       },
       function (err) {
         if (err) throw err;
-        console.log("done");
+        console.log("done copy folder");
 
         resolve();
       }
     );
   });
 
-  fs.rm(fromFolder, {
+  await fs.rm(fromFolder, {
     recursive: true,
     retryDelay: 10,
   });

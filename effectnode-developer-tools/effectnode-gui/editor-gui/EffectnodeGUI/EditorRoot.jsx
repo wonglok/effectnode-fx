@@ -19,7 +19,9 @@ import { useRouter } from "next/router";
 // import { getOneWorkspace } from "@/src/pages/api/Workspace";
 import { Vector3 } from "three";
 import { useDeveloper } from "effectnode-developer-tools/effectnode-gui/store/useDeveloper";
+//
 // import localforage from "localforage";
+//
 export const EditorRoot = ({ title }) => {
   //
 
@@ -60,8 +62,8 @@ export const EditorRoot = ({ title }) => {
       if (graph) {
         core.setState({
           graph: {
-            nodes: graph.nodes || [],
-            edges: graph.edges || [],
+            nodes: graph.nodes,
+            edges: graph.edges,
           },
         });
       }

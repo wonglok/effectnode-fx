@@ -35,6 +35,7 @@ app.post("/devapi/project/recycle", async (req, res) => {
     res.status(500).json({ error: true });
     return;
   }
+
   await removeProject({ title: title });
 
   res.json({ ok: true });

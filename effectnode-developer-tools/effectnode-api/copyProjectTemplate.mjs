@@ -47,7 +47,7 @@ export const copyProjectTemplate = async ({ title = "yoyo" }) => {
       },
       function (err) {
         if (err) throw err;
-        console.log("done");
+        console.log("done copy folder");
 
         resolve();
       }

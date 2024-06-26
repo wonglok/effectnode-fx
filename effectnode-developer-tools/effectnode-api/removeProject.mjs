@@ -23,7 +23,7 @@ export const removeProject = async ({ title = "yoyo" }) => {
     "/"
   )}`;
 
-  fs.rm(fromFolder, {
+  await fs.rm(fromFolder, {
     recursive: true,
     retryDelay: 10,
     force: true,

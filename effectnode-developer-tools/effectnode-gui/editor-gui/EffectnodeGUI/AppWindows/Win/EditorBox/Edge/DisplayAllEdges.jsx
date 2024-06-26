@@ -5,7 +5,7 @@ import { Vector3 } from "three";
 export function DisplayAllEdges({ useStore }) {
   let graphCursorState = useStore((r) => r.graphCursorState);
   let graph = useStore((r) => r.graph);
-  let edges = graph.edges;
+  let edges = graph.edges || [];
   //
   let scene = useThree((r) => r.scene);
 

@@ -78,6 +78,7 @@ export function EditorBox({ useStore }) {
                   "Please name the module...",
                   "newNodeItem"
                 );
+
                 if (title) {
                   newNodeItem.title = title;
                   newCodeFile.title = title;
