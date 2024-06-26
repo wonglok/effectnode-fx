@@ -36,7 +36,10 @@ app.post("/devapi/project/recycle", async (req, res) => {
     return;
   }
 
-  await removeProject({ title: title });
+  await removeProject({
+    oldTitle: title,
+    title: `${title}-${new Date().getTime()}`,
+  });
 
   res.json({ ok: true });
 });

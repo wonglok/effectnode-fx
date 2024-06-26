@@ -31,7 +31,7 @@ export const getPJNodes = async ({ title }) => {
 
     let nodeFile = await fs.readFile(fileURL, "utf-8");
 
-    let node = JSON.parse(nodeFile);
+    let node = JSON.parse(nodeFile.trim());
 
     node._id = `${md5(fileURL)}`;
 
