@@ -5,7 +5,7 @@ import prettierPluginBabel from "prettier/plugins/babel";
 import prettierPluginEstree from "prettier/plugins/estree";
 import prettierPluginHtml from "prettier/plugins/html";
 import { UserInputs } from "./UserInputs/UserInputs";
-import { EffectNode } from "effectnode-developer-tools/runtime/EffectNode";
+import { EffectNode } from "src/effectnode/runtime/EffectNode";
 import { useDeveloper } from "effectnode-developer-tools/effectnode-gui/store/useDeveloper";
 
 export function Code({ win, useStore }) {

@@ -3,7 +3,7 @@ function loadCodes({ projectName }) {
   let codes = [];
 
   let rr = require.context(
-    "src/effectnode/projects",
+    "../../projects",
     true,
     /\/codes\/(.*).(js|jsx|ts|tsx)$/,
     "lazy"
@@ -58,5 +58,5 @@ function loadProjects(req) {
 
 // loadProjects(require.context("../projects", true, /graph\.json$/, "lazy"));
 export const allProjects = loadProjects(
-  require.context("src/effectnode/projects", true, /graph\.json$/, "sync")
+  require.context("../../projects", true, /graph\.json$/, "sync")
 );
