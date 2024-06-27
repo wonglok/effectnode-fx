@@ -13,7 +13,8 @@
   "dependencies": {
     "next": "14.2.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "tunnel-rat": "^0.1.2"
   },
   "devDependencies": {
     "@react-three/drei": "^9.107.0",
