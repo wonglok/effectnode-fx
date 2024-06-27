@@ -1,4 +1,4 @@
-import { EffectNode } from "src/effectnode/runtime/EffectNode";
+import { EffectNode } from "effectnode-developer-tools/runtime/EffectNode";
 
 export function Previewer({ win, useStore }) {
   let spaceID = useStore((r) => r.spaceID);
