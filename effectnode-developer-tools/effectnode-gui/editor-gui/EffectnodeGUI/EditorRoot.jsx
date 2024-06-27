@@ -57,7 +57,6 @@ export const EditorRoot = ({ title }) => {
         .getState()
         .getProjectGraph({ title: title });
 
-      //
       let settings = json.settings;
       let graph = json.graph;
 
@@ -341,7 +340,7 @@ export class EditorCore {
         let win = wins.find((r) => r.type === "editor");
         if (win) {
           win.width = 600;
-          win.height = 500;
+          win.height = window.innerHeight - 130;
           win.top = 10;
           win.left = 10;
         }

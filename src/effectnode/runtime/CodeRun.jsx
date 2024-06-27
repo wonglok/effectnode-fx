@@ -63,12 +63,12 @@ export function CodeRun({
       {
         get: (obj, key) => {
           if (key.startsWith("out")) {
-            let idx = Number(key.replace("out", ""));
+            return (idx, val) => {
+              // let idx = Number(key.replace("out", ""));
 
-            let node = nodeOne;
-            let output = node.outputs[idx];
+              let node = nodeOne;
+              let output = node.outputs[idx];
 
-            return (val) => {
               let edges = useStore?.getState()?.graph?.edges || [];
 
               let destEdges = edges.filter((r) => r.output._id === output._id);
@@ -139,12 +139,12 @@ export function CodeRun({
           }
 
           if (key.startsWith("in")) {
-            let idx = Number(key.replace("in", ""));
+            return (idx, handler) => {
+              // let idx = Number(key.replace("in", ""));
 
-            let node = nodeOne;
-            let input = node.inputs[idx];
+              let node = nodeOne;
+              let input = node.inputs[idx];
 
-            return (handler) => {
               //
               let hh = ({ detail }) => {
                 handler(detail);
