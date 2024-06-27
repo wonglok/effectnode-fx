@@ -26,19 +26,18 @@ export function Runtime({ ui, io, useStore, onLoop }) {
   }, [onLoop, ui]);
 
   let [color, setColor] = useState("#ffffff");
-  // useEffect(() => {
-  //   // io.in0((color) => {
-  //   //   console.log(color);
-  //   //   setColor(color);
-  //   // });
-  //   //
-  // }, [ui, io]);
 
   useEffect(() => {
-    // io.request(0, { abc: 123 }).then((color) => {
-    //   setColor(color);
-    // });
-  }, [ui.speed]);
+    io.in(0, (color) => {
+      setColor(color);
+    });
+  }, [ui, io]);
+
+  // useEffect(() => {
+  //   io.request(0, { abc: 123 }).then((color) => {
+  //     setColor(color);
+  //   });
+  // }, [ui.speed]);
   //
 
   return (

@@ -295,7 +295,7 @@ function Content({ useStore }) {
 }
 
 export function EditorCanvas({ useStore }) {
-  let zoom = 1.5;
+  let zoom = 3;
   //
   return (
     <>
@@ -315,11 +315,14 @@ export function EditorCanvas({ useStore }) {
             },
           });
         }}
+
+        //
       >
         <Canvas>
           <PerspectiveCamera
             makeDefault
             position={[0, 3.5 * zoom, 0 * zoom]}
+            fov={50}
           ></PerspectiveCamera>
 
           <Grid
