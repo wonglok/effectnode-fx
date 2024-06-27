@@ -22,5 +22,13 @@ export function CodeRun({
     }
   }
 
-  return <Algorithm domElement={domElement} ui={ui}></Algorithm>;
+  return (
+    <Algorithm
+      //
+      useStore={useStore}
+      domElement={domElement}
+      ui={ui}
+      //
+    ></Algorithm>
+  );
 }

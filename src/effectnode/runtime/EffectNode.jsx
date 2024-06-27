@@ -39,10 +39,7 @@ export function EffectNode({
   }, [randID]);
 
   //
-
-  console.log(codes);
-  //
-
+  // console.log(codes);
   //
 
   return (
