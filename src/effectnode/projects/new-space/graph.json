@@ -11,7 +11,7 @@
           "_id": "_hc1bmqv_gfx2nsl",
           "label": "name",
           "type": "text",
-          "value": "webgl canvas"
+          "value": "my webgl canvas"
         }
       ],
       "title": "main"
@@ -89,7 +89,7 @@
           "_id": "_qyubhzw_05aof46",
           "label": "pointLightColor",
           "type": "color",
-          "value": "#3c1dff"
+          "value": "#18f8ff"
         },
         {
           "_id": "_3cr50ux_ktd5kuq",
@@ -97,11 +97,51 @@
           "type": "range",
           "min": 0,
           "max": 100.00000000000001,
-          "step": 1,
-          "value": 23
+          "step": 0.09999999999999998,
+          "value": -0.7999999999999998
         }
       ],
       "title": "light"
+    },
+    {
+      "codeID": "_hbuh2ad_05kot3i",
+      "nodeID": "_5zdzfzx_t2sevtt",
+      "nodeTitle": "node",
+      "spaceID": "new-space",
+      "code": "",
+      "data": [
+        {
+          "_id": "_swgs8mf_xsr52yi",
+          "label": "baseColor",
+          "type": "color",
+          "value": "#ff0000"
+        },
+        {
+          "_id": "_ak23u2c_yrx8fim",
+          "label": "name",
+          "type": "text",
+          "value": "hi dear"
+        },
+        {
+          "_id": "_1e6obts_a5r83xl",
+          "label": "positionZ",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 5
+        },
+        {
+          "_id": "_e1h29nd_2x7vny0",
+          "label": "speed",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 0
+        }
+      ],
+      "title": "camera"
     }
   ],
   "graph": {
@@ -111,9 +151,9 @@
         "_id": "_ne7rk2f_qwuxwti",
         "title": "main",
         "position": [
-          -1.5954131499462065,
+          -1.3760169770092971,
           0,
-          -1.612365292912133
+          -1.7050785011623864
         ],
         "inputs": [
           {
@@ -185,9 +225,9 @@
         "_id": "_q77qs09_mwqkfse",
         "title": "mesh",
         "position": [
-          -0.2301183613180783,
+          1.5113278150930256,
           0,
-          1.715239040317353
+          1.240544934203089
         ],
         "inputs": [
           {
@@ -259,9 +299,9 @@
         "_id": "_ck2nyne_fksh47i",
         "title": "light",
         "position": [
-          -0.8825512204065091,
+          -2.2985384901060546,
           0,
-          0.12954233636229326
+          0.189070121936964
         ],
         "inputs": [
           {
@@ -324,6 +364,80 @@
             "_id": "_5vjbyyd_jkiqyp0",
             "type": "output",
             "nodeID": "_ck2nyne_fksh47i",
+            "label": ""
+          }
+        ]
+      },
+      {
+        "spaceID": "new-space",
+        "_id": "_5zdzfzx_t2sevtt",
+        "title": "camera",
+        "position": [
+          1.228996714748152,
+          0,
+          -1.1280656095307076
+        ],
+        "inputs": [
+          {
+            "_id": "_afnl8q0_ostxx2k",
+            "type": "input",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          },
+          {
+            "_id": "_d2j94h1_ho110ik",
+            "type": "input",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          },
+          {
+            "_id": "_xvolt5l_1sfl324",
+            "type": "input",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          },
+          {
+            "_id": "_a3orcxk_eyxde2f",
+            "type": "input",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          },
+          {
+            "_id": "_qkwamx4_zfcduag",
+            "type": "input",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          }
+        ],
+        "outputs": [
+          {
+            "_id": "_rgyj3e1_dlzfhqt",
+            "type": "output",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          },
+          {
+            "_id": "_8btw6u2_ddxj98p",
+            "type": "output",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          },
+          {
+            "_id": "_hcfmdky_0cflsy7",
+            "type": "output",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          },
+          {
+            "_id": "_vk9t1hq_4nhbkbe",
+            "type": "output",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          },
+          {
+            "_id": "_l3am5d2_7lyukhm",
+            "type": "output",
+            "nodeID": "_5zdzfzx_t2sevtt",
             "label": ""
           }
         ]

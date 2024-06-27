@@ -222,6 +222,34 @@ export const useDeveloper = create((set, get) => {
         });
     },
 
+    openEditor: ({ title, nodeTitle }) => {
+      let url = `/devapi/project/editor`;
+
+      return fetch(url, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          //
+          title: title,
+          nodeTitle: nodeTitle,
+          //
+        }),
+      })
+        .then((r) => {
+          return r.json();
+        })
+        .then((response) => {
+          console.log(`devapi/project/editor`, response);
+
+          return response;
+        })
+        .catch((r) => {
+          console.error(r);
+        });
+    },
+
     //
   };
 });

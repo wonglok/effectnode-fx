@@ -1,12 +1,12 @@
-import express, { json, response } from "express";
+import express, { json } from "express";
 import { getProjects } from "./getProjects.mjs";
 import { copyProjectTemplate } from "./copyProjectTemplate.mjs";
 import { renameProject } from "./renameProject.mjs";
-import { getPJNodes, setPJNodes } from "./getPJNodes.mjs";
+// import { getPJNodes, setPJNodes } from "./getPJNodes.mjs";
 import { getPJGraph, setPJGraph } from "./getPJGraph.mjs";
 import { removeProject } from "./removeProject.mjs";
 import { cloneProject } from "./cloneProject.mjs";
-
+import { openEditorCoder } from "./openEditorCoder.mjs";
 const port = 3456;
 
 const app = express();
@@ -19,6 +19,15 @@ app.post("/devapi/project/listAll", async (req, res) => {
   let projects = await getProjects({ title });
 
   res.json(projects);
+});
+
+app.post("/devapi/project/editor", async (req, res) => {
+  let title = req.body.title;
+  let nodeTitle = req.body.nodeTitle;
+
+  await openEditorCoder({ title, nodeTitle });
+
+  res.json({ ok: true });
 });
 
 app.post("/devapi/project/create", async (req, res) => {

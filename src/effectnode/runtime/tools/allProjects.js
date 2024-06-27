@@ -23,6 +23,7 @@ function loadCodes({ projectName }) {
         _id: key,
         projectName: projectName,
         codeName: codeName,
+        fileName: basename(key),
         loadCode: async () => rr(key),
       });
     }

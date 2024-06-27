@@ -95,6 +95,19 @@ export function Code({ win, useStore }) {
           >
             Rename Title
           </span>
+
+          <span
+            className="mx-2 underline"
+            onClick={() => {
+              //
+              //
+              //
+            }}
+          >
+            Rename Title
+          </span>
+
+          {/* fileName */}
           <span
             className="mx-2 underline text-red-500"
             onClick={() => {

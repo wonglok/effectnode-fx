@@ -1,5 +1,5 @@
-import { Box, PerspectiveCamera } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+// import { Box, PerspectiveCamera } from "@react-three/drei";
+// import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import { Clock } from "three";
 
