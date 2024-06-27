@@ -37,7 +37,7 @@ export function Runtime({ ui, io, useStore, onLoop }) {
     <>
       <Insert3D>
         <group ref={ref}>
-          <mesh position={[0, 0, 0]}>
+          <mesh position={[0, -0.4, 0]}>
             <boxGeometry></boxGeometry>
             <meshStandardMaterial color={color}></meshStandardMaterial>
           </mesh>
