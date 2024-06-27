@@ -16,7 +16,6 @@ export function Runtime({ ui, io, useStore, onLoop }) {
   });
   useEffect(() => {
     return io.in0((v) => {
-      console.log(v);
       input.current["in0"] = v;
     });
   }, [io]);

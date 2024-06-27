@@ -6,7 +6,6 @@ export function ToolBox({ ui, useStore, domElement }) {
   return (
     <>
       {/*  */}
-      Toolbox
       {/*  */}
     </>
   );
@@ -23,17 +22,21 @@ export function Runtime({ ui, useStore, io }) {
     });
   }, [useStore]);
 
-  io.out0(ui.speed);
+  useEffect(() => {
+    let tt = setInterval(() => {
+      io.out0(ui.speed);
+    });
+    return () => {
+      clearInterval(tt);
+    };
+  }, [io, ui]);
 
   return (
     <>
       <Canvas gl={{ antialias: true }}>{<t3d.Out></t3d.Out>}</Canvas>
-      {/* <span style={{ color: ui.baseColor }}>Runtime {ui.baseColor}</span> */}
     </>
   );
 }
-
-//
 
 //
 

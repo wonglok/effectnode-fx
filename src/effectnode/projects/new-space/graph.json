@@ -14,13 +14,13 @@
           "min": 0,
           "max": 1,
           "step": 0.01,
-          "value": 1.0000000000000002
+          "value": 1.1100000000000003
         },
         {
           "_id": "_35g62x1_4p06mng",
           "label": "baseColor",
           "type": "color",
-          "value": "#ff7627"
+          "value": "#da4f00"
         },
         {
           "_id": "_hc1bmqv_gfx2nsl",
