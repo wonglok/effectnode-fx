@@ -3,11 +3,14 @@ import { allProjects } from "./tools/allProjects";
 import { getID } from "./tools/getID";
 import { RunnerRuntime } from "./RunnerRuntime";
 import { RunnerToolBox } from "./RunnerToolBox";
+import md5 from "md5";
 
 export function EffectNode({
-  node = { title: false },
   useStore,
-  projectName,
+  projectName, //
+
+  // optional for toolbox
+  node = { title: false },
   mode = "runtime",
 }) {
   let graph = useStore((r) => r.graph) || {};
@@ -17,8 +20,8 @@ export function EffectNode({
 
   let codes = currentProject?.codes || [];
   let randID = useMemo(() => {
-    return getID();
-  }, []);
+    return `_${md5(projectName)}`;
+  }, [projectName]);
 
   useEffect(() => {
     let tt = setInterval(() => {

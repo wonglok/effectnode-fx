@@ -1,3 +1,20 @@
+import { useMemo } from "react";
+import { EffectNode } from "src/effectnode/runtime/EffectNode";
+import { create } from "zustand";
+import json from "../effectnode/projects/new-space/graph.json";
 export default function Home() {
-  return <div>Home Yo{/*  */}</div>;
+  let useStore = useMemo(() => {
+    return create((set, get) => {
+      return {
+        //
+        settings: json.settings,
+        graph: json.graph,
+      };
+    });
+  }, []);
+  return (
+    <div className="w-full h-full">
+      <EffectNode projectName={"new-space"} useStore={useStore}></EffectNode>
+    </div>
+  );
 }
