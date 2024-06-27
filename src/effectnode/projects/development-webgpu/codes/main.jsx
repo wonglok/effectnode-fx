@@ -52,7 +52,7 @@ export function ToolBox({ ui, useStore, domElement }) {
   );
 }
 
-export function Runtime({ domElement, ui, useStore, io }) {
+export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   useEffect(() => {
     const particleCount = 512 * 512;
 
@@ -532,7 +532,8 @@ export function Runtime({ domElement, ui, useStore, io }) {
       // gui
 
       const gui = new GUI();
-
+      domElement.appendChild(gui.domElement);
+      gui.domElement.style.position = "absolute";
       gui.add(gravity, "value", -0.0098, 0, 0.0001).name("gravity");
       gui.add(bounce, "value", 0.1, 1, 0.01).name("bounce");
       gui.add(friction, "value", 0.96, 0.99, 0.01).name("friction");
@@ -540,7 +541,11 @@ export function Runtime({ domElement, ui, useStore, io }) {
 
       // post-processing
 
-      requestAnimationFrame(animate);
+      // requestAnimationFrame(animate);
+
+      onLoop(() => {
+        animate();
+      });
     }
 
     function onWindowResize() {
@@ -563,7 +568,7 @@ export function Runtime({ domElement, ui, useStore, io }) {
       await renderer.renderAsync(scene, camera);
 
       // throttle the logging
-      requestAnimationFrame(animate);
+      // requestAnimationFrame(animate);
     }
 
     //
