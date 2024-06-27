@@ -26,7 +26,7 @@ export function Runtime({ ui, io, useStore, onLoop }) {
     return onLoop(() => {
       let dt = clock.getDelta();
       if (ref.current) {
-        ref.current.rotation.y += dt * 5;
+        ref.current.rotation.y += dt * input.current["in0"];
       }
     });
   }, [onLoop]);
@@ -56,6 +56,7 @@ export function Runtime({ ui, io, useStore, onLoop }) {
         <PerspectiveCamera makeDefault position={[0, 0, 5]}></PerspectiveCamera>
       </Insert3D>
 
+      <div></div>
       {/* <span style={{ color: ui.baseColor }}>Runtime {ui.baseColor}</span> */}
     </>
   );
