@@ -16,18 +16,10 @@ export const getPJGraph = async ({ title }) => {
 
 //
 
-export const setPJGraph = async ({ title, settings, edges, nodes }) => {
+export const setPJGraph = async ({ title, json }) => {
   let url = `${join(__dirname, "../../", `src/effectnode/projects/${title}/graph.json`)}`;
 
-  let jsonString = JSON.stringify(
-    {
-      settings,
-      nodes,
-      edges,
-    },
-    null,
-    "  "
-  );
+  let jsonString = JSON.stringify(json, null, "  ");
 
   await write(url, jsonString, {
     overwrite: true,

@@ -104,21 +104,13 @@ app.post("/devapi/graph/getProjectGraph", async (req, res) => {
   try {
     let title = req.body.title;
 
-    let graph = await getPJGraph({
+    let json = await getPJGraph({
       //
       title,
       //
     });
 
-    // let nodes = await getPJNodes({
-    //   //
-    //   title,
-    //   //
-    // });
-
-    // graph.nodes = nodes;
-
-    res.json(graph);
+    res.json(json);
   } catch (r) {
     console.log(r);
     res.status(500).json({
@@ -131,16 +123,12 @@ app.post("/devapi/graph/getProjectGraph", async (req, res) => {
 app.post("/devapi/graph/setProjectGraph", async (req, res) => {
   //
   let title = req.body.title;
-  let settings = req.body.settings;
-  let nodes = req.body.nodes;
-  let edges = req.body.edges;
+  let json = req.body.json || {};
 
-  let graphResult = await setPJGraph({
+  await setPJGraph({
     //
     title,
-    settings: settings,
-    edges: edges,
-    nodes: nodes,
+    json: json,
     //
   });
 
@@ -151,7 +139,7 @@ app.post("/devapi/graph/setProjectGraph", async (req, res) => {
   //   //
   // });
 
-  res.json(req.body);
+  res.json({ ok: true });
   //
 });
 

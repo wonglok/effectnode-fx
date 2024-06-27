@@ -192,7 +192,7 @@ export const useDeveloper = create((set, get) => {
     //
 
     //
-    setProjectGraph: ({ title, nodes, edges, settings }) => {
+    setProjectGraph: ({ title, json = {} }) => {
       return fetch(`/devapi/graph/setProjectGraph`, {
         method: "POST",
         headers: {
@@ -201,9 +201,7 @@ export const useDeveloper = create((set, get) => {
         body: JSON.stringify({
           //
           title: title,
-          nodes: nodes,
-          edges: edges,
-          settings: settings,
+          json,
           //
         }),
       })

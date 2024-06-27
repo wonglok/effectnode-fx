@@ -20,9 +20,13 @@ export function EditorApp({ useStore }) {
     moment().format("MMMM Do YYYY, h:mm:ss a")
   );
   useEffect(() => {
-    setInterval(() => {
+    let tt = setInterval(() => {
       setDate(moment().format("MMMM Do YYYY, h:mm:ss a"));
     }, 1000);
+
+    return () => {
+      clearInterval(tt);
+    };
   }, []);
 
   let rename = () => {

@@ -52,27 +52,30 @@ export const EditorRoot = ({ title }) => {
       },
     });
 
-    async function run() {
+    async function hydration() {
       let json = await useDeveloper
         .getState()
         .getProjectGraph({ title: title });
 
       //
-      let graph = json?.graph;
-      let settings = json?.settings;
-      if (graph && settings) {
-        core.setState({
-          settings: settings,
-          graph: {
-            nodes: graph.nodes,
-            edges: graph.edges,
-          },
-        });
-      }
+      let settings = json.settings;
+      let graph = json.graph;
+
+      graph.edges = graph.edges.filter(
+        (ed) =>
+          graph.nodes.some((nd) => ed.input.nodeID === nd._id) ||
+          graph.nodes.some((nd) => ed.output.nodeID === nd._id)
+      );
+
+      core.setState({
+        spaceID: title,
+        settings: settings,
+        graph: graph,
+      });
       //
     }
 
-    run().then(() => {
+    hydration().then(() => {
       //
       core.bootup();
       core.resetWindow();
@@ -85,25 +88,25 @@ export const EditorRoot = ({ title }) => {
         let title = st.spaceID;
         let settings = st.settings.filter((r) => r);
         let graph = st.graph;
-        let nodes = graph.nodes.filter((r) => r);
-        let edges = graph.edges.filter((r) => r);
 
-        edges = edges.filter(
+        graph.edges = graph.edges.filter(
           (ed) =>
-            nodes.some((nd) => ed.input.nodeID === nd._id) ||
-            nodes.some((nd) => ed.output.nodeID === nd._id)
+            graph.nodes.some((nd) => ed.input.nodeID === nd._id) ||
+            graph.nodes.some((nd) => ed.output.nodeID === nd._id)
         );
 
         await useDeveloper.getState().setProjectGraph({
           title,
-          settings,
-          nodes,
-          edges,
+          json: {
+            settings,
+            graph,
+          },
         });
 
         console.log("ok, saved");
         //
       }
+
       let t0 = 0;
       core.onChange((state, before) => {
         clearTimeout(t0);
