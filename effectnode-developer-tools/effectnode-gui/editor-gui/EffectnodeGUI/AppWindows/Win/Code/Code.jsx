@@ -6,6 +6,7 @@ import prettierPluginEstree from "prettier/plugins/estree";
 import prettierPluginHtml from "prettier/plugins/html";
 import { UserInputs } from "./UserInputs/UserInputs";
 import { EffectNode } from "src/effectnode/runtime/EffectNode";
+import { useDeveloper } from "effectnode-developer-tools/effectnode-gui/store/useDeveloper";
 
 export function Code({ win, useStore }) {
   let wins = useStore((r) => r.wins);
@@ -100,11 +101,15 @@ export function Code({ win, useStore }) {
             className="mx-2 underline"
             onClick={() => {
               //
-              //
+
+              useDeveloper.getState().openEditor({
+                title: spaceID,
+                nodeTitle: node.title,
+              });
               //
             }}
           >
-            Rename Title
+            Open Editor
           </span>
 
           {/* fileName */}
