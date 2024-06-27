@@ -140,11 +140,11 @@
       {
         "spaceID": "new-space",
         "_id": "_6120w4u_pr0jrwc",
-        "title": "so good",
+        "title": "happy",
         "position": [
-          -1.2101938067365892,
+          -0.7938917855661214,
           0,
-          0.8650770869422449
+          0.8670395148268457
         ],
         "inputs": [
           {
@@ -212,6 +212,22 @@
         ]
       }
     ],
-    "edges": []
+    "edges": [
+      {
+        "id": "_ilic5zk_cgp0ujp",
+        "input": {
+          "_id": "_o2cilvt_8ra1a1e",
+          "type": "input",
+          "nodeID": "_6120w4u_pr0jrwc",
+          "label": ""
+        },
+        "output": {
+          "_id": "_jsjav5x_8uinig1",
+          "type": "output",
+          "nodeID": "_684e5xs_tuudldv",
+          "label": ""
+        }
+      }
+    ]
   }
 }
