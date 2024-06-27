@@ -35,7 +35,7 @@ import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 import StorageInstancedBufferAttribute from "three/addons/renderers/common/StorageInstancedBufferAttribute.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import Stats from "three/addons/libs/stats.module.js";
+import Stats from "three/examples/jsm/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { rand } from "../loklok/rand.js";
 import PostProcessing from "three/addons/renderers/common/PostProcessing.js";
@@ -142,7 +142,7 @@ export function Runtime({ domElement, ui, useStore, io }) {
       }
 
       if (hasWebGPU === false && hasWebGL2 === false) {
-        document.body.appendChild(WebGPU.getErrorMessage());
+        domElement.appendChild(WebGPU.getErrorMessage());
         throw new Error("No WebGPU or WebGL2 support");
       } else {
       }
@@ -429,7 +429,7 @@ export function Runtime({ domElement, ui, useStore, io }) {
       domElement.appendChild(renderer.domElement);
 
       stats = new Stats();
-      document.body.appendChild(stats.dom);
+      domElement.appendChild(stats.dom);
 
       renderer.compute(computeInit);
 
