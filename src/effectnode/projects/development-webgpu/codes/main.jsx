@@ -34,14 +34,20 @@ import WebGL from "three/addons/capabilities/WebGL.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 import StorageInstancedBufferAttribute from "three/addons/renderers/common/StorageInstancedBufferAttribute.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { rand } from "../loklok/rand.js";
 import PostProcessing from "three/addons/renderers/common/PostProcessing.js";
-import doveRaw from "src/effectnode/projects/development-webgpu/assets/dove-raw.glb";
+// import doveRaw from "src/effectnode/projects/development-webgpu/assets/dove-raw.glb";
 // import WebGPURenderer from ;
 import texURL from "src/effectnode/projects/development-webgpu/assets/sprite1.png";
+
+import lok from "src/effectnode/projects/development-webgpu/assets/rpm/lok.glb";
+import flair from "src/effectnode/projects/development-webgpu/assets/rpm/moiton/flair.fbx";
+
 export function ToolBox({ ui, useStore, domElement }) {
   return (
     <>
@@ -59,7 +65,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     const gravity = uniform(-0.0098);
     const bounce = uniform(0.999);
     const friction = uniform(0.999);
-    const size = uniform(0.14);
+    const size = uniform(0.3);
 
     const clickPosition = uniform(new THREE.Vector3());
 
@@ -84,22 +90,42 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
     const timestamps = document.createElement("div");
 
-    new GLTFLoader().load(doveRaw, function (gltf) {
-      init({ gltf });
+    let draco = new DRACOLoader();
+    draco.setDecoderPath("/draco/");
+
+    let fbxLoader = new FBXLoader();
+    let gltfLoader = new GLTFLoader();
+    gltfLoader.setDRACOLoader(draco);
+    Promise.all([
+      gltfLoader.loadAsync(`${lok}`),
+      fbxLoader.loadAsync(`${flair}`),
+    ]).then(([glb, motion]) => {
+      // let action = mixer.clipAction(motion.animations[0], glb.scene);
+      // action.play();
+      //
+
+      init({ gltf: glb, clip: motion.animations[0] });
     });
 
-    function init({ gltf }) {
+    // new GLTFLoader().loadAsync(lok, function (gltf) {
+    //   init({ gltf });
+    // });
+
+    function init({ gltf, clip }) {
       scene = new THREE.Scene();
       clock = new THREE.Clock();
       mixer = new THREE.AnimationMixer(gltf.scene);
-      mixer.clipAction(gltf.animations[0]).play();
+      mixer.clipAction(clip).play();
+
+      let lgt = new THREE.DirectionalLight(0xffffff, 3);
+      scene.add(lgt);
 
       gltf.scene.updateMatrixWorld(true);
       let skinnedMesh = false;
       gltf.scene.traverse((it) => {
         if (it.geometry) {
           if (!skinnedMesh) {
-            skinnedMesh = it.clone(true);
+            skinnedMesh = it;
           }
         }
       });
@@ -155,7 +181,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         1000
       );
       camera.position.set(50, 50, 100);
-      camera.position.multiplyScalar(0.01);
+      camera.position.multiplyScalar(0.04);
 
       scene.add(gltf.scene);
 
@@ -384,10 +410,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
       particleMaterial.positionNode = positionBuffer.node.toAttribute();
 
-      particleMaterial.scaleNode = size
-        .mul(10)
-        .mul(1 / 100)
-        .div(colorNode.length());
+      particleMaterial.scaleNode = size.div(colorNode.length());
       particleMaterial.opacity = 1.0; //(float(0.14).add(lifeBuffer.node.toAttribute().length().mul(-1).mul(size)))
       particleMaterial.depthTest = true;
       particleMaterial.depthWrite = false;
@@ -581,8 +604,10 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
     return () => {
       // domElement.removeChild(renderer.domElement);
+
+      domElement.innerHTML = "";
     };
-  }, [domElement, useStore]);
+  }, [domElement, onLoop, useStore]);
 
   //
   return <></>;
