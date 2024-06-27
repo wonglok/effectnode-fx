@@ -5,6 +5,7 @@ import prettierPluginBabel from "prettier/plugins/babel";
 import prettierPluginEstree from "prettier/plugins/estree";
 import prettierPluginHtml from "prettier/plugins/html";
 import { UserInputs } from "./UserInputs/UserInputs";
+import { EffectNode } from "src/effectnode/runtime/EffectNode";
 
 export function Code({ win, useStore }) {
   let wins = useStore((r) => r.wins);
@@ -279,10 +280,14 @@ export function Code({ win, useStore }) {
           >
             <div className="flex w-full h-full">
               <div className="h-full" style={{ width: `calc(100% - 300px)` }}>
-                <div
-                  className="w-full h-full code-window"
-                  id={`${win.nodeID}`}
-                ></div>
+                <div className="w-full h-full code-window" id={`${win.nodeID}`}>
+                  <EffectNode
+                    node={node}
+                    projectName={spaceID}
+                    useStore={useStore}
+                    mode="toolbox"
+                  ></EffectNode>
+                </div>
                 {/* {code && (
                   <Editor
                     height={`100%`}

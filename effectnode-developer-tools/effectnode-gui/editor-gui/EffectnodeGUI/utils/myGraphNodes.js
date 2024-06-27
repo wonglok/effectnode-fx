@@ -83,12 +83,13 @@ export function makeGraphNode({ spaceID }) {
   };
 }
 
-export function makeCode({ nodeID, spaceID }) {
+export function makeCode({ nodeID, spaceID, nodeTitle }) {
   let codeID = getID();
   return {
     codeID,
     //
     nodeID: nodeID,
+    nodeTitle: nodeTitle,
     spaceID: spaceID,
     code: "",
     data: [

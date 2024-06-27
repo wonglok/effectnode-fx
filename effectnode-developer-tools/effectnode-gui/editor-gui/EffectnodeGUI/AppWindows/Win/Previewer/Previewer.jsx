@@ -1,5 +1,3 @@
-import { AppRunner } from "effectnode-developer-tools/effectnode-gui/editor-gui/EffectnodeGUI/AppRunner/AppRunner";
-import { useCallback, useEffect, useState } from "react";
 import { EffectNode } from "src/effectnode/runtime/EffectNode";
 
 export function Previewer({ win, useStore }) {

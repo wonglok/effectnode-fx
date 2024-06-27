@@ -1,7 +1,7 @@
-export function ToolBox() {
-  return <>Toolbox happy</>;
+export function ToolBox({ ui }) {
+  return <>Toolbox happy {ui.speed}</>;
 }
 
-export function Runtime() {
-  return <>Runtime happy</>;
+export function Runtime({ ui }) {
+  return <>Runtime happy {ui.speed}</>;
 }

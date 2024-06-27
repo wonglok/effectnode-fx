@@ -68,6 +68,7 @@ export function EditorBox({ useStore }) {
               let newCodeFile = makeCode({
                 spaceID,
                 nodeID: newNodeItem._id,
+                nodeTitle: newNodeItem.title,
               });
 
               if (graph.nodes.length === 0) {

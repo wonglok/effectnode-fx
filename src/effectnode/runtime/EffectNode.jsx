@@ -1,9 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { allProjects } from "./tools/allProjects";
 import { getID } from "./tools/getID";
-import { RunnerOne } from "./RunnerOne";
+import { RunnerRuntime } from "./RunnerRuntime";
+import { RunnerToolBox } from "./RunnerToolBox";
 
-export function EffectNode({ useStore, projectName }) {
+export function EffectNode({
+  node = { title: false },
+  useStore,
+  projectName,
+  mode = "runtime",
+}) {
   let [api, setDisplay] = useState({ domElement: false });
   let currentProject = allProjects.find((r) => r.projectName === projectName);
 
@@ -16,11 +22,14 @@ export function EffectNode({ useStore, projectName }) {
     let tt = setInterval(() => {
       //
       let domElement = document.querySelector(`#${randID}`);
+      //
       if (domElement) {
+        //
+        clearInterval(tt);
+        //
         setDisplay({
           domElement,
         });
-        clearInterval(tt);
       }
     }, 0);
 
@@ -29,21 +38,48 @@ export function EffectNode({ useStore, projectName }) {
     };
   }, [randID]);
 
+  //
+
+  console.log(codes);
+  //
+
+  //
+
   return (
     <>
       <div id={randID}></div>
 
-      {codes.map((code) => {
-        return (
-          <RunnerOne
-            key={code._id}
-            code={code}
-            useStore={useStore}
-            project={currentProject}
-            domElement={api.domElement}
-          ></RunnerOne>
-        );
-      })}
+      {mode === "runtime" &&
+        api.domElement &&
+        codes.map((code) => {
+          return (
+            <RunnerRuntime
+              key={code._id}
+              code={code}
+              useStore={useStore}
+              project={currentProject}
+              domElement={api.domElement}
+            ></RunnerRuntime>
+          );
+        })}
+
+      {mode === "toolbox" &&
+        api.domElement &&
+        codes
+          .filter((r) => {
+            return r.codeName === node.title;
+          })
+          .map((code) => {
+            return (
+              <RunnerToolBox
+                key={code._id}
+                code={code}
+                useStore={useStore}
+                project={currentProject}
+                domElement={api.domElement}
+              ></RunnerToolBox>
+            );
+          })}
     </>
   );
 }
