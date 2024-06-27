@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+
   async rewrites() {
     if (process.env.NODE_ENV === "development") {
       return [
@@ -17,6 +18,7 @@ const nextConfig = {
   trailingSlash: false,
 
   images: {},
+
   webpack: (config, { isServer }) => {
     // let found = config.module.rules.filter(ru => {
     //   if (ru.use.some(u => u.includes('post'))) {
@@ -86,6 +88,8 @@ const nextConfig = {
     config.experiments = config.experiments || {};
     config.experiments.topLevelAwait = true;
 
+    config.output.environment = config.output.environment || {};
+    config.output.environment.asyncFunction = true;
     return config;
   },
 

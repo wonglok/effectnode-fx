@@ -10,6 +10,7 @@ export function EffectNode({
   projectName, //
 
   // optional for toolbox
+  win = false,
   node = { title: false },
   mode = "runtime",
 }) {
@@ -49,7 +50,7 @@ export function EffectNode({
 
   return (
     <>
-      <div id={randID}></div>
+      <div id={randID} className="w-full h-full"></div>
 
       {mode === "runtime" &&
         api.domElement &&
@@ -61,6 +62,7 @@ export function EffectNode({
           .map((code) => {
             return (
               <RunnerRuntime
+                win={win}
                 key={code._id}
                 code={code}
                 useStore={useStore}
@@ -79,6 +81,7 @@ export function EffectNode({
           .map((code) => {
             return (
               <RunnerToolBox
+                win={win}
                 key={code._id}
                 code={code}
                 useStore={useStore}

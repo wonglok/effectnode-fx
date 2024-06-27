@@ -6,6 +6,7 @@ export function CodeRun({
   Algorithm = () => null,
   codeName,
   domElement,
+  win = false,
 }) {
   let settings = useStore((r) => r.settings) || [];
   let graph = useStore((r) => r.graph) || {};
@@ -181,6 +182,7 @@ export function CodeRun({
       {io && (
         <Algorithm
           //
+          win={win}
           onLoop={onLoop}
           useStore={useStore}
           domElement={domElement}
