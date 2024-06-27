@@ -11,24 +11,16 @@ export function Runtime({ ui, io, useStore, onLoop }) {
   let Insert3D = useStore((r) => r.Insert3D) || (() => null);
 
   let ref = useRef();
-  let input = useRef({
-    ["in0"]: 0,
-  });
-  useEffect(() => {
-    return io.in0((v) => {
-      input.current["in0"] = v;
-    });
-  }, [io]);
 
   useEffect(() => {
     let clock = new Clock();
     return onLoop(() => {
       let dt = clock.getDelta();
       if (ref.current) {
-        ref.current.rotation.y += dt * input.current["in0"];
+        ref.current.rotation.y += dt * ui.speed;
       }
     });
-  }, [onLoop]);
+  }, [onLoop, ui]);
 
   return (
     <>
