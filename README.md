@@ -12,6 +12,10 @@ Effect Node is a Node System that can help people develop ThreeJS WebGL and WebG
 
 4. Algorithm as a Content Model for Scaling Creative Coding Content
 
+5. Performnace First Approach for SEO, Download Size and Runtime
+
+6. 
+
 
 
 made with 💖 love by @wonglok831
