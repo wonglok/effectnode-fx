@@ -270,6 +270,8 @@ export function Code({ win, useStore }) {
                 useStore.setState({
                   settings: [...settings],
                 });
+
+                //
               };
 
               hotKeys(ev);

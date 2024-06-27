@@ -1,7 +1,17 @@
-export function ToolBox() {
-  return <>Toolbox main</>;
+export function ToolBox({ ui }) {
+  return <>Toolbox MAIN {ui.baseColor}</>;
 }
 
 export function Runtime({ ui }) {
-  return <>Runtime main - {ui.baseColor}</>;
+  return (
+    <>
+      <span style={{ color: ui.baseColor }}>Runtime {ui.baseColor}</span>
+    </>
+  );
 }
+
+//
+
+//
+
+//

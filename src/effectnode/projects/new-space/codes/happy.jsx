@@ -1,7 +1,11 @@
 export function ToolBox({ ui }) {
-  return <>Toolbox happy {ui.speed}</>;
+  return <>Toolbox HA {ui.baseColor}</>;
 }
 
 export function Runtime({ ui }) {
-  return <>Runtime happy {ui.speed}</>;
+  return (
+    <>
+      <span style={{ color: ui.baseColor }}>Runtime {ui.baseColor}</span>
+    </>
+  );
 }
