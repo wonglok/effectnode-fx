@@ -10,6 +10,8 @@ export function EffectNode({
   projectName,
   mode = "runtime",
 }) {
+  let graph = useStore((r) => r.graph) || {};
+  let nodes = graph.nodes || [];
   let [api, setDisplay] = useState({ domElement: false });
   let currentProject = allProjects.find((r) => r.projectName === projectName);
 
@@ -48,17 +50,22 @@ export function EffectNode({
 
       {mode === "runtime" &&
         api.domElement &&
-        codes.map((code) => {
-          return (
-            <RunnerRuntime
-              key={code._id}
-              code={code}
-              useStore={useStore}
-              project={currentProject}
-              domElement={api.domElement}
-            ></RunnerRuntime>
-          );
-        })}
+        codes
+          .filter((code) => {
+            //
+            return nodes.some((node) => node.title === code.codeName);
+          })
+          .map((code) => {
+            return (
+              <RunnerRuntime
+                key={code._id}
+                code={code}
+                useStore={useStore}
+                project={currentProject}
+                domElement={api.domElement}
+              ></RunnerRuntime>
+            );
+          })}
 
       {mode === "toolbox" &&
         api.domElement &&
