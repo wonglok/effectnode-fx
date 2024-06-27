@@ -24,11 +24,19 @@ Effect Node is a Node System that can help people develop ThreeJS WebGL and WebG
 
 10. Secure by Design, the developer tools editor tools are only included in development envrionment and production dont even include the execution code of the editor.
 
-11. MIT Licensed, Freely usable for Frontend development.
+11. AutoPackaging
 
-made with 💖 love by @wonglok831
+12. MIT Licensed, Freely usable for Frontend development.
 
-Free Resources Credit:
+
+
+## made with 💖 love by @wonglok831
+
+
+
+
+
+## Free Resources Credit:
 
 1. Thank you LORD JESUS for all the inspiraion.Hallelujah GLORY be to GOD. amen <3
 
