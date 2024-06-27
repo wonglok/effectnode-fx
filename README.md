@@ -12,10 +12,8 @@ Effect Node is a Node System that can help people develop ThreeJS WebGL and WebG
 
 4. Algorithm as a Content Model for Scaling Creative Coding Content
 
-5. Performnace First Approach for SEO, Download Size and Runtime
+5. Performnace First Approach for SEO, Download Size and Build time in Vercel
 
-6. 
-
-
+6. NEXT.js Based, One Click Easy Deploy to Vercel / Netlify
 
 made with 💖 love by @wonglok831
