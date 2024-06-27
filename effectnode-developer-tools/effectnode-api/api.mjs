@@ -109,6 +109,7 @@ app.post("/devapi/graph/getProjectGraph", async (req, res) => {
       title,
       //
     });
+    json.title = title;
 
     res.json(json);
   } catch (r) {
@@ -128,7 +129,10 @@ app.post("/devapi/graph/setProjectGraph", async (req, res) => {
   await setPJGraph({
     //
     title,
-    json: json,
+    json: {
+      ...json,
+      title,
+    },
     //
   });
 

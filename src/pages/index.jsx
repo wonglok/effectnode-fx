@@ -12,9 +12,10 @@ export default function Home() {
       };
     });
   }, []);
+
   return (
     <div className="w-full h-full">
-      <EffectNode projectName={"new-space"} useStore={useStore}></EffectNode>
+      <EffectNode projectName={json.title} useStore={useStore}></EffectNode>
     </div>
   );
 }
