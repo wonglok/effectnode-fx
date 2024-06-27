@@ -8,25 +8,10 @@
       "code": "",
       "data": [
         {
-          "_id": "_xb6gkd2_rsx40ya",
-          "label": "speed",
-          "type": "range",
-          "min": 0,
-          "max": 1,
-          "step": 0.01,
-          "value": 1.1100000000000003
-        },
-        {
-          "_id": "_35g62x1_4p06mng",
-          "label": "baseColor",
-          "type": "color",
-          "value": "#ff5c00"
-        },
-        {
           "_id": "_hc1bmqv_gfx2nsl",
           "label": "name",
           "type": "text",
-          "value": "hi dear"
+          "value": "webgl canvas"
         }
       ],
       "title": "main"
@@ -104,7 +89,7 @@
           "_id": "_qyubhzw_05aof46",
           "label": "pointLightColor",
           "type": "color",
-          "value": "#0007ff"
+          "value": "#e800ff"
         }
       ],
       "title": "light"
@@ -117,9 +102,9 @@
         "_id": "_ne7rk2f_qwuxwti",
         "title": "main",
         "position": [
-          -1.329955850420316,
+          -1.5954131499462065,
           0,
-          -1.3764371478228077
+          -1.612365292912133
         ],
         "inputs": [
           {
@@ -191,9 +176,9 @@
         "_id": "_q77qs09_mwqkfse",
         "title": "mesh",
         "position": [
-          -0.2285859595435371,
+          -0.2301183613180783,
           0,
-          1.6213972374835706
+          1.715239040317353
         ],
         "inputs": [
           {
@@ -265,9 +250,9 @@
         "_id": "_ck2nyne_fksh47i",
         "title": "light",
         "position": [
-          -0.8877652985405633,
+          -0.8825512204065091,
           0,
-          0.033418145201083355
+          0.12954233636229326
         ],
         "inputs": [
           {

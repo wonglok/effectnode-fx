@@ -85,6 +85,30 @@ export function CodeRun({
             };
           }
 
+          if (key.startsWith("res")) {
+            let idx = Number(key.replace("res", ""));
+
+            let node = nodeOne;
+            let socket = node.outputs[idx];
+
+            return (handler) => {
+              //
+              let hh = ({ detail }) => {
+                handler(detail);
+              };
+              domElement.addEventListener(socket._id, hh);
+
+              cleans.push(() => {
+                domElement.removeEventListener(socket._id, hh);
+              });
+
+              return () => {
+                domElement.removeEventListener(socket._id, hh);
+              };
+              //
+            };
+          }
+
           if (key.startsWith("in")) {
             let idx = Number(key.replace("in", ""));
 

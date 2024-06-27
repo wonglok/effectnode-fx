@@ -5,7 +5,7 @@ import tunnel from "tunnel-rat";
 export function ToolBox({ ui, useStore, domElement }) {
   return (
     <>
-      toolbox main
+      Note: {ui.name}
       {/*  */}
       {/*  */}
     </>
