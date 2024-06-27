@@ -32,18 +32,6 @@ export function Runtime({ ui, io, useStore, onLoop }) {
           </mesh>
         </group>
 
-        <directionalLight
-          position={[1, 1, 1]}
-          color={"#ffffff"}
-          intensity={1}
-        ></directionalLight>
-
-        <pointLight
-          position={[-1, 0, 1]}
-          color={"#ff0000"}
-          intensity={50}
-        ></pointLight>
-
         <PerspectiveCamera makeDefault position={[0, 0, 5]}></PerspectiveCamera>
       </Insert3D>
 

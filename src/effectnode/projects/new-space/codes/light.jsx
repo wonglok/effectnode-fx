@@ -1,31 +1,19 @@
-import { useEffect } from "react";
 export function ToolBox({ ui, useStore, domElement }) {
-  return (
-    <>
-      {/*  */}
-      {/*  */}
-      toolbox main
-      {/*  */}
-      {/*  */}
-    </>
-  );
+  return <>light</>;
 }
 
 export function Runtime({ ui, useStore, io }) {
-  useEffect(() => {
-    let tt = setInterval(() => {
-      io.out0(ui.speed);
-    });
-    return () => {
-      clearInterval(tt);
-    };
-  }, [io, ui]);
+  let Insert3D = useStore((r) => r.Insert3D) || (() => null);
 
   return (
     <>
-      {/*  */}
-
-      {/*  */}
+      <Insert3D>
+        <pointLight
+          position={[-1, 0, 1]}
+          color={ui.pointLightColor}
+          intensity={50}
+        ></pointLight>
+      </Insert3D>
     </>
   );
 }
