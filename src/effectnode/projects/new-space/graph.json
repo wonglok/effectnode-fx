@@ -116,7 +116,11 @@
         "spaceID": "new-space",
         "_id": "_ne7rk2f_qwuxwti",
         "title": "main",
-        "position": [-1.329955850420316, 0, -1.3764371478228077],
+        "position": [
+          -1.329955850420316,
+          0,
+          -1.3764371478228077
+        ],
         "inputs": [
           {
             "_id": "_jryjlwi_5v5h9n5",
@@ -185,8 +189,12 @@
       {
         "spaceID": "new-space",
         "_id": "_q77qs09_mwqkfse",
-        "title": "ball",
-        "position": [-0.24047699882598672, 0, 1.5433356969114218],
+        "title": "mesh",
+        "position": [
+          -0.2285859595435371,
+          0,
+          1.6213972374835706
+        ],
         "inputs": [
           {
             "_id": "_qiynf9j_6a60fn3",
@@ -256,7 +264,11 @@
         "spaceID": "new-space",
         "_id": "_ck2nyne_fksh47i",
         "title": "light",
-        "position": [-0.8877652985405633, 0, 0.033418145201083355],
+        "position": [
+          -0.8877652985405633,
+          0,
+          0.033418145201083355
+        ],
         "inputs": [
           {
             "_id": "_xa0pr15_13dvvis",
