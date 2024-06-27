@@ -89,7 +89,16 @@
           "_id": "_qyubhzw_05aof46",
           "label": "pointLightColor",
           "type": "color",
-          "value": "#e800ff"
+          "value": "#3c1dff"
+        },
+        {
+          "_id": "_3cr50ux_ktd5kuq",
+          "label": "intensity",
+          "type": "range",
+          "min": 0,
+          "max": 100.00000000000001,
+          "step": 1,
+          "value": 23
         }
       ],
       "title": "light"

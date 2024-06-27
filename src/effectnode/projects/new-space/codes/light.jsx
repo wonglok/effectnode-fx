@@ -11,11 +11,9 @@ export function Runtime({ ui, useStore, io }) {
         <pointLight
           position={[-1, 0, 1]}
           color={ui.pointLightColor}
-          intensity={50}
+          intensity={ui.intensity}
         ></pointLight>
       </Insert3D>
     </>
   );
 }
-
-//

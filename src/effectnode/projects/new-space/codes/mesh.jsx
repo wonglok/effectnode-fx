@@ -31,11 +31,7 @@ export function Runtime({ ui, io, useStore, onLoop }) {
             <meshStandardMaterial color={ui.baseColor}></meshStandardMaterial>
           </mesh>
         </group>
-
-        <PerspectiveCamera makeDefault position={[0, 0, 5]}></PerspectiveCamera>
       </Insert3D>
-
-      <div></div>
       {/* <span style={{ color: ui.baseColor }}>Runtime {ui.baseColor}</span> */}
     </>
   );
