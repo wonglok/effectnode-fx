@@ -5,6 +5,7 @@ import tunnel from "tunnel-rat";
 export function ToolBox({ ui, useStore, domElement }) {
   return (
     <>
+      toolbox main
       {/*  */}
       {/*  */}
     </>
@@ -22,22 +23,11 @@ export function Runtime({ ui, useStore, io }) {
     });
   }, [useStore]);
 
-  useEffect(() => {
-    let tt = setInterval(() => {
-      io.out0(ui.speed);
-    });
-    return () => {
-      clearInterval(tt);
-    };
-  }, [io, ui]);
-
   return (
     <>
       <Canvas gl={{ antialias: true }}>{<t3d.Out></t3d.Out>}</Canvas>
     </>
   );
 }
-
-//
 
 //
