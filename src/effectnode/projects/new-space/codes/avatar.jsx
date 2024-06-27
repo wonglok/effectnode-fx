@@ -6,6 +6,7 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { useEffect, useMemo, useState } from "react";
 import { AnimationMixer } from "three";
 import { useFrame } from "@react-three/fiber";
+import { MeshTransmissionMaterial, Sphere } from "@react-three/drei";
 
 //
 export function ToolBox({ ui, useStore, domElement }) {
@@ -39,7 +40,7 @@ function Avatar({ useStore }) {
     if (!gl) {
       return;
     }
-    //
+
     let draco = new DRACOLoader();
     draco.setDecoderPath("/draco/");
 
@@ -56,5 +57,6 @@ function Avatar({ useStore }) {
       setOut(<primitive object={glb.scene}></primitive>);
     });
   }, [gl, mixer]);
+
   return <>{out}</>;
 }
