@@ -1,20 +1,28 @@
-import { basename } from "path";
+import { basename, extname } from "path";
 function loadCodes({ projectName }) {
   let codes = [];
 
-  let rr = require.context("../../projects", true, /\/codes\/(.*).js$/, "lazy");
+  let rr = require.context(
+    "../../projects",
+    true,
+    /\/codes\/(.*).(js|jsx|ts|tsx)$/,
+    "lazy"
+  );
 
   let list = rr.keys();
 
   list.forEach((key) => {
+    // console.log(key);
     //
 
     if (key.startsWith("./") && key.includes(`/${projectName}/`)) {
-      console.log(key);
+      // console.log(key);
+      let ext = extname(key);
+      let codeName = basename(key).replace(ext, "");
       codes.push({
         _id: key,
         projectName: projectName,
-        codeName: basename(key).replace(".js", ""),
+        codeName: codeName,
         loadCode: async () => rr(key),
       });
     }
@@ -31,12 +39,13 @@ function loadProjects(req) {
     if (key.startsWith("./")) {
       //
       let projectName = key.replace("./", "").replace("/graph.json", "");
+
       let codes = loadCodes({ projectName: projectName });
 
       projectGraphs.push({
+        _id: key,
         projectName: projectName,
         ...req(key),
-        _id: key,
         codes: codes,
       });
     }

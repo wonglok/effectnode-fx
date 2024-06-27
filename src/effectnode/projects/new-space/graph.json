@@ -19,7 +19,7 @@
           "_id": "_5leyxt9_vhypxs9",
           "label": "baseColor",
           "type": "color",
-          "value": "#ff0000"
+          "value": "#fd2727"
         },
         {
           "_id": "_arqfypv_dh482id",
@@ -49,7 +49,7 @@
           "_id": "_cvk6rdc_o2dlizs",
           "label": "baseColor",
           "type": "color",
-          "value": "#ff0000"
+          "value": "#aa1818"
         },
         {
           "_id": "_l7otdws_fj0nsqm",
@@ -68,9 +68,9 @@
         "_id": "_684e5xs_tuudldv",
         "title": "main",
         "position": [
-          -1.4795666713398616,
+          -1.629748816801362,
           0,
-          -1.354627703200758
+          -1.6955566662355372
         ],
         "inputs": [
           {
@@ -142,9 +142,9 @@
         "_id": "_6120w4u_pr0jrwc",
         "title": "happy",
         "position": [
-          -0.7938917855661214,
+          -0.36201076476162386,
           0,
-          0.8670395148268457
+          0.6800423759945355
         ],
         "inputs": [
           {

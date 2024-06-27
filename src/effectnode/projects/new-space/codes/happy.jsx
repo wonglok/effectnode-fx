@@ -1,7 +1,7 @@
-export async function ToolBox() {
-  return <>Toolbox</>;
+export function ToolBox() {
+  return <>Toolbox happy</>;
 }
 
-export async function Runtime() {
-  return <>Toolbox</>;
+export function Runtime() {
+  return <>Runtime happy</>;
 }
