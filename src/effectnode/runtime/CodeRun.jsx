@@ -1,10 +1,15 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
-export function CodeRun({ useStore, Algorithm, codeName, domElement }) {
-  let settings = useStore((r) => r.settings);
-  let graph = useStore((r) => r.graph);
-  let nodes = graph.nodes;
-  let nodeOne = nodes.find((r) => r.title === codeName);
+export function CodeRun({
+  useStore,
+  Algorithm = () => null,
+  codeName,
+  domElement,
+}) {
+  let settings = useStore((r) => r.settings) || [];
+  let graph = useStore((r) => r.graph) || {};
+  let nodes = graph.nodes || [];
+  let nodeOne = nodes.find((r) => r.title === codeName) || {};
   let setting = settings.find((r) => r.nodeID === nodeOne?._id);
 
   let ui = useMemo(() => {
