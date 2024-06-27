@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { EffectNode } from "src/effectnode/runtime/EffectNode";
 import { create } from "zustand";
-import json from "../effectnode/projects/new-space/graph.json";
+import json from "../effectnode/projects/production-webgl/graph.json";
 export default function Home() {
   let useStore = useMemo(() => {
     return create((set, get) => {
