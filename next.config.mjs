@@ -83,6 +83,9 @@ const nextConfig = {
       use: ["raw-loader", "glslify-loader"],
     });
 
+    config.experiments = config.experiments || {};
+    config.experiments.topLevelAwait = true;
+
     return config;
   },
 
