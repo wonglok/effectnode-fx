@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 export function ToolBox({ ui, useStore, domElement }) {
   return <>light</>;
 }

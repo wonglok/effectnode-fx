@@ -86,26 +86,55 @@ export function CodeRun({
           }
 
           if (key.startsWith("res")) {
-            let idx = Number(key.replace("res", ""));
+            return (idx, handler) => {
+              // let idx = Number(key.replace("res", ""));
 
-            let node = nodeOne;
-            let socket = node.outputs[idx];
+              let node = nodeOne;
+              let socket = node.outputs[idx];
 
-            return (handler) => {
               //
-              let hh = ({ detail }) => {
-                handler(detail);
+              let hh = async ({ detail }) => {
+                let response = await handler(detail.requestData);
+                detail.collectResponse(response);
               };
-              domElement.addEventListener(socket._id, hh);
+              domElement.addEventListener(socket._id + "serve", hh);
 
               cleans.push(() => {
-                domElement.removeEventListener(socket._id, hh);
+                domElement.removeEventListener(socket._id + "serve", hh);
               });
 
               return () => {
-                domElement.removeEventListener(socket._id, hh);
+                domElement.removeEventListener(socket._id + "serve", hh);
               };
-              //
+            };
+          }
+
+          if (key.startsWith("req")) {
+            return async (idx, data) => {
+              // let idx = Number(key.replace("request", ""));
+
+              let node = nodeOne;
+
+              let socket = node.inputs[idx];
+
+              let edges = useStore?.getState()?.graph?.edges || [];
+
+              let destEdges = edges.filter((r) => r.input._id === socket._id);
+
+              return new Promise((resolve) => {
+                destEdges.forEach((edge) => {
+                  domElement.dispatchEvent(
+                    new CustomEvent(edge.output._id + "serve", {
+                      detail: {
+                        requestData: data,
+                        collectResponse: (v) => {
+                          resolve(v);
+                        },
+                      },
+                    })
+                  );
+                });
+              });
             };
           }
 

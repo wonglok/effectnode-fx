@@ -1,10 +1,12 @@
 // import { Box, PerspectiveCamera } from "@react-three/drei";
 // import { useFrame } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Clock } from "three";
 
-export function ToolBox({ ui }) {
-  return <>Toolbox HA {ui.baseColor}</>;
+export function ToolBox({ ui, io, useStore, onLoop }) {
+  //
+
+  return <>Toolbox HAHA {ui.baseColor}</>;
 }
 
 export function Runtime({ ui, io, useStore, onLoop }) {
@@ -16,11 +18,28 @@ export function Runtime({ ui, io, useStore, onLoop }) {
     let clock = new Clock();
     return onLoop(() => {
       let dt = clock.getDelta();
+
       if (ref.current) {
         ref.current.rotation.y += dt * ui.speed;
       }
     });
   }, [onLoop, ui]);
+
+  let [color, setColor] = useState("#ffffff");
+  // useEffect(() => {
+  //   // io.in0((color) => {
+  //   //   console.log(color);
+  //   //   setColor(color);
+  //   // });
+  //   //
+  // }, [ui, io]);
+
+  useEffect(() => {
+    // io.request(0, { abc: 123 }).then((color) => {
+    //   setColor(color);
+    // });
+  }, [ui.speed]);
+  //
 
   return (
     <>
@@ -28,11 +47,10 @@ export function Runtime({ ui, io, useStore, onLoop }) {
         <group ref={ref}>
           <mesh position={[0, 0, 0]}>
             <boxGeometry></boxGeometry>
-            <meshStandardMaterial color={ui.baseColor}></meshStandardMaterial>
+            <meshStandardMaterial color={color}></meshStandardMaterial>
           </mesh>
         </group>
       </Insert3D>
-      {/* <span style={{ color: ui.baseColor }}>Runtime {ui.baseColor}</span> */}
     </>
   );
 }

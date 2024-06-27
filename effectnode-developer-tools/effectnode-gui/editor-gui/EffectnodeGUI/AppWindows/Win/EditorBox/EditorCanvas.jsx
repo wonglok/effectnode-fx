@@ -19,6 +19,7 @@ import { useEffect } from "react";
 import { SocketInputs, SocketOutputs } from "./Sockets/Sockets";
 import { DisplayCreateEdge } from "./Edge/DisplayCreateEdge";
 import { DisplayAllEdges } from "./Edge/DisplayAllEdges";
+import { useDeveloper } from "effectnode-developer-tools/effectnode-gui/store/useDeveloper";
 //sucrase
 
 function InstallToStore({ useStore }) {
@@ -75,6 +76,7 @@ function Content({ useStore }) {
   let scene = useThree((r) => r.scene);
   //
   //
+  let spaceID = useStore((r) => r.spaceID);
 
   return (
     <>
@@ -160,6 +162,10 @@ function Content({ useStore }) {
                 //
                 let dist = graphCursorState.ts.distanceTo(point);
 
+                let offset = ({ win }) => {
+                  win.left = 630;
+                  win.top = 10;
+                };
                 if (diff <= 250 && dist <= 1) {
                   //
 
@@ -175,6 +181,8 @@ function Content({ useStore }) {
 
                     editorAPI.upWindow({ win });
 
+                    offset({ win });
+
                     useStore.setState({
                       wins: [...wins],
                     });
@@ -185,11 +193,19 @@ function Content({ useStore }) {
                     win.nodeID = n._id;
                     editorAPI.upWindow({ win });
 
+                    offset({ win });
+
                     useStore.setState({
                       wins: [...wins],
                     });
                     //
                   }
+
+                  //
+                  useDeveloper.getState().openEditor({
+                    title: spaceID,
+                    nodeTitle: n.title,
+                  });
 
                   //
                   //
