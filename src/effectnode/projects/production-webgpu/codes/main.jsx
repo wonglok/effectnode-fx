@@ -43,11 +43,10 @@ import { rand } from "../loklok/rand.js";
 import PostProcessing from "three/addons/renderers/common/PostProcessing.js";
 // import doveRaw from "src/effectnode/projects/development-webgpu/assets/dove-raw.glb";
 // import WebGPURenderer from ;
-import texURL from "src/effectnode/projects/development-webgpu/assets/sprite1.png";
+import texURL from "../assets/sprite1.png";
 
-import lok from "src/effectnode/projects/development-webgpu/assets/rpm/lok.glb";
-import motionURL from "src/effectnode/projects/development-webgpu/assets/rpm/moiton/warmup.fbx";
-
+import lok from "../assets/rpm/lok.glb";
+import motionURL from "../assets/rpm/moiton/runflip.fbx";
 export function ToolBox({ ui, useStore, domElement }) {
   return (
     <>
@@ -65,7 +64,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     const gravity = uniform(-0.0098);
     const bounce = uniform(0.999);
     const friction = uniform(0.999);
-    const size = uniform(0.025);
+    const size = uniform(0.125);
 
     const clickPosition = uniform(new THREE.Vector3());
 
