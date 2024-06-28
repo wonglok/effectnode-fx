@@ -60,7 +60,7 @@ export function ToolBox({ ui, useStore, domElement }) {
 export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   useEffect(() => {
     const particleCount = 512 * 512;
-    const size = uniform(0.05);
+    const size = uniform(0.15);
 
     const clickPosition = uniform(new THREE.Vector3());
 
@@ -502,8 +502,9 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
       function onMove(event) {
         event.preventDefault();
-        console.log(event);
-        let { width, height } = domElement.getBoundingClientRect();
+        // console.log(event);
+
+        let { width, height } = renderer.domElement.getBoundingClientRect();
         pointer.set(
           (event.offsetX / width) * 2 - 1,
           -(event.offsetY / height) * 2 + 1
@@ -622,6 +623,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       ]);
       await renderer.renderAsync(scene, camera);
 
+      //
       //
       rAFID = requestAnimationFrame(animate);
     }
