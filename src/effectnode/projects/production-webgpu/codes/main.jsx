@@ -324,8 +324,13 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         const position = positionBuffer.node.element(instanceIndex);
         const velocity = velocityBuffer.node.element(instanceIndex);
 
-        const dist = mouseUni.sub(position).length();
-        const normalValue = mouseUni.sub(position).normalize().mul(-0.05);
+        const dist = mouseUni.sub(position).length().mul(-1);
+        const normalValue = mouseUni
+          .sub(position)
+          .normalize()
+          .mul(-0.05)
+          .mul(dist)
+          .mul(-0.5);
 
         // spinner
         // velocity.addAssign(vec3(0.0, gravity.mul(life.y), 0.0));
