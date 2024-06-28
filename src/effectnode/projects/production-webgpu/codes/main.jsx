@@ -542,10 +542,10 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         }
       }
 
-      // renderer.domElement.addEventListener("pointermove", onMove, {
-      //   //
-      //   passive: false,
-      // });
+      renderer.domElement.addEventListener("mousemove", onMove, {
+        //
+        passive: false,
+      });
 
       function onTouchMove(event) {
         event.preventDefault();
