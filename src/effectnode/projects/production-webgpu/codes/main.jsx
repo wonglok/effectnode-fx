@@ -180,7 +180,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         0.1,
         1000
       );
-      camera.position.set(50, 50, 100);
+      camera.position.set(-100, 50, 100);
       camera.position.multiplyScalar(0.04);
 
       scene.add(gltf.scene);
