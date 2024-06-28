@@ -375,7 +375,8 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       // create nodes
       const textureNode = texture(map, uv());
 
-      const avgColor = add(textureNode.r, textureNode.g, textureNode.b).div(3);
+      const avgColor = add(textureNode.r, textureNode.g, textureNode.b);
+      //.div(3);
 
       // create particles
       const particleMaterial = new SpriteNodeMaterial();
@@ -386,25 +387,28 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         .normalize()
         .mul(0.5)
         .add(0.5)
-        .mul(2.5);
+        .mul(2.5)
+        .add(0.5);
+
+      // particleMaterial.colorNode = vec4(
+      //   colorNode.r,
+      //   colorNode.g,
+      //   colorNode.b,
+      //   1.0
+      // )
+      //   .mul(vec4(avgColor, avgColor, avgColor, textureNode.a))
+      //   .mul(vec4(2.0, 2.0, 2.0, 1.0));
+
+      const posAttr = positionBuffer.node.toAttribute();
 
       particleMaterial.colorNode = vec4(
-        colorNode.r,
-        colorNode.g,
-        colorNode.b,
-        1.0
-      )
-        .mul(vec4(avgColor, avgColor, avgColor, textureNode.a))
-        .mul(vec4(2.0, 2.0, 2.0, 1.0));
-
-      particleMaterial.colorNode = vec4(
-        avgColor.mul(3.33),
-        avgColor.mul(3.33),
-        avgColor.mul(2.33),
-        textureNode.a.mul(1 / 3.33)
+        colorNode.r, //.mul(3.33),
+        colorNode.g, //.mul(3.33),
+        colorNode.b, //.mul(2.33),
+        1 //textureNode.a.mul(1 / 3.33)
       );
 
-      particleMaterial.positionNode = positionBuffer.node.toAttribute();
+      particleMaterial.positionNode = posAttr;
 
       particleMaterial.scaleNode = size.div(colorNode.length());
       particleMaterial.opacity = 1.0; //(float(0.14).add(lifeBuffer.node.toAttribute().length().mul(-1).mul(size)))
