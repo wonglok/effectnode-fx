@@ -26,7 +26,7 @@ Effect Node is a Node System that can help people develop ThreeJS WebGL and WebG
 
 11. Support Full Compression and Tree Shaking wtih NextJS
 
-12. In browser Node System that Support NPM and Full Language Feature 
+12. In browser Node System that Support NPM and Full Language Feature
 
 13. Rely on Native development expeirence
 
