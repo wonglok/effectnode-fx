@@ -73,6 +73,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     let rAFID = 0;
 
     let computeHit;
+    let computeNormal;
 
     const rotateYRaw = tslFn(([rad]) => {
       let c = cos(float(rad));
@@ -223,6 +224,10 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         itemSize: 3,
         type: "vec3",
       });
+      const processedNormalBuffer = createBuffer({
+        itemSize: 3,
+        type: "vec3",
+      });
 
       let geo = skinnedMesh.geometry;
       let localCount = geo.attributes.position.count;
@@ -322,6 +327,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         const velocity = velocityBuffer.node.element(instanceIndex);
         const skinPosition =
           processedPositionBuffer.node.element(instanceIndex);
+        // const skinNormal = processedNormalBuffer.node.element(instanceIndex);
 
         const dist = mouseUni.sub(position).length().mul(-1);
         const normalValue = mouseUni.sub(position).normalize().mul(-0.03);
@@ -357,16 +363,8 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
           life.y.lessThan(0.01),
           () => {
             life.xyz.assign(vec3(1.0, 1.0, 1.0));
-
             velocity.assign(skinPosition.sub(position).normalize().mul(0.001));
-
             position.assign(skinPosition.xyz);
-
-            // if (WebGPU.isAvailable()) {
-            // } else {
-            // 	position.assign(birth)
-            // 	// velocity.y = float(1).mul(rand(position.xz))
-            // }
           },
           () => {
             //
@@ -385,13 +383,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       // const finalColor = mix(color('orange'), color('blue'), range(0, 1));
       let velNode = velocityBuffer.node.toAttribute();
 
-      let colorNode = velNode
-        .normalize()
-        .mul(0.5)
-        .add(0.5)
-        .mul(3.5)
-        .mul(velNode.length())
-        .add(1.0);
+      let colorNode = velNode.normalize().mul(0.5).add(0.75).mul(2);
 
       const posAttr = positionBuffer.node.toAttribute();
 
@@ -411,7 +403,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       particleMaterial.transparent = true;
 
       const particles = new THREE.Mesh(
-        new THREE.CircleGeometry(0.05, 12),
+        new THREE.CircleGeometry(0.05, 3),
         particleMaterial
       );
       particles.isInstancedMesh = true;
@@ -477,37 +469,56 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
           boneMatZ.mul(skinWeight.z).mul(skinVertex),
           boneMatW.mul(skinWeight.w).mul(skinVertex)
         );
+        position.assign(skinned);
 
         // const skinPosition = bindMatrixInverseNode.mul(skinned).xyz;
         //   .xyz.mul((1 / 100 / 10) * 2.5);
 
         // velocity.assign(skinPosition.sub(position).normalize().mul(0.1));
-        position.assign(skinned);
-        // ;
-
-        /*
-				//normal
-				let skinMatrix = add(
-					skinWeight.x.mul(boneMatX),
-					skinWeight.y.mul(boneMatY),
-					skinWeight.z.mul(boneMatZ),
-					skinWeight.w.mul(boneMatW)
-				);
-
-				const myNormal = birthNormalBuffer.node.element(instanceIndex);
-
-				skinMatrix = bindMatrixInverseNode.mul(skinMatrix).mul(bindMatrixNode);
-
-				const skinNormal = skinMatrix.transformDirection(myNormal).xyz;
-
-				// velocity.mulAssign(-0.5)
-				// velocity.xyz.addAssign(skinNormal.mul(1.5))
-
-				// velocity.y = velocity.y.add(float(gravity).mul(200))
-				position.assign(skinPosition);
-
-				*/
       })().compute(particleCount);
+
+      // computeNormal = tslFn(() => {
+      //   // ;
+      //   const normal = processedNormalBuffer.node.element(instanceIndex);
+      //   const myNormal = birthNormalBuffer.node.element(instanceIndex);
+
+      //   const skinIndex = skinIndexNode.node.element(instanceIndex);
+      //   const boneMatX = boneMatricesNode.node.element(skinIndex.x);
+      //   const boneMatY = boneMatricesNode.node.element(skinIndex.y);
+      //   const boneMatZ = boneMatricesNode.node.element(skinIndex.z);
+      //   const boneMatW = boneMatricesNode.node.element(skinIndex.w);
+
+      //   const skinWeight = skinWeightNode.node.element(instanceIndex);
+      //   const skinnedNormal = add(
+      //     boneMatX.mul(skinWeight.x).mul(myNormal),
+      //     boneMatY.mul(skinWeight.y).mul(myNormal),
+      //     boneMatZ.mul(skinWeight.z).mul(myNormal),
+      //     boneMatW.mul(skinWeight.w).mul(myNormal)
+      //   ).normalize();
+
+      //   normal.assign(skinnedNormal);
+
+      //   /*
+      //    //normal
+      //    let skinMatrix = add(
+      //      skinWeight.x.mul(boneMatX),
+      //      skinWeight.y.mul(boneMatY),
+      //      skinWeight.z.mul(boneMatZ),
+      //      skinWeight.w.mul(boneMatW)
+      //    );
+
+      //    skinMatrix = bindMatrixInverseNode.mul(skinMatrix).mul(bindMatrixNode);
+
+      //    const skinNormal = skinMatrix.transformDirection(myNormal).xyz;
+
+      //    // velocity.mulAssign(-0.5)
+      //    // velocity.xyz.addAssign(skinNormal.mul(1.5))
+
+      //    // velocity.y = velocity.y.add(float(gravity).mul(200))
+      //    position.assign(skinPosition);
+
+      //    */
+      // })().compute(particleCount);
 
       function onMove(event) {
         event.preventDefault();
@@ -629,6 +640,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       await Promise.all([
         renderer.computeAsync(computeParticles),
         renderer.computeAsync(computeHit),
+        // renderer.computeAsync(computeNormal),
       ]);
       await renderer.renderAsync(scene, camera);
 

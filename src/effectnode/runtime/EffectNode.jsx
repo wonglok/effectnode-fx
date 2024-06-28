@@ -50,7 +50,7 @@ export function EffectNode({
 
   return (
     <>
-      <div id={randID} className="w-full h-full">
+      <div id={randID} className="w-full h-full overflow-hidden">
         {mode === "runtime" &&
           api.domElement &&
           codes
