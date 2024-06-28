@@ -59,7 +59,7 @@ export function ToolBox({ ui, useStore, domElement }) {
 
 export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   useEffect(() => {
-    const particleCount = 512 * 512;
+    const particleCount = 256 * 512;
 
     const gravity = uniform(-0.0098);
     const bounce = uniform(0.999);
@@ -325,12 +325,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         const velocity = velocityBuffer.node.element(instanceIndex);
 
         const dist = mouseUni.sub(position).length().mul(-1);
-        const normalValue = mouseUni
-          .sub(position)
-          .normalize()
-          .mul(-0.05)
-          .mul(dist)
-          .mul(-0.5);
+        const normalValue = mouseUni.sub(position).normalize().mul(-0.05);
 
         // spinner
         // velocity.addAssign(vec3(0.0, gravity.mul(life.y), 0.0));
@@ -549,6 +544,10 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
       controls = new OrbitControls(camera, domElement);
       controls.target.set(0, 1.5, 0);
+
+      if ("ontouchstart" in window) {
+        controls.enableRotate = false;
+      }
       controls.update();
 
       window.addEventListener("resize", onWindowResize);
