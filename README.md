@@ -1,11 +1,5 @@
 # Effect Node FX
 
-
-
-https://github.com/wonglok/effectnode-fx/assets/4082826/5810ca7b-dc63-4b13-be17-e9418c0feae2
-
-
-
 ## Thank you dear for all the support <3
 
 Effect Node is a Node System that can help people develop ThreeJS WebGL and WebGPU Application.
@@ -32,13 +26,19 @@ Effect Node is a Node System that can help people develop ThreeJS WebGL and WebG
 
 11. Support Full Compression and Tree Shaking wtih NextJS
 
-12. In browser Node System that Support NPM and Full Language Feature
+12. In browser Node System that Support NPM and Full Language Feature 
 
 13. Rely on Native development expeirence
 
 14. MIT Licensed, Freely usable for Frontend development.
 
 ## made with 💖 love by @wonglok831
+
+# Progress Update:
+
+2024-06-29 Working on more example code, and solution pack.
+
+2024-06-29 Apply for Anthem awards.
 
 ## Free Resources Credit:
 
