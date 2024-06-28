@@ -24,17 +24,15 @@ Effect Node is a Node System that can help people develop ThreeJS WebGL and WebG
 
 10. Secure by Design, the developer tools editor tools are only included in development envrionment and production dont even include the execution code of the editor.
 
-11. AutoPackaging
+11. Support Full Compression and Tree Shaking wtih NextJS
 
-12. MIT Licensed, Freely usable for Frontend development.
+12. In browser Node System that Support NPM and Full Language Feature 
 
+13. Rely on Native development expeirence
 
+14. MIT Licensed, Freely usable for Frontend development.
 
 ## made with 💖 love by @wonglok831
-
-
-
-
 
 ## Free Resources Credit:
 
@@ -47,3 +45,7 @@ Effect Node is a Node System that can help people develop ThreeJS WebGL and WebG
 4. Icons8
 
 5. React Three Fiber
+
+6. Mixamo
+
+7. ReadyPlayerMe
