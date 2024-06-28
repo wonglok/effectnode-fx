@@ -54,8 +54,8 @@ import motionURL from "../assets/rpm/moiton/breakdance.fbx";
 export function ToolBox({ ui, useStore, domElement }) {
   return (
     <>
-      Note: {ui.name}
       {/*  */}
+      Note: {ui.name}
       {/*  */}
     </>
   );
