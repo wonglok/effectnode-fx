@@ -554,9 +554,9 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       const gui = new GUI();
       domElement.appendChild(gui.domElement);
       gui.domElement.style.position = "absolute";
-      gui.add(gravity, "value", -0.0098, 0, 0.0001).name("gravity");
-      gui.add(bounce, "value", 0.1, 1, 0.01).name("bounce");
-      gui.add(friction, "value", 0.96, 0.99, 0.01).name("friction");
+      // gui.add(gravity, "value", -0.0098, 0, 0.0001).name("gravity");
+      // gui.add(bounce, "value", 0.1, 1, 0.01).name("bounce");
+      // gui.add(friction, "value", 0.96, 0.99, 0.01).name("friction");
       gui.add(size, "value", 0.02, 0.5, 0.01).name("size");
 
       // post-processing
