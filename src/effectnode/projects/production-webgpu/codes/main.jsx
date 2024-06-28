@@ -135,6 +135,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
           }
         }
       });
+
       // gltf.scene.scale.setScalar(100);
 
       skinnedMesh.geometry = skinnedMesh.geometry.toNonIndexed();
@@ -155,11 +156,13 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       // console.log(boneRoot, skinnedMesh.geometry);
 
       // skinnedMesh.material = new THREE.MeshBasicMaterial({
-      // 	transparent: true,
-      // 	opacity: 0,
-      // 	depthTest: false,
-      // 	depthWrite: false,
-      // 	blending: THREE.AdditiveBlending,
+      //   transparent: true,
+      //   opacity: 1,
+      //   color: new THREE.Color(0xffffff),
+      //   depthTest: true,
+      //   depthWrite: true,
+      //   wireframe: true,
+      //   blending: THREE.NormalBlending,
       // });
 
       let hasWebGPU = WebGPU.isAvailable();
@@ -353,11 +356,6 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
         let addVel = velocity.add(normalValue);
 
-        let radius = 2;
-        // let v3BallSpeed = ballify(position.addAssign(addVel), radius).add(
-        //   vec3(0.0, radius / 2, 0.0)
-        // );
-
         position.addAssign(addVel);
 
         // velocity.mulAssign(friction);
@@ -371,7 +369,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         // })
 
         const life = lifeBuffer.node.element(instanceIndex);
-        life.addAssign(rand(position.xy).mul(-0.01));
+        life.addAssign(rand(position.xy).mul(-0.02));
 
         If(
           life.y.lessThan(0.01),
