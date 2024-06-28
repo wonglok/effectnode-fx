@@ -1,3 +1,4 @@
+import md5 from "md5";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Clock } from "three";
 
@@ -8,15 +9,53 @@ export function CodeRun({
   domElement,
   win = false,
 }) {
-  let settings = useStore((r) => r.settings) || [];
+  let settings = useStore((r) => r.settings);
   let graph = useStore((r) => r.graph) || {};
   let nodes = graph.nodes || [];
   let nodeOne = nodes.find((r) => r.title === codeName);
   let setting = settings.find((r) => r.nodeID === nodeOne?._id);
 
   let ui = useMemo(() => {
-    return {};
-  }, []);
+    return {
+      provide: ({ label = "objectName", type = "text", value, ...config }) => {
+        let settings = useStore.getState().settings;
+        let setting = settings.find((r) => r.nodeID === nodeOne?._id);
+        // setting.data
+        if (!setting.data.some((r) => r.label === label)) {
+          let entry = {
+            _id: `${md5(label)}`,
+            label: `${label}`,
+            type: `${type}`,
+            value: value,
+            ...config,
+          };
+          setting.data.push(entry);
+        }
+
+        let data = setting.data.find((r) => r.label === label);
+        let output = {
+          value: data.value,
+          onChange: (fnc) => {
+            return useStore.subscribe(() => {
+              let data = setting.data.find((r) => r.label === label);
+              output.value = data.value;
+              fnc(data.value);
+            });
+          },
+        };
+
+        useStore.subscribe(() => {
+          let data = setting.data.find((r) => r.label === label);
+          output.value = data.value;
+        });
+
+        useStore.setState({
+          settings: JSON.parse(JSON.stringify(useStore.getState().settings)),
+        });
+        return output;
+      },
+    };
+  }, [nodeOne?._id, useStore]);
 
   if (setting && setting?.data) {
     for (let userInput of setting.data) {

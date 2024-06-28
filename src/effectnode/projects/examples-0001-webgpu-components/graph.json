@@ -1,0 +1,254 @@
+{
+  "settings": [
+    {
+      "codeID": "_kit5h2c_xgm7ojm",
+      "nodeID": "_ne7rk2f_qwuxwti",
+      "nodeTitle": "node",
+      "spaceID": "new-space",
+      "code": "",
+      "data": [
+        {
+          "_id": "_hc1bmqv_gfx2nsl",
+          "label": "name",
+          "type": "text",
+          "value": "123"
+        },
+        {
+          "_id": "_bsz2362_dswmezp",
+          "label": "baseColor",
+          "type": "color",
+          "value": "#ba5050"
+        }
+      ],
+      "title": "main"
+    },
+    {
+      "codeID": "_6wwhxoe_fp2fg97",
+      "nodeID": "_quzfyzi_iybz833",
+      "nodeTitle": "node",
+      "spaceID": "new-space",
+      "code": "",
+      "data": [
+        {
+          "_id": "_340ozy1_bvl61x2",
+          "label": "speed",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 0.48000000000000004
+        },
+        {
+          "_id": "_wqx0zng_5cvbuet",
+          "label": "baseColor",
+          "type": "color",
+          "value": "#003eff"
+        },
+        {
+          "_id": "_v22exa7_h0arilg",
+          "label": "name",
+          "type": "text",
+          "value": "hi dear"
+        },
+        {
+          "_id": "_uxvekoz_vlcqhii",
+          "label": "happyColor",
+          "type": "color",
+          "value": "#c10e0e"
+        }
+      ],
+      "title": "happy"
+    },
+    {
+      "codeID": "_z1qt6ig_3xgh6z9",
+      "nodeID": "_7ok99bv_jmin9lc",
+      "nodeTitle": "node",
+      "spaceID": "examples-0001-webgpu-components",
+      "code": "",
+      "data": [
+        {
+          "_id": "_dj4fqsh_opzqw65",
+          "label": "speed",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 0
+        },
+        {
+          "_id": "_1lx2m4x_s9ot2jq",
+          "label": "baseColor",
+          "type": "color",
+          "value": "#ff0000"
+        },
+        {
+          "_id": "_r79bev0_6ee1eaq",
+          "label": "name",
+          "type": "text",
+          "value": "hi dear"
+        },
+        {
+          "_id": "f9091f3defa83aede49cdf349390d0b3",
+          "label": "glb",
+          "type": "text",
+          "value": "how are you"
+        }
+      ],
+      "title": "glb"
+    }
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "spaceID": "new-space",
+        "_id": "_ne7rk2f_qwuxwti",
+        "title": "main",
+        "position": [
+          -2.035115535206007,
+          0,
+          -2.3015050791820584
+        ],
+        "inputs": [
+          {
+            "_id": "_jryjlwi_5v5h9n5",
+            "type": "input",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          },
+          {
+            "_id": "_6wp8g5z_tyczfim",
+            "type": "input",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          },
+          {
+            "_id": "_j8k4f1z_8hhfesp",
+            "type": "input",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          },
+          {
+            "_id": "_0lrrrfm_vtokg3h",
+            "type": "input",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          },
+          {
+            "_id": "_1wn7q2h_mkv01l9",
+            "type": "input",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          }
+        ],
+        "outputs": [
+          {
+            "_id": "_xkvyio0_o2nfl5d",
+            "type": "output",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          },
+          {
+            "_id": "_gafl8xn_jiqa2bo",
+            "type": "output",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          },
+          {
+            "_id": "_241hy01_rjtatf9",
+            "type": "output",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          },
+          {
+            "_id": "_zusb7ux_0tnil7s",
+            "type": "output",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          },
+          {
+            "_id": "_66fn3o5_364yhdf",
+            "type": "output",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          }
+        ]
+      },
+      {
+        "spaceID": "examples-0001-webgpu-components",
+        "_id": "_7ok99bv_jmin9lc",
+        "title": "glb",
+        "position": [
+          1.3186718776108237,
+          0,
+          -3.0806825620299847
+        ],
+        "inputs": [
+          {
+            "_id": "_zbrzg4e_sbquqiv",
+            "type": "input",
+            "nodeID": "_7ok99bv_jmin9lc",
+            "label": ""
+          },
+          {
+            "_id": "_u5re9km_qhg6t8e",
+            "type": "input",
+            "nodeID": "_7ok99bv_jmin9lc",
+            "label": ""
+          },
+          {
+            "_id": "_v15nq0z_nk22zhz",
+            "type": "input",
+            "nodeID": "_7ok99bv_jmin9lc",
+            "label": ""
+          },
+          {
+            "_id": "_lrv9dnf_k4baaed",
+            "type": "input",
+            "nodeID": "_7ok99bv_jmin9lc",
+            "label": ""
+          },
+          {
+            "_id": "_9hu653s_g7yixtf",
+            "type": "input",
+            "nodeID": "_7ok99bv_jmin9lc",
+            "label": ""
+          }
+        ],
+        "outputs": [
+          {
+            "_id": "_nc47qmf_0kqv38j",
+            "type": "output",
+            "nodeID": "_7ok99bv_jmin9lc",
+            "label": ""
+          },
+          {
+            "_id": "_ll283id_eo1489f",
+            "type": "output",
+            "nodeID": "_7ok99bv_jmin9lc",
+            "label": ""
+          },
+          {
+            "_id": "_jeah07u_1atwu3f",
+            "type": "output",
+            "nodeID": "_7ok99bv_jmin9lc",
+            "label": ""
+          },
+          {
+            "_id": "_d4q2d88_5qysmjp",
+            "type": "output",
+            "nodeID": "_7ok99bv_jmin9lc",
+            "label": ""
+          },
+          {
+            "_id": "_9hadihk_z4cz2d8",
+            "type": "output",
+            "nodeID": "_7ok99bv_jmin9lc",
+            "label": ""
+          }
+        ]
+      }
+    ],
+    "edges": []
+  },
+  "title": "examples-0001-webgpu-components"
+}
