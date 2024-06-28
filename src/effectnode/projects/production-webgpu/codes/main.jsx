@@ -434,6 +434,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       domElement.appendChild(renderer.domElement);
 
       stats = new Stats();
+      stats.dom.style.position = "absolute";
       domElement.appendChild(stats.dom);
 
       renderer.compute(computeInit);
