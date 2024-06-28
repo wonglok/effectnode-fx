@@ -342,7 +342,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         // const skinNormal = processedNormalBuffer.node.element(instanceIndex);
 
         const dist = mouseUni.sub(position).length().mul(-1);
-        const normalValue = mouseUni.sub(position).normalize().mul(-0.005);
+        const normalValue = mouseUni.sub(position).normalize().mul(-0.015);
 
         // spinner
         // velocity.addAssign(vec3(0.0, gravity.mul(life.y), 0.0));
@@ -562,7 +562,6 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       }
 
       renderer.domElement.addEventListener("mousemove", onMove, {
-        //
         passive: false,
       });
 
