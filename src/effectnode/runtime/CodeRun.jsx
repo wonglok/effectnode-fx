@@ -17,7 +17,12 @@ export function CodeRun({
 
   let ui = useMemo(() => {
     return {
-      provide: ({ label = "objectName", type = "text", value, ...config }) => {
+      provide: ({
+        label = "objectName",
+        type = "text",
+        defaultValue,
+        ...config
+      }) => {
         let settings = useStore.getState().settings;
         let setting = settings.find((r) => r.nodeID === nodeOne?._id);
         // setting.data
@@ -26,7 +31,7 @@ export function CodeRun({
             _id: `${md5(label)}`,
             label: `${label}`,
             type: `${type}`,
-            value: value,
+            value: defaultValue,
             ...config,
           };
           setting.data.push(entry);

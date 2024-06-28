@@ -29,10 +29,13 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     let urlNode = ui.provide({
       label: "glb",
       type: "text",
-      value: "happy",
-      config: {},
+      defaultValue: "happy",
+      config: {
+        //
+      },
     });
 
+    //
     console.log(urlNode.value);
     //
 
@@ -47,3 +50,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 }
 
 //
+
+//
+
+//好聽到流眼淚
