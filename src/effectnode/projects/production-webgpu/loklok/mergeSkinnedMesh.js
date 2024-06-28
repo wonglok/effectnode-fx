@@ -1,7 +1,8 @@
-import * as SkeletonUtils from "threeModules/utils/SkeletonUtils.js";
-import * as BufferGeometryUtils from "threeModules/utils/BufferGeometryUtils.js";
+import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils";
+import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils";
+import { SkinnedMesh } from "three";
 
-function CrushAnimatedObject(root) {
+export function mergeSkinnedMesh(root) {
   //Make a clone of the root.. to work with..
   let ud = root.userData;
   root.userData = {};
@@ -40,8 +41,8 @@ function CrushAnimatedObject(root) {
 
   //Merge all the geometries into a single geometry....
   let geoms = meshes.map((e) => e.geometry);
-  let mergedGeometry = BufferGeometryUtils.mergeBufferGeometries(geoms, true);
-  let smesh = new THREE.SkinnedMesh(
+  let mergedGeometry = BufferGeometryUtils.mergeGeometries(geoms, true);
+  let smesh = new SkinnedMesh(
     mergedGeometry,
     meshes.map((e) => e.material)
   );

@@ -45,7 +45,9 @@ import { rand } from "../loklok/rand.js";
 // import WebGPURenderer from ;
 import texURL from "../assets/sprite1.png";
 import lok from "../assets/rpm/lok.glb";
+import lokOrig from "../assets/rpm/lok-orig.glb";
 import motionURL from "../assets/rpm/moiton/swingdance.fbx";
+import { mergeSkinnedMesh } from "../loklok/mergeSkinnedMesh.js";
 
 // import { atan2 } from "three/examples/jsm/nodes/Nodes.js";
 // import { ballify } from "../loklok/ballify.js";
@@ -59,10 +61,11 @@ export function ToolBox({ ui, useStore, domElement }) {
     </>
   );
 }
+//
 
 export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   useEffect(() => {
-    const particleCount = 512 * 256;
+    const particleCount = 512 * 512;
     const size = uniform(0.2);
 
     const clickPosition = uniform(new THREE.Vector3());
@@ -103,15 +106,17 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     let fbxLoader = new FBXLoader();
     let gltfLoader = new GLTFLoader();
     gltfLoader.setDRACOLoader(draco);
+
     Promise.all([
       gltfLoader.loadAsync(`${lok}`),
       fbxLoader.loadAsync(`${motionURL}`),
-    ]).then(([glb, motion]) => {
+      gltfLoader.loadAsync(`${lokOrig}`),
+    ]).then(([glb, motion, lokOrig]) => {
       // let action = mixer.clipAction(motion.animations[0], glb.scene);
       // action.play();
       //
 
-      init({ gltf: glb, clip: motion.animations[0] });
+      init({ gltf: glb, clip: motion.animations[0], orignal: lokOrig });
     });
 
     // new GLTFLoader().loadAsync(lok, function (gltf) {
@@ -121,23 +126,25 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     function init({ gltf, clip }) {
       scene = new THREE.Scene();
       clock = new THREE.Clock();
-      mixer = new THREE.AnimationMixer(gltf.scene);
-      mixer.clipAction(clip).play();
+      mixer = new THREE.AnimationMixer();
+      mixer.clipAction(clip, gltf.scene).play();
 
       let lgt = new THREE.DirectionalLight(0xffffff, 5);
       scene.add(lgt);
 
+      scene.add(gltf.scene);
+
       gltf.scene.updateMatrixWorld(true);
+
       let skinnedMesh = false;
+
       gltf.scene.traverse((it) => {
-        if (it.geometry) {
+        if (it.geometry && it.isSkinnedMesh) {
           if (!skinnedMesh) {
             skinnedMesh = it;
           }
         }
       });
-
-      // gltf.scene.scale.setScalar(100);
 
       skinnedMesh.geometry = skinnedMesh.geometry.toNonIndexed();
       skinnedMesh.updateMatrixWorld(true);
@@ -192,8 +199,6 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       );
       camera.position.set(-100, 50, 100);
       camera.position.multiplyScalar(0.04);
-
-      scene.add(gltf.scene);
 
       // textures
 
