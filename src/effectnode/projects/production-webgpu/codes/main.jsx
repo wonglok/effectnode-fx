@@ -45,7 +45,7 @@ import { rand } from "../loklok/rand.js";
 // import WebGPURenderer from ;
 import texURL from "../assets/sprite1.png";
 import lok from "../assets/rpm/lok.glb";
-import motionURL from "../assets/rpm/moiton/sidekick.fbx";
+import motionURL from "../assets/rpm/moiton/mmakick.fbx";
 
 export function ToolBox({ ui, useStore, domElement }) {
   return (
