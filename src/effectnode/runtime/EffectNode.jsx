@@ -23,34 +23,43 @@ export function EffectNode({
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
       getAllProjects().then((pjs) => {
-        setProjects(pjs);
-        let json = JSON.stringify(
-          pjs.map((gra) => {
-            console.log(gra);
-            return {
-              _id: gra._id,
-              projectName: gra.projectName,
-              codes: gra.codes,
-              graph: {
-                nodes: gra.graph.nodes.map((r) => {
-                  delete r.position;
+        let getJSON = (list) =>
+          JSON.stringify(
+            list.map((gra) => {
+              console.log(gra);
+              return {
+                _id: gra._id,
+                projectName: gra.projectName,
+                codes: gra.codes,
+                graph: {
+                  nodes: gra.graph.nodes.map((r) => {
+                    delete r.position;
+                    return r;
+                  }),
+                  edges: gra.graph.edges,
+                },
+                settings: gra.settings.map((r) => {
+                  console.log(r.data);
+                  r.data = r.data.map((da) => {
+                    delete da.value;
+                    return da;
+                  });
                   return r;
                 }),
-                edges: gra.graph.edges,
-              },
-              settings: gra.settings.map((r) => {
-                console.log(r.data);
-                r.data = r.data.map((da) => {
-                  delete da.value;
-                  return da;
-                });
-                return r;
-              }),
-            };
-          })
-        );
+              };
+            })
+          );
 
-        console.log(json);
+        setProjects((old) => {
+          let newStr = getJSON(pjs);
+          let oldStr = getJSON(old);
+
+          if (newStr === oldStr) {
+            return old;
+          } else {
+            return pjs;
+          }
+        });
       });
     } else {
       getAllProjects().then((pjs) => {

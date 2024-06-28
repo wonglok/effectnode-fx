@@ -166,9 +166,15 @@ export function EditorApp({ useStore }) {
           #747474
    )       
           `,
+          position: "relative",
         }}
       >
-        <BeginBar dateString={dateString} useStore={useStore}></BeginBar>
+        <div
+          className="w-full h-full absolute top-0 left-0"
+          style={{ zIndex: `9999999999px` }}
+        >
+          <BeginBar dateString={dateString} useStore={useStore}></BeginBar>
+        </div>
       </div>
     </div>
   );

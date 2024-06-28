@@ -46,9 +46,8 @@ import { rand } from "../loklok/rand.js";
 import texURL from "../assets/sprite1.png";
 import lok from "../assets/rpm/lok.glb";
 import lokOrig from "../assets/rpm/lok-orig.glb";
-import motionURL from "../assets/rpm/moiton/swingdance.fbx";
-import { mergeSkinnedMesh } from "../loklok/mergeSkinnedMesh.js";
-
+import motionURL from "../assets/rpm/moiton/breakdance.fbx";
+// import { mergeSkinnedMesh } from "../loklok/mergeSkinnedMesh.js";
 // import { atan2 } from "three/examples/jsm/nodes/Nodes.js";
 // import { ballify } from "../loklok/ballify.js";
 
@@ -223,10 +222,10 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       const birthNormalBuffer = createBuffer({ itemSize: 3, type: "vec3" });
 
       const bindMatrixNode = uniform(skinnedMesh.bindMatrix, "mat4");
-      const bindMatrixInverseNode = uniform(
-        skinnedMesh.bindMatrixInverse,
-        "mat4"
-      );
+      // const bindMatrixInverseNode = uniform(
+      //   skinnedMesh.bindMatrixInverse,
+      //   "mat4"
+      // );
       const boneMatricesNode = {
         node: buffer(
           skinnedMesh.skeleton.boneMatrices,
@@ -241,10 +240,10 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         itemSize: 3,
         type: "vec3",
       });
-      const processedNormalBuffer = createBuffer({
-        itemSize: 3,
-        type: "vec3",
-      });
+      // const processedNormalBuffer = createBuffer({
+      //   itemSize: 3,
+      //   type: "vec3",
+      // });
 
       let geo = skinnedMesh.geometry;
       let localCount = geo.attributes.position.count;
@@ -346,7 +345,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
           processedPositionBuffer.node.element(instanceIndex);
         // const skinNormal = processedNormalBuffer.node.element(instanceIndex);
 
-        const dist = mouseUni.sub(position).length().mul(-1);
+        const dist = mouseUni.sub(position).length().mul(1);
         const normalValue = mouseUni.sub(position).normalize().mul(-0.015);
 
         // spinner
@@ -375,7 +374,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         // })
 
         const life = lifeBuffer.node.element(instanceIndex);
-        life.addAssign(rand(position.xy).mul(-0.02));
+        life.addAssign(rand(position.xy).mul(-0.01));
 
         If(
           life.y.lessThan(0.01),
