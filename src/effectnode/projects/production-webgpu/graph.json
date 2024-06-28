@@ -11,13 +11,13 @@
           "_id": "_hc1bmqv_gfx2nsl",
           "label": "name",
           "type": "text",
-          "value": "2"
+          "value": "123"
         },
         {
           "_id": "_bsz2362_dswmezp",
           "label": "baseColor",
           "type": "color",
-          "value": "#c42828"
+          "value": "#ba5050"
         }
       ],
       "title": "main"
@@ -67,9 +67,9 @@
         "_id": "_ne7rk2f_qwuxwti",
         "title": "main",
         "position": [
-          -0.8924429849939604,
+          0.24208995308826708,
           0,
-          -0.9639073962351964
+          -0.2617707239039887
         ],
         "inputs": [
           {

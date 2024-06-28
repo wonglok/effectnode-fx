@@ -27,7 +27,7 @@ import {
   cos,
   sin,
   mat3,
-} from "three/nodes";
+} from "three/examples/jsm/nodes/Nodes.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGL from "three/addons/capabilities/WebGL.js";
@@ -45,9 +45,10 @@ import { rand } from "../loklok/rand.js";
 // import WebGPURenderer from ;
 import texURL from "../assets/sprite1.png";
 import lok from "../assets/rpm/lok.glb";
-import motionURL from "../assets/rpm/moiton/warmup.fbx";
-import { atan2 } from "three/examples/jsm/nodes/Nodes.js";
-import { ballify } from "../loklok/ballify.js";
+import motionURL from "../assets/rpm/moiton/swingdance.fbx";
+
+// import { atan2 } from "three/examples/jsm/nodes/Nodes.js";
+// import { ballify } from "../loklok/ballify.js";
 
 export function ToolBox({ ui, useStore, domElement }) {
   return (
