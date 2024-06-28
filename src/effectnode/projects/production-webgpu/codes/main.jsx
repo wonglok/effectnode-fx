@@ -375,36 +375,26 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       // create nodes
       const textureNode = texture(map, uv());
 
-      const avgColor = add(textureNode.r, textureNode.g, textureNode.b);
-      //.div(3);
-
       // create particles
       const particleMaterial = new SpriteNodeMaterial();
 
       // const finalColor = mix(color('orange'), color('blue'), range(0, 1));
-      let colorNode = velocityBuffer.node
-        .toAttribute()
+      let velNode = velocityBuffer.node.toAttribute();
+
+      let colorNode = velNode
         .normalize()
         .mul(0.5)
         .add(0.5)
-        .mul(2.5)
-        .add(0.5);
-
-      // particleMaterial.colorNode = vec4(
-      //   colorNode.r,
-      //   colorNode.g,
-      //   colorNode.b,
-      //   1.0
-      // )
-      //   .mul(vec4(avgColor, avgColor, avgColor, textureNode.a))
-      //   .mul(vec4(2.0, 2.0, 2.0, 1.0));
+        .mul(3.5)
+        .mul(velNode.length())
+        .add(1.0);
 
       const posAttr = positionBuffer.node.toAttribute();
 
       particleMaterial.colorNode = vec4(
-        colorNode.r, //.mul(3.33),
-        colorNode.g, //.mul(3.33),
-        colorNode.b, //.mul(2.33),
+        colorNode.r.mul(textureNode.a), //.mul(3.33),
+        colorNode.g.mul(textureNode.a), //.mul(3.33),
+        colorNode.b.mul(textureNode.a), //.mul(2.33),
         0.5 //textureNode.a.mul(1 / 3.33)
       );
 
