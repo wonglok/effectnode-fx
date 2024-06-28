@@ -324,12 +324,17 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
           processedPositionBuffer.node.element(instanceIndex);
 
         const dist = mouseUni.sub(position).length().mul(-1);
-        const normalValue = mouseUni.sub(position).normalize().mul(-0.06);
+        const normalValue = mouseUni.sub(position).normalize().mul(-0.03);
 
         // spinner
         // velocity.addAssign(vec3(0.0, gravity.mul(life.y), 0.0));
 
-        velocity.assign(skinPosition.sub(position).normalize().mul(0.02));
+        velocity.addAssign(
+          skinPosition
+            .sub(position)
+            .normalize()
+            .mul(0.003 * 0.5)
+        );
 
         let addVel = velocity.xyz.add(normalValue);
 
@@ -353,7 +358,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
           () => {
             life.xyz.assign(vec3(1.0, 1.0, 1.0));
 
-            velocity.assign(skinPosition.sub(position).normalize().mul(0.02));
+            velocity.assign(skinPosition.sub(position).normalize().mul(0.001));
 
             position.assign(skinPosition.xyz);
 
