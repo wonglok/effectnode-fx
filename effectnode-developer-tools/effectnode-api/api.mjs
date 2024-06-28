@@ -7,11 +7,20 @@ import { getPJGraph, setPJGraph } from "./getPJGraph.mjs";
 import { removeProject } from "./removeProject.mjs";
 import { cloneProject } from "./cloneProject.mjs";
 import { openEditorCoder } from "./openEditorCoder.mjs";
+import { getProjectGraphs } from "./getProjectGraphs.mjs";
 const port = 3456;
 
 const app = express();
 
 app.use(json({ limit: "999GB" }));
+
+app.post("/devapi/project/listAllGraph", async (req, res) => {
+  let title = req.body.title;
+
+  let projects = await getProjectGraphs({ title });
+
+  res.json(projects);
+});
 
 app.post("/devapi/project/listAll", async (req, res) => {
   let title = req.body.title;
@@ -114,9 +123,7 @@ app.post("/devapi/graph/getProjectGraph", async (req, res) => {
     let title = req.body.title;
 
     let json = await getPJGraph({
-      //
       title,
-      //
     });
     json.title = title;
 
@@ -142,18 +149,9 @@ app.post("/devapi/graph/setProjectGraph", async (req, res) => {
       ...json,
       title,
     },
-    //
   });
 
-  // let nodesResult = await setPJNodes({
-  //   //
-  //   title,
-  //   nodes: nodes,
-  //   //
-  // });
-
   res.json({ ok: true });
-  //
 });
 
 app.listen(port, () => {

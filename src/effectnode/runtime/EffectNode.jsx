@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { allProjects } from "./tools/allProjects";
+import { getAllProjects } from "./tools/allProjects";
 // import { getID } from "./tools/getID";
 import { RunnerRuntime } from "./RunnerRuntime";
 import { RunnerToolBox } from "./RunnerToolBox";
@@ -17,7 +17,14 @@ export function EffectNode({
   let graph = useStore((r) => r.graph) || {};
   let nodes = graph.nodes || [];
   let [api, setDisplay] = useState({ domElement: false });
+
+  let [allProjects, setProjects] = useState([]);
   let currentProject = allProjects.find((r) => r.projectName === projectName);
+  useEffect(() => {
+    getAllProjects().then((pjs) => {
+      setProjects(pjs);
+    });
+  }, []);
 
   let codes = currentProject?.codes || [];
   let randID = useMemo(() => {

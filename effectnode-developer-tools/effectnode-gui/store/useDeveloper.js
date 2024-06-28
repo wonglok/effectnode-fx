@@ -8,6 +8,28 @@ export const useDeveloper = create((set, get) => {
   return {
     //
     workspaces: [],
+    listAllGraph: () => {
+      return fetch(`/devapi/project/listAllGraph`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          //
+          //
+        }),
+      })
+        .then((r) => {
+          return r.json();
+        })
+        .then((response) => {
+          console.log("project/listAllGraph", response);
+          return response;
+        })
+        .catch((r) => {
+          console.error(r);
+        });
+    },
     //
     listAll: () => {
       return fetch(`/devapi/project/listAll`, {
