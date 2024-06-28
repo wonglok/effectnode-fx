@@ -338,7 +338,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         // const skinNormal = processedNormalBuffer.node.element(instanceIndex);
 
         const dist = mouseUni.sub(position).length().mul(-1);
-        const normalValue = mouseUni.sub(position).normalize().mul(-0.01);
+        const normalValue = mouseUni.sub(position).normalize().mul(-0.005);
 
         // spinner
         // velocity.addAssign(vec3(0.0, gravity.mul(life.y), 0.0));
@@ -354,11 +354,11 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         let addVel = velocity.add(normalValue);
 
         let radius = 2;
-        let v3BallSpeed = ballify(position.addAssign(addVel), radius).add(
-          vec3(0.0, radius / 2, 0.0)
-        );
+        // let v3BallSpeed = ballify(position.addAssign(addVel), radius).add(
+        //   vec3(0.0, radius / 2, 0.0)
+        // );
 
-        position.assign(mix(position, v3BallSpeed, 0.15));
+        position.addAssign(addVel);
 
         // velocity.mulAssign(friction);
 
