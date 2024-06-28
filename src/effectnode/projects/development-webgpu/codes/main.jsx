@@ -422,11 +422,10 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
       scene.add(particles);
 
-      const helper = new THREE.GridHelper(60, 40, 0x303030, 0x303030);
+      const helper = new THREE.GridHelper(100, 100, 0xff3030, 0x303030);
       scene.add(helper);
 
       const geometry = new THREE.PlaneGeometry(1000, 1000);
-      // geometry.rotateX(-Math.PI / 2);
 
       const plane = new THREE.Mesh(
         geometry,
@@ -489,7 +488,6 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         // ;
 
         /*
-
 				//normal
 				let skinMatrix = add(
 					skinWeight.x.mul(boneMatX),
