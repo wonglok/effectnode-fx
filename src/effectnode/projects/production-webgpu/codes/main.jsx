@@ -65,7 +65,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     const gravity = uniform(-0.0098);
     const bounce = uniform(0.999);
     const friction = uniform(0.999);
-    const size = uniform(0.05);
+    const size = uniform(0.025);
 
     const clickPosition = uniform(new THREE.Vector3());
 
@@ -583,9 +583,9 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
       mixer.update(clock.getDelta());
 
-      await renderer.computeAsync(computeParticles);
-      await renderer.computeAsync(computeHit);
-      await renderer.renderAsync(scene, camera);
+      await renderer.compute(computeParticles);
+      await renderer.compute(computeHit);
+      await renderer.render(scene, camera);
 
       // throttle the logging
       // requestAnimationFrame(animate);
