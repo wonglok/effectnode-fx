@@ -59,6 +59,7 @@ export function ToolBox({ ui, useStore, domElement }) {
 
 export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   useEffect(() => {
+    domElement.innerHTML = "";
     const particleCount = 512 * 512;
     const size = uniform(0.15);
 
@@ -319,20 +320,20 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         const color = colorBuffer.node.element(instanceIndex);
         const position = positionBuffer.node.element(instanceIndex);
         const velocity = velocityBuffer.node.element(instanceIndex);
+        const skinPosition =
+          processedPositionBuffer.node.element(instanceIndex);
 
         const dist = mouseUni.sub(position).length().mul(-1);
-        const normalValue = mouseUni.sub(position).normalize().mul(-0.05);
+        const normalValue = mouseUni.sub(position).normalize().mul(-0.06);
 
         // spinner
         // velocity.addAssign(vec3(0.0, gravity.mul(life.y), 0.0));
 
-        let vel = vec3(
-          velocity.x.mul((1 / 100) * 3).add(normalValue.x),
-          velocity.y.mul((1 / 100) * 3).add(normalValue.y),
-          velocity.z.mul((1 / 100) * 3).add(normalValue.z)
-        );
+        velocity.assign(skinPosition.sub(position).normalize().mul(0.02));
 
-        position.addAssign(vel.xyz);
+        let addVel = velocity.xyz.add(normalValue);
+
+        position.addAssign(addVel);
 
         // velocity.mulAssign(friction);
 
@@ -344,25 +345,28 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         // 	position.assign(birth)
         // })
 
-        const skinPosition =
-          processedPositionBuffer.node.element(instanceIndex);
-
         const life = lifeBuffer.node.element(instanceIndex);
-        life.addAssign(rand(position.xy).mul(-5.0 / 60.0));
+        life.addAssign(rand(position.xy).mul(-0.01));
 
-        If(life.y.lessThan(0.01), () => {
-          life.xyz.assign(vec3(1.0, 1.0, 1.0));
+        If(
+          life.y.lessThan(0.01),
+          () => {
+            life.xyz.assign(vec3(1.0, 1.0, 1.0));
 
-          velocity.assign(skinPosition.sub(position).normalize().mul(0.4));
+            velocity.assign(skinPosition.sub(position).normalize().mul(0.02));
 
-          position.assign(skinPosition.xyz);
+            position.assign(skinPosition.xyz);
 
-          // if (WebGPU.isAvailable()) {
-          // } else {
-          // 	position.assign(birth)
-          // 	// velocity.y = float(1).mul(rand(position.xz))
-          // }
-        });
+            // if (WebGPU.isAvailable()) {
+            // } else {
+            // 	position.assign(birth)
+            // 	// velocity.y = float(1).mul(rand(position.xz))
+            // }
+          },
+          () => {
+            //
+          }
+        );
       });
 
       computeParticles = computeUpdate().compute(particleCount);
@@ -628,20 +632,9 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       rAFID = requestAnimationFrame(animate);
     }
 
-    //
-    // let renderer = new WebGPURenderer({ antialias: true });
-    // renderer.setPixelRatio(window.devicePixelRatio);
-    // renderer.setSize(window.innerWidth, window.innerHeight);
-    // domElement.appendChild(renderer.domElement);
-
-    // useStore.setState({});
-
     return () => {
-      // domElement.removeChild(renderer.domElement);
       cancelAnimationFrame(rAFID);
       domElement.innerHTML = "";
-
-      //
     };
   }, [domElement, onLoop, useStore]);
 
