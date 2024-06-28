@@ -60,7 +60,7 @@ export function ToolBox({ ui, useStore, domElement }) {
 export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   useEffect(() => {
     const particleCount = 512 * 256;
-    const size = uniform(0.15);
+    const size = uniform(0.2);
 
     const clickPosition = uniform(new THREE.Vector3());
 
