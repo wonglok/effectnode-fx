@@ -59,7 +59,7 @@ export function ToolBox({ ui, useStore, domElement }) {
 
 export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   useEffect(() => {
-    const particleCount = 512 * 512;
+    const particleCount = 512 * 256;
     const size = uniform(0.15);
 
     const clickPosition = uniform(new THREE.Vector3());
@@ -121,7 +121,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       mixer = new THREE.AnimationMixer(gltf.scene);
       mixer.clipAction(clip).play();
 
-      let lgt = new THREE.DirectionalLight(0xffffff, 3);
+      let lgt = new THREE.DirectionalLight(0xffffff, 5);
       scene.add(lgt);
 
       gltf.scene.updateMatrixWorld(true);
