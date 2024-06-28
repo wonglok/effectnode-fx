@@ -60,11 +60,6 @@ export function ToolBox({ ui, useStore, domElement }) {
 export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   useEffect(() => {
     const particleCount = 512 * 512;
-
-    // const gravity = uniform(-0.0098);
-    // const bounce = uniform(0.999);
-    // const friction = uniform(0.999);
-
     const size = uniform(0.05);
 
     const clickPosition = uniform(new THREE.Vector3());
