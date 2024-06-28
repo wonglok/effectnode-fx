@@ -389,7 +389,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       // const finalColor = mix(color('orange'), color('blue'), range(0, 1));
       let velNode = velocityBuffer.node.toAttribute();
 
-      let colorNode = velNode.normalize().mul(0.5).add(0.75).mul(2);
+      let colorNode = velNode.normalize().mul(0.5).add(1).mul(2);
 
       const posAttr = positionBuffer.node.toAttribute();
 
@@ -397,7 +397,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         colorNode.r.mul(textureNode.a), //.mul(3.33),
         colorNode.g.mul(textureNode.a), //.mul(3.33),
         colorNode.b.mul(textureNode.a), //.mul(2.33),
-        0.5 //textureNode.a.mul(1 / 3.33)
+        1 //textureNode.a.mul(1 / 3.33)
       );
 
       particleMaterial.positionNode = posAttr;
