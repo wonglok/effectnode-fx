@@ -14,7 +14,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="w-full h-full select-none">
+    <div className="w-full h-full select-none no-sel-sub">
       <EffectNode projectName={json.title} useStore={useStore}></EffectNode>
     </div>
   );

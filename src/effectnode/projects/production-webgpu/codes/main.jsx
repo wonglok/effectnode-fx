@@ -59,12 +59,13 @@ export function ToolBox({ ui, useStore, domElement }) {
 
 export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   useEffect(() => {
-    const particleCount = 256 * 512;
+    const particleCount = 512 * 512;
 
-    const gravity = uniform(-0.0098);
-    const bounce = uniform(0.999);
-    const friction = uniform(0.999);
-    const size = uniform(0.125);
+    // const gravity = uniform(-0.0098);
+    // const bounce = uniform(0.999);
+    // const friction = uniform(0.999);
+
+    const size = uniform(0.05);
 
     const clickPosition = uniform(new THREE.Vector3());
 
@@ -515,6 +516,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       })().compute(particleCount);
 
       function onMove(event) {
+        event.preventDefault();
         console.log(event);
         let { width, height } = domElement.getBoundingClientRect();
         pointer.set(
@@ -540,7 +542,51 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         }
       }
 
-      renderer.domElement.addEventListener("pointermove", onMove);
+      // renderer.domElement.addEventListener("pointermove", onMove, {
+      //   //
+      //   passive: false,
+      // });
+
+      function onTouchMove(event) {
+        event.preventDefault();
+
+        console.log(event);
+        let { width, height } = domElement.getBoundingClientRect();
+        pointer.set(
+          (event.touches[0].clientX / width) * 2 - 1,
+          -(event.touches[0].clientY / height) * 2 + 1
+        );
+
+        raycaster.setFromCamera(pointer, camera);
+
+        plane.lookAt(camera.position);
+        const intersects = raycaster.intersectObjects([plane], false);
+
+        if (intersects.length > 0) {
+          const { point } = intersects[0];
+
+          // move to uniform
+
+          clickPosition.value.copy(point);
+          clickPosition.value.y = -1;
+          mouseV3.copy(point);
+
+          // renderer.compute(computeHit);
+        }
+      }
+      renderer.domElement.addEventListener("touchmove", onTouchMove, {
+        passive: false,
+      });
+
+      renderer.domElement.addEventListener(
+        "touchstart",
+        (ev) => {
+          ev.preventDefault();
+        },
+        {
+          passive: false,
+        }
+      );
 
       controls = new OrbitControls(camera, domElement);
       controls.target.set(0, 1.5, 0);
