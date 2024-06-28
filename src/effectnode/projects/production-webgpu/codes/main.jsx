@@ -45,7 +45,9 @@ import { rand } from "../loklok/rand.js";
 // import WebGPURenderer from ;
 import texURL from "../assets/sprite1.png";
 import lok from "../assets/rpm/lok.glb";
-import motionURL from "../assets/rpm/moiton/mmakick.fbx";
+import motionURL from "../assets/rpm/moiton/warmup.fbx";
+import { atan2 } from "three/examples/jsm/nodes/Nodes.js";
+import { ballify } from "../loklok/ballify.js";
 
 export function ToolBox({ ui, useStore, domElement }) {
   return (
@@ -323,12 +325,12 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         color.assign(vec3(randX, randY, randZ));
       })().compute(particleCount);
 
-      const mouseV3 = new THREE.Vector3(0, 0, 0);
+      const mouseV3 = new THREE.Vector3(0, 1.5, 0);
       const mouseUni = uniform(mouseV3);
 
       const computeUpdate = tslFn(() => {
-        const time = timerLocal();
-        const color = colorBuffer.node.element(instanceIndex);
+        // const time = timerLocal();
+        // const color = colorBuffer.node.element(instanceIndex);
         const position = positionBuffer.node.element(instanceIndex);
         const velocity = velocityBuffer.node.element(instanceIndex);
         const skinPosition =
@@ -341,6 +343,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         // spinner
         // velocity.addAssign(vec3(0.0, gravity.mul(life.y), 0.0));
 
+        // atan2
         velocity.addAssign(
           skinPosition
             .sub(position)
@@ -350,7 +353,12 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
         let addVel = velocity.add(normalValue);
 
-        position.addAssign(addVel);
+        let radius = 2;
+        let v3BallSpeed = ballify(position.addAssign(addVel), radius).add(
+          vec3(0.0, radius / 2, 0.0)
+        );
+
+        position.assign(mix(position, v3BallSpeed, 0.15));
 
         // velocity.mulAssign(friction);
 
@@ -388,10 +396,9 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
       // const finalColor = mix(color('orange'), color('blue'), range(0, 1));
       let velNode = velocityBuffer.node.toAttribute();
+      let posAttr = positionBuffer.node.toAttribute();
 
-      let colorNode = velNode.normalize().mul(0.5).add(1).mul(2);
-
-      const posAttr = positionBuffer.node.toAttribute();
+      let colorNode = velNode.normalize().mul(0.5).add(1).mul(1.5);
 
       particleMaterial.colorNode = vec4(
         colorNode.r.mul(textureNode.a), //.mul(3.33),
