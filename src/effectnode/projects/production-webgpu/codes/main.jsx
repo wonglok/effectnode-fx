@@ -574,6 +574,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         event.preventDefault();
 
         console.log(event);
+
         let { width, height } = domElement.getBoundingClientRect();
         pointer.set(
           (event.touches[0].clientX / width) * 2 - 1,
@@ -597,6 +598,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
           // renderer.compute(computeHit);
         }
       }
+
       renderer.domElement.addEventListener("touchmove", onTouchMove, {
         passive: false,
       });
@@ -622,8 +624,8 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       window.addEventListener("resize", onWindowResize);
 
       // gui
-
       const gui = new GUI();
+
       domElement.appendChild(gui.domElement);
       gui.domElement.style.position = "absolute";
       // gui.add(gravity, "value", -0.0098, 0, 0.0001).name("gravity");
