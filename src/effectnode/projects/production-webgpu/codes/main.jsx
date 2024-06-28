@@ -59,7 +59,6 @@ export function ToolBox({ ui, useStore, domElement }) {
 
 export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   useEffect(() => {
-    domElement.innerHTML = "";
     const particleCount = 512 * 512;
     const size = uniform(0.15);
 
@@ -87,6 +86,13 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     });
 
     const timestamps = document.createElement("div");
+    timestamps.style.position = "absolute";
+    timestamps.style.bottom = "0px";
+    timestamps.style.left = "0px";
+    timestamps.style.padding = "3px";
+    timestamps.style.backgroundColor = "white";
+
+    domElement.appendChild(timestamps);
 
     let draco = new DRACOLoader();
     draco.setDecoderPath("/draco/");
