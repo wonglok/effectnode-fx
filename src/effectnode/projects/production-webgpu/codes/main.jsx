@@ -142,7 +142,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
       const boundingBoxSize = new THREE.Vector3();
       skinnedMesh.geometry.boundingBox.getSize(boundingBoxSize);
-      const light = new THREE.HemisphereLight(0xffffbb, 0xffffff, 10);
+      const light = new THREE.AmbientLight(0xffffbb, 0.1);
       scene.add(light);
 
       scene.background = new THREE.Color("#000000");
@@ -405,7 +405,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         colorNode.r, //.mul(3.33),
         colorNode.g, //.mul(3.33),
         colorNode.b, //.mul(2.33),
-        1 //textureNode.a.mul(1 / 3.33)
+        0.5 //textureNode.a.mul(1 / 3.33)
       );
 
       particleMaterial.positionNode = posAttr;
@@ -588,7 +588,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         }
       );
 
-      controls = new OrbitControls(camera, domElement);
+      controls = new OrbitControls(camera, renderer.domElement);
       controls.target.set(0, 1.5, 0);
 
       if ("ontouchstart" in window) {
@@ -631,9 +631,11 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
       mixer.update(clock.getDelta());
 
-      await renderer.compute(computeParticles);
-      await renderer.compute(computeHit);
-      await renderer.render(scene, camera);
+      await Promise.all([
+        renderer.computeAsync(computeParticles),
+        renderer.computeAsync(computeHit),
+      ]);
+      await renderer.renderAsync(scene, camera);
 
       //
       rAFID = requestAnimationFrame(animate);
