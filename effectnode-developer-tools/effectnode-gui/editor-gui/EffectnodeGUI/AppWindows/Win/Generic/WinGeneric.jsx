@@ -234,6 +234,8 @@ export function WinGeneric({
       useStore.setState({
         mouseState: { ...mouseState },
       });
+
+      window.dispatchEvent(new Event("resize"));
     };
 
     window.addEventListener("mouseup", hh);

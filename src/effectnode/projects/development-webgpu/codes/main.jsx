@@ -46,7 +46,7 @@ import PostProcessing from "three/addons/renderers/common/PostProcessing.js";
 import texURL from "src/effectnode/projects/development-webgpu/assets/sprite1.png";
 
 import lok from "src/effectnode/projects/development-webgpu/assets/rpm/lok.glb";
-import flair from "src/effectnode/projects/development-webgpu/assets/rpm/moiton/flair.fbx";
+import motionURL from "src/effectnode/projects/development-webgpu/assets/rpm/moiton/warmup.fbx";
 
 export function ToolBox({ ui, useStore, domElement }) {
   return (
@@ -74,6 +74,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     let controls, stats;
     let computeParticles;
     let mixer, clock;
+    let rAFID = 0;
 
     let computeHit;
 
@@ -98,7 +99,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     gltfLoader.setDRACOLoader(draco);
     Promise.all([
       gltfLoader.loadAsync(`${lok}`),
-      fbxLoader.loadAsync(`${flair}`),
+      fbxLoader.loadAsync(`${motionURL}`),
     ]).then(([glb, motion]) => {
       // let action = mixer.clipAction(motion.animations[0], glb.scene);
       // action.play();
@@ -325,12 +326,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         const velocity = velocityBuffer.node.element(instanceIndex);
 
         const dist = mouseUni.sub(position).length();
-        const normalValue = mouseUni
-          .sub(position)
-          .normalize()
-          .mul(-0.0125)
-          .div(dist)
-          .mul(0.1);
+        const normalValue = mouseUni.sub(position).normalize().mul(-0.05);
 
         // spinner
         // velocity.addAssign(vec3(0.0, gravity.mul(life.y), 0.0));
@@ -359,10 +355,10 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         const life = lifeBuffer.node.element(instanceIndex);
         life.addAssign(rand(position.xy).mul(-5.0 / 60.0));
 
-        If(life.y.lessThan(0.1), () => {
+        If(life.y.lessThan(0.01), () => {
           life.xyz.assign(vec3(1.0, 1.0, 1.0));
 
-          velocity.assign(skinPosition.sub(position).normalize().mul(0.2));
+          velocity.assign(skinPosition.sub(position).normalize().mul(0.4));
 
           position.assign(skinPosition.xyz);
 
@@ -437,9 +433,6 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         new THREE.MeshBasicMaterial({ visible: false })
       );
       scene.add(plane);
-      setInterval(() => {
-        plane.lookAt(camera.position);
-      });
 
       const raycaster = new THREE.Raycaster();
       const pointer = new THREE.Vector2();
@@ -488,12 +481,11 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
           boneMatW.mul(skinWeight.w).mul(skinVertex)
         );
 
-        const skinPosition = bindMatrixInverseNode
-          .mul(skinned)
-          .xyz.mul((1 / 100 / 10) * 2.5);
+        // const skinPosition = bindMatrixInverseNode.mul(skinned).xyz;
+        //   .xyz.mul((1 / 100 / 10) * 2.5);
 
         // velocity.assign(skinPosition.sub(position).normalize().mul(0.1));
-        position.assign(skinPosition);
+        position.assign(skinned);
         // ;
 
         /*
@@ -522,13 +514,16 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       })().compute(particleCount);
 
       function onMove(event) {
+        console.log(event);
+        let { width, height } = domElement.getBoundingClientRect();
         pointer.set(
-          (event.clientX / window.innerWidth) * 2 - 1,
-          -(event.clientY / window.innerHeight) * 2 + 1
+          (event.offsetX / width) * 2 - 1,
+          -(event.offsetY / height) * 2 + 1
         );
 
         raycaster.setFromCamera(pointer, camera);
 
+        plane.lookAt(camera.position);
         const intersects = raycaster.intersectObjects([plane], false);
 
         if (intersects.length > 0) {
@@ -546,8 +541,8 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
       renderer.domElement.addEventListener("pointermove", onMove);
 
-      controls = new OrbitControls(camera, renderer.domElement);
-      controls.target.set(0, 0, 0);
+      controls = new OrbitControls(camera, domElement);
+      controls.target.set(0, 1.5, 0);
       controls.update();
 
       window.addEventListener("resize", onWindowResize);
@@ -564,14 +559,13 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
       // post-processing
 
-      // requestAnimationFrame(animate);
-
-      onLoop(() => {
-        animate();
-      });
+      rAFID = requestAnimationFrame(animate);
     }
 
     function onWindowResize() {
+      if (!domElement) {
+        return;
+      }
       let { width, height } = domElement.getBoundingClientRect();
       // const { innerWidth, innerHeight } = window;
 
@@ -582,6 +576,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     }
 
     async function animate() {
+      rAFID = requestAnimationFrame(animate);
       stats.update();
 
       mixer.update(clock.getDelta());
@@ -604,8 +599,10 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
     return () => {
       // domElement.removeChild(renderer.domElement);
-
+      cancelAnimationFrame(rAFID);
       domElement.innerHTML = "";
+
+      //
     };
   }, [domElement, onLoop, useStore]);
 

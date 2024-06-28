@@ -50,46 +50,46 @@ export function EffectNode({
 
   return (
     <>
-      <div id={randID} className="w-full h-full"></div>
+      <div id={randID} className="w-full h-full">
+        {mode === "runtime" &&
+          api.domElement &&
+          codes
+            .filter((code) => {
+              //
+              return nodes.some((node) => node.title === code.codeName);
+            })
+            .map((code) => {
+              return (
+                <RunnerRuntime
+                  win={win}
+                  key={code._id}
+                  code={code}
+                  useStore={useStore}
+                  project={currentProject}
+                  domElement={api.domElement}
+                ></RunnerRuntime>
+              );
+            })}
 
-      {mode === "runtime" &&
-        api.domElement &&
-        codes
-          .filter((code) => {
-            //
-            return nodes.some((node) => node.title === code.codeName);
-          })
-          .map((code) => {
-            return (
-              <RunnerRuntime
-                win={win}
-                key={code._id}
-                code={code}
-                useStore={useStore}
-                project={currentProject}
-                domElement={api.domElement}
-              ></RunnerRuntime>
-            );
-          })}
-
-      {mode === "toolbox" &&
-        api.domElement &&
-        codes
-          .filter((r) => {
-            return r.codeName === node.title;
-          })
-          .map((code) => {
-            return (
-              <RunnerToolBox
-                win={win}
-                key={code._id}
-                code={code}
-                useStore={useStore}
-                project={currentProject}
-                domElement={api.domElement}
-              ></RunnerToolBox>
-            );
-          })}
+        {mode === "toolbox" &&
+          api.domElement &&
+          codes
+            .filter((r) => {
+              return r.codeName === node.title;
+            })
+            .map((code) => {
+              return (
+                <RunnerToolBox
+                  win={win}
+                  key={code._id}
+                  code={code}
+                  useStore={useStore}
+                  project={currentProject}
+                  domElement={api.domElement}
+                ></RunnerToolBox>
+              );
+            })}
+      </div>
     </>
   );
 }
