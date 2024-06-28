@@ -11,7 +11,13 @@
           "_id": "_hc1bmqv_gfx2nsl",
           "label": "name",
           "type": "text",
-          "value": "yoyo"
+          "value": "2"
+        },
+        {
+          "_id": "_bsz2362_dswmezp",
+          "label": "baseColor",
+          "type": "color",
+          "value": "#c42828"
         }
       ],
       "title": "main"
