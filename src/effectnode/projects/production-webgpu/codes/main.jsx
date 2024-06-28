@@ -65,7 +65,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     const gravity = uniform(-0.0098);
     const bounce = uniform(0.999);
     const friction = uniform(0.999);
-    const size = uniform(0.1);
+    const size = uniform(0.05);
 
     const clickPosition = uniform(new THREE.Vector3());
 
