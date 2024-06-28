@@ -44,9 +44,9 @@ import PostProcessing from "three/addons/renderers/common/PostProcessing.js";
 // import doveRaw from "src/effectnode/projects/development-webgpu/assets/dove-raw.glb";
 // import WebGPURenderer from ;
 import texURL from "../assets/sprite1.png";
-
 import lok from "../assets/rpm/lok.glb";
-import motionURL from "../assets/rpm/moiton/runflip.fbx";
+import motionURL from "../assets/rpm/moiton/kungfu.fbx";
+
 export function ToolBox({ ui, useStore, domElement }) {
   return (
     <>
