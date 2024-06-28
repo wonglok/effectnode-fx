@@ -577,7 +577,6 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     }
 
     async function animate() {
-      rAFID = requestAnimationFrame(animate);
       stats.update();
 
       mixer.update(clock.getDelta());
@@ -586,8 +585,8 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       await renderer.compute(computeHit);
       await renderer.render(scene, camera);
 
-      // throttle the logging
-      // requestAnimationFrame(animate);
+      //
+      rAFID = requestAnimationFrame(animate);
     }
 
     //
