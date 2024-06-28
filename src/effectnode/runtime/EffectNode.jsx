@@ -21,9 +21,15 @@ export function EffectNode({
   let [allProjects, setProjects] = useState([]);
   let currentProject = allProjects.find((r) => r.projectName === projectName);
   useEffect(() => {
-    getAllProjects().then((pjs) => {
-      setProjects(pjs);
-    });
+    if (process.env.NODE_ENV === "development") {
+      getAllProjects().then((pjs) => {
+        setProjects(pjs);
+      });
+    } else {
+      getAllProjects().then((pjs) => {
+        setProjects(pjs);
+      });
+    }
   }, []);
 
   let codes = currentProject?.codes || [];

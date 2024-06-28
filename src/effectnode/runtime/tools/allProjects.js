@@ -46,8 +46,6 @@ async function loadProjects() {
       .getState()
       .listAllGraph()
       .then((graphs) => {
-        console.log(graphs);
-
         graphs.forEach((graph) => {
           let codes = loadCodes({ projectName: graph.projectName });
           projectGraphs.push({
