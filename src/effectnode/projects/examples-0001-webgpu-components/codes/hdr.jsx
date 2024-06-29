@@ -13,7 +13,6 @@ import { useEffect, useMemo } from "react";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 
 //
-import hdr from "../assets/hdr/symmetrical_garden_02_1k.hdr";
 import {
   Color,
   EquirectangularReflectionMapping,
@@ -42,6 +41,7 @@ import {
   uv,
 } from "three/examples/jsm/nodes/Nodes";
 
+import hdr from "../assets/hdr/symmetrical_garden_02_1k.hdr";
 import sakura from "../assets/sakura.jpg";
 import { sRGBEncoding } from "@react-three/drei/helpers/deprecated";
 export function ToolBox({ ui, useStore, domElement }) {
