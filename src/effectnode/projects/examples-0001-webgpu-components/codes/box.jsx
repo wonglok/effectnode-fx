@@ -22,6 +22,7 @@ import {
 import {
   MeshStandardNodeMaterial,
   color,
+  uniform,
 } from "three/examples/jsm/nodes/Nodes";
 
 export function ToolBox({ ui, useStore, domElement }) {
@@ -44,14 +45,17 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       defaultValue: "box",
     });
   }, [ui]);
+  let group = useMemo(() => {
+    return new Group();
+  }, []);
 
   useEffect(() => {
     let cleans = [];
     let setup = async () => {
       let geo = new SphereGeometry(1, 32, 32);
-      let mat = new MeshStandardNodeMaterial({ color: "#ffffff" });
-      mat.roughness = 1;
-      mat.metalness = 0.0;
+      let mat = new MeshStandardNodeMaterial({ color: "#000000" });
+      mat.roughness = 0.5;
+      mat.metalness = 1.0;
 
       let box = new Mesh(geo, mat);
 
@@ -61,20 +65,18 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         let dt = clock.getDelta();
         box.rotation.y += dt;
       });
-
-      let group = new Group();
-
+      group.clear();
       group.add(box);
 
       io.in(0, ({ scene }) => {
         scene.add(group);
       });
 
-      io.in(1, (node) => {
-        mat.colorNode = node;
+      const myColor = uniform(new Color());
+      mat.colorNode = myColor;
+      ui.on("baseColor", (val) => {
+        myColor.value.set(val);
       });
-
-      //
 
       cleans.push(() => {
         box.removeFromParent();
@@ -87,7 +89,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     return () => {
       cleans.forEach((r) => r());
     };
-  }, [io, onLoop]);
+  }, [io, ui, onLoop, group]);
 
   //
   return <></>;

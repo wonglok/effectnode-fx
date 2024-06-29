@@ -40,6 +40,21 @@ export function CodeRun({
 
   let ui = useMemo(() => {
     return {
+      on: (label, fnc) => {
+        onClean(
+          useStore.subscribe((state) => {
+            let settings = state.settings;
+            let setting = settings.find((r) => r.nodeID === nodeOne?._id);
+            let datas = setting.data.filter((r) => r.label === label);
+            if (datas.length > 1) {
+              console.log("error, duplicated settings name", label);
+            }
+            [datas[0]].forEach((dat) => {
+              fnc(dat.value);
+            });
+          })
+        );
+      },
       provide: ({
         label = "objectName",
         type = "text",
@@ -94,7 +109,7 @@ export function CodeRun({
         return output;
       },
     };
-  }, [nodeOne?._id, useStore]);
+  }, [nodeOne?._id, onClean, useStore]);
 
   if (setting && setting?.data) {
     for (let userInput of setting.data) {

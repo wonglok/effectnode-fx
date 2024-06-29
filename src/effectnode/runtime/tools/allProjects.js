@@ -61,10 +61,18 @@ async function loadProjects({ onData = () => {} }) {
     }
   });
 
-  setTimeout(() => {
-    onData({ projects: projectGraphs });
-  }, 1);
+  // setTimeout(() => {
+  //   onData({ projects: projectGraphs });
+  // }, 1);
 
+  window.dispatchEvent(
+    new CustomEvent("effectNode", { detail: { projects: projectGraphs } })
+  );
+  window.addEventListener("requestEffectNode", () => {
+    window.dispatchEvent(
+      new CustomEvent("effectNode", { detail: { projects: projectGraphs } })
+    );
+  });
   //
   // console.log(projectGraphs);
   return projectGraphs;
@@ -76,4 +84,8 @@ async function loadProjects({ onData = () => {} }) {
 // );
 
 // loadProjects(require.context("../projects", true, /graph\.json$/, "lazy"));
+
+if (typeof window !== "undefined") {
+  loadProjects({ onData: () => {} });
+}
 export const getAllProjects = loadProjects;

@@ -77,6 +77,14 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       io.out(4, {
         scene: scene,
       });
+      io.in(0, (node) => {
+        scene.backgroundNode = node;
+        scene.environmentNode = node;
+      });
+      cleans.push(() => {
+        scene.backgroundNode = null;
+        scene.environmentNode = null;
+      });
 
       cleans.push(clean);
     };

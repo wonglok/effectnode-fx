@@ -70,8 +70,9 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     let clean = () => {};
 
     let setup = async () => {
-      let rgbe = new TextureLoader();
-      let tex = await rgbe.loadAsync(sakura).then((tex) => {
+      let load = new TextureLoader();
+      let tex = await load.loadAsync(sakura).then((tex) => {
+        tex.generateMipmaps = true;
         tex.colorSpace = sRGBEncoding;
         tex.mapping = EquirectangularReflectionMapping;
 
@@ -79,16 +80,10 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       });
 
       io.out(0, texture(tex, uv()));
-
-      io.in(0, ({ scene }) => {
-        if (!scene) {
-          return;
-        }
-
-        let node = texture(tex, uv());
-        scene.backgroundNode = node;
-        scene.envrionmentNode = node;
-      });
+      io.out(1, texture(tex, uv()));
+      io.out(2, texture(tex, uv()));
+      io.out(3, texture(tex, uv()));
+      io.out(4, texture(tex, uv()));
     };
 
     setup();

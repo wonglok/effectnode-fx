@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { getAllProjects } from "./tools/allProjects";
 
 import { RunnerRuntime } from "./RunnerRuntime";
 import { RunnerToolBox } from "./RunnerToolBox";
 import md5 from "md5";
 import { create } from "zustand";
 import { getSignature } from "./tools/getSignature";
+import { Emit } from "./Emit";
 
 export function EffectNode({
   useStore,
@@ -25,16 +25,21 @@ export function EffectNode({
   let [{ projects, map }, setProjects] = useState({ projects: [], map: false });
   let currentProject = projects.find((r) => r.projectName === projectName);
   useEffect(() => {
-    //
-    if (process.env.NODE_ENV === "development") {
-      let last = "";
-      setProjects({ projects: [], map: false });
-      getAllProjects({
-        onData: ({ projects }) => {
-          let now = getSignature(projects);
-          if (last !== now) {
-            console.log(now);
+    let last = "";
 
+    window.addEventListener("effectNode", ({ detail }) => {
+      let { projects } = detail;
+      let now = getSignature(projects);
+      if (last !== now) {
+        last = now;
+        // console.log(now, last);
+
+        //
+
+        //
+        setProjects({ projects: [], map: false });
+        requestIdleCallback(
+          () => {
             setProjects({
               projects,
               map: create((set, get) => {
@@ -44,32 +49,13 @@ export function EffectNode({
                 };
               }),
             });
-            last = now;
-          }
-        },
-      });
-    } else {
-      setProjects({ projects: [], map: false });
-      getAllProjects({
-        onData: ({ projects }) => {
-          setProjects({
-            projects,
-            map: create((set, get) => {
-              return {
-                set,
-                get,
-              };
-            }),
-          });
-        },
-      });
+          },
+          { timeout: 500 }
+        );
+      }
+    });
 
-      //
-
-      // .then((pjs) => {
-      //   setProjects(pjs);
-      // });
-    }
+    window.dispatchEvent(new CustomEvent("requestEffectNode", { detail: {} }));
   }, []);
 
   let randID = useMemo(() => {
@@ -131,6 +117,7 @@ export function EffectNode({
   let codes = currentProject?.codes || [];
   return (
     <>
+      <Emit></Emit>
       {map && (
         <div id={randID} className="w-full h-full overflow-hidden">
           {mode === "runtime" &&
