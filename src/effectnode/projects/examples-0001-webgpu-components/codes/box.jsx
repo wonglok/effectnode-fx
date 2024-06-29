@@ -23,6 +23,7 @@ import {
   MeshStandardNodeMaterial,
   color,
   uniform,
+  uv,
 } from "three/examples/jsm/nodes/Nodes";
 
 export function ToolBox({ ui, useStore, domElement }) {
@@ -72,10 +73,9 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         scene.add(group);
       });
 
-      const myColor = uniform(new Color());
-      mat.colorNode = myColor;
+      mat.colorNode = uniform(new Color());
       ui.on("baseColor", (val) => {
-        myColor.value.set(val);
+        mat.colorNode.value.set(val);
       });
 
       cleans.push(() => {
