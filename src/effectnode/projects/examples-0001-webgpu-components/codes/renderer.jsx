@@ -41,7 +41,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     ui.provide({
       label: "service",
       type: "text",
-      defaultValue: "canvas",
+      defaultValue: "renderer",
     });
   }, [ui]);
 
