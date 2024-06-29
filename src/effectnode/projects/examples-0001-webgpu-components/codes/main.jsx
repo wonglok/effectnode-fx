@@ -31,9 +31,8 @@ export function Runtime({ ui, useStore, io }) {
           new WebGPURenderer({ canvas, antialias: true, multisampling: 4 })
         }
       >
-        <RenderStuff useStore={useStore}>
-          <t3d.Out></t3d.Out>
-        </RenderStuff>
+        <RenderStuff useStore={useStore}></RenderStuff>
+        <t3d.Out></t3d.Out>
       </Canvas>
     </>
   );

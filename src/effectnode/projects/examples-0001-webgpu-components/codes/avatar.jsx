@@ -51,9 +51,17 @@ function Avatar({ useStore }) {
       gltfLoader.loadAsync(`${lok}`),
       fbxLoader.loadAsync(`${motionURL}`),
     ]).then(([glb, motion]) => {
+      let skinnedMesh;
       glb.scene.traverse((it) => {
-        console.log(it);
+        if (it.isSkinnedMesh) {
+          if (!skinnedMesh) {
+            skinnedMesh = it;
+          }
+        }
       });
+
+      console.log(skinnedMesh);
+
       let action = mixer.clipAction(motion.animations[0], glb.scene);
       action.play();
 
