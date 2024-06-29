@@ -105,6 +105,35 @@ export function EffectNode({
     };
   }, [randID]);
 
+  let [{ onLoop }, setAPI] = useState({
+    onLoop: () => {},
+  });
+  useEffect(() => {
+    if (!map) {
+      return;
+    }
+    let api = {
+      tsk: [],
+      onLoop: (v) => {
+        api.tsk.push(v);
+      },
+      workAll: () => {},
+    };
+
+    setAPI(api);
+
+    let rAFID = 0;
+    let rAF = () => {
+      rAFID = requestAnimationFrame(rAF);
+      api.tsk.forEach((t) => t());
+    };
+    rAFID = requestAnimationFrame(rAF);
+
+    return () => {
+      cancelAnimationFrame(rAFID);
+    };
+  }, [map]);
+
   //
   // console.log(codes);
   //
@@ -123,6 +152,7 @@ export function EffectNode({
               .map((code) => {
                 return (
                   <RunnerRuntime
+                    onLoop={onLoop}
                     socketMap={map}
                     win={win}
                     key={code._id}
@@ -143,6 +173,7 @@ export function EffectNode({
               .map((code) => {
                 return (
                   <RunnerToolBox
+                    onLoop={onLoop}
                     win={win}
                     socketMap={map}
                     key={code._id}

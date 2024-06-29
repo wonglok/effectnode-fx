@@ -1,6 +1,5 @@
 import md5 from "md5";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Clock } from "three";
+import { useEffect, useMemo, useState } from "react";
 import { getID } from "./tools/getID";
 
 export function CodeRun({
@@ -10,6 +9,7 @@ export function CodeRun({
   domElement,
   win = false,
   socketMap,
+  onLoop,
 }) {
   let settings = useStore((r) => r.settings);
   let graph = useStore((r) => r.graph) || {};
@@ -37,32 +37,6 @@ export function CodeRun({
       cleanAll();
     };
   }, [cleanAll]);
-
-  let [{ onLoop }, setAPI] = useState({
-    onLoop: () => {},
-  });
-  useEffect(() => {
-    let api = {
-      tsk: [],
-      onLoop: (v) => {
-        api.tsk.push(v);
-      },
-      workAll: () => {},
-    };
-
-    setAPI(api);
-
-    let rAFID = 0;
-    let rAF = () => {
-      rAFID = requestAnimationFrame(rAF);
-      api.tsk.forEach((t) => t());
-    };
-    rAFID = requestAnimationFrame(rAF);
-
-    return () => {
-      cancelAnimationFrame(rAFID);
-    };
-  }, []);
 
   let ui = useMemo(() => {
     return {
@@ -204,7 +178,7 @@ export function CodeRun({
 
   return (
     <>
-      {io && (
+      {io && socketMap && (
         <Algorithm
           //
           win={win}

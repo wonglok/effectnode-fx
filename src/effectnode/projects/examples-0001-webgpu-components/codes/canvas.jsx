@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 import { useEffect, useMemo } from "react";
 import { getID } from "src/effectnode/runtime/tools/getID";
-import { Scene } from "three";
+import { Color, Scene } from "three";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer";
 
 export function ToolBox({ ui, useStore, domElement }) {
@@ -54,6 +54,8 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         gl: renderer,
         scene: scene,
       });
+
+      // scene.background = new Color(0xffffff * Math.random());
 
       io.out(0, {
         renderer: renderer,

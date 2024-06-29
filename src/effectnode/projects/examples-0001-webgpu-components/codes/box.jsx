@@ -53,9 +53,10 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         box.rotation.y += dt;
       });
 
-      let { scene } = await io.in(0, (streamVal) => {});
+      io.in(0, ({ scene }) => {
+        scene.add(box);
+      });
 
-      scene.add(box);
       cleans.push(() => {
         box.removeFromParent();
       });

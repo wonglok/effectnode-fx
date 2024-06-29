@@ -50,20 +50,22 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     //   return api;
     // };
 
-    Promise.all([
-      io.in(0, (streamVal) => {}),
-      io.in(1, (streamVal) => {}),
-    ]).then(
-      ([
-        //
-        { gl, renderer, scene },
-        { camera },
-      ]) => {
-        onLoop(() => {
-          gl.renderAsync(scene, camera);
-        });
+    let yo = {};
+    io.in(0, ({ scene, gl }) => {
+      yo.scene = scene;
+      yo.gl = gl;
+    });
+    io.in(1, ({ camera }) => {
+      yo.camera = camera;
+    });
+
+    onLoop(() => {
+      let { gl, camera, scene } = yo;
+
+      if (gl && camera && scene) {
+        gl.renderAsync(scene, camera);
       }
-    );
+    });
 
     return () => {
       // run = false;

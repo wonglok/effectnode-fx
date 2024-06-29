@@ -46,19 +46,20 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
       Promise.all([
         //
-        io.in(0, (streamVal) => {}),
+
         rgbe.loadAsync(`${hdr}`),
       ]).then(
         ([
           //
-          { gl, renderer, scene },
           tex,
         ]) => {
           tex.mapping = EquirectangularReflectionMapping;
 
-          scene.background = tex;
-          scene.environment = tex;
-          tex.needsUpdate = true;
+          io.in(0, ({ scene }) => {
+            scene.background = tex;
+            scene.environment = tex;
+            tex.needsUpdate = true;
+          });
         }
       );
 

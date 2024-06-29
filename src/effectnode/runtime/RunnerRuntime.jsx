@@ -1,7 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { CodeRun } from "./CodeRun";
 
-export function RunnerRuntime({ socketMap, win, code, useStore, domElement }) {
+export function RunnerRuntime({
+  onLoop,
+  socketMap,
+  win,
+  code,
+  useStore,
+  domElement,
+}) {
   //
   let [mounted, setMount] = useState(null);
   //
@@ -16,6 +23,7 @@ export function RunnerRuntime({ socketMap, win, code, useStore, domElement }) {
     codePromise.then((mod) => {
       setMount(
         <CodeRun
+          onLoop={onLoop}
           win={win}
           socketMap={socketMap}
           domElement={domElement}
@@ -29,7 +37,7 @@ export function RunnerRuntime({ socketMap, win, code, useStore, domElement }) {
     return () => {
       setMount(null);
     };
-  }, [codeName, socketMap, codePromise, domElement, win, useStore]);
+  }, [codeName, onLoop, socketMap, codePromise, domElement, win, useStore]);
 
   //
   return (
