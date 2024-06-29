@@ -22,8 +22,11 @@ export function EffectNode({
   let nodes = graph.nodes || [];
   let [api, setDisplay] = useState({ domElement: false });
 
-  let [{ projects, map }, setProjects] = useState({ projects: [], map: false });
-  let currentProject = projects.find((r) => r.projectName === projectName);
+  let [{ projects, map, useRuntime, project }, setProjects] = useState({
+    projects: [],
+    map: false,
+    useRuntime: false,
+  });
   useEffect(() => {
     let last = "";
 
@@ -35,24 +38,37 @@ export function EffectNode({
         // console.log(now, last);
 
         //
-
-        //
         requestAnimationFrame(() => {
-          setProjects({
-            projects,
-            map: create((set, get) => {
-              return {
-                set,
-                get,
-              };
-            }),
-          });
+          let project = projects.find((r) => r.projectName === projectName);
+
+          if (project) {
+            //
+            setProjects({
+              projects,
+              project: project,
+              useRuntime: create((set, get) => {
+                return {
+                  codes: project.codes,
+                  settings: project.settings,
+                  graph: project.graph,
+                  set,
+                  get,
+                };
+              }),
+              map: create((set, get) => {
+                return {
+                  set,
+                  get,
+                };
+              }),
+            });
+          }
         });
       }
     });
 
     window.dispatchEvent(new CustomEvent("requestEffectNode", { detail: {} }));
-  }, []);
+  }, [projectName]);
 
   let randID = useMemo(() => {
     return `_${md5(projectName)}`;
@@ -110,11 +126,11 @@ export function EffectNode({
   //
   // console.log(codes);
   //
-  let codes = currentProject?.codes || [];
+  let codes = project?.codes || [];
   return (
     <>
       <Emit></Emit>
-      {map && (
+      {map && useRuntime && (
         <div id={randID} className="w-full h-full overflow-hidden">
           {mode === "runtime" &&
             api.domElement &&
@@ -131,8 +147,8 @@ export function EffectNode({
                     win={win}
                     key={code._id}
                     code={code}
-                    useStore={useStore}
-                    project={currentProject}
+                    useStore={useRuntime}
+                    project={project}
                     domElement={api.domElement}
                   ></RunnerRuntime>
                 );
@@ -152,8 +168,8 @@ export function EffectNode({
                     socketMap={map}
                     key={code._id}
                     code={code}
-                    useStore={useStore}
-                    project={currentProject}
+                    useStore={useRuntime}
+                    project={project}
                     domElement={api.domElement}
                   ></RunnerToolBox>
                 );
