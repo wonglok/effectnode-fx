@@ -1,13 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { getAllProjects } from "./tools/allProjects";
-// import { getID } from "./tools/getID";
+
 import { RunnerRuntime } from "./RunnerRuntime";
 import { RunnerToolBox } from "./RunnerToolBox";
 import md5 from "md5";
 import { create } from "zustand";
-// import { getID } from "./tools/getID";
-// import { getSignature } from "./tools/getSignature";
-// import { getSignature } from "./tools/getSignature";
+import { getSignature } from "./tools/getSignature";
 
 export function EffectNode({
   useStore,
@@ -29,32 +27,25 @@ export function EffectNode({
   useEffect(() => {
     //
     if (process.env.NODE_ENV === "development") {
-      // //
-      // getAllProjects().then((pjs) => {
-      //   setProjects((old) => {
-      //     let newStr = getSignature(pjs);
-      //     let oldStr = getSignature(old);
-
-      //     if (newStr === oldStr) {
-      //       return old;
-      //     } else {
-      //       return pjs;
-      //     }
-      //   });
-      // });
-
+      let last = "";
       setProjects({ projects: [], map: false });
       getAllProjects({
         onData: ({ projects }) => {
-          setProjects({
-            projects,
-            map: create((set, get) => {
-              return {
-                set,
-                get,
-              };
-            }),
-          });
+          let now = getSignature(projects);
+          if (last !== now) {
+            console.log(now);
+
+            setProjects({
+              projects,
+              map: create((set, get) => {
+                return {
+                  set,
+                  get,
+                };
+              }),
+            });
+            last = now;
+          }
         },
       });
     } else {

@@ -43,7 +43,6 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       camera: camera,
     });
 
-    //
     let onResize = () => {
       if (!domElement) {
         return;
