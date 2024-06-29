@@ -41,8 +41,8 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     let cleans = [];
     let setup = async () => {
       let geo = new BoxGeometry(1, 1, 1);
-      let mat = new MeshStandardNodeMaterial({ color: "#ff0000" });
-      mat.roughness = 0.1;
+      let mat = new MeshStandardNodeMaterial({ color: "#ffffff" });
+      mat.roughness = 0.5;
       mat.metalness = 0.9;
 
       let box = new Mesh(geo, mat);
@@ -63,7 +63,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       });
 
       io.in(1, (node) => {
-        mat.envNode = node;
+        mat.colorNode = node;
       });
 
       cleans.push(() => {
