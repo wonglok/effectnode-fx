@@ -415,9 +415,9 @@
         "_id": "_g0yxsh7_k03zw0b",
         "title": "box",
         "position": [
-          3.6590084833361356,
+          3.579704842418673,
           0,
-          1.179697596438277
+          2.5091289055501176
         ],
         "inputs": [
           {
@@ -563,9 +563,9 @@
         "_id": "_c5ywkvn_srwmdq4",
         "title": "hdr",
         "position": [
-          1.1133098068283596,
+          3.7451301565563626,
           0,
-          1.1600997967027484
+          0.7393139171848712
         ],
         "inputs": [
           {
@@ -780,6 +780,21 @@
           "_id": "_ebw5b2c_ip9qz96",
           "type": "output",
           "nodeID": "_gz9jlp2_2f5ix1a",
+          "label": ""
+        }
+      },
+      {
+        "id": "_23gvqvg_paaeixc",
+        "input": {
+          "_id": "_qi6vp4n_sagoq3s",
+          "type": "input",
+          "nodeID": "_g0yxsh7_k03zw0b",
+          "label": ""
+        },
+        "output": {
+          "_id": "_eqwvqw4_g9x7nv9",
+          "type": "output",
+          "nodeID": "_c5ywkvn_srwmdq4",
           "label": ""
         }
       }

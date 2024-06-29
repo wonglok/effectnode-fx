@@ -83,9 +83,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
           //
 
-          io.out(0, {
-            texNode: node,
-          });
+          io.out(0, node);
 
           scene.backgroundNode = node;
           scene.envrionmentNode = node;
