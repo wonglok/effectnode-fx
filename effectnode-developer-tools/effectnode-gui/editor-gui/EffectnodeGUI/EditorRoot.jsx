@@ -332,7 +332,7 @@ export class EditorCore {
         if (win) {
           win.top = 10;
           win.left = 10;
-          win.width = 600;
+          win.width = window.innerWidth * 0.5;
           win.height = (window.innerHeight - 130) / 2 - 10 - 10;
         }
 
@@ -348,7 +348,7 @@ export class EditorCore {
       {
         let win = wins.find((r) => r.type === "previewer");
         if (win) {
-          win.width = 600;
+          win.width = window.innerWidth * 0.5;
           win.height = (window.innerHeight - 130) / 2 - 15;
           win.top = (window.innerHeight - 130) / 2 + 30;
           win.left = 10;

@@ -163,11 +163,12 @@ function Content({ useStore }) {
                 let dist = graphCursorState.ts.distanceTo(point);
 
                 let offset = ({ win }) => {
-                  win.left = 630;
+                  let sizeWidth = window.innerWidth / 2 + 20;
+                  win.left = sizeWidth;
                   win.top = 10;
                   //
                   win.height = window.innerHeight - 130;
-                  win.width = window.innerWidth - 630 - 10;
+                  win.width = window.innerWidth - sizeWidth - 10;
 
                   //
                 };
