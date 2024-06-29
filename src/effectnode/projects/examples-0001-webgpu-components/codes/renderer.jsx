@@ -67,15 +67,12 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       domElement.appendChild(renderer.domElement);
 
       let clean = () => {
-        io.out(0, {
-          renderer: null,
-          gl: null,
-        });
-
+        console.log("[clean] renderer");
         window.removeEventListener("resize", onResize);
         domElement.removeChild(renderer.domElement);
       };
 
+      await renderer.init();
       io.out(0, {
         renderer: renderer,
         gl: renderer,
