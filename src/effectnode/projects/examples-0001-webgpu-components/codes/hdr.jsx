@@ -69,26 +69,38 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     let setup = async () => {
       //
 
+      let yo = {};
       io.in(0, async ({ gl, scene }) => {
         if (!scene) {
           return;
         }
-        let img = new TextureLoader();
+        yo.scene = scene;
+      });
 
-        img.load(sakura, (png) => {
-          const reflectVec = positionViewDirection
-            // .negate()
-            .reflect(normalView)
-            .transformDirection(cameraViewMatrix);
+      let img = new TextureLoader();
 
-          png.mapping = EquirectangularReflectionMapping;
+      img.load(sakura, (png) => {
+        const reflectVec = positionViewDirection
+          // .negate()
+          .reflect(normalView)
+          .transformDirection(cameraViewMatrix);
 
-          const pmremRoughness = uniform(0.5);
-          const pmremNode = pmremTexture(png, reflectVec, pmremRoughness);
+        png.mapping = EquirectangularReflectionMapping;
 
-          scene.environmentNode = pmremNode;
-          scene.backgroundNode = pmremNode;
-        });
+        const pmremRoughness = uniform(0.5);
+        const pmremNode = pmremTexture(png, reflectVec, pmremRoughness);
+
+        let tt = setInterval(() => {
+          //
+          if (yo.scene) {
+            clearInterval(tt);
+
+            // yo.scene.environmentNode = pmremNode;
+            // yo.scene.backgroundNode = pmremNode;
+          }
+
+          //
+        }, 0);
       });
 
       // io.in(0, ({ scene }) => {
