@@ -65,7 +65,6 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         renderer.setPixelRatio(window.devicePixelRatio);
       };
 
-      //
       window.addEventListener("resize", onResize);
       domElement.appendChild(renderer.domElement);
 
