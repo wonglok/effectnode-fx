@@ -149,7 +149,7 @@ export function CodeRun({
           }
 
           if (key.startsWith("in")) {
-            return (idx, handler) => {
+            return (idx, handler = () => {}) => {
               return new Promise((resolve) => {
                 //
                 // let idx = Number(key.replace("in", ""));
@@ -168,6 +168,7 @@ export function CodeRun({
                   let val = socketMap.getState()[input._id];
                   if (typeof val !== "undefined") {
                     handler(val);
+                    resolve(val);
                     clearInterval(tt);
                   }
                 });

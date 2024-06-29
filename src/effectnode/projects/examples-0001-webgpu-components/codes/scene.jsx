@@ -50,7 +50,8 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     let setup = async ({ domElement }) => {
       let scene = new Scene();
 
-      scene.environmentNode = uniform(new Color("#ffffff"));
+      // scene.environmentNode = uniform(new Color("#ffffff"));
+      // scene.backgroundNode = uniform(new Color("#ffffff"));
 
       let clean = () => {
         io.out(0, {
@@ -64,7 +65,14 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       io.out(3, scene);
       io.out(4, scene);
 
-      io.in(0, (node) => {
+      io.in(0, (tex) => {
+        tex.generateMipmaps = true;
+
+        scene.environment = tex;
+        scene.background = tex;
+        tex.needsUpdate = true;
+
+        //
         // scene.backgroundNode = node;
         // scene.environmentNode = node;
       });
