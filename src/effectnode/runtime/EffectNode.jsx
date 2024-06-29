@@ -30,7 +30,7 @@ export function EffectNode({
     window.addEventListener("effectNode", ({ detail }) => {
       let { projects } = detail;
       let now = getSignature(projects);
-      if (last !== now) {
+      if (last !== now || true) {
         last = now;
         // console.log(now, last);
 

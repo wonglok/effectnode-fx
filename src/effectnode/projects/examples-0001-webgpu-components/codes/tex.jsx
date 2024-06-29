@@ -71,19 +71,20 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
     let setup = async () => {
       let load = new TextureLoader();
-      let tex = await load.loadAsync(sakura).then((tex) => {
+      load.loadAsync(sakura).then((tex) => {
         tex.generateMipmaps = true;
+        tex.anisotropy = 16;
         tex.colorSpace = sRGBEncoding;
         tex.mapping = EquirectangularReflectionMapping;
 
+        io.out(0, tex);
+        io.out(1, tex);
+        io.out(2, tex);
+        io.out(3, tex);
+        io.out(4, tex);
+
         return tex;
       });
-
-      io.out(0, tex);
-      io.out(1, tex);
-      io.out(2, tex);
-      io.out(3, tex);
-      io.out(4, tex);
     };
 
     setup();

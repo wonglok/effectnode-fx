@@ -22,6 +22,7 @@ import {
 import {
   MeshStandardNodeMaterial,
   color,
+  texture,
   uniform,
   uv,
 } from "three/examples/jsm/nodes/Nodes";
@@ -54,8 +55,8 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     let cleans = [];
     let setup = async () => {
       let geo = new SphereGeometry(Math.random() * 0.5 * 1 + 1 * 0.5, 32, 32);
-      let mat = new MeshStandardNodeMaterial({ color: "#000000" });
-      mat.roughness = 0.5;
+      let mat = new MeshStandardNodeMaterial({ color: "#ffffff" });
+      mat.roughness = 0.05;
       mat.metalness = 1.0;
 
       let box = new Mesh(geo, mat);
@@ -76,11 +77,12 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       });
       io.in(1, (tex) => {
         //
+        mat.envMap = tex;
       });
 
-      mat.colorNode = uniform(new Color());
+      mat.color = new Color("#ffffff");
       ui.on("baseColor", (val) => {
-        mat.colorNode.value.set(val);
+        mat.color.set(val);
       });
 
       cleans.push(() => {

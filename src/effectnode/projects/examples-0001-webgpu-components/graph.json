@@ -131,7 +131,7 @@
           "_id": "_x8yh7er_7yz6m9p",
           "label": "baseColor",
           "type": "color",
-          "value": "#00d6e7"
+          "value": "#cd0808"
         },
         {
           "_id": "_pjb294p_ifz4k9y",
@@ -415,9 +415,9 @@
         "_id": "_g0yxsh7_k03zw0b",
         "title": "box",
         "position": [
-          1.985674857596242,
+          2.7853694309299573,
           0,
-          1.1353271047085598
+          1.1807307423909519
         ],
         "inputs": [
           {
@@ -563,9 +563,9 @@
         "_id": "_c5ywkvn_srwmdq4",
         "title": "tex",
         "position": [
-          1.825302361339752,
+          1.553889109700641,
           0,
-          -2.000391400582849
+          -2.1242480421961356
         ],
         "inputs": [
           {
@@ -637,9 +637,9 @@
         "_id": "_gz9jlp2_2f5ix1a",
         "title": "scene",
         "position": [
-          0.16677078891116193,
+          0.6703779595862726,
           0,
-          -0.49934891793636615
+          -0.8083426638120361
         ],
         "inputs": [
           {
@@ -769,22 +769,7 @@
         }
       },
       {
-        "id": "_3rt04bj_",
-        "input": {
-          "_id": "_qi6vp4n_sagoq3s",
-          "type": "input",
-          "nodeID": "_g0yxsh7_k03zw0b",
-          "label": ""
-        },
-        "output": {
-          "_id": "_v2mvp3p_7o1v8dz",
-          "type": "output",
-          "nodeID": "_c5ywkvn_srwmdq4",
-          "label": ""
-        }
-      },
-      {
-        "id": "_vsmwylh_",
+        "id": "_ulersm1_",
         "input": {
           "_id": "_mqof8nj_oexvvnb",
           "type": "input",
@@ -793,6 +778,21 @@
         },
         "output": {
           "_id": "_eqwvqw4_g9x7nv9",
+          "type": "output",
+          "nodeID": "_c5ywkvn_srwmdq4",
+          "label": ""
+        }
+      },
+      {
+        "id": "_1il5mmk_",
+        "input": {
+          "_id": "_qi6vp4n_sagoq3s",
+          "type": "input",
+          "nodeID": "_g0yxsh7_k03zw0b",
+          "label": ""
+        },
+        "output": {
+          "_id": "_v2mvp3p_7o1v8dz",
           "type": "output",
           "nodeID": "_c5ywkvn_srwmdq4",
           "label": ""

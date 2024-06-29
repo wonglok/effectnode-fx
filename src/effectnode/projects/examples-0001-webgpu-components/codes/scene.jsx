@@ -66,11 +66,9 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       io.out(4, scene);
 
       io.in(0, (tex) => {
-        tex.generateMipmaps = true;
-
         scene.environment = tex;
-        scene.background = tex;
-        tex.needsUpdate = true;
+        scene.environment.needsUpdate = true;
+        scene.environment.needsPMREMUpdate = true;
 
         //
         // scene.backgroundNode = node;
