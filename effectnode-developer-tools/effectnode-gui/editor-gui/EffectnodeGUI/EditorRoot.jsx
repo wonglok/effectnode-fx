@@ -311,6 +311,9 @@ export class EditorCore {
       }
 
       this.resetWindow();
+      setTimeout(() => {
+        this.resetWindow();
+      });
     };
 
     this.resetWindow = () => {
@@ -319,12 +322,12 @@ export class EditorCore {
 
       ///////
       {
-        let win = wins.find((r) => r.type === "previewer");
+        let win = wins.find((r) => r.type === "editor");
         if (win) {
           win.top = 10;
-          win.left = window.innerWidth - win.width - 10;
+          win.left = 10;
           win.width = 600;
-          win.height = 500;
+          win.height = (window.innerHeight - 130) / 2 - 10;
         }
 
         this.setState({
@@ -337,11 +340,11 @@ export class EditorCore {
 
       ///////
       {
-        let win = wins.find((r) => r.type === "editor");
+        let win = wins.find((r) => r.type === "previewer");
         if (win) {
           win.width = 600;
-          win.height = window.innerHeight - 130;
-          win.top = 10;
+          win.height = (window.innerHeight - 130) / 2 - 10;
+          win.top = (window.innerHeight - 130) / 2 + 30;
           win.left = 10;
         }
 

@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
  */
 import { useEffect, useMemo } from "react";
+import { getID } from "src/effectnode/runtime/tools/getID";
 import { Scene } from "three";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer";
 
@@ -30,20 +31,69 @@ export function ToolBox({ ui, useStore, domElement }) {
 
 export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   //
-  let mainProgram = useMemo(() => {
+  let service = useMemo(() => {
     return ui.provide({
       label: "service",
       type: "text",
-      defaultValue: "mainProgram",
+      defaultValue: "canvas",
     });
   }, [ui]);
 
+  let randID = useMemo(() => {
+    return "_" + getID();
+  }, []);
+
   useEffect(() => {
-    //
-  }, [domElement, useStore]);
+    let clean = () => {};
+
+    let setup = ({ domElement }) => {
+      let { width, height } = domElement.getBoundingClientRect();
+      let renderer = new WebGPURenderer({ antialias: true });
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(width, height);
+
+      let scene = new Scene();
+      //
+      useStore.setState({
+        renderer: renderer,
+        gl: renderer,
+        scene: scene,
+      });
+
+      let onResize = () => {
+        let { width, height } = domElement.getBoundingClientRect();
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(window.devicePixelRatio);
+      };
+      //
+      window.addEventListener("resize", onResize);
+      domElement.appendChild(renderer.domElement);
+      clean = () => {
+        window.removeEventListener("resize", onResize);
+        domElement.removeChild(renderer.domElement);
+      };
+    };
+
+    ///
+    let tt = setInterval(() => {
+      if (document.getElementById(randID)) {
+        clearInterval(tt);
+        let domElement = document.getElementById(randID);
+        setup({ domElement: domElement });
+      }
+    }, 0);
+
+    return () => {
+      clean();
+    };
+  }, [randID, useStore]);
 
   //
-  return <></>;
+  return (
+    <>
+      <div id={randID} className="w-full h-full"></div>
+    </>
+  );
 }
 
 //

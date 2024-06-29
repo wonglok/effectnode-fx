@@ -1,6 +1,7 @@
 import md5 from "md5";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Clock } from "three";
+import { getID } from "./tools/getID";
 
 export function CodeRun({
   useStore,
@@ -15,6 +16,54 @@ export function CodeRun({
   let nodeOne = nodes.find((r) => r.title === codeName);
   let setting = settings.find((r) => r.nodeID === nodeOne?._id);
 
+  let [{ onClean, cleanAll }] = useState(() => {
+    let api = {
+      cleans: [],
+      onClean: (v) => {
+        api.cleans.push(v);
+      },
+      cleanAll: () => {
+        api.cleans.forEach((t) => t());
+        api.cleans = [];
+      },
+    };
+
+    return api;
+  });
+
+  useEffect(() => {
+    return () => {
+      cleanAll();
+    };
+  }, [cleanAll]);
+
+  let [loop] = useState([]);
+  useEffect(() => {
+    let c = new Clock();
+    let tt = 0;
+    let rAF = () => {
+      tt = requestAnimationFrame(rAF);
+      let dt = c.getDelta();
+      loop.forEach((r) => r({}, dt));
+    };
+    tt = requestAnimationFrame(rAF);
+    return () => {
+      cancelAnimationFrame(tt);
+    };
+  }, [loop]);
+
+  let onLoop = useCallback(
+    (v) => {
+      loop.push(v);
+
+      onClean(() => {
+        let idx = loop.findIndex((l) => l === v);
+        loop.splice(idx, 1);
+      });
+    },
+    [loop, onClean]
+  );
+
   let ui = useMemo(() => {
     return {
       provide: ({
@@ -23,12 +72,20 @@ export function CodeRun({
         defaultValue,
         ...config
       }) => {
+        //
+        if (!["text", "range", "color", "number"].includes(type)) {
+          throw new Error("not supported type: " + type);
+        }
+        if (type === "number") {
+          type = "range";
+        }
+
         let settings = useStore.getState().settings;
         let setting = settings.find((r) => r.nodeID === nodeOne?._id);
         // setting.data
         if (!setting.data.some((r) => r.label === label)) {
           let entry = {
-            _id: `${md5(label)}`,
+            _id: `${md5(getID())}`,
             label: `${label}`,
             type: `${type}`,
             value: defaultValue,
@@ -54,9 +111,12 @@ export function CodeRun({
           output.value = data.value;
         });
 
-        useStore.setState({
-          settings: JSON.parse(JSON.stringify(useStore.getState().settings)),
+        setTimeout(() => {
+          useStore.setState({
+            settings: JSON.parse(JSON.stringify(useStore.getState().settings)),
+          });
         });
+
         return output;
       },
     };
@@ -68,39 +128,13 @@ export function CodeRun({
     }
   }
 
-  let [loop] = useState([]);
-  useEffect(() => {
-    let c = new Clock();
-    let tt = 0;
-    let rAF = () => {
-      tt = requestAnimationFrame(rAF);
-      let dt = c.getDelta();
-      loop.forEach((r) => r({}, dt));
-    };
-    tt = requestAnimationFrame(rAF);
-    return () => {
-      cancelAnimationFrame(tt);
-    };
-  }, [loop]);
-
-  let onLoop = useCallback(
-    (v) => {
-      loop.push(v);
-
-      return () => {
-        let idx = loop.findIndex((l) => l === v);
-        loop.splice(idx, 1);
-      };
-    },
-    [loop]
-  );
-
   let [io, setIO] = useState(false);
   useEffect(() => {
     //
 
     //
     let cleans = [];
+
     let ioPXY = new Proxy(
       {
         //
@@ -218,6 +252,7 @@ export function CodeRun({
       cleans.forEach((it) => {
         it();
       });
+      cleans = [];
     };
   }, [domElement, nodeOne, useStore]);
 
@@ -228,6 +263,7 @@ export function CodeRun({
           //
           win={win}
           onLoop={onLoop}
+          onClean={onClean}
           useStore={useStore}
           domElement={domElement}
           ui={ui}

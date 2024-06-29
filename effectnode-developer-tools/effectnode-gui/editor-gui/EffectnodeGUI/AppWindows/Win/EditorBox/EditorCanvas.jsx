@@ -295,12 +295,14 @@ function Content({ useStore }) {
 }
 
 export function EditorCanvas({ useStore }) {
-  let zoom = 3;
+  let zoom = 1;
   //
   return (
     <>
       <div
+        //
         className="w-full h-full"
+        //
         onPointerLeave={() => {
           let st = useStore.getState().graphCursorState;
           st.isDown = false;
@@ -315,9 +317,9 @@ export function EditorCanvas({ useStore }) {
             },
           });
         }}
-
         //
       >
+        {/*  */}
         <Canvas>
           <PerspectiveCamera
             makeDefault

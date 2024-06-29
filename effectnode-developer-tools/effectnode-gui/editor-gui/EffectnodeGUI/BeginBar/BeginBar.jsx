@@ -11,7 +11,7 @@ export function BeginBar({ dateString, useStore }) {
   return (
     <>
       <div className="w-full h-full flex items-center justify-between text-sm">
-        <div className=" w-52 text-white">
+        <div className="ml-2 w-36 text-white">
           <div
             onClick={() => {
               editorAPI.resetWindow();
