@@ -79,11 +79,11 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         return tex;
       });
 
-      io.out(0, texture(tex, uv()));
-      io.out(1, texture(tex, uv()));
-      io.out(2, texture(tex, uv()));
-      io.out(3, texture(tex, uv()));
-      io.out(4, texture(tex, uv()));
+      io.out(0, tex);
+      io.out(1, tex);
+      io.out(2, tex);
+      io.out(3, tex);
+      io.out(4, tex);
     };
 
     setup();

@@ -34,21 +34,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   }, [ui]);
 
   useEffect(() => {
-    // let setup = async () => {
-    //   let { scene, gl } = await io.request(0, {
-    //     requestFrom: "postproc",
-    //   });
-    //   let { camera } = await io.request(1, {
-    //     requestFrom: "postproc",
-    //   });
-
-    //   let api = {
-    //     render: () => {
-    //       gl.renderAsync(scene, camera);
-    //     },
-    //   };
-    //   return api;
-    // };
+    //
 
     let yo = {};
     io.in(0, ({ gl }) => {
@@ -57,7 +43,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     io.in(1, ({ camera }) => {
       yo.camera = camera;
     });
-    io.in(2, ({ scene }) => {
+    io.in(2, (scene) => {
       yo.scene = scene;
     });
 
@@ -65,14 +51,14 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
     let rAFID = 0;
     let render = async () => {
+      rAFID = requestAnimationFrame(render);
       let { gl, camera, scene } = yo;
 
       if (gl && camera && scene && run) {
-        await gl.renderAsync(scene, camera).catch((t) => {
+        gl.renderAsync(scene, camera).catch((t) => {
           console.log(t);
         });
       }
-      rAFID = requestAnimationFrame(render);
     };
     rAFID = requestAnimationFrame(render);
 

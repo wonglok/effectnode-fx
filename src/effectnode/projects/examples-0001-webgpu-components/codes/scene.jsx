@@ -21,7 +21,7 @@ import {
 } from "three";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer";
 import { sRGBEncoding } from "@react-three/drei/helpers/deprecated";
-import { texture, uv } from "three/examples/jsm/nodes/Nodes";
+import { texture, uniform, uv } from "three/examples/jsm/nodes/Nodes";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 
 export function ToolBox({ ui, useStore, domElement }) {
@@ -50,11 +50,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     let setup = async ({ domElement }) => {
       let scene = new Scene();
 
-      scene.background = new Color().setHSL(
-        0.3,
-        0.5,
-        Math.random() * 0.5 + 0.5
-      );
+      scene.environmentNode = uniform(new Color("#ffffff"));
 
       let clean = () => {
         io.out(0, {
@@ -62,29 +58,21 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         });
       };
 
-      io.out(0, {
-        scene: scene,
-      });
-      io.out(1, {
-        scene: scene,
-      });
-      io.out(2, {
-        scene: scene,
-      });
-      io.out(3, {
-        scene: scene,
-      });
-      io.out(4, {
-        scene: scene,
-      });
+      io.out(0, scene);
+      io.out(1, scene);
+      io.out(2, scene);
+      io.out(3, scene);
+      io.out(4, scene);
+
       io.in(0, (node) => {
-        scene.backgroundNode = node;
-        scene.environmentNode = node;
+        // scene.backgroundNode = node;
+        // scene.environmentNode = node;
       });
-      cleans.push(() => {
-        scene.backgroundNode = null;
-        scene.environmentNode = null;
-      });
+
+      // cleans.push(() => {
+      //   scene.backgroundNode = null;
+      //   scene.environmentNode = null;
+      // });
 
       cleans.push(clean);
     };

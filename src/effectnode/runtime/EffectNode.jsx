@@ -37,7 +37,6 @@ export function EffectNode({
         //
 
         //
-        setProjects({ projects: [], map: false });
         requestIdleCallback(
           () => {
             setProjects({

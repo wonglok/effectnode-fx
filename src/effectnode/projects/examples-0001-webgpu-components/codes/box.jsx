@@ -38,7 +38,6 @@ export function ToolBox({ ui, useStore, domElement }) {
 
 export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   //
-
   useEffect(() => {
     ui.provide({
       label: "service",
@@ -46,6 +45,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       defaultValue: "box",
     });
   }, [ui]);
+
   let group = useMemo(() => {
     return new Group();
   }, []);
@@ -53,7 +53,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   useEffect(() => {
     let cleans = [];
     let setup = async () => {
-      let geo = new SphereGeometry(1, 32, 32);
+      let geo = new SphereGeometry(Math.random() * 0.5 * 1 + 1 * 0.5, 32, 32);
       let mat = new MeshStandardNodeMaterial({ color: "#000000" });
       mat.roughness = 0.5;
       mat.metalness = 1.0;
@@ -69,8 +69,13 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       group.clear();
       group.add(box);
 
-      io.in(0, ({ scene }) => {
-        scene.add(group);
+      io.in(0, (scene) => {
+        if (scene) {
+          scene.add(group);
+        }
+      });
+      io.in(1, (tex) => {
+        //
       });
 
       mat.colorNode = uniform(new Color());

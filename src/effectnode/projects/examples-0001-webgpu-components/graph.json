@@ -131,7 +131,7 @@
           "_id": "_x8yh7er_7yz6m9p",
           "label": "baseColor",
           "type": "color",
-          "value": "#32ff13"
+          "value": "#40f1ff"
         },
         {
           "_id": "_pjb294p_ifz4k9y",
@@ -143,7 +143,7 @@
           "_id": "cb8d8b0fac700caf43c402fcfafcbe93",
           "label": "service",
           "type": "text",
-          "value": "canvas"
+          "value": "box"
         }
       ],
       "title": "box"
@@ -415,9 +415,9 @@
         "_id": "_g0yxsh7_k03zw0b",
         "title": "box",
         "position": [
-          1.1319932700548647,
+          2.381833715692948,
           0,
-          1.174548869384755
+          1.1389759878536774
         ],
         "inputs": [
           {
@@ -561,11 +561,11 @@
       {
         "spaceID": "examples-0001-webgpu-components",
         "_id": "_c5ywkvn_srwmdq4",
-        "title": "hdr",
+        "title": "tex",
         "position": [
-          1.5046162326333459,
+          1.825302361339752,
           0,
-          -1.7972430727709894
+          -2.000391400582849
         ],
         "inputs": [
           {
@@ -637,9 +637,9 @@
         "_id": "_gz9jlp2_2f5ix1a",
         "title": "scene",
         "position": [
-          -0.1421505543593813,
+          0.17982523748528753,
           0,
-          -0.5269308657681551
+          -0.576557159130667
         ],
         "inputs": [
           {
@@ -754,7 +754,22 @@
         }
       },
       {
-        "id": "_ehama1y_",
+        "id": "_502raiz_",
+        "input": {
+          "_id": "_e9h12uc_hv54ey6",
+          "type": "input",
+          "nodeID": "_g0yxsh7_k03zw0b",
+          "label": ""
+        },
+        "output": {
+          "_id": "_pwknmtc_tm4zg6m",
+          "type": "output",
+          "nodeID": "_gz9jlp2_2f5ix1a",
+          "label": ""
+        }
+      },
+      {
+        "id": "_xcv9lgn_",
         "input": {
           "_id": "_mqof8nj_oexvvnb",
           "type": "input",
@@ -769,7 +784,7 @@
         }
       },
       {
-        "id": "_pxn94lb_",
+        "id": "_ihry01y_",
         "input": {
           "_id": "_qi6vp4n_sagoq3s",
           "type": "input",
@@ -780,21 +795,6 @@
           "_id": "_v2mvp3p_7o1v8dz",
           "type": "output",
           "nodeID": "_c5ywkvn_srwmdq4",
-          "label": ""
-        }
-      },
-      {
-        "id": "_uv6n2uo_",
-        "input": {
-          "_id": "_e9h12uc_hv54ey6",
-          "type": "input",
-          "nodeID": "_g0yxsh7_k03zw0b",
-          "label": ""
-        },
-        "output": {
-          "_id": "_pwknmtc_tm4zg6m",
-          "type": "output",
-          "nodeID": "_gz9jlp2_2f5ix1a",
           "label": ""
         }
       }
