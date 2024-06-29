@@ -27,11 +27,12 @@ import { EquirectangularReflectionMapping } from "three";
 
 export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   //
-  let service = useMemo(() => {
-    return ui.provide({
+
+  useEffect(() => {
+    ui.provide({
       label: "service",
       type: "text",
-      defaultValue: "postproc",
+      defaultValue: "hdr",
     });
   }, [ui]);
 

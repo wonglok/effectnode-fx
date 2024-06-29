@@ -26,19 +26,18 @@ export function ToolBox({ ui, useStore, domElement }) {
   );
 }
 
-export function Runtime({ domElement, ui, useStore, io, onLoop }) {
+export function Runtime({ domElement, ui, useStore, io, onLoop, onClean }) {
   //
-  let service = useMemo(() => {
-    return ui.provide({
+
+  useEffect(() => {
+    ui.provide({
       label: "service",
       type: "text",
-      defaultValue: "canvas",
+      defaultValue: "box",
     });
   }, [ui]);
 
   useEffect(() => {
-    let clean = () => {};
-
     let setup = async () => {
       let { scene, gl } = await io.request(0, {
         requestFrom: "canvas",
@@ -58,17 +57,14 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       });
 
       scene.add(box);
-      clean = () => {
+      onClean(() => {
         box.removeFromParent();
-      };
+      });
     };
-
     setup();
 
-    return () => {
-      clean();
-    };
-  }, [io, onLoop]);
+    return () => {};
+  }, [io, onLoop, onClean]);
 
   //
   return <></>;
