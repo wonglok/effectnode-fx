@@ -59,18 +59,27 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       yo.camera = camera;
     });
 
-    onLoop(() => {
+    let run = true;
+
+    let rAFID = 0;
+    let render = async () => {
       let { gl, camera, scene } = yo;
 
-      if (gl && camera && scene) {
-        gl.render(scene, camera);
+      if (gl && camera && scene && run) {
+        await gl.renderAsync(scene, camera).catch((t) => {
+          console.log(t);
+        });
       }
-    });
+      rAFID = requestAnimationFrame(render);
+    };
+    rAFID = requestAnimationFrame(render);
 
     return () => {
-      // run = false;
+      run = false;
+
+      cancelAnimationFrame(rAFID);
     };
-  }, [io, onLoop]);
+  }, [io]);
 
   //
   return <></>;

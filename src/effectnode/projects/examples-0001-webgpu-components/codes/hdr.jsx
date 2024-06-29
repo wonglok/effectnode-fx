@@ -12,6 +12,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 import { useEffect, useMemo } from "react";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 
+//
+import hdr from "../assets/hdr/symmetrical_garden_02_1k.hdr";
+import {
+  EquirectangularReflectionMapping,
+  LinearFilter,
+  LinearMipMapLinearFilter,
+  LoadingManager,
+  Mesh,
+  NoColorSpace,
+  RGBAFormat,
+  RepeatWrapping,
+  SRGBColorSpace,
+  SphereGeometry,
+  Texture,
+  TextureLoader,
+  UnsignedByteType,
+} from "three";
+import {
+  MeshBasicNodeMaterial,
+  cameraViewMatrix,
+  normalView,
+  pmremTexture,
+  positionViewDirection,
+  uniform,
+  normalWorld,
+  texture,
+} from "three/examples/jsm/nodes/Nodes";
+
+import sakura from "../assets/sakura.jpg";
+import { sRGBEncoding } from "@react-three/drei/helpers/deprecated";
 export function ToolBox({ ui, useStore, domElement }) {
   return (
     <>
@@ -21,9 +51,6 @@ export function ToolBox({ ui, useStore, domElement }) {
     </>
   );
 }
-//
-import hdr from "../assets/hdr/symmetrical_garden_02_1k.hdr";
-import { EquirectangularReflectionMapping } from "three";
 
 export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   //
@@ -41,25 +68,44 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     let clean = () => {};
     let setup = async () => {
       //
-      let rgbe = new RGBELoader();
-      //
 
-      let tex = await rgbe.loadAsync(`${hdr}`);
-      tex.mapping = EquirectangularReflectionMapping;
-      tex.needsUpdate = true;
-
-      io.in(0, ({ scene }) => {
-        if (scene) {
-          scene.background = tex;
-          scene.environment = tex;
+      io.in(0, async ({ gl, scene }) => {
+        if (!scene) {
+          return;
         }
+        let img = new TextureLoader();
+
+        img.load(sakura, (png) => {
+          const reflectVec = positionViewDirection
+            // .negate()
+            .reflect(normalView)
+            .transformDirection(cameraViewMatrix);
+
+          png.mapping = EquirectangularReflectionMapping;
+
+          const pmremRoughness = uniform(0.5);
+          const pmremNode = pmremTexture(png, reflectVec, pmremRoughness);
+
+          scene.environmentNode = pmremNode;
+          scene.backgroundNode = pmremNode;
+        });
       });
 
+      // io.in(0, ({ scene }) => {
+      //   // if (scene) {
+      //   //   scene.background = tex;
+      //   //   scene.environment = tex;
+      //   //   tex.needsUpdate = true;
+      //   // }
+
+      //   if (!scene) {
+      //     return;
+      //   }
+
+      // });
+
       //
 
-      clean = () => {
-        // tex.dispose();
-      };
       //
     };
 
