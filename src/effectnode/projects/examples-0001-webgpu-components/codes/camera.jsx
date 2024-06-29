@@ -43,8 +43,16 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     let { width, height } = domElement.getBoundingClientRect();
     let camera = new PerspectiveCamera(65, width / height, 0.1, 500);
 
+    camera.position.z = 5;
+
     useStore.setState({
       camera,
+    });
+
+    io.response("all", async (req) => {
+      return {
+        camera: camera,
+      };
     });
 
     //
@@ -60,7 +68,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     return () => {
       window.removeEventListener("resize", onResize);
     };
-  }, [domElement, useStore]);
+  }, [domElement, io, useStore]);
 
   //
   return <></>;

@@ -233,7 +233,6 @@ export function CodeRun({
                     );
                     if (evs) {
                       clearInterval(tt);
-
                       run();
                     }
                   });

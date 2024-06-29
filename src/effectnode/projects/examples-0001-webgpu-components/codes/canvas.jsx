@@ -61,6 +61,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       });
 
       io.response("all", async (req) => {
+        console.log(req);
         return {
           renderer,
           gl: renderer,

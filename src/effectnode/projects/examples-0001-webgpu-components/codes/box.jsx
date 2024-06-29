@@ -11,7 +11,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 import { useEffect, useMemo } from "react";
 import { getID } from "src/effectnode/runtime/tools/getID";
-import { Scene } from "three";
+import { BoxGeometry, Clock, Color, Mesh, Scene } from "three";
+import {
+  MeshStandardNodeMaterial,
+  color,
+} from "three/examples/jsm/nodes/Nodes";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer";
 
 // import { mergeSkinnedMesh } from "../loklok/mergeSkinnedMesh.js";
@@ -42,21 +46,34 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   useEffect(() => {
     let clean = () => {};
 
-    let setup = async ({}) => {
-      io.request(0, {}).then((response) => {
-        //
-        console.log(response);
+    let setup = async () => {
+      let { scene, gl } = await io.request(0, {
+        requestFrom: "canvas",
       });
 
-      clean = () => {};
+      let geo = new BoxGeometry(1, 1, 1);
+      let mat = new MeshStandardNodeMaterial();
+      mat.colorNode = color(new Color("#ba0000"));
+      let box = new Mesh(geo, mat);
+
+      let clock = new Clock();
+      onLoop(() => {
+        let dt = clock.getDelta();
+        box.rotation.y += dt;
+      });
+
+      scene.add(box);
+      clean = () => {
+        box.removeFromParent();
+      };
     };
 
-    setup({});
+    setup();
 
     return () => {
       clean();
     };
-  }, [io, useStore]);
+  }, [io]);
 
   //
   return <></>;
