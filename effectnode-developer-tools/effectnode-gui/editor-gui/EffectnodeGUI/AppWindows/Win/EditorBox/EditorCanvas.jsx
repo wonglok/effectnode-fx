@@ -165,6 +165,11 @@ function Content({ useStore }) {
                 let offset = ({ win }) => {
                   win.left = 630;
                   win.top = 10;
+                  //
+                  win.height = window.innerHeight - 130;
+                  win.width = window.innerWidth - 630 - 10;
+
+                  //
                 };
                 if (diff <= 250 && dist <= 1) {
                   //
