@@ -10,7 +10,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
  */
 import { useEffect, useMemo } from "react";
-import { BoxGeometry, Clock, Color, Group, Mesh, Scene } from "three";
+import {
+  BoxGeometry,
+  Clock,
+  Color,
+  Group,
+  Mesh,
+  Scene,
+  SphereGeometry,
+} from "three";
 import {
   MeshStandardNodeMaterial,
   color,
@@ -40,7 +48,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   useEffect(() => {
     let cleans = [];
     let setup = async () => {
-      let geo = new BoxGeometry(1, 1, 1);
+      let geo = new SphereGeometry(1, 32, 32);
       let mat = new MeshStandardNodeMaterial({ color: "#ffffff" });
       mat.roughness = 1;
       mat.metalness = 0.0;

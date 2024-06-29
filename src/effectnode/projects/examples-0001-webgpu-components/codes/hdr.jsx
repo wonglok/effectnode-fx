@@ -75,10 +75,10 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         tex.colorSpace = sRGBEncoding;
         tex.mapping = EquirectangularReflectionMapping;
 
-        io.out(0, texture(tex, uv()));
         return tex;
-        // io.out(0, node);
       });
+
+      io.out(0, texture(tex, uv()));
 
       io.in(0, ({ scene }) => {
         if (!scene) {
