@@ -39,70 +39,27 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     });
   }, [ui]);
 
-  let randID = useMemo(() => {
-    return "_" + getID();
-  }, []);
-
   useEffect(() => {
     let clean = () => {};
 
-    let setup = ({ domElement }) => {
-      let { width, height } = domElement.getBoundingClientRect();
-      let renderer = new WebGPURenderer({ antialias: true });
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setSize(width, height);
-
-      let scene = new Scene();
-      //
-      useStore.setState({
-        renderer: renderer,
-        gl: renderer,
-        scene: scene,
+    let setup = async ({}) => {
+      io.request(0, {}).then((response) => {
+        //
+        console.log(response);
       });
 
-      io.response("all", async (req) => {
-        return {
-          renderer,
-          gl: renderer,
-          scene,
-          domElement: domElement,
-        };
-      });
-
-      let onResize = () => {
-        let { width, height } = domElement.getBoundingClientRect();
-        renderer.setSize(width, height);
-        renderer.setPixelRatio(window.devicePixelRatio);
-      };
-      //
-      window.addEventListener("resize", onResize);
-      domElement.appendChild(renderer.domElement);
-      clean = () => {
-        window.removeEventListener("resize", onResize);
-        domElement.removeChild(renderer.domElement);
-      };
+      clean = () => {};
     };
 
-    ///
-    let tt = setInterval(() => {
-      if (document.getElementById(randID)) {
-        clearInterval(tt);
-        let domElement = document.getElementById(randID);
-        setup({ domElement: domElement });
-      }
-    }, 0);
+    setup({});
 
     return () => {
       clean();
     };
-  }, [io, randID, useStore]);
+  }, [io, useStore]);
 
   //
-  return (
-    <>
-      <div id={randID} className="w-full h-full"></div>
-    </>
-  );
+  return <></>;
 }
 
 //

@@ -108,10 +108,16 @@ export const EditorRoot = ({ title }) => {
 
       let t0 = 0;
       core.onChange((state, before) => {
-        clearTimeout(t0);
-        t0 = setTimeout(() => {
-          save();
-        }, 250);
+        if (
+          state.settings !== before.settings ||
+          state.graph !== before.graph ||
+          state.spaceID !== before.spaceID
+        ) {
+          clearTimeout(t0);
+          t0 = setTimeout(() => {
+            save();
+          }, 250);
+        }
       });
     });
 
@@ -327,7 +333,7 @@ export class EditorCore {
           win.top = 10;
           win.left = 10;
           win.width = 600;
-          win.height = (window.innerHeight - 130) / 2 - 10;
+          win.height = (window.innerHeight - 130) / 2 - 10 - 10;
         }
 
         this.setState({
@@ -343,7 +349,7 @@ export class EditorCore {
         let win = wins.find((r) => r.type === "previewer");
         if (win) {
           win.width = 600;
-          win.height = (window.innerHeight - 130) / 2 - 10;
+          win.height = (window.innerHeight - 130) / 2 - 15;
           win.top = (window.innerHeight - 130) / 2 + 30;
           win.left = 10;
         }

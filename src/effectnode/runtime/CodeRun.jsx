@@ -168,23 +168,48 @@ export function CodeRun({
             return (idx, handler) => {
               // let idx = Number(key.replace("res", ""));
 
-              let node = nodeOne;
-              let socket = node.outputs[idx];
+              let work = (idx) => {
+                let node = nodeOne;
+                let socket = node.outputs[idx];
 
-              //
-              let hh = async ({ detail }) => {
-                let response = await handler(detail.requestData);
-                detail.collectResponse(response);
+                //
+                let hh = async ({ detail }) => {
+                  let response = await handler(detail.requestData);
+                  detail.collectResponse(response);
+                };
+                domElement.setAttribute(
+                  "data-" + socket._id + "serve",
+                  node._id
+                );
+
+                cleans.push(() => {
+                  domElement.removeEventListener(socket._id + "serve", hh);
+                });
+
+                domElement.addEventListener(socket._id + "serve", hh);
+                return () => {
+                  domElement.removeEventListener(socket._id + "serve", hh);
+                };
               };
-              domElement.addEventListener(socket._id + "serve", hh);
 
-              cleans.push(() => {
-                domElement.removeEventListener(socket._id + "serve", hh);
-              });
+              if (idx === "all") {
+                let node = nodeOne;
+                let cleans = node.outputs.map((out, idx) => {
+                  let cleanOne = work(idx);
+                  return () => {
+                    cleanOne();
+                  };
+                });
 
-              return () => {
-                domElement.removeEventListener(socket._id + "serve", hh);
-              };
+                return () => {
+                  cleans.forEach((it) => it());
+                };
+              } else {
+                let cleanOne = work(idx);
+                return () => {
+                  cleanOne();
+                };
+              }
             };
           }
 
@@ -202,16 +227,29 @@ export function CodeRun({
 
               return new Promise((resolve) => {
                 destEdges.forEach((edge) => {
-                  domElement.dispatchEvent(
-                    new CustomEvent(edge.output._id + "serve", {
-                      detail: {
-                        requestData: data,
-                        collectResponse: (v) => {
-                          resolve(v);
+                  let tt = setInterval(() => {
+                    let evs = domElement.getAttribute(
+                      "data-" + edge.output._id + "serve"
+                    );
+                    if (evs) {
+                      clearInterval(tt);
+
+                      run();
+                    }
+                  });
+
+                  let run = () => {
+                    domElement.dispatchEvent(
+                      new CustomEvent(edge.output._id + "serve", {
+                        detail: {
+                          requestData: data,
+                          collectResponse: (v) => {
+                            resolve(v);
+                          },
                         },
-                      },
-                    })
-                  );
+                      })
+                    );
+                  };
                 });
               });
             };

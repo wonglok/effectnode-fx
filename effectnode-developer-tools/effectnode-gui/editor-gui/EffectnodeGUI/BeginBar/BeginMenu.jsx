@@ -74,6 +74,7 @@ export function BeginMenu({ useStore }) {
             {/*  */}
 
             {/*  */}
+            {/*  */}
 
             {/*  */}
           </div>

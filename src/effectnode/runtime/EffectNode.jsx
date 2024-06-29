@@ -4,6 +4,7 @@ import { getAllProjects } from "./tools/allProjects";
 import { RunnerRuntime } from "./RunnerRuntime";
 import { RunnerToolBox } from "./RunnerToolBox";
 import md5 from "md5";
+import { getSignature } from "./tools/getSignature";
 
 export function EffectNode({
   useStore,
@@ -13,6 +14,8 @@ export function EffectNode({
   win = false,
   node = { title: false },
   mode = "runtime",
+
+  //
 }) {
   let graph = useStore((r) => r.graph) || {};
   let nodes = graph.nodes || [];
@@ -21,38 +24,13 @@ export function EffectNode({
   let [allProjects, setProjects] = useState([]);
   let currentProject = allProjects.find((r) => r.projectName === projectName);
   useEffect(() => {
+    //
     if (process.env.NODE_ENV === "development") {
+      //
       getAllProjects().then((pjs) => {
-        let getJSON = (list) =>
-          JSON.stringify(
-            list.map((gra) => {
-              console.log(gra);
-              return {
-                _id: gra._id,
-                projectName: gra.projectName,
-                codes: gra.codes,
-                graph: {
-                  nodes: gra.graph.nodes.map((r) => {
-                    delete r.position;
-                    return r;
-                  }),
-                  edges: gra.graph.edges,
-                },
-                settings: gra.settings.map((r) => {
-                  console.log(r.data);
-                  r.data = r.data.map((da) => {
-                    delete da.value;
-                    return da;
-                  });
-                  return r;
-                }),
-              };
-            })
-          );
-
         setProjects((old) => {
-          let newStr = getJSON(pjs);
-          let oldStr = getJSON(old);
+          let newStr = getSignature(pjs);
+          let oldStr = getSignature(old);
 
           if (newStr === oldStr) {
             return old;
