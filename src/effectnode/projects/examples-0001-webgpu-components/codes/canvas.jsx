@@ -14,10 +14,6 @@ import { getID } from "src/effectnode/runtime/tools/getID";
 import { Scene } from "three";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer";
 
-// import { mergeSkinnedMesh } from "../loklok/mergeSkinnedMesh.js";
-// import { atan2 } from "three/examples/jsm/nodes/Nodes.js";
-// import { ballify } from "../loklok/ballify.js";
-
 export function ToolBox({ ui, useStore, domElement }) {
   return (
     <>

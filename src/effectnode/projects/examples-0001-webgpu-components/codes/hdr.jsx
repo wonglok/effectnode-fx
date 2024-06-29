@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
  */
 import { useEffect, useMemo } from "react";
-import { PerspectiveCamera, Scene } from "three";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 
 export function ToolBox({ ui, useStore, domElement }) {
   return (
@@ -21,50 +21,40 @@ export function ToolBox({ ui, useStore, domElement }) {
     </>
   );
 }
-
 //
+import hdr from "../assets/hdr/symmetrical_garden_02_1k.hdr";
+import { EquirectangularReflectionMapping } from "three";
 
 export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   //
-
   let service = useMemo(() => {
     return ui.provide({
       label: "service",
       type: "text",
-      defaultValue: "camera",
+      defaultValue: "postproc",
     });
   }, [ui]);
 
   useEffect(() => {
-    let { width, height } = domElement.getBoundingClientRect();
-    let camera = new PerspectiveCamera(65, width / height, 0.1, 500);
+    let clean = () => {};
 
-    camera.position.z = 5;
-
-    useStore.setState({
-      camera,
-    });
-
-    io.response("all", async (req) => {
-      return {
-        camera: camera,
-      };
-    });
-
-    //
-    let onResize = () => {
-      if (!domElement) {
-        return;
-      }
-      let { width, height } = domElement.getBoundingClientRect();
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
+    let setup = async () => {
+      //
+      let rgbe = new RGBELoader();
+      let { scene } = await io.request(0, {});
+      let tex = await rgbe.loadAsync(`${hdr}`);
+      tex.mapping = EquirectangularReflectionMapping;
+      scene.background = tex;
+      scene.environment = tex;
+      //
     };
-    window.addEventListener("resize", onResize);
+
+    setup();
+
     return () => {
-      window.removeEventListener("resize", onResize);
+      clean();
     };
-  }, [domElement, io, useStore]);
+  }, [io, onLoop]);
 
   //
   return <></>;

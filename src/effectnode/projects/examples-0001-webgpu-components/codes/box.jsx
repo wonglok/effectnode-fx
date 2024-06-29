@@ -10,17 +10,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
  */
 import { useEffect, useMemo } from "react";
-import { getID } from "src/effectnode/runtime/tools/getID";
 import { BoxGeometry, Clock, Color, Mesh, Scene } from "three";
 import {
   MeshStandardNodeMaterial,
   color,
 } from "three/examples/jsm/nodes/Nodes";
-import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer";
-
-// import { mergeSkinnedMesh } from "../loklok/mergeSkinnedMesh.js";
-// import { atan2 } from "three/examples/jsm/nodes/Nodes.js";
-// import { ballify } from "../loklok/ballify.js";
 
 export function ToolBox({ ui, useStore, domElement }) {
   return (
@@ -31,7 +25,6 @@ export function ToolBox({ ui, useStore, domElement }) {
     </>
   );
 }
-//
 
 export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   //
@@ -53,7 +46,8 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
       let geo = new BoxGeometry(1, 1, 1);
       let mat = new MeshStandardNodeMaterial();
-      mat.color = color(new Color("#ff0000"));
+      mat.color = new Color("#ffffff");
+
       let box = new Mesh(geo, mat);
 
       let clock = new Clock();
@@ -73,7 +67,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     return () => {
       clean();
     };
-  }, [io]);
+  }, [io, onLoop]);
 
   //
   return <></>;

@@ -184,6 +184,43 @@
         }
       ],
       "title": "postproc"
+    },
+    {
+      "codeID": "_9txhzyy_i86vwcv",
+      "nodeID": "_c5ywkvn_srwmdq4",
+      "nodeTitle": "node",
+      "spaceID": "examples-0001-webgpu-components",
+      "code": "",
+      "data": [
+        {
+          "_id": "_h57pqx6_jxmph1a",
+          "label": "speed",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 0
+        },
+        {
+          "_id": "_zi87tug_mk9nh95",
+          "label": "baseColor",
+          "type": "color",
+          "value": "#ff0000"
+        },
+        {
+          "_id": "_35zfveu_ysgk09m",
+          "label": "name",
+          "type": "text",
+          "value": "hi dear"
+        },
+        {
+          "_id": "112f0eca4d65debf9be4ab7c44b16229",
+          "label": "service",
+          "type": "text",
+          "value": "postproc"
+        }
+      ],
+      "title": "hdr"
     }
   ],
   "graph": {
@@ -483,6 +520,80 @@
             "label": ""
           }
         ]
+      },
+      {
+        "spaceID": "examples-0001-webgpu-components",
+        "_id": "_c5ywkvn_srwmdq4",
+        "title": "hdr",
+        "position": [
+          3.4121979007786503,
+          0,
+          0.8938637915843018
+        ],
+        "inputs": [
+          {
+            "_id": "_obv5biv_xd6x4kd",
+            "type": "input",
+            "nodeID": "_c5ywkvn_srwmdq4",
+            "label": ""
+          },
+          {
+            "_id": "_rwfnbcv_zkxhc7i",
+            "type": "input",
+            "nodeID": "_c5ywkvn_srwmdq4",
+            "label": ""
+          },
+          {
+            "_id": "_qtsv1lc_ut752dq",
+            "type": "input",
+            "nodeID": "_c5ywkvn_srwmdq4",
+            "label": ""
+          },
+          {
+            "_id": "_1egfmz4_2t0aht3",
+            "type": "input",
+            "nodeID": "_c5ywkvn_srwmdq4",
+            "label": ""
+          },
+          {
+            "_id": "_1ve9jcm_4do2gww",
+            "type": "input",
+            "nodeID": "_c5ywkvn_srwmdq4",
+            "label": ""
+          }
+        ],
+        "outputs": [
+          {
+            "_id": "_eqwvqw4_g9x7nv9",
+            "type": "output",
+            "nodeID": "_c5ywkvn_srwmdq4",
+            "label": ""
+          },
+          {
+            "_id": "_v2mvp3p_7o1v8dz",
+            "type": "output",
+            "nodeID": "_c5ywkvn_srwmdq4",
+            "label": ""
+          },
+          {
+            "_id": "_4o0fy3i_l6pu6qe",
+            "type": "output",
+            "nodeID": "_c5ywkvn_srwmdq4",
+            "label": ""
+          },
+          {
+            "_id": "_3u1qq2p_l7uvz2e",
+            "type": "output",
+            "nodeID": "_c5ywkvn_srwmdq4",
+            "label": ""
+          },
+          {
+            "_id": "_4eyj9pw_e2eqf28",
+            "type": "output",
+            "nodeID": "_c5ywkvn_srwmdq4",
+            "label": ""
+          }
+        ]
       }
     ],
     "edges": [
@@ -528,6 +639,21 @@
           "_id": "_fnd91li_zus8uav",
           "type": "output",
           "nodeID": "_czale26_gt0aanb",
+          "label": ""
+        }
+      },
+      {
+        "id": "_u0g7m3z_yigq25x",
+        "input": {
+          "_id": "_obv5biv_xd6x4kd",
+          "type": "input",
+          "nodeID": "_c5ywkvn_srwmdq4",
+          "label": ""
+        },
+        "output": {
+          "_id": "_3ev8hd9_p5s636b",
+          "type": "output",
+          "nodeID": "_l3uokpx_jd0cwhu",
           "label": ""
         }
       }
