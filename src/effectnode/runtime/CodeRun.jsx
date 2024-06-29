@@ -8,6 +8,7 @@ export function CodeRun({
   Algorithm = () => null,
   codeName,
   domElement,
+  map,
   win = false,
 }) {
   let settings = useStore((r) => r.settings);
@@ -37,32 +38,31 @@ export function CodeRun({
     };
   }, [cleanAll]);
 
-  let [loop] = useState([]);
+  let [{ onLoop }, setAPI] = useState({
+    onLoop: () => {},
+  });
   useEffect(() => {
-    let c = new Clock();
-    let tt = 0;
+    let api = {
+      tsk: [],
+      onLoop: (v) => {
+        api.tsk.push(v);
+      },
+      workAll: () => {},
+    };
+
+    setAPI(api);
+
+    let rAFID = 0;
     let rAF = () => {
-      tt = requestAnimationFrame(rAF);
-      let dt = c.getDelta();
-      loop.forEach((r) => r({}, dt));
+      rAFID = requestAnimationFrame(rAF);
+      api.tsk.forEach((t) => t());
     };
-    tt = requestAnimationFrame(rAF);
+    rAFID = requestAnimationFrame(rAF);
+
     return () => {
-      cancelAnimationFrame(tt);
+      cancelAnimationFrame(rAFID);
     };
-  }, [loop]);
-
-  let onLoop = useCallback(
-    (v) => {
-      loop.push(v);
-
-      onClean(() => {
-        let idx = loop.findIndex((l) => l === v);
-        loop.splice(idx, 1);
-      });
-    },
-    [loop, onClean]
-  );
+  }, []);
 
   let ui = useMemo(() => {
     return {
@@ -130,10 +130,55 @@ export function CodeRun({
 
   let [io, setIO] = useState(false);
   useEffect(() => {
-    //
-
-    //
     let cleans = [];
+
+    let onHoldData = new Map();
+    let handlersMap = new Map();
+    let readyMap = new Map();
+    nodeOne.outputs.map((socket) => {
+      readyMap.set(socket._id, false);
+      handlersMap.set(socket._id, []);
+      onHoldData.set(socket._id, []);
+    });
+
+    nodeOne.outputs.map((socket) => {
+      let hhh = async ({ detail }) => {
+        let onHoldDataArray = onHoldData.get(socket._id);
+        let handlerArray = handlersMap.get(socket._id);
+
+        let isSetup = readyMap.get(socket._id);
+
+        if (!isSetup) {
+          onHoldDataArray.push(detail);
+        } else {
+          handlerArray.forEach(async (handler) => {
+            let response = await handler(detail.requestData);
+            detail.collectResponse(response);
+          });
+        }
+
+        // if (handlerArray.length === 0) {
+        //   onHoldData.push(detail);
+        // } else {
+        //   onHoldData.push(detail);
+
+        //   for (let detail of onHoldData) {
+        //     for (let handler of handlerArray.values()) {
+        //       let response = await handler(detail.requestData);
+        //       detail.collectResponse(response);
+        //     }
+        //   }
+
+        //   onHoldData.set(socket._id, []);
+        // }
+      };
+
+      cleans.push(() => {
+        domElement.removeEventListener(socket._id + "serve", hhh);
+      });
+
+      domElement.addEventListener(socket._id + "serve", hhh);
+    });
 
     let ioPXY = new Proxy(
       {
@@ -159,56 +204,44 @@ export function CodeRun({
                   })
                 );
               });
-              //
+
               //
             };
           }
 
           if (key.startsWith("res")) {
             return (idx, handler) => {
-              // let idx = Number(key.replace("res", ""));
+              let setup = (idx) => {
+                let socket = nodeOne.outputs[idx];
 
-              let work = (idx) => {
-                let node = nodeOne;
-                let socket = node.outputs[idx];
+                readyMap.set(socket._id, true);
+                let handlerArray = handlersMap.get(socket._id);
+                let onHoldDataArray = onHoldData.get(socket._id);
 
+                handlerArray.push(handler);
+
+                onHoldDataArray.forEach((detail) => {
+                  //
+                  //
+                  handlerArray.forEach(async (handler) => {
+                    let response = await handler(detail.requestData);
+                    detail.collectResponse(response);
+                  });
+
+                  //
+                  //
+                });
+
+                onHoldData.set(socket._id, []);
+                readyMap.set(socket._id, true);
                 //
-                let hh = async ({ detail }) => {
-                  let response = await handler(detail.requestData);
-                  detail.collectResponse(response);
-                };
-                domElement.setAttribute(
-                  "data-" + socket._id + "serve",
-                  node._id
-                );
-
-                cleans.push(() => {
-                  domElement.removeEventListener(socket._id + "serve", hh);
-                });
-
-                domElement.addEventListener(socket._id + "serve", hh);
-                return () => {
-                  domElement.removeEventListener(socket._id + "serve", hh);
-                };
               };
-
-              if (idx === "all") {
-                let node = nodeOne;
-                let cleans = node.outputs.map((out, idx) => {
-                  let cleanOne = work(idx);
-                  return () => {
-                    cleanOne();
-                  };
-                });
-
-                return () => {
-                  cleans.forEach((it) => it());
-                };
+              if (idx === "*" || idx === "all") {
+                for (let idxLocal in nodeOne.outputs) {
+                  setup(idxLocal);
+                }
               } else {
-                let cleanOne = work(idx);
-                return () => {
-                  cleanOne();
-                };
+                setup(idx);
               }
             };
           }
@@ -227,28 +260,17 @@ export function CodeRun({
 
               return new Promise((resolve) => {
                 destEdges.forEach((edge) => {
-                  let tt = setInterval(() => {
-                    let evs = domElement.getAttribute(
-                      "data-" + edge.output._id + "serve"
-                    );
-                    if (evs) {
-                      clearInterval(tt);
-                      run();
-                    }
-                  });
-
-                  let run = () => {
-                    domElement.dispatchEvent(
-                      new CustomEvent(edge.output._id + "serve", {
-                        detail: {
-                          requestData: data,
-                          collectResponse: (v) => {
-                            resolve(v);
-                          },
+                  ///
+                  domElement.dispatchEvent(
+                    new CustomEvent(edge.output._id + "serve", {
+                      detail: {
+                        requestData: data,
+                        collectResponse: (v) => {
+                          resolve(v);
                         },
-                      })
-                    );
-                  };
+                      },
+                    })
+                  );
                 });
               });
             };
@@ -285,12 +307,7 @@ export function CodeRun({
 
     setIO(ioPXY);
 
-    return () => {
-      cleans.forEach((it) => {
-        it();
-      });
-      cleans = [];
-    };
+    return () => {};
   }, [domElement, nodeOne, useStore]);
 
   return (

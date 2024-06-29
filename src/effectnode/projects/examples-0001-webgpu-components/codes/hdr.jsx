@@ -37,16 +37,32 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   }, [ui]);
 
   useEffect(() => {
+    //
     let clean = () => {};
 
+    //
     let setup = async () => {
       //
       let rgbe = new RGBELoader();
-      let { scene } = await io.request(0, {});
+      //
+      let { scene } = await io.request(0, {
+        requestFrom: "hdr",
+      });
+
+      //
       let tex = await rgbe.loadAsync(`${hdr}`);
       tex.mapping = EquirectangularReflectionMapping;
+
+      //
       scene.background = tex;
       scene.environment = tex;
+
+      //
+      tex.needsUpdate = true;
+
+      clean = () => {
+        tex.dispose();
+      };
       //
     };
 

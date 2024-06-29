@@ -40,9 +40,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   }, []);
 
   useEffect(() => {
-    let clean = () => {};
-
-    let setup = ({ domElement }) => {
+    let setup = async ({ domElement }) => {
       let { width, height } = domElement.getBoundingClientRect();
       let renderer = new WebGPURenderer({ antialias: true });
       renderer.setPixelRatio(window.devicePixelRatio);
@@ -56,7 +54,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         scene: scene,
       });
 
-      io.response("all", async (req) => {
+      io.response("*", async (req) => {
         console.log(req);
         return {
           renderer,
@@ -74,23 +72,28 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       //
       window.addEventListener("resize", onResize);
       domElement.appendChild(renderer.domElement);
-      clean = () => {
+      let clean = () => {
         window.removeEventListener("resize", onResize);
         domElement.removeChild(renderer.domElement);
       };
-    };
 
+      return clean;
+    };
     ///
+    let cleans = [];
     let tt = setInterval(() => {
       if (document.getElementById(randID)) {
         clearInterval(tt);
         let domElement = document.getElementById(randID);
-        setup({ domElement: domElement });
+        setup({ domElement }).then((cc) => {
+          cleans.push(cc);
+        });
       }
     }, 0);
 
     return () => {
-      clean();
+      //
+      cleans.forEach((tt) => tt());
     };
   }, [io, randID, useStore]);
 

@@ -18,6 +18,7 @@ export function Editor() {
       return;
     }
 
+    setHasFile("loading");
     useDeveloper
       .getState()
       .hasOne({

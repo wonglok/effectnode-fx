@@ -230,9 +230,9 @@
         "_id": "_l3uokpx_jd0cwhu",
         "title": "canvas",
         "position": [
-          0.2938470896605965,
+          1.0907266460743528,
           0,
-          -0.9293479899210373
+          -0.5165875065546512
         ],
         "inputs": [
           {
@@ -304,9 +304,9 @@
         "_id": "_czale26_gt0aanb",
         "title": "camera",
         "position": [
-          -2.1430423858054284,
+          -1.8866311428375526,
           0,
-          -0.5770011846673635
+          -0.3712992914828495
         ],
         "inputs": [
           {
@@ -378,9 +378,9 @@
         "_id": "_g0yxsh7_k03zw0b",
         "title": "box",
         "position": [
-          0.6517832648419573,
+          2.8979984905219256,
           0,
-          2.049547590134099
+          2.1484423950361724
         ],
         "inputs": [
           {
@@ -526,9 +526,9 @@
         "_id": "_c5ywkvn_srwmdq4",
         "title": "hdr",
         "position": [
-          3.3212690694984106,
+          0.21919960437265545,
           0,
-          2.206371320697933
+          2.203421542879049
         ],
         "inputs": [
           {
@@ -598,21 +598,6 @@
     ],
     "edges": [
       {
-        "id": "_fvxclpa_dfl54fr",
-        "input": {
-          "_id": "_e9h12uc_hv54ey6",
-          "type": "input",
-          "nodeID": "_g0yxsh7_k03zw0b",
-          "label": ""
-        },
-        "output": {
-          "_id": "_3ev8hd9_p5s636b",
-          "type": "output",
-          "nodeID": "_l3uokpx_jd0cwhu",
-          "label": ""
-        }
-      },
-      {
         "id": "_mnmoazb_f2cn6w9",
         "input": {
           "_id": "_dmo9cw9_kcqw6w8",
@@ -648,6 +633,21 @@
           "_id": "_obv5biv_xd6x4kd",
           "type": "input",
           "nodeID": "_c5ywkvn_srwmdq4",
+          "label": ""
+        },
+        "output": {
+          "_id": "_3ev8hd9_p5s636b",
+          "type": "output",
+          "nodeID": "_l3uokpx_jd0cwhu",
+          "label": ""
+        }
+      },
+      {
+        "id": "_npnay3k_ej0z4sv",
+        "input": {
+          "_id": "_e9h12uc_hv54ey6",
+          "type": "input",
+          "nodeID": "_g0yxsh7_k03zw0b",
           "label": ""
         },
         "output": {

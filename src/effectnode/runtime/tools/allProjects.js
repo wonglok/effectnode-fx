@@ -38,45 +38,34 @@ function loadCodes({ projectName }) {
   return codes;
 }
 
-async function loadProjects() {
+async function loadProjects({ onData = () => {} }) {
   let projectGraphs = [];
 
-  if (process.env.NODE_ENV === "development") {
-    await useDeveloper
-      .getState()
-      .listAllGraph()
-      .then((graphs) => {
-        graphs.forEach((graph) => {
-          let codes = loadCodes({ projectName: graph.projectName });
-          projectGraphs.push({
-            ...graph,
-            projectName: graph.projectName,
-            codes: codes,
-          });
-        });
+  //
+  let req = require.context("../../projects", true, /graph\.json$/, "sync");
+  req.keys().forEach((key) => {
+    if (key.startsWith("./")) {
+      //
+      let projectName = key.replace("./", "").replace("/graph.json", "");
+
+      let codes = loadCodes({ projectName: projectName });
+
+      projectGraphs.push({
+        _id: key,
+        projectName: projectName,
+
+        ...req(key),
+
+        codes: codes,
       });
-  } else {
-    //
-    let req = require.context("../../projects", true, /graph\.json$/, "sync");
-    req.keys().forEach((key) => {
-      if (key.startsWith("./")) {
-        //
-        let projectName = key.replace("./", "").replace("/graph.json", "");
+    }
+  });
 
-        let codes = loadCodes({ projectName: projectName });
+  setTimeout(() => {
+    onData({ projects: projectGraphs });
+  }, 10);
 
-        projectGraphs.push({
-          _id: key,
-          projectName: projectName,
-
-          ...req(key),
-
-          codes: codes,
-        });
-      }
-    });
-  }
-
+  //
   // console.log(projectGraphs);
   return projectGraphs;
 }

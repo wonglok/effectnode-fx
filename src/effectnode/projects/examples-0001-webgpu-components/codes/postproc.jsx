@@ -34,8 +34,6 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   }, [ui]);
 
   useEffect(() => {
-    let clean = () => {};
-
     let setup = async () => {
       let { scene, gl } = await io.request(0, {
         requestFrom: "postproc",
@@ -44,21 +42,27 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         requestFrom: "postproc",
       });
 
-      onLoop(async () => {
-        await Promise.all([
-          //
-        ]);
+      console.log({ camera, scene, gl });
 
-        await gl.renderAsync(scene, camera);
-      });
-
-      //
+      let api = {
+        render: () => {
+          gl.renderAsync(scene, camera);
+        },
+      };
+      return api;
     };
 
-    setup();
+    let run = true;
+    setup().then((api) => {
+      onLoop(() => {
+        if (run) {
+          api.render();
+        }
+      });
+    });
 
     return () => {
-      clean();
+      run = false;
     };
   }, [io, onLoop]);
 

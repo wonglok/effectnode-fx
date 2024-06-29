@@ -24,9 +24,7 @@ export function ToolBox({ ui, useStore, domElement }) {
 
 //
 
-export function Runtime({ domElement, ui, useStore, io, onLoop, onClean }) {
-  //
-
+export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   useEffect(() => {
     ui.provide({
       label: "service",
@@ -45,7 +43,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop, onClean }) {
       camera,
     });
 
-    io.response("all", async (req) => {
+    io.response("*", async (req) => {
       return {
         camera: camera,
       };

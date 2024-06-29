@@ -26,7 +26,7 @@ export function ToolBox({ ui, useStore, domElement }) {
   );
 }
 
-export function Runtime({ domElement, ui, useStore, io, onLoop, onClean }) {
+export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   //
 
   useEffect(() => {
@@ -38,9 +38,10 @@ export function Runtime({ domElement, ui, useStore, io, onLoop, onClean }) {
   }, [ui]);
 
   useEffect(() => {
+    let cleans = [];
     let setup = async () => {
       let { scene, gl } = await io.request(0, {
-        requestFrom: "canvas",
+        requestFrom: "box",
       });
 
       let geo = new BoxGeometry(1, 1, 1);
@@ -57,14 +58,18 @@ export function Runtime({ domElement, ui, useStore, io, onLoop, onClean }) {
       });
 
       scene.add(box);
-      onClean(() => {
+      cleans.push(() => {
         box.removeFromParent();
       });
+
+      //
     };
     setup();
 
-    return () => {};
-  }, [io, onLoop, onClean]);
+    return () => {
+      cleans.forEach((r) => r());
+    };
+  }, [io, onLoop]);
 
   //
   return <></>;
