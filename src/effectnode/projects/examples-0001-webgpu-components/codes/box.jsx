@@ -51,6 +51,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       let box = new Mesh(geo, mat);
 
       let clock = new Clock();
+
       onLoop(() => {
         let dt = clock.getDelta();
         box.rotation.y += dt;
