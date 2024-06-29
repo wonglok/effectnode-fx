@@ -80,23 +80,23 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       let img = new TextureLoader();
 
       img.load(sakura, (png) => {
-        const reflectVec = positionViewDirection
-          // .negate()
-          .reflect(normalView)
-          .transformDirection(cameraViewMatrix);
-
         png.mapping = EquirectangularReflectionMapping;
 
-        const pmremRoughness = uniform(0.5);
-        const pmremNode = pmremTexture(png, reflectVec, pmremRoughness);
+        // const reflectVec = positionViewDirection
+        //   // .negate()
+        //   .reflect(normalView)
+        //   .transformDirection(cameraViewMatrix);
+
+        // const pmremRoughness = uniform(0.5);
+        // const pmremNode = pmremTexture(png, reflectVec, pmremRoughness);
 
         let tt = setInterval(() => {
           //
           if (yo.scene) {
             clearInterval(tt);
 
-            // yo.scene.environmentNode = pmremNode;
-            // yo.scene.backgroundNode = pmremNode;
+            yo.scene.environment = png;
+            yo.scene.background = png;
           }
 
           //

@@ -46,7 +46,11 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     let setup = async ({ domElement }) => {
       domElement.innerHTML = "";
       let { width, height } = domElement.getBoundingClientRect();
-      let renderer = new WebGPURenderer({ antialias: true, sampleCount: 4 });
+      let renderer = new WebGPURenderer({
+        antialias: true,
+        sampleCount: 4,
+        forceWebGL: true,
+      });
       await renderer.init();
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(width, height);
