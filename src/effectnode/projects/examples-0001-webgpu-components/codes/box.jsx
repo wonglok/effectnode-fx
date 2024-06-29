@@ -53,7 +53,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
       let geo = new BoxGeometry(1, 1, 1);
       let mat = new MeshStandardNodeMaterial();
-      mat.colorNode = color(new Color("#ba0000"));
+      mat.color = color(new Color("#ff0000"));
       let box = new Mesh(geo, mat);
 
       let clock = new Clock();
