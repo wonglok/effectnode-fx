@@ -42,8 +42,8 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     let setup = async () => {
       let geo = new BoxGeometry(1, 1, 1);
       let mat = new MeshStandardNodeMaterial({ color: "#ffffff" });
-      mat.roughness = 0.5;
-      mat.metalness = 0.9;
+      mat.roughness = 1;
+      mat.metalness = 0.0;
 
       let box = new Mesh(geo, mat);
 
@@ -65,6 +65,8 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       io.in(1, (node) => {
         mat.colorNode = node;
       });
+
+      //
 
       cleans.push(() => {
         box.removeFromParent();

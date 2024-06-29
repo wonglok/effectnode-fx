@@ -68,27 +68,29 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   useEffect(() => {
     //
     let clean = () => {};
+
     let setup = async () => {
+      let rgbe = new TextureLoader();
+      let tex = await rgbe.loadAsync(sakura).then((tex) => {
+        tex.colorSpace = sRGBEncoding;
+        tex.mapping = EquirectangularReflectionMapping;
+
+        io.out(0, texture(tex, uv()));
+        return tex;
+        // io.out(0, node);
+      });
+
       io.in(0, ({ scene }) => {
         if (!scene) {
           return;
         }
 
-        let rgbe = new TextureLoader();
-        rgbe.loadAsync(sakura).then((tex) => {
-          tex.colorSpace = sRGBEncoding;
-          tex.mapping = EquirectangularReflectionMapping;
-
-          let node = texture(tex, uv());
-
-          //
-
-          io.out(0, node);
-
-          scene.backgroundNode = node;
-          scene.envrionmentNode = node;
-        });
+        let node = texture(tex, uv());
+        scene.backgroundNode = node;
+        scene.envrionmentNode = node;
       });
+
+      //
 
       //
     };
