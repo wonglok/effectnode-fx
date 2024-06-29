@@ -27,7 +27,7 @@ function InstallToStore({ useStore }) {
   useEffect(() => {
     useStore.setState({
       //
-      camera: camera,
+      _editor_camera: camera,
     });
   }, [camera, useStore]);
 
@@ -35,7 +35,7 @@ function InstallToStore({ useStore }) {
   useEffect(() => {
     useStore.setState({
       //
-      scene: scene,
+      _editor_scene: scene,
     });
   }, [scene, useStore]);
 
@@ -43,7 +43,7 @@ function InstallToStore({ useStore }) {
   useEffect(() => {
     useStore.setState({
       //
-      raycaster: raycaster,
+      _editor_raycaster: raycaster,
     });
   }, [raycaster, useStore]);
 

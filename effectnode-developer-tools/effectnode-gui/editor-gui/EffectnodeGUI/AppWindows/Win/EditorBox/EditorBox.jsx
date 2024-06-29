@@ -14,10 +14,10 @@ export function EditorBox({ useStore }) {
   let graph = useStore((r) => r.graph);
   let spaceID = useStore((r) => r.spaceID);
 
-  let raycaster = useStore((r) => r.raycaster);
-  let pointer = useStore((r) => r.pointer);
-  let scene = useStore((r) => r.scene);
-  let camera = useStore((r) => r.camera);
+  let raycaster = useStore((r) => r._editor_raycaster);
+  let pointer = useStore((r) => r._editor_pointer);
+  let scene = useStore((r) => r._editor_scene);
+  let camera = useStore((r) => r._editor_camera);
 
   let point3 = useMemo(() => new Vector3(), []);
 

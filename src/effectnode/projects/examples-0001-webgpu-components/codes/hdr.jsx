@@ -44,24 +44,16 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       let rgbe = new RGBELoader();
       //
 
-      Promise.all([
-        //
+      let tex = await rgbe.loadAsync(`${hdr}`);
+      tex.mapping = EquirectangularReflectionMapping;
+      tex.needsUpdate = true;
 
-        rgbe.loadAsync(`${hdr}`),
-      ]).then(
-        ([
-          //
-          tex,
-        ]) => {
-          tex.mapping = EquirectangularReflectionMapping;
-
-          io.in(0, ({ scene }) => {
-            scene.background = tex;
-            scene.environment = tex;
-            tex.needsUpdate = true;
-          });
+      io.in(0, ({ scene }) => {
+        if (scene) {
+          scene.background = tex;
+          scene.environment = tex;
         }
-      );
+      });
 
       //
 

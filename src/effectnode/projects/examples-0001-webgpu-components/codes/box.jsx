@@ -54,6 +54,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       });
 
       io.in(0, ({ scene }) => {
+        box.removeFromParent();
         scene.add(box);
       });
 

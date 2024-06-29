@@ -143,25 +143,21 @@ export function CodeRun({
                 let node = nodeOne;
                 let input = node.inputs[idx];
 
-                socketMap.subscribe((state, before) => {
-                  if (state[input._id] !== before[input._id]) {
-                    if (typeof state[input._id] !== "undefined") {
-                      handler(state[input._id]);
-                    }
+                let clean = socketMap.subscribe((state, before) => {
+                  if (typeof state[input._id] !== "undefined") {
+                    handler(state[input._id]);
                   }
                 });
 
                 let tt = setInterval(() => {
                   let val = socketMap.getState()[input._id];
                   if (typeof val !== "undefined") {
+                    handler(val);
                     clearInterval(tt);
-
-                    socketMap.setState({
-                      [input._id]: val,
-                    });
-                    resolve(val);
                   }
                 });
+
+                cleans.push(clean);
               });
             };
           }

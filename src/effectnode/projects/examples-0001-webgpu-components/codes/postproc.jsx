@@ -63,7 +63,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       let { gl, camera, scene } = yo;
 
       if (gl && camera && scene) {
-        gl.renderAsync(scene, camera);
+        gl.render(scene, camera);
       }
     });
 

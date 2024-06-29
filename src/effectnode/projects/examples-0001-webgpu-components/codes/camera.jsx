@@ -39,10 +39,6 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
     camera.position.z = 5;
 
-    useStore.setState({
-      camera,
-    });
-
     io.out(0, {
       camera: camera,
     });

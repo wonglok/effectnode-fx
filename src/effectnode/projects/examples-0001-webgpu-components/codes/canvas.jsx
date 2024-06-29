@@ -42,6 +42,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   useEffect(() => {
     let cleans = [];
     let setup = async ({ domElement }) => {
+      domElement.innerHTML = "";
       let { width, height } = domElement.getBoundingClientRect();
       let renderer = new WebGPURenderer({ antialias: true });
       renderer.setPixelRatio(window.devicePixelRatio);
@@ -49,14 +50,15 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
       let scene = new Scene();
       //
-      useStore.setState({
-        renderer: renderer,
-        gl: renderer,
-        scene: scene,
-      });
+      // useStore.setState({
+      //   renderer: renderer,
+      //   gl: renderer,
+      //   scene: scene,
+      // });
 
-      // scene.background = new Color(0xffffff * Math.random());
+      scene.background = new Color(0xffffff * Math.random());
 
+      await renderer.init();
       io.out(0, {
         renderer: renderer,
         gl: renderer,
@@ -82,25 +84,21 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     };
 
     let tt = setInterval(() => {
-      if (document.getElementById(randID)) {
+      if (domElement) {
         clearInterval(tt);
-        let domElement = document.getElementById(randID);
         setup({ domElement });
       }
     }, 0);
 
     return () => {
+      clearInterval(tt);
       //
       cleans.forEach((tt) => tt());
     };
-  }, [io, randID, useStore]);
+  }, [io, domElement, useStore]);
 
   //
-  return (
-    <>
-      <div id={randID} className="w-full h-full"></div>
-    </>
-  );
+  return <></>;
 }
 
 //
