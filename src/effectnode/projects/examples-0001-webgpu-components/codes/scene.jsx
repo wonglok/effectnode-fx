@@ -10,40 +10,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
  */
 import { useEffect, useMemo } from "react";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
-
-//
-import hdr from "../assets/hdr/symmetrical_garden_02_1k.hdr";
+import { getID } from "src/effectnode/runtime/tools/getID";
+import { EquirectangularReflectionMapping, TextureLoader } from "three";
 import {
   Color,
-  EquirectangularReflectionMapping,
-  LinearFilter,
-  LinearMipMapLinearFilter,
-  LoadingManager,
-  Mesh,
-  NoColorSpace,
-  RGBAFormat,
-  RepeatWrapping,
+  LinearSRGBColorSpace,
+  PerspectiveCamera,
   SRGBColorSpace,
-  SphereGeometry,
-  Texture,
-  TextureLoader,
-  UnsignedByteType,
+  Scene,
 } from "three";
-import {
-  MeshBasicNodeMaterial,
-  cameraViewMatrix,
-  normalView,
-  pmremTexture,
-  positionViewDirection,
-  uniform,
-  normalWorld,
-  texture,
-  uv,
-} from "three/examples/jsm/nodes/Nodes";
-
-import sakura from "../assets/sakura.jpg";
+import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer";
 import { sRGBEncoding } from "@react-three/drei/helpers/deprecated";
+import { texture, uv } from "three/examples/jsm/nodes/Nodes";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
+
 export function ToolBox({ ui, useStore, domElement }) {
   return (
     <>
@@ -53,54 +33,67 @@ export function ToolBox({ ui, useStore, domElement }) {
     </>
   );
 }
+//
 
 export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   //
-
   useEffect(() => {
     ui.provide({
       label: "service",
       type: "text",
-      defaultValue: "hdr",
+      defaultValue: "canvas",
     });
   }, [ui]);
 
   useEffect(() => {
-    //
-    let clean = () => {};
-    let setup = async () => {
-      io.in(0, ({ scene }) => {
-        if (!scene) {
-          return;
-        }
+    let cleans = [];
+    let setup = async ({ domElement }) => {
+      let scene = new Scene();
 
-        let rgbe = new TextureLoader();
-        rgbe.loadAsync(sakura).then((tex) => {
-          tex.colorSpace = sRGBEncoding;
-          tex.mapping = EquirectangularReflectionMapping;
+      scene.background = new Color().setHSL(
+        0.3,
+        0.5,
+        Math.random() * 0.5 + 0.5
+      );
 
-          let node = texture(tex, uv());
-
-          //
-
-          io.out(0, {
-            texNode: node,
-          });
-
-          scene.backgroundNode = node;
-          scene.envrionmentNode = node;
+      let clean = () => {
+        io.out(0, {
+          scene: null,
         });
+      };
+
+      io.out(0, {
+        scene: scene,
+      });
+      io.out(1, {
+        scene: scene,
+      });
+      io.out(2, {
+        scene: scene,
+      });
+      io.out(3, {
+        scene: scene,
+      });
+      io.out(4, {
+        scene: scene,
       });
 
-      //
+      cleans.push(clean);
     };
 
-    setup();
+    let tt = setInterval(() => {
+      if (domElement) {
+        clearInterval(tt);
+        setup({ domElement });
+      }
+    }, 0);
 
     return () => {
-      clean();
+      clearInterval(tt);
+      //
+      cleans.forEach((tt) => tt());
     };
-  }, [io, onLoop]);
+  }, [io, domElement, useStore]);
 
   //
   return <></>;

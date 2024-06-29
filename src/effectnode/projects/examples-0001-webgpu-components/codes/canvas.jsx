@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 import { useEffect, useMemo } from "react";
 import { getID } from "src/effectnode/runtime/tools/getID";
+import { EquirectangularReflectionMapping, TextureLoader } from "three";
 import {
   Color,
   LinearSRGBColorSpace,
@@ -19,6 +20,9 @@ import {
   Scene,
 } from "three";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer";
+import { sRGBEncoding } from "@react-three/drei/helpers/deprecated";
+import { texture, uv } from "three/examples/jsm/nodes/Nodes";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 
 export function ToolBox({ ui, useStore, domElement }) {
   return (
@@ -51,23 +55,9 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         sampleCount: 4,
         forceWebGL: true,
       });
-      await renderer.init();
+
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(width, height);
-
-      let scene = new Scene();
-
-      // useStore.setState({
-      //   renderer: renderer,
-      //   gl: renderer,
-      //   scene: scene,
-      // });
-
-      scene.background = new Color().setHSL(
-        0.3,
-        0.5,
-        Math.random() * 0.5 + 0.5
-      );
 
       let onResize = () => {
         let { width, height } = domElement.getBoundingClientRect();
@@ -83,7 +73,6 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         io.out(0, {
           renderer: null,
           gl: null,
-          scene: null,
         });
 
         window.removeEventListener("resize", onResize);
@@ -93,7 +82,6 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       io.out(0, {
         renderer: renderer,
         gl: renderer,
-        scene: scene,
       });
 
       cleans.push(clean);

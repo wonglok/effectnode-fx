@@ -51,12 +51,14 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     // };
 
     let yo = {};
-    io.in(0, ({ scene, gl }) => {
-      yo.scene = scene;
+    io.in(0, ({ gl }) => {
       yo.gl = gl;
     });
     io.in(1, ({ camera }) => {
       yo.camera = camera;
+    });
+    io.in(2, ({ scene }) => {
+      yo.scene = scene;
     });
 
     let run = true;

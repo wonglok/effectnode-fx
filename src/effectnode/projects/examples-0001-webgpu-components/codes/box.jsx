@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
  */
 import { useEffect, useMemo } from "react";
-import { BoxGeometry, Clock, Color, Mesh, Scene } from "three";
+import { BoxGeometry, Clock, Color, Group, Mesh, Scene } from "three";
 import {
   MeshStandardNodeMaterial,
   color,
@@ -42,8 +42,8 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     let setup = async () => {
       let geo = new BoxGeometry(1, 1, 1);
       let mat = new MeshStandardNodeMaterial({ color: "#ff0000" });
-      mat.roughness = 0;
-      mat.metalness = 1;
+      mat.roughness = 0.5;
+      mat.metalness = 0.5;
 
       let box = new Mesh(geo, mat);
 
@@ -53,14 +53,23 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         let dt = clock.getDelta();
         box.rotation.y += dt;
       });
+      let group = new Group();
+      group.add(box);
 
       io.in(0, ({ scene }) => {
-        box.removeFromParent();
-        if (!scene) {
-          return;
-        }
-        scene.add(box);
+        scene.add(group);
       });
+
+      //
+
+      // io.in(1, ({ texNode }) => {
+      //   ///
+      //   if (!texNode) {
+      //     return;
+      //   }
+      //   mat.metalness = 1.0;
+      //   mat.envNode = texNode;
+      // });
 
       cleans.push(() => {
         box.removeFromParent();
