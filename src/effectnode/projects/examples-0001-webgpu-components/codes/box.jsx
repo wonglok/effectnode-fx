@@ -16,6 +16,7 @@ import {
   Color,
   Group,
   Mesh,
+  MeshStandardMaterial,
   Scene,
   SphereGeometry,
 } from "three";
@@ -56,7 +57,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     let setup = async () => {
       let geo = new SphereGeometry(Math.random() * 0.5 * 1 + 1 * 0.5, 32, 32);
       let mat = new MeshStandardNodeMaterial({ color: "#ffffff" });
-      mat.roughness = 0.05;
+      mat.roughness = 0.1;
       mat.metalness = 1.0;
 
       let box = new Mesh(geo, mat);
@@ -77,12 +78,12 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       });
       io.in(1, (tex) => {
         //
-        mat.envMap = tex;
+        // mat.envMap = tex;
       });
 
-      mat.color = new Color("#ffffff");
+      mat.emissiveNode = uniform(new Color("#ffffff"));
       ui.on("baseColor", (val) => {
-        mat.color.set(val);
+        mat.emissiveNode.value.set(val);
       });
 
       cleans.push(() => {

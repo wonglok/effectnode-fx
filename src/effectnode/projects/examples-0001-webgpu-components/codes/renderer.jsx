@@ -11,7 +11,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 import { useEffect, useMemo } from "react";
 import { getID } from "src/effectnode/runtime/tools/getID";
-import { EquirectangularReflectionMapping, TextureLoader } from "three";
+import {
+  EquirectangularReflectionMapping,
+  TextureLoader,
+  WebGLRenderer,
+} from "three";
 import {
   Color,
   LinearSRGBColorSpace,
@@ -67,16 +71,29 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       domElement.appendChild(renderer.domElement);
 
       let clean = () => {
+        io.out(0, {
+          renderer: null,
+          gl: null,
+        });
+        renderer.dispose();
         console.log("[clean] renderer");
         window.removeEventListener("resize", onResize);
         domElement.removeChild(renderer.domElement);
       };
 
-      await renderer.init();
-      io.out(0, {
-        renderer: renderer,
-        gl: renderer,
-      });
+      if (renderer.init) {
+        renderer.init().then(() => {
+          io.out(0, {
+            renderer: renderer,
+            gl: renderer,
+          });
+        });
+      } else {
+        io.out(0, {
+          renderer: renderer,
+          gl: renderer,
+        });
+      }
 
       cleans.push(clean);
     };

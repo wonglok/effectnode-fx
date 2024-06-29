@@ -37,20 +37,17 @@ export function EffectNode({
         //
 
         //
-        requestIdleCallback(
-          () => {
-            setProjects({
-              projects,
-              map: create((set, get) => {
-                return {
-                  set,
-                  get,
-                };
-              }),
-            });
-          },
-          { timeout: 500 }
-        );
+        requestAnimationFrame(() => {
+          setProjects({
+            projects,
+            map: create((set, get) => {
+              return {
+                set,
+                get,
+              };
+            }),
+          });
+        });
       }
     });
 

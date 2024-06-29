@@ -37,8 +37,8 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     //
 
     let yo = {};
-    io.in(0, ({ gl }) => {
-      yo.gl = gl;
+    io.in(0, ({ renderer }) => {
+      yo.renderer = renderer;
     });
     io.in(1, ({ camera }) => {
       yo.camera = camera;
@@ -52,12 +52,14 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
     let rAFID = 0;
     let render = async () => {
       rAFID = requestAnimationFrame(render);
-      let { gl, camera, scene } = yo;
+      let { renderer, camera, scene } = yo;
 
-      if (gl && camera && scene && run) {
-        gl.renderAsync(scene, camera).catch((t) => {
-          console.log(t);
-        });
+      if (renderer && camera && scene && run) {
+        try {
+          renderer.render(scene, camera);
+        } catch (e) {
+          console.log(e);
+        }
       }
     };
     rAFID = requestAnimationFrame(render);

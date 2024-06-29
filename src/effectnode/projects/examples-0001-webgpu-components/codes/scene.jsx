@@ -66,11 +66,10 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       io.out(4, scene);
 
       io.in(0, (tex) => {
-        scene.background = tex;
-        scene.environment = tex;
-        scene.environment.needsUpdate = true;
-        scene.environment.needsPMREMUpdate = true;
-
+        // scene.background = tex;
+        // scene.environment = tex;
+        // tex.needsUpdate = true;
+        // tex.needsPMREMUpdate = true;
         //
         // scene.backgroundNode = node;
         // scene.environmentNode = node;

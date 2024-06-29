@@ -44,6 +44,7 @@ import {
 import hdr from "../assets/hdr/symmetrical_garden_02_1k.hdr";
 import sakura from "../assets/sakura.jpg";
 import { sRGBEncoding } from "@react-three/drei/helpers/deprecated";
+
 export function ToolBox({ ui, useStore, domElement }) {
   return (
     <>
@@ -71,20 +72,32 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
     let setup = async () => {
       let load = new TextureLoader();
-      load.loadAsync(sakura).then((tex) => {
-        tex.generateMipmaps = true;
-        tex.anisotropy = 16;
-        tex.colorSpace = sRGBEncoding;
-        tex.mapping = EquirectangularReflectionMapping;
+      load.crossOrigin = "*";
+      load.withCredentials = true;
+      let url = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`;
 
-        io.out(0, tex);
-        io.out(1, tex);
-        io.out(2, tex);
-        io.out(3, tex);
-        io.out(4, tex);
+      //
+      let tex = await load
+        //
+        .loadAsync(sakura)
+        //
+        .then((tex) => {
+          tex.generateMipmaps = false;
+          tex.colorSpace = SRGBColorSpace;
+          tex.mapping = EquirectangularReflectionMapping;
 
-        return tex;
-      });
+          io.out(0, tex);
+          io.out(1, tex);
+          io.out(2, tex);
+          io.out(3, tex);
+          io.out(4, tex);
+
+          return tex;
+        });
+
+      clean = () => {
+        tex.dispose();
+      };
     };
 
     setup();
