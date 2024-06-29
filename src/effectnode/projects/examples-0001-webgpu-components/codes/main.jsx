@@ -26,7 +26,11 @@ export function Runtime({ ui, useStore, io }) {
 
   return (
     <>
-      <Canvas gl={(canvas) => new WebGPURenderer({ canvas })}>
+      <Canvas
+        gl={(canvas) =>
+          new WebGPURenderer({ canvas, antialias: true, multisampling: 4 })
+        }
+      >
         <RenderStuff useStore={useStore}>
           <t3d.Out></t3d.Out>
         </RenderStuff>

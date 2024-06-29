@@ -1,4 +1,4 @@
-import flair from "../assets/rpm/moiton/flair.fbx";
+import motionURL from "../assets/rpm/moiton/wave-dance.fbx";
 import lok from "../assets/rpm/lok.glb";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -49,7 +49,7 @@ function Avatar({ useStore }) {
     gltfLoader.setDRACOLoader(draco);
     Promise.all([
       gltfLoader.loadAsync(`${lok}`),
-      fbxLoader.loadAsync(`${flair}`),
+      fbxLoader.loadAsync(`${motionURL}`),
     ]).then(([glb, motion]) => {
       glb.scene.traverse((it) => {
         console.log(it);
