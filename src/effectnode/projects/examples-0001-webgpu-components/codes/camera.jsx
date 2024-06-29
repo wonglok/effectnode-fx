@@ -43,10 +43,8 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
       camera,
     });
 
-    io.response("*", async (req) => {
-      return {
-        camera: camera,
-      };
+    io.out(0, {
+      camera: camera,
     });
 
     //

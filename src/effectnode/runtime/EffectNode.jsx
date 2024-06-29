@@ -4,6 +4,7 @@ import { getAllProjects } from "./tools/allProjects";
 import { RunnerRuntime } from "./RunnerRuntime";
 import { RunnerToolBox } from "./RunnerToolBox";
 import md5 from "md5";
+import { create } from "zustand";
 // import { getID } from "./tools/getID";
 // import { getSignature } from "./tools/getSignature";
 // import { getSignature } from "./tools/getSignature";
@@ -45,14 +46,30 @@ export function EffectNode({
       setProjects({ projects: [], map: false });
       getAllProjects({
         onData: ({ projects }) => {
-          setProjects({ projects, map: new Map() });
+          setProjects({
+            projects,
+            map: create((set, get) => {
+              return {
+                set,
+                get,
+              };
+            }),
+          });
         },
       });
     } else {
       setProjects({ projects: [], map: false });
       getAllProjects({
         onData: ({ projects }) => {
-          setProjects({ projects, map: new Map() });
+          setProjects({
+            projects,
+            map: create((set, get) => {
+              return {
+                set,
+                get,
+              };
+            }),
+          });
         },
       });
 
@@ -106,7 +123,7 @@ export function EffectNode({
               .map((code) => {
                 return (
                   <RunnerRuntime
-                    map={map}
+                    socketMap={map}
                     win={win}
                     key={code._id}
                     code={code}
@@ -127,7 +144,7 @@ export function EffectNode({
                 return (
                   <RunnerToolBox
                     win={win}
-                    map={map}
+                    socketMap={map}
                     key={code._id}
                     code={code}
                     useStore={useStore}

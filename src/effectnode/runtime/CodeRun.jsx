@@ -9,6 +9,7 @@ export function CodeRun({
   codeName,
   domElement,
   win = false,
+  socketMap,
 }) {
   let settings = useStore((r) => r.settings);
   let graph = useStore((r) => r.graph) || {};
@@ -133,55 +134,6 @@ export function CodeRun({
   useEffect(() => {
     let cleans = [];
 
-    let onHoldData = new Map();
-    let handlersMap = new Map();
-    let readyMap = new Map();
-
-    nodeOne.outputs.map((socket) => {
-      readyMap.set(socket._id, false);
-      handlersMap.set(socket._id, []);
-      onHoldData.set(socket._id, []);
-    });
-
-    nodeOne.outputs.map((socket) => {
-      let hhh = async ({ detail }) => {
-        let onHoldDataArray = onHoldData.get(socket._id);
-        let handlerArray = handlersMap.get(socket._id);
-
-        let isSetup = readyMap.get(socket._id);
-
-        if (!isSetup) {
-          onHoldDataArray.push(detail);
-        } else {
-          handlerArray.forEach(async (handler) => {
-            let response = await handler(detail.requestData);
-            detail.collectResponse(response);
-          });
-        }
-
-        // if (handlerArray.length === 0) {
-        //   onHoldData.push(detail);
-        // } else {
-        //   onHoldData.push(detail);
-
-        //   for (let detail of onHoldData) {
-        //     for (let handler of handlerArray.values()) {
-        //       let response = await handler(detail.requestData);
-        //       detail.collectResponse(response);
-        //     }
-        //   }
-
-        //   onHoldData.set(socket._id, []);
-        // }
-      };
-
-      cleans.push(() => {
-        domElement.removeEventListener(socket._id + "serve", hhh);
-      });
-
-      domElement.addEventListener(socket._id + "serve", hhh);
-    });
-
     let ioPXY = new Proxy(
       {
         //
@@ -200,81 +152,8 @@ export function CodeRun({
               let destEdges = edges.filter((r) => r.output._id === output._id);
 
               destEdges.forEach((edge) => {
-                domElement.dispatchEvent(
-                  new CustomEvent(edge.input._id, {
-                    detail: val,
-                  })
-                );
-              });
-
-              //
-            };
-          }
-
-          if (key.startsWith("res")) {
-            return (idx, handler) => {
-              let setup = (idx) => {
-                let socket = nodeOne.outputs[idx];
-
-                readyMap.set(socket._id, true);
-                let handlerArray = handlersMap.get(socket._id);
-                let onHoldDataArray = onHoldData.get(socket._id);
-
-                handlerArray.push(handler);
-
-                onHoldDataArray.forEach((detail) => {
-                  //
-                  //
-                  handlerArray.forEach(async (handler) => {
-                    let response = await handler(detail.requestData);
-                    detail.collectResponse(response);
-                  });
-
-                  //
-                });
-
-                for (let i = 0; i < onHoldDataArray.length; i++) {
-                  onHoldDataArray.splice(i, 1);
-                }
-
-                readyMap.set(socket._id, true);
-                //
-              };
-              if (idx === "*" || idx === "all") {
-                for (let idxLocal in nodeOne.outputs) {
-                  setup(idxLocal);
-                }
-              } else {
-                setup(idx);
-              }
-            };
-          }
-
-          if (key.startsWith("req")) {
-            return async (idx, data) => {
-              // let idx = Number(key.replace("request", ""));
-
-              let node = nodeOne;
-
-              let socket = node.inputs[idx];
-
-              let edges = useStore?.getState()?.graph?.edges || [];
-
-              let destEdges = edges.filter((r) => r.input._id === socket._id);
-
-              return new Promise((resolve) => {
-                destEdges.forEach((edge) => {
-                  ///
-                  domElement.dispatchEvent(
-                    new CustomEvent(edge.output._id + "serve", {
-                      detail: {
-                        requestData: data,
-                        collectResponse: (v) => {
-                          resolve(v);
-                        },
-                      },
-                    })
-                  );
+                socketMap.setState({
+                  [edge.input._id]: val,
                 });
               });
             };
@@ -282,25 +161,34 @@ export function CodeRun({
 
           if (key.startsWith("in")) {
             return (idx, handler) => {
-              // let idx = Number(key.replace("in", ""));
+              return new Promise((resolve) => {
+                //
+                // let idx = Number(key.replace("in", ""));
+                //
 
-              let node = nodeOne;
-              let input = node.inputs[idx];
+                let node = nodeOne;
+                let input = node.inputs[idx];
 
-              //
-              let hh = ({ detail }) => {
-                handler(detail);
-              };
-              domElement.addEventListener(input._id, hh);
+                socketMap.subscribe((state, before) => {
+                  if (state[input._id] !== before[input._id]) {
+                    if (typeof state[input._id] !== "undefined") {
+                      handler(state[input._id]);
+                    }
+                  }
+                });
 
-              cleans.push(() => {
-                domElement.removeEventListener(input._id, hh);
+                let tt = setInterval(() => {
+                  let val = socketMap.getState()[input._id];
+                  if (typeof val !== "undefined") {
+                    clearInterval(tt);
+
+                    socketMap.setState({
+                      [input._id]: val,
+                    });
+                    resolve(val);
+                  }
+                });
               });
-
-              return () => {
-                domElement.removeEventListener(input._id, hh);
-              };
-              //
             };
           }
         },
@@ -312,7 +200,7 @@ export function CodeRun({
     setIO(ioPXY);
 
     return () => {};
-  }, [domElement, nodeOne, useStore]);
+  }, [domElement, nodeOne, socketMap, useStore]);
 
   return (
     <>

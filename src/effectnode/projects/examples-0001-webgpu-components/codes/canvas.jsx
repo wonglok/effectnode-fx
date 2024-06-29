@@ -40,6 +40,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   }, []);
 
   useEffect(() => {
+    let cleans = [];
     let setup = async ({ domElement }) => {
       let { width, height } = domElement.getBoundingClientRect();
       let renderer = new WebGPURenderer({ antialias: true });
@@ -54,14 +55,10 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         scene: scene,
       });
 
-      io.response("*", async (req) => {
-        console.log(req);
-        return {
-          renderer,
-          gl: renderer,
-          scene,
-          domElement: domElement,
-        };
+      io.out(0, {
+        renderer: renderer,
+        gl: renderer,
+        scene: scene,
       });
 
       let onResize = () => {
@@ -69,25 +66,24 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         renderer.setSize(width, height);
         renderer.setPixelRatio(window.devicePixelRatio);
       };
+
       //
       window.addEventListener("resize", onResize);
       domElement.appendChild(renderer.domElement);
+
       let clean = () => {
         window.removeEventListener("resize", onResize);
         domElement.removeChild(renderer.domElement);
       };
 
-      return clean;
+      cleans.push(clean);
     };
 
-    let cleans = [];
     let tt = setInterval(() => {
       if (document.getElementById(randID)) {
         clearInterval(tt);
         let domElement = document.getElementById(randID);
-        setup({ domElement }).then((cc) => {
-          cleans.push(cc);
-        });
+        setup({ domElement });
       }
     }, 0);
 

@@ -63,7 +63,7 @@ async function loadProjects({ onData = () => {} }) {
 
   setTimeout(() => {
     onData({ projects: projectGraphs });
-  }, 10);
+  }, 1);
 
   //
   // console.log(projectGraphs);

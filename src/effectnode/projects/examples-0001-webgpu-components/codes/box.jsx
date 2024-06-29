@@ -40,10 +40,6 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
   useEffect(() => {
     let cleans = [];
     let setup = async () => {
-      let { scene, gl } = await io.request(0, {
-        requestFrom: "box",
-      });
-
       let geo = new BoxGeometry(1, 1, 1);
       let mat = new MeshStandardNodeMaterial();
       mat.color = new Color("#ffffff");
@@ -56,6 +52,8 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         let dt = clock.getDelta();
         box.rotation.y += dt;
       });
+
+      let { scene } = await io.in(0, (streamVal) => {});
 
       scene.add(box);
       cleans.push(() => {
