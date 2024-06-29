@@ -8,7 +8,6 @@ export function CodeRun({
   Algorithm = () => null,
   codeName,
   domElement,
-  map,
   win = false,
 }) {
   let settings = useStore((r) => r.settings);
@@ -129,12 +128,15 @@ export function CodeRun({
   }
 
   let [io, setIO] = useState(false);
+
+  //
   useEffect(() => {
     let cleans = [];
 
     let onHoldData = new Map();
     let handlersMap = new Map();
     let readyMap = new Map();
+
     nodeOne.outputs.map((socket) => {
       readyMap.set(socket._id, false);
       handlersMap.set(socket._id, []);
@@ -229,10 +231,12 @@ export function CodeRun({
                   });
 
                   //
-                  //
                 });
 
-                onHoldData.set(socket._id, []);
+                for (let i = 0; i < onHoldDataArray.length; i++) {
+                  onHoldDataArray.splice(i, 1);
+                }
+
                 readyMap.set(socket._id, true);
                 //
               };

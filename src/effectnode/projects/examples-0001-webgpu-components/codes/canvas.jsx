@@ -79,7 +79,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
 
       return clean;
     };
-    ///
+
     let cleans = [];
     let tt = setInterval(() => {
       if (document.getElementById(randID)) {
