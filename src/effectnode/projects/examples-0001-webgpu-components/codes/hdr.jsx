@@ -89,10 +89,6 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         scene.backgroundNode = node;
         scene.envrionmentNode = node;
       });
-
-      //
-
-      //
     };
 
     setup();
