@@ -182,13 +182,13 @@
           "min": 0,
           "max": 1,
           "step": 0.01,
-          "value": 0.65
+          "value": 0.41000000000000003
         },
         {
           "_id": "_2a2a8rv_9x2uw55",
           "label": "baseColor",
           "type": "color",
-          "value": "#5772ff"
+          "value": "#28a6ff"
         }
       ],
       "title": "fafa"

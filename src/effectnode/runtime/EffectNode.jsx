@@ -28,7 +28,7 @@ export function EffectNode({
     useRuntime: false,
     project: false,
   });
-  console.log(project);
+
   useEffect(() => {
     let last = "";
 
