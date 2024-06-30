@@ -31,11 +31,13 @@ export function EffectNode({
 
   useEffect(() => {
     let last = "";
+    let lastCode = [];
 
     window.addEventListener("effectNode", ({ detail }) => {
       let { projects } = detail;
 
-      let now = getSignature(projects);
+      let { text, codes } = getSignature(projects);
+      let now = codes;
       if (last !== now) {
         last = now;
 
@@ -46,7 +48,9 @@ export function EffectNode({
 
           setProjects({
             projects,
+
             project: project,
+
             useRuntime: create((set, get) => {
               //
 

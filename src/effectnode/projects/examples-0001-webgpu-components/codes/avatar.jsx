@@ -407,7 +407,7 @@ let setup = ({ skinnedMesh, group, domElement, renderer, onLoop, io, ui }) => {
 
   particleMaterial.positionNode = posAttr;
 
-  particleMaterial.scaleNode = size.div(colorNode.length());
+  particleMaterial.scaleNode = size.mul(velNode.length());
   particleMaterial.opacity = 1.0; //(float(0.14).add(lifeBuffer.node.toAttribute().length().mul(-1).mul(size)))
   particleMaterial.depthTest = true;
   particleMaterial.depthWrite = false;

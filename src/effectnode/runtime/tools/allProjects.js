@@ -3,74 +3,38 @@ import { basename, extname } from "path";
 function loadCodes({ projectName }) {
   let codes = [];
 
-  if (process.env.NODE_ENV === "development") {
-    let rr2 = require.context(
-      "../../projects",
-      true,
-      /\/codes\/(.*).(js|jsx|ts|tsx)$/,
-      "sync"
-    );
+  let rr = require.context(
+    "../../projects",
+    true,
+    /\/codes\/(.*).(js|jsx|ts|tsx)$/,
+    "lazy"
+  );
 
-    let list = rr2.keys();
+  let list = rr.keys();
 
-    list.forEach((key) => {
+  list.forEach((key) => {
+    // console.log(key);
+    //
+
+    if (key.startsWith("./") && key.includes(`/${projectName}/`)) {
       // console.log(key);
-      //
+      let ext = extname(key);
 
-      if (key.startsWith("./") && key.includes(`/${projectName}/`)) {
-        // console.log(key);
-        let ext = extname(key);
+      let codeName = basename(key).replace(ext, "");
+      let item = {
+        _id: key,
+        projectName: projectName,
+        codeName: codeName,
+        fileName: basename(key),
+        loadCode: async () => rr(key),
+      };
+      codes.push(item);
+    }
 
-        let codeName = basename(key).replace(ext, "");
-        let item = {
-          _id: key,
-          projectName: projectName,
-          codeName: codeName,
-          fileName: basename(key),
-          text: `${rr2(key).Runtime}`,
-          loadCode: async () => rr2(key),
-        };
-        codes.push(item);
-      }
+    //
 
-      //
-
-      //
-    });
-  } else {
-    let rr = require.context(
-      "../../projects",
-      true,
-      /\/codes\/(.*).(js|jsx|ts|tsx)$/,
-      "lazy"
-    );
-
-    let list = rr.keys();
-
-    list.forEach((key) => {
-      // console.log(key);
-      //
-
-      if (key.startsWith("./") && key.includes(`/${projectName}/`)) {
-        // console.log(key);
-        let ext = extname(key);
-
-        let codeName = basename(key).replace(ext, "");
-        let item = {
-          _id: key,
-          projectName: projectName,
-          codeName: codeName,
-          fileName: basename(key),
-          loadCode: async () => rr(key),
-        };
-        codes.push(item);
-      }
-
-      //
-
-      //
-    });
-  }
+    //
+  });
 
   return codes;
 }
