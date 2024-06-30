@@ -109,9 +109,9 @@ export function FlowGallery({}) {
   let ptsPos = useMemo(
     () =>
       [
-        [-20, 0, -50],
+        [-20, 0, -20],
         [0, 0, 0],
-        [20, 0, -50],
+        [20, 0, -20],
       ].map((r) => new Vector3().fromArray(r)),
     []
   );

@@ -16,8 +16,6 @@ export function ToolBox({ ui, useStore, domElement }) {
 let t3d = tunnel();
 export function Runtime({ ui, useStore, io }) {
   //
-
-  //
   useEffect(() => {
     useStore.setState({
       Insert3D: function Insert3D({ children }) {
@@ -25,7 +23,6 @@ export function Runtime({ ui, useStore, io }) {
       },
     });
   }, [useStore]);
-  //
 
   //
   return (
