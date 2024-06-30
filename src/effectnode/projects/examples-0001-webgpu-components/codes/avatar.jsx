@@ -407,7 +407,7 @@ let setup = ({ skinnedMesh, group, domElement, renderer, onLoop, io, ui }) => {
 
   group.add(particles);
 
-  const helper = new GridHelper(100, 100, 0xff3030, 0x303030);
+  const helper = new GridHelper(100, 100, 0xff3030, 0x005555);
   group.add(helper);
 
   const geometry = new PlaneGeometry(1000, 1000);

@@ -38,7 +38,7 @@ function loadCodes({ projectName }) {
   return codes;
 }
 
-async function loadProjects({ onData = () => {} }) {
+async function loadProjects({}) {
   let projectGraphs = [];
 
   //

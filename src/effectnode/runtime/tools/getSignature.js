@@ -1,12 +1,12 @@
-export let getSignature = (list) =>
-  JSON.stringify(
+export let getSignature = (list) => {
+  let yo = JSON.stringify(
     list.map((gra) => {
       gra = JSON.parse(JSON.stringify(gra));
 
       return {
         _id: gra._id,
         projectName: gra.projectName,
-        codes: gra.codes,
+        // codes: gra.codes,
         graph: {
           nodes: gra.graph.nodes.map((r) => {
             r.position = [0, 0, 0];
@@ -24,3 +24,6 @@ export let getSignature = (list) =>
       };
     })
   );
+
+  return yo;
+};

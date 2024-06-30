@@ -33,7 +33,25 @@ export function EffectNode({
 
     window.addEventListener("effectNode", ({ detail }) => {
       let { projects } = detail;
-      let now = getSignature(projects);
+
+      let str = "";
+      if (process.env.NODE_ENV === "development") {
+        let rr = require.context(
+          "../../",
+          true,
+          /\/codes\/(.*).(js|jsx|ts|tsx)$/
+          // "lazy"
+        );
+
+        let list = rr.keys();
+        let arr = list.map((li) => {
+          return rr(li).toString();
+        });
+
+        str = arr.join("");
+      }
+
+      let now = getSignature(projects) + str;
       if (last !== now) {
         last = now;
         // console.log(now, last);
@@ -41,6 +59,7 @@ export function EffectNode({
 
         if (project) {
           //
+
           setProjects({
             projects,
             project: project,
