@@ -58,7 +58,7 @@ import {
   MeshBasicNodeMaterial,
 } from "three/examples/jsm/nodes/Nodes.js";
 
-import motionURL from "../assets/rpm/moiton/flair.fbx";
+import motionURL from "../assets/rpm/moiton/thriller4.fbx";
 import lok from "../assets/rpm/lok.glb";
 
 export function ToolBox({ ui, useStore, domElement }) {
@@ -150,11 +150,11 @@ function Avatar({ useStore, domElement, onLoop, io, ui }) {
         }
       });
 
-      skinnedMesh.material = new MeshBasicNodeMaterial({
-        opacity: 0.05,
-        transparent: true,
-        wireframe: true,
-      });
+      // skinnedMesh.material = new MeshBasicNodeMaterial({
+      //   // opacity: 1,
+      //   // transparent: true,
+      //   wireframe: false,
+      // });
 
       // console.log(skinnedMesh);
 
