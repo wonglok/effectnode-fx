@@ -58,7 +58,7 @@ import {
   MeshBasicNodeMaterial,
 } from "three/examples/jsm/nodes/Nodes.js";
 
-import motionURL from "../assets/rpm/moiton/breakdance.fbx";
+import motionURL from "../assets/rpm/moiton/flair.fbx";
 import lok from "../assets/rpm/lok.glb";
 
 export function ToolBox({ ui, useStore, domElement }) {
