@@ -116,7 +116,7 @@ export const EditorRoot = ({ title }) => {
           clearTimeout(t0);
           t0 = setTimeout(() => {
             save();
-          }, 250);
+          }, 350);
         }
       });
     });
