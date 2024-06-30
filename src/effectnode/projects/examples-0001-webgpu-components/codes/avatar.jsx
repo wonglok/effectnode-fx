@@ -445,7 +445,7 @@ let setup = ({ skinnedMesh, group, domElement, renderer, onLoop }) => {
   })().compute(particleCount);
 
   onLoop(() => {
-    renderer.compute(computeParticles);
-    renderer.compute(computeHit);
+    renderer.computeAsync(computeParticles);
+    renderer.computeAsync(computeHit);
   });
 };
