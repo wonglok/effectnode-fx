@@ -30,7 +30,9 @@ export function Runtime({ ui, useStore, io }) {
   //
   return (
     <>
-      <Canvas gl={(canvas) => new WebGPURenderer({ canvas })}>
+      <Canvas
+        gl={(canvas) => new WebGPURenderer({ canvas, forceWebGL: false })}
+      >
         <RenderStuff useStore={useStore}>
           <t3d.Out></t3d.Out>
         </RenderStuff>
@@ -48,7 +50,17 @@ function RenderStuff({ children, useStore }) {
     for (let kn in st) {
       useStore.setState({ [kn]: st[kn] });
     }
-    useStore.setState({ ___canShow: true });
+
+    try {
+      st.gl
+        .init()
+        .then(() => {
+          useStore.setState({ ___canShow: true });
+        })
+        .catch(() => {});
+    } catch (e) {
+      useStore.setState({ ___canShow: true });
+    }
   }, [get, useStore]);
 
   useFrame(({ gl, camera, scene }) => {
