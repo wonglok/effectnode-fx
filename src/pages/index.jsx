@@ -41,12 +41,12 @@ export default function Home() {
             useStore={useStoreWebGPU}
           ></EffectNode>
         </div>
-        <div className="w-full h-full select-none no-sel-sub relative">
+        {/* <div className="w-full h-full select-none no-sel-sub relative">
           <EffectNode
             projectName={json.title}
             useStore={useStoreWebGL}
           ></EffectNode>
-        </div>
+        </div> */}
       </div>
     </div>
   );
