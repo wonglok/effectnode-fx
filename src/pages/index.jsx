@@ -4,7 +4,7 @@ import { create } from "zustand";
 import json from "../effectnode/projects/production-webgl/graph.json";
 import gpu from "../effectnode/projects/examples-0001-webgpu-components/graph.json";
 export default function Home() {
-  let useStore1 = useMemo(() => {
+  let useStoreWebGL = useMemo(() => {
     return create((set, get) => {
       return {
         //
@@ -14,7 +14,7 @@ export default function Home() {
     });
   }, []);
 
-  let useStore2 = useMemo(() => {
+  let useStoreWebGPU = useMemo(() => {
     return create((set, get) => {
       return {
         //
@@ -27,15 +27,6 @@ export default function Home() {
   return (
     <div className="w-full h-full">
       <div className="grid grid-cols-1 lg:grid-cols-2 grid-rows-2 h-full">
-        <div className="w-full h-full select-none no-sel-sub relative">
-          <EffectNode
-            projectName={json.title}
-            useStore={useStore1}
-          ></EffectNode>
-        </div>
-        <div className="w-full h-full select-none no-sel-sub relative">
-          <EffectNode projectName={gpu.title} useStore={useStore2}></EffectNode>
-        </div>
         <video
           controls
           autoPlay
@@ -43,6 +34,19 @@ export default function Home() {
           src={`/docs/yo-720p.mp4`}
           className=""
         ></video>
+
+        <div className="w-full h-full select-none no-sel-sub relative">
+          <EffectNode
+            projectName={gpu.title}
+            useStore={useStoreWebGPU}
+          ></EffectNode>
+        </div>
+        <div className="w-full h-full select-none no-sel-sub relative">
+          <EffectNode
+            projectName={json.title}
+            useStore={useStoreWebGL}
+          ></EffectNode>
+        </div>
       </div>
     </div>
   );
