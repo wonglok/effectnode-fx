@@ -25,19 +25,12 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex">
-      <div className=" w-80 h-80">
-        <div className="w-full h-full select-none no-sel-sub relative">
-          <EffectNode
-            projectName={json.title}
-            useStore={useStore1}
-          ></EffectNode>
-        </div>
+    <div className="grid grid-cols-1 lg:grid-cols-2 grid-rows-2 h-full">
+      <div className="w-full h-full select-none no-sel-sub relative">
+        <EffectNode projectName={json.title} useStore={useStore1}></EffectNode>
       </div>
-      <div className=" w-80 h-80">
-        <div className="w-full h-full select-none no-sel-sub relative">
-          <EffectNode projectName={gpu.title} useStore={useStore2}></EffectNode>
-        </div>
+      <div className="w-full h-full select-none no-sel-sub relative">
+        <EffectNode projectName={gpu.title} useStore={useStore2}></EffectNode>
       </div>
     </div>
   );
