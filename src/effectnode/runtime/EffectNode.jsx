@@ -22,62 +22,57 @@ export function EffectNode({
   let nodes = graph.nodes || [];
   let [api, setDisplay] = useState({ domElement: false });
 
-  let [{ projects, map, useRuntime, project }, setProjects] = useState({
-    projects: [],
-    map: false,
-    useRuntime: false,
-    project: false,
+  let [{ socketMap, useRuntime }, setProjects] = useState({
+    socketMap: create(() => {
+      return {};
+    }),
+    useRuntime: create(() => {
+      return {};
+    }),
   });
+  let codes = useRuntime((r) => r.codes);
+  let project = useRuntime((r) => r.project);
 
   useEffect(() => {
-    let last = "";
-    let lastCode = [];
+    if (!useRuntime) {
+      return;
+    }
+    return useStore.subscribe((state, before) => {
+      if (state.settings) {
+        useRuntime.setState({
+          settings: JSON.parse(JSON.stringify(state.settings)),
+        });
+      }
+    });
+  }, [useRuntime, useStore]);
+
+  useEffect(() => {
+    let lastText = "";
+    let lastCode = "";
 
     window.addEventListener("effectNode", ({ detail }) => {
       let { projects } = detail;
 
       let { text, codes } = getSignature(projects);
-      let now = codes;
-      if (last !== now) {
-        last = now;
+
+      if (lastText !== text) {
+        lastText = text;
+        lastCode = codes;
 
         let project = projects.find((r) => r.projectName === projectName);
 
         if (project) {
-          //
-
           setProjects({
-            projects,
-
-            project: project,
-
-            useRuntime: create((set, get) => {
-              //
-
-              //
-              useStore.subscribe((state, before) => {
-                if (state.settings) {
-                  set({
-                    settings: JSON.parse(JSON.stringify(state.settings)),
-                  });
-                }
-              });
-
-              //
-
+            useRuntime: create(() => {
               return {
+                project: project,
                 codes: project.codes,
                 settings: project.settings,
                 graph: project.graph,
-                set,
-                get,
               };
             }),
-            map: create((set, get) => {
-              return {
-                set,
-                get,
-              };
+            socketMap: create(() => {
+              return {};
             }),
           });
         }
@@ -85,7 +80,7 @@ export function EffectNode({
     });
 
     window.dispatchEvent(new CustomEvent("requestEffectNode", { detail: {} }));
-  }, [projectName, useStore]);
+  }, [projectName]);
 
   let randID = useMemo(() => {
     return `_${md5(projectName)}`;
@@ -115,7 +110,7 @@ export function EffectNode({
     onLoop: () => {},
   });
   useEffect(() => {
-    if (!map) {
+    if (!socketMap) {
       return;
     }
     let api = {
@@ -138,16 +133,15 @@ export function EffectNode({
     return () => {
       cancelAnimationFrame(rAFID);
     };
-  }, [map]);
+  }, [socketMap]);
 
   //
   // console.log(codes);
   //
-  let codes = project?.codes || [];
   return (
     <>
       <Emit></Emit>
-      {map && useRuntime && (
+      {socketMap && useRuntime && (
         <div id={randID} className="w-full h-full overflow-hidden">
           {mode === "runtime" &&
             api.domElement &&
@@ -160,7 +154,7 @@ export function EffectNode({
                 return (
                   <RunnerRuntime
                     onLoop={onLoop}
-                    socketMap={map}
+                    socketMap={socketMap}
                     win={win}
                     key={code._id}
                     code={code}
@@ -182,7 +176,7 @@ export function EffectNode({
                   <RunnerToolBox
                     onLoop={onLoop}
                     win={win}
-                    socketMap={map}
+                    socketMap={socketMap}
                     key={code._id}
                     code={code}
                     useStore={useRuntime}

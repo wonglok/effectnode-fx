@@ -25,5 +25,5 @@ export let getSignature = (list) => {
     })
   );
 
-  return { text: yo, codes: list.map((r) => r.codes) };
+  return { text: yo, codes: list.map((r) => r.codes.map((r) => r.loadCode)) };
 };
