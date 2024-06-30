@@ -6,7 +6,7 @@ export let getSignature = (list) => {
       return {
         _id: gra._id,
         projectName: gra.projectName,
-        // codes: gra.codes,
+        codes: gra.codes,
         graph: {
           nodes: gra.graph.nodes.map((r) => {
             r.position = [0, 0, 0];

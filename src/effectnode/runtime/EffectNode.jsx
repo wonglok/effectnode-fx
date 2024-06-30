@@ -35,27 +35,10 @@ export function EffectNode({
     window.addEventListener("effectNode", ({ detail }) => {
       let { projects } = detail;
 
-      let str = "";
-      if (process.env.NODE_ENV === "development") {
-        let rr = require.context(
-          "../../",
-          true,
-          /\/codes\/(.*).(js|jsx|ts|tsx)$/
-          // "lazy"
-        );
-
-        let list = rr.keys();
-        let arr = list.map((li) => {
-          return rr(li).toString();
-        });
-
-        str = arr.join("");
-      }
-
-      let now = getSignature(projects) + str;
+      let now = getSignature(projects);
       if (last !== now) {
         last = now;
-        // console.log(now, last);
+
         let project = projects.find((r) => r.projectName === projectName);
 
         if (project) {

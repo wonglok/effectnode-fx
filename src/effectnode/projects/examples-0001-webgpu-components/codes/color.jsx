@@ -13,9 +13,7 @@ export function ToolBox({ ui, useStore, domElement }) {
 export function Runtime({ ui, useStore, io }) {
   let Insert3D = useStore((r) => r.Insert3D) || (() => null);
 
-  //
   useEffect(() => {
-    //
     io.output(0, ui.baseColor);
   });
 

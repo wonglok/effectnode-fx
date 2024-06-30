@@ -55,6 +55,7 @@ import {
   cos,
   sin,
   mat3,
+  MeshBasicNodeMaterial,
 } from "three/examples/jsm/nodes/Nodes.js";
 
 import motionURL from "../assets/rpm/moiton/breakdance.fbx";
@@ -147,6 +148,12 @@ function Avatar({ useStore, domElement, onLoop, io, ui }) {
             skinnedMesh = it;
           }
         }
+      });
+
+      skinnedMesh.material = new MeshBasicNodeMaterial({
+        opacity: 0.05,
+        transparent: true,
+        wireframe: true,
       });
 
       // console.log(skinnedMesh);
@@ -400,7 +407,7 @@ let setup = ({ skinnedMesh, group, domElement, renderer, onLoop, io, ui }) => {
   particleMaterial.depthWrite = false;
   particleMaterial.transparent = true;
 
-  const particles = new Mesh(new CircleGeometry(0.05, 8), particleMaterial);
+  const particles = new Mesh(new CircleGeometry(0.05, 3), particleMaterial);
   particles.isInstancedMesh = true;
   particles.count = particleCount;
   particles.frustumCulled = false;
