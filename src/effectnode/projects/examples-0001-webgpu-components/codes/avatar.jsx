@@ -146,6 +146,7 @@ function Avatar({ useStore, domElement, onLoop, io, ui }) {
         if (it.isSkinnedMesh) {
           if (!skinnedMesh) {
             skinnedMesh = it;
+            skinnedMesh.frustumCulled = false;
           }
         }
       });
