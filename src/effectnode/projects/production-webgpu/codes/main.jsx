@@ -252,6 +252,7 @@ export function Runtime({ domElement, ui, useStore, io, onLoop }) {
         itemSize: 3,
         type: "vec3",
       });
+
       // const processedNormalBuffer = createBuffer({
       //   itemSize: 3,
       //   type: "vec3",
