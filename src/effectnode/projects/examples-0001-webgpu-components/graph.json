@@ -157,7 +157,7 @@
           "_id": "_1ko0o77_i9qjb4e",
           "label": "baseColor",
           "type": "color",
-          "value": "#006cff"
+          "value": "#00ff61"
         },
         {
           "_id": "_yykfz1w_owrte7e",
@@ -188,7 +188,7 @@
           "_id": "_2a2a8rv_9x2uw55",
           "label": "baseColor",
           "type": "color",
-          "value": "#28f9ff"
+          "value": "#00ffb9"
         },
         {
           "_id": "_sloszsz_",
@@ -580,9 +580,9 @@
         "_id": "_8j4hzoi_j1934x3",
         "title": "avatar",
         "position": [
-          -1.4891387279858466,
+          -1.5495634238525704,
           0,
-          -0.012419782624755085
+          -0.006051825724295856
         ],
         "inputs": [
           {
