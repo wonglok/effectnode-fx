@@ -47,8 +47,9 @@ export function EffectNode({
             useRuntime: create((set, get) => {
               //
 
+              //
               useStore.subscribe((state, before) => {
-                if (state.settings !== before.settings) {
+                if (state.settings) {
                   set({
                     settings: JSON.parse(JSON.stringify(state.settings)),
                   });

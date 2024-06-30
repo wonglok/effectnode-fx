@@ -381,8 +381,12 @@ let setup = ({ skinnedMesh, group, domElement, renderer, onLoop, io, ui }) => {
     colorNode.r.mul(color3.x), //.mul(textureNode.a), //.mul(3.33),
     colorNode.g.mul(color3.y), //.mul(textureNode.a), //.mul(3.33),
     colorNode.b.mul(color3.z), //.mul(textureNode.a), //.mul(2.33),
-    1 //textureNode.a.mul(1 / 3.33)
+    ui.opacity //textureNode.a.mul(1 / 3.33)
   );
+
+  ui.on("opacity", (value) => {
+    particleMaterial.colorNode.a.assign(float(value));
+  });
 
   particleMaterial.positionNode = posAttr;
 
