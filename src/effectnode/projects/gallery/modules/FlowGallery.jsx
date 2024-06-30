@@ -1,7 +1,7 @@
 import { Box, Image, useTexture } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { createRef, useEffect, useMemo, useRef } from "react";
-import { CatmullRomCurve3, Clock, Vector2, Vector3 } from "three";
+import { CatmullRomCurve3, Clock, DoubleSide, Vector2, Vector3 } from "three";
 import { DragGesture, Gesture } from "@use-gesture/vanilla";
 
 import chung001 from "../assets/ahchung/high-resolution-1080px-x-1920px-smartphone-wallpaper_32357164197_o.jpg";
@@ -109,9 +109,9 @@ export function FlowGallery({}) {
   let ptsPos = useMemo(
     () =>
       [
-        [-20, 0, 0],
+        [-20, 0, -50],
         [0, 0, 0],
-        [20, 0, 0],
+        [20, 0, -50],
       ].map((r) => new Vector3().fromArray(r)),
     []
   );
@@ -119,9 +119,9 @@ export function FlowGallery({}) {
   let ptsRot = useMemo(
     () =>
       [
-        [0, 20, 0],
+        [0, 3.14 * 3, 0],
         [0, 0, 0],
-        [0, -20, 0],
+        [0, -3.14 * 3, 0],
       ].map((r) => new Vector3().fromArray(r)),
     []
   );
@@ -222,8 +222,8 @@ export function FlowGallery({}) {
           pinching, // "              "              "  pinched
         } = state;
 
-        floatDelta.x += delta[0] / 50 / 1.8;
-        floatDelta.y += delta[1] / 50 / 1.8;
+        floatDelta.x += delta[0] / 300 / 1.8;
+        floatDelta.y += delta[1] / 300 / 1.8;
       },
       {
         eventOptions: { passive: false },
@@ -300,6 +300,7 @@ function OneItem({ floatAcc, each, curveScale, curveRot, curvePos }) {
           <meshStandardMaterial
             emissive={"#ffffff"}
             emissiveMap={tex}
+            side={DoubleSide}
           ></meshStandardMaterial>
         </mesh>
       </group>

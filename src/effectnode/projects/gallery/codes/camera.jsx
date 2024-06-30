@@ -10,7 +10,7 @@ export function Runtime({ ui, useStore, io, domElement }) {
   return (
     <>
       <Insert3D>
-        <PerspectiveCamera makeDefault position={[0, 0, 2]}></PerspectiveCamera>
+        <PerspectiveCamera makeDefault position={[1, 2, 4]}></PerspectiveCamera>
         <OrbitControls
           makeDefault
           enableZoom={false}
