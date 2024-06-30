@@ -30,13 +30,10 @@ export function Runtime({ ui, useStore, io }) {
   //
   return (
     <>
-      <Canvas
-        gl={(canvas) =>
-          new WebGPURenderer({ canvas, antialias: true, multisampling: 4 })
-        }
-      >
-        <RenderStuff useStore={useStore}></RenderStuff>
-        <t3d.Out></t3d.Out>
+      <Canvas gl={(canvas) => new WebGPURenderer({ canvas })}>
+        <RenderStuff useStore={useStore}>
+          <t3d.Out></t3d.Out>
+        </RenderStuff>
       </Canvas>
     </>
   );
@@ -45,15 +42,20 @@ export function Runtime({ ui, useStore, io }) {
 function RenderStuff({ children, useStore }) {
   //
   let get = useThree((r) => r.get);
-
+  let ___canShow = useStore((r) => r.___canShow);
   useEffect(() => {
     let st = get();
     for (let kn in st) {
       useStore.setState({ [kn]: st[kn] });
     }
+    useStore.setState({ ___canShow: true });
   }, [get, useStore]);
 
-  return <>{children}</>;
+  useFrame(({ gl, camera, scene }) => {
+    gl.renderAsync(scene, camera);
+  }, 100);
+
+  return <>{___canShow && children}</>;
 }
 
 //
