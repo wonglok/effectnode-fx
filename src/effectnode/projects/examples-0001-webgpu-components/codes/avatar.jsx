@@ -29,13 +29,15 @@ import { rand } from "../loklok/rand.js";
 //
 
 import {
-  uv,
   vec4,
+  //
+  uv,
   color,
   mix,
   range,
   pass,
   timerLocal,
+  //
 
   //
   add,
