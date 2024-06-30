@@ -184,7 +184,13 @@ let setup = ({ skinnedMesh, group, domElement, renderer, onLoop, io, ui }) => {
   skinnedMesh.geometry.boundingBox.getSize(boundingBoxSize);
 
   const particleCount = 512 * 512;
-  const size = uniform(0.2);
+
+  const size = uniform(ui.size);
+  ui.on("size", (num) => {
+    if (typeof num === "number") {
+      size.value = num;
+    }
+  });
 
   const createBuffer = ({ itemSize = 3, type = "vec3" }) => {
     let attr = new StorageInstancedBufferAttribute(particleCount, itemSize);
