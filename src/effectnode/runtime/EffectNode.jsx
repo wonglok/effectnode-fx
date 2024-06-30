@@ -27,7 +27,10 @@ export function EffectNode({
       return {};
     }),
     useRuntime: create(() => {
-      return {};
+      return {
+        codes: [],
+        project: false,
+      };
     }),
   });
   let codes = useRuntime((r) => r.codes);
