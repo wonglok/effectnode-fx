@@ -16,7 +16,7 @@ export let getSignature = (list) =>
         },
         settings: gra.settings.map((r) => {
           r.data = r.data.map((da) => {
-            // da.value = null;
+            da.value = null;
             return da;
           });
           return r;

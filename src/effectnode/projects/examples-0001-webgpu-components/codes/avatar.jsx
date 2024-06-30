@@ -36,6 +36,8 @@ import {
   range,
   pass,
   timerLocal,
+
+  //
   add,
   positionLocal,
   attribute,
@@ -95,6 +97,31 @@ function Avatar({ useStore, domElement, onLoop, io, ui }) {
       return;
     }
 
+    const timestamps = document.createElement("div");
+    timestamps.style.position = "absolute";
+    timestamps.style.bottom = "0px";
+    timestamps.style.left = "0px";
+    timestamps.style.padding = "3px";
+    timestamps.style.backgroundColor = "white";
+    domElement.appendChild(timestamps);
+    /////////
+    let hasWebGPU = WebGPU.isAvailable();
+    let hasWebGL2 = WebGL.isWebGL2Available();
+
+    if (hasWebGPU) {
+      timestamps.innerText = "Running WebGPU";
+    } else if (hasWebGL2) {
+      timestamps.innerText = "Running WebGL2";
+    } else {
+      timestamps.innerText = "No WebGPU or WebGL2 support";
+    }
+
+    if (hasWebGPU === false && hasWebGL2 === false) {
+      domElement.appendChild(WebGPU.getErrorMessage());
+      throw new Error("No WebGPU or WebGL2 support");
+    } else {
+    }
+
     let draco = new DRACOLoader();
     draco.setDecoderPath("/draco/");
 
@@ -128,32 +155,6 @@ function Avatar({ useStore, domElement, onLoop, io, ui }) {
       skinnedMesh.geometry.computeVertexNormals();
       skinnedMesh.geometry.computeBoundingSphere();
       skinnedMesh.geometry.computeBoundingBox();
-
-      /////////
-      let hasWebGPU = WebGPU.isAvailable();
-      let hasWebGL2 = WebGL.isWebGL2Available();
-
-      const timestamps = document.createElement("div");
-      timestamps.style.position = "absolute";
-      timestamps.style.bottom = "0px";
-      timestamps.style.left = "0px";
-      timestamps.style.padding = "3px";
-      timestamps.style.backgroundColor = "white";
-      domElement.appendChild(timestamps);
-
-      if (hasWebGPU) {
-        timestamps.innerText = "Running WebGPU";
-      } else if (hasWebGL2) {
-        timestamps.innerText = "Running WebGL2";
-      } else {
-        timestamps.innerText = "No WebGPU or WebGL2 support";
-      }
-
-      if (hasWebGPU === false && hasWebGL2 === false) {
-        domElement.appendChild(WebGPU.getErrorMessage());
-        throw new Error("No WebGPU or WebGL2 support");
-      } else {
-      }
 
       let action = mixer.clipAction(motion.animations[0], glb.scene);
       action.play();
@@ -370,7 +371,11 @@ let setup = ({ skinnedMesh, group, domElement, renderer, onLoop, io, ui }) => {
   let colorNode = velNode.normalize().mul(0.5).add(1).mul(1.5);
 
   let color3 = uniform(new Color(ui.baseColor));
-  console.log(color3);
+  ui.on("baseColor", (value) => {
+    color3.value.set(value);
+  });
+
+  // console.log(color3);
 
   particleMaterial.colorNode = vec4(
     colorNode.r.mul(color3.x), //.mul(textureNode.a), //.mul(3.33),

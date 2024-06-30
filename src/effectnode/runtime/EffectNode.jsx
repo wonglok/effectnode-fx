@@ -45,6 +45,18 @@ export function EffectNode({
             projects,
             project: project,
             useRuntime: create((set, get) => {
+              //
+
+              useStore.subscribe((state, before) => {
+                if (state.settings !== before.settings) {
+                  set({
+                    settings: JSON.parse(JSON.stringify(state.settings)),
+                  });
+                }
+              });
+
+              //
+
               return {
                 codes: project.codes,
                 settings: project.settings,
@@ -65,7 +77,7 @@ export function EffectNode({
     });
 
     window.dispatchEvent(new CustomEvent("requestEffectNode", { detail: {} }));
-  }, [projectName]);
+  }, [projectName, useStore]);
 
   let randID = useMemo(() => {
     return `_${md5(projectName)}`;
