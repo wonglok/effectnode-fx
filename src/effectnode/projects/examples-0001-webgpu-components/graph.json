@@ -188,7 +188,7 @@
           "_id": "_2a2a8rv_9x2uw55",
           "label": "baseColor",
           "type": "color",
-          "value": "#fe79ff"
+          "value": "#3eeaf7"
         },
         {
           "_id": "_8129thf_8itrjsl",
@@ -577,9 +577,9 @@
         "_id": "_8j4hzoi_j1934x3",
         "title": "avatar",
         "position": [
-          -1.386185305721968,
+          -1.434261015052216,
           0,
-          0.13806981798529716
+          0.15547903208451996
         ],
         "inputs": [
           {
