@@ -15,8 +15,9 @@ import {
   MeshBasicMaterial,
   Raycaster,
   Vector2,
+  Color,
 } from "three";
-import { useFrame } from "@react-three/fiber";
+import { unmountComponentAtNode, useFrame } from "@react-three/fiber";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGL from "three/addons/capabilities/WebGL.js";
 
@@ -65,6 +66,8 @@ export function Runtime({ ui, useStore, io, domElement, onLoop }) {
     <>
       <Insert3D>
         <Avatar
+          io={io}
+          ui={ui}
           useStore={useStore}
           onLoop={onLoop}
           domElement={domElement}
@@ -74,7 +77,7 @@ export function Runtime({ ui, useStore, io, domElement, onLoop }) {
   );
 }
 
-function Avatar({ useStore, domElement, onLoop }) {
+function Avatar({ useStore, domElement, onLoop, io, ui }) {
   let gl = useStore((r) => r.gl);
   let [out, setOut] = useState(null);
 
@@ -157,15 +160,15 @@ function Avatar({ useStore, domElement, onLoop }) {
 
       let gp = new Object3D();
       gp.add(glb.scene);
-      setup({ skinnedMesh, group: gp, domElement, renderer, onLoop });
+      setup({ skinnedMesh, group: gp, domElement, renderer, onLoop, io, ui });
       setOut(<primitive object={gp}></primitive>);
     });
-  }, [domElement, gl, mixer, renderer, onLoop]);
+  }, [domElement, gl, mixer, renderer, onLoop, io, ui]);
 
   return <>{out}</>;
 }
 
-let setup = ({ skinnedMesh, group, domElement, renderer, onLoop }) => {
+let setup = ({ skinnedMesh, group, domElement, renderer, onLoop, io, ui }) => {
   const boundingBoxSize = new Vector3();
   skinnedMesh.geometry.boundingBox.getSize(boundingBoxSize);
 
@@ -366,10 +369,13 @@ let setup = ({ skinnedMesh, group, domElement, renderer, onLoop }) => {
 
   let colorNode = velNode.normalize().mul(0.5).add(1).mul(1.5);
 
+  let color3 = uniform(new Color(ui.baseColor));
+  console.log(color3);
+
   particleMaterial.colorNode = vec4(
-    colorNode.r, //.mul(textureNode.a), //.mul(3.33),
-    colorNode.g, //.mul(textureNode.a), //.mul(3.33),
-    colorNode.b, //.mul(textureNode.a), //.mul(2.33),
+    colorNode.r.mul(color3.x), //.mul(textureNode.a), //.mul(3.33),
+    colorNode.g.mul(color3.y), //.mul(textureNode.a), //.mul(3.33),
+    colorNode.b.mul(color3.z), //.mul(textureNode.a), //.mul(2.33),
     1 //textureNode.a.mul(1 / 3.33)
   );
 

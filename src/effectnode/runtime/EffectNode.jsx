@@ -26,6 +26,7 @@ export function EffectNode({
     projects: [],
     map: false,
     useRuntime: false,
+    project: false,
   });
   useEffect(() => {
     let last = "";
@@ -33,37 +34,33 @@ export function EffectNode({
     window.addEventListener("effectNode", ({ detail }) => {
       let { projects } = detail;
       let now = getSignature(projects);
-      if (last !== now || true) {
+      if (last !== now) {
         last = now;
         // console.log(now, last);
+        let project = projects.find((r) => r.projectName === projectName);
 
-        //
-        requestAnimationFrame(() => {
-          let project = projects.find((r) => r.projectName === projectName);
-
-          if (project) {
-            //
-            setProjects({
-              projects,
-              project: project,
-              useRuntime: create((set, get) => {
-                return {
-                  codes: project.codes,
-                  settings: project.settings,
-                  graph: project.graph,
-                  set,
-                  get,
-                };
-              }),
-              map: create((set, get) => {
-                return {
-                  set,
-                  get,
-                };
-              }),
-            });
-          }
-        });
+        if (project) {
+          //
+          setProjects({
+            projects,
+            project: project,
+            useRuntime: create((set, get) => {
+              return {
+                codes: project.codes,
+                settings: project.settings,
+                graph: project.graph,
+                set,
+                get,
+              };
+            }),
+            map: create((set, get) => {
+              return {
+                set,
+                get,
+              };
+            }),
+          });
+        }
       }
     });
 
