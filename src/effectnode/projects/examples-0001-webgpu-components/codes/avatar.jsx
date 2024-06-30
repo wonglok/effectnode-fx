@@ -1,5 +1,3 @@
-import motionURL from "../assets/rpm/moiton/wave-dance.fbx";
-import lok from "../assets/rpm/lok.glb";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
@@ -58,6 +56,9 @@ import {
   sin,
   mat3,
 } from "three/examples/jsm/nodes/Nodes.js";
+
+import motionURL from "../assets/rpm/moiton/breakdance.fbx";
+import lok from "../assets/rpm/lok.glb";
 
 export function ToolBox({ ui, useStore, domElement }) {
   return <>avatar</>;
