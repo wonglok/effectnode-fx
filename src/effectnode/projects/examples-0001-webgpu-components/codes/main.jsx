@@ -49,9 +49,7 @@ function RenderStuff({ children, useStore }) {
     }
   }, [get, useStore]);
 
-  let gl = useStore((r) => r.gl);
-
-  return gl && <>{children}</>;
+  return <>{children}</>;
 }
 
 //

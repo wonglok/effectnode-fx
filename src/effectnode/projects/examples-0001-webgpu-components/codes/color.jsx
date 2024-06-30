@@ -15,6 +15,7 @@ export function Runtime({ ui, useStore, io }) {
 
   //
   useEffect(() => {
+    //
     io.output(0, ui.baseColor);
   });
 

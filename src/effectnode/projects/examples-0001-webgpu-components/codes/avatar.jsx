@@ -381,7 +381,7 @@ let setup = ({ skinnedMesh, group, domElement, renderer, onLoop }) => {
   particleMaterial.depthWrite = false;
   particleMaterial.transparent = true;
 
-  const particles = new Mesh(new CircleGeometry(0.05, 3), particleMaterial);
+  const particles = new Mesh(new CircleGeometry(0.05, 8), particleMaterial);
   particles.isInstancedMesh = true;
   particles.count = particleCount;
   particles.frustumCulled = false;
