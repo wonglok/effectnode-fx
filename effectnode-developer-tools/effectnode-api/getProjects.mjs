@@ -14,6 +14,9 @@ export const getProjects = async () => {
 
   for (let kn in dirAll) {
     let dirOne = dirAll[kn];
+    if (dirOne === ".DS_Store") {
+      continue;
+    }
     try {
       let graphStat = await fs.stat(
         `${join(

@@ -1,28 +1,28 @@
-import { useMemo } from "react";
+// import { useMemo } from "react";
 import { EffectNode } from "src/effectnode/runtime/EffectNode";
-import { create } from "zustand";
-import json from "../effectnode/projects/production-webgl/graph.json";
-import gpu from "../effectnode/projects/examples-0001-webgpu-components/graph.json";
+// import { create } from "zustand";
+// import json from "../effectnode/projects/production-webgl/graph.json";
+// import gpu from "../effectnode/projects/examples-0001-webgpu-components/graph.json";
 export default function Home() {
-  let useStoreWebGL = useMemo(() => {
-    return create((set, get) => {
-      return {
-        //
-        settings: json.settings,
-        graph: json.graph,
-      };
-    });
-  }, []);
+  // let useStoreWebGL = useMemo(() => {
+  //   return create((set, get) => {
+  //     return {
+  //       //
+  //       settings: json.settings,
+  //       graph: json.graph,
+  //     };
+  //   });
+  // }, []);
 
-  let useStoreWebGPU = useMemo(() => {
-    return create((set, get) => {
-      return {
-        //
-        settings: gpu.settings,
-        graph: gpu.graph,
-      };
-    });
-  }, []);
+  // let useStoreWebGPU = useMemo(() => {
+  //   return create((set, get) => {
+  //     return {
+  //       //
+  //       settings: gpu.settings,
+  //       graph: gpu.graph,
+  //     };
+  //   });
+  // }, []);
 
   return (
     <div className="w-full h-full">
@@ -37,8 +37,7 @@ export default function Home() {
 
         <div className="w-full h-full select-none no-sel-sub relative">
           <EffectNode
-            projectName={gpu.title}
-            useStore={useStoreWebGPU}
+            projectName={"examples-0001-webgpu-components"}
           ></EffectNode>
         </div>
         {/* <div className="w-full h-full select-none no-sel-sub relative">

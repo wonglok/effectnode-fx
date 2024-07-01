@@ -8,18 +8,16 @@ import { getSignature } from "./tools/getSignature";
 import { Emit } from "./Emit";
 
 export function EffectNode({
-  useStore,
+  useStore = false,
   projectName, //
 
   // optional for toolbox
   win = false,
   node = { title: false },
   mode = "runtime",
-
-  //
+  onReady = () => {},
 }) {
-  let graph = useStore((r) => r.graph) || {};
-  let nodes = graph.nodes || [];
+  projectName = projectName.toLowerCase();
   let [api, setDisplay] = useState({ domElement: false });
 
   let [{ socketMap, useRuntime }, setProjects] = useState({
@@ -29,15 +27,28 @@ export function EffectNode({
     useRuntime: create(() => {
       return {
         codes: [],
+        settings: [],
         project: false,
+        graph: false,
       };
     }),
   });
   let codes = useRuntime((r) => r.codes);
+  let graph = useRuntime((r) => r.graph);
   let project = useRuntime((r) => r.project);
+  let nodes = graph.nodes || [];
+
+  useEffect(() => {
+    if (graph) {
+      onReady({ useRuntime });
+    }
+  }, [graph, onReady, useRuntime]);
 
   useEffect(() => {
     if (!useRuntime) {
+      return;
+    }
+    if (!useStore) {
       return;
     }
     return useStore.subscribe((state, before) => {
@@ -65,15 +76,17 @@ export function EffectNode({
         let project = projects.find((r) => r.projectName === projectName);
 
         if (project) {
+          let useRuntime = create(() => {
+            return {
+              project: project,
+              codes: project.codes,
+              settings: project.settings,
+              graph: project.graph,
+            };
+          });
+
           setProjects({
-            useRuntime: create(() => {
-              return {
-                project: project,
-                codes: project.codes,
-                settings: project.settings,
-                graph: project.graph,
-              };
-            }),
+            useRuntime: useRuntime,
             socketMap: create(() => {
               return {};
             }),
