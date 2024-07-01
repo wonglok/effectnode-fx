@@ -40,12 +40,12 @@ export default function Home() {
             projectName={"examples-0001-webgpu-components"}
           ></EffectNode>
         </div>
-        {/* <div className="w-full h-full select-none no-sel-sub relative">
+        <div className="w-full h-full select-none no-sel-sub relative">
           <EffectNode
-            projectName={json.title}
-            useStore={useStoreWebGL}
+            //
+            projectName={"production-webgl"}
           ></EffectNode>
-        </div> */}
+        </div>
       </div>
     </div>
   );

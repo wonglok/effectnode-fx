@@ -17,7 +17,10 @@ export function EffectNode({
   mode = "runtime",
   onReady = () => {},
 }) {
+  //
   projectName = projectName.toLowerCase();
+
+  //
   let [api, setDisplay] = useState({ domElement: false });
 
   let [{ socketMap, useRuntime }, setProjects] = useState({
@@ -151,9 +154,6 @@ export function EffectNode({
     };
   }, [socketMap]);
 
-  //
-  // console.log(codes);
-  //
   return (
     <>
       <Emit></Emit>
