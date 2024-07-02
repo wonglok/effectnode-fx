@@ -14,11 +14,11 @@ export function Runtime({ ui, useStore, io }) {
           makeDefault
           position={[0, 0, ui.positionZ]}
         ></PerspectiveCamera>
-        <OrbitControls
+        {/* <OrbitControls
           makeDefault
           target={[0, 0.4, 0]}
           object-position={[0, 0, ui.positionZ]}
-        ></OrbitControls>
+        ></OrbitControls> */}
       </Insert3D>
     </>
   );

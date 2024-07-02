@@ -96,7 +96,7 @@ export default function Landing() {
               </div>
             </span>
 
-            <span className="absolute inset-0 size-full bg-black opacity-20"></span>
+            {/* <span className="absolute inset-0 size-full bg-black opacity-20"></span> */}
           </div>
           <div className="container relative mx-auto">
             <div className="flex flex-wrap items-center">
