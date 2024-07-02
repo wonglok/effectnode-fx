@@ -34,7 +34,7 @@ export default function Navbar(props) {
                 className="text-white text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap titlecase"
                 href="#pablo"
               >
-                App Prototype
+                Effect Node FX
               </a>
             </Link>
             <button
