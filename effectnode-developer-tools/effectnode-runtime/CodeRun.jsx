@@ -49,11 +49,17 @@ export function CodeRun({
             if (datas.length > 1) {
               console.log("error, duplicated settings name", label);
             }
-            [datas[0]].forEach((dat) => {
-              fnc(dat.value);
-            });
+            [datas[0]]
+              .filter((r) => r)
+              .forEach((dat) => {
+                fnc(dat.value);
+              });
           })
         );
+
+        useStore.setState({
+          settings: [...useStore.getState().settings],
+        });
       },
       provide: ({
         label = "objectName",

@@ -1,10 +1,10 @@
-import { useDeveloper } from "effectnode-developer-tools/effectnode-gui/store/useDeveloper";
+// import { useDeveloper } from "effectnode-developer-tools/effectnode-gui/store/useDeveloper";
 import { basename, extname } from "path";
 function loadCodes({ projectName }) {
   let codes = [];
 
   let rr = require.context(
-    "../../projects",
+    "src/effectnode/projects",
     true,
     /\/codes\/(.*).(js|jsx|ts|tsx)$/,
     "lazy"
@@ -43,7 +43,12 @@ async function loadProjects({}) {
   let projectGraphs = [];
 
   //
-  let req = require.context("../../projects", true, /graph\.json$/, "sync");
+  let req = require.context(
+    "src/effectnode/projects",
+    true,
+    /graph\.json$/,
+    "sync"
+  );
   req.keys().forEach((key) => {
     if (key.startsWith("./")) {
       //
@@ -81,7 +86,7 @@ async function loadProjects({}) {
 
 // // loadProjects(require.context("../projects", true, /graph\.json$/, "lazy"));
 // export const allProjects = loadProjects(
-//   require.context("../../projects", true, /graph\.json$/, "sync")
+//   require.context("src/effectnode/projects", true, /graph\.json$/, "sync")
 // );
 
 // loadProjects(require.context("../projects", true, /graph\.json$/, "lazy"));
