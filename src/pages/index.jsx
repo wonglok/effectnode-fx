@@ -268,7 +268,7 @@ export default function Landing() {
             <div className="container mx-auto px-4">
               <div className="flex flex-wrap items-center">
                 <div className="mx-auto w-full px-4 md:w-4/12">
-                  <div className=" size-96 relative">
+                  <div className=" size-96 relative w-full">
                     <EffectNode
                       projectName={"examples-0001-webgpu-components"}
                     ></EffectNode>
