@@ -3,14 +3,20 @@
 import { useEffect, useRef, useState } from "react";
 import { Clock } from "three";
 import { Spike } from "../modules/spikes/spikes";
-import { useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Sphere } from "../modules/sphere/sphere";
 import { getCanvasCube } from "../modules/CanvasCube/CanvasCube";
 
 export function ToolBox({ ui, io, useStore, onLoop }) {
   //
 
-  return <>Toolbox Abc {ui.baseColor}</>;
+  return (
+    <>
+      <Canvas>
+        <Content ui={ui}></Content>
+      </Canvas>
+    </>
+  );
 }
 
 export function Runtime({ ui, io, useStore, onLoop }) {

@@ -72,7 +72,6 @@ export default function Footer() {
                         Effect Node
                       </a>
                     </li>
-
                   </ul>
                 </div>
                 <div className="w-full lg:w-4/12 px-4">

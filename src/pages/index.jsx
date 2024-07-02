@@ -129,7 +129,7 @@ export default function Landing() {
           </div>
         </div>
 
-        {
+        {false && (
           <section className="-mt-24 bg-gray-200 pb-20">
             <div className="container mx-auto px-4">
               <div className="flex flex-wrap">
@@ -241,7 +241,7 @@ export default function Landing() {
               }
             </div>
           </section>
-        }
+        )}
 
         {
           <section className="relative py-24 pb-32">
@@ -290,64 +290,64 @@ export default function Landing() {
                     </Canvas>
                   </div>
                 </div>
-                <div className="mx-auto w-full px-4 md:w-5/12">
-                  <div className="md:pr-12">
-                    <div className="mb-6 inline-flex size-16 items-center justify-center rounded-full bg-gray-200 p-3 text-center text-gray-500 shadow-lg">
-                      <FontAwesomeIcon
-                        className="size-6"
-                        icon={faPerson}
-                      ></FontAwesomeIcon>
+                {true && (
+                  <div className="mx-auto w-full px-4 md:w-5/12">
+                    <div className="md:pr-12">
+                      <div className="mb-6 inline-flex size-16 items-center justify-center rounded-full bg-gray-200 p-3 text-center text-gray-500 shadow-lg">
+                        <FontAwesomeIcon
+                          className="size-6"
+                          icon={faPerson}
+                        ></FontAwesomeIcon>
+                      </div>
+                      <h3 className="text-3xl font-semibold">EffectNode FX</h3>
+                      <p className="mt-4 text-lg leading-relaxed text-gray-500">
+                        {`Effect node is a javascript creative coder tooling software.`}
+                      </p>
+                      {true && (
+                        <ul className="mt-6 list-none">
+                          <li className="py-2">
+                            <div className="flex items-center">
+                              <div>
+                                <span className="mr-3 inline-block rounded-full bg-gray-100 px-2 py-1 text-xs font-semibold uppercase text-gray-500">
+                                  <i className="fas fa-fingerprint"></i>
+                                </span>
+                              </div>
+                              <div>
+                                <h4 className="text-gray-500">3D World</h4>
+                              </div>
+                            </div>
+                          </li>
+                          <li className="py-2">
+                            <div className="flex items-center">
+                              <div>
+                                <span className="mr-3 inline-block rounded-full bg-gray-100 px-2 py-1 text-xs font-semibold uppercase text-gray-500">
+                                  <i className="fab fa-html5"></i>
+                                </span>
+                              </div>
+                              <div>
+                                <h4 className="text-gray-500">
+                                  Creative Coding
+                                </h4>
+                              </div>
+                            </div>
+                          </li>
+                          <li className="py-2">
+                            <div className="flex items-center">
+                              <div>
+                                <span className="mr-3 inline-block rounded-full bg-gray-100 px-2 py-1 text-xs font-semibold uppercase text-gray-500">
+                                  <i className="fab fa-html5"></i>
+                                </span>
+                              </div>
+                              <div>
+                                <h4 className="text-gray-500">3D WebSites</h4>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                      )}
                     </div>
-                    <h3 className="text-3xl font-semibold">Our First App</h3>
-                    <p className="mt-4 text-lg leading-relaxed text-gray-500">
-                      {`Timeversation is a cross site communication tool to find the person you want to connect with.`}
-                    </p>
-                    {true && (
-                      <ul className="mt-6 list-none">
-                        <li className="py-2">
-                          <div className="flex items-center">
-                            <div>
-                              <span className="mr-3 inline-block rounded-full bg-gray-100 px-2 py-1 text-xs font-semibold uppercase text-gray-500">
-                                <i className="fas fa-fingerprint"></i>
-                              </span>
-                            </div>
-                            <div>
-                              <h4 className="text-gray-500">3D World</h4>
-                            </div>
-                          </div>
-                        </li>
-                        <li className="py-2">
-                          <div className="flex items-center">
-                            <div>
-                              <span className="mr-3 inline-block rounded-full bg-gray-100 px-2 py-1 text-xs font-semibold uppercase text-gray-500">
-                                <i className="fab fa-html5"></i>
-                              </span>
-                            </div>
-                            <div>
-                              <h4 className="text-gray-500">
-                                AI Personal Profile for Autobiography
-                              </h4>
-                            </div>
-                          </div>
-                        </li>
-                        <li className="py-2">
-                          <div className="flex items-center">
-                            <div>
-                              <span className="mr-3 inline-block rounded-full bg-gray-100 px-2 py-1 text-xs font-semibold uppercase text-gray-500">
-                                <i className="fab fa-html5"></i>
-                              </span>
-                            </div>
-                            <div>
-                              <h4 className="text-gray-500">
-                                AI Agent: Interviewer
-                              </h4>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    )}
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </section>
