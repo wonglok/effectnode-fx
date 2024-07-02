@@ -5,7 +5,7 @@ import displayVert from "./display-v.vert";
 import displayFrag from "./display-f.frag";
 import { Points } from "three";
 export class Sphere extends Object3D {
-  constructor({ renderer, pointer }) {
+  constructor({ renderer, pointer, tCube }) {
     super();
     let object = this;
 
@@ -23,7 +23,7 @@ export class Sphere extends Object3D {
     }
 
     let ticker = 0;
-    let SIZE = 256;
+    let SIZE = 128;
 
     let gpuCompute = new GPUComputationRenderer(SIZE, SIZE, renderer);
 
@@ -110,7 +110,7 @@ export class Sphere extends Object3D {
           opacity: { value: 0.5 },
           posTex: { value: null },
 
-          tCube: { value: null },
+          tCube: { value: tCube },
 
           indexerTexture: { value: indexerTexture },
           pointSize: { value: window.devicePixelRatio || 1.0 },

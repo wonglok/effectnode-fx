@@ -167,16 +167,18 @@ void main () {
   
   vec3 randomBall = ballify(vec3(x, y, z) + mouseMini, 1.0);
   
-  vec3 pt1 = ballify(randomBall + nextPos, 15.0);
+  vec3 pt1 = ballify(randomBall + nextPos, 8.0);
 
-  float noise1 = cnoise(pt1.xy + time * 20.0) * 30.0;
+  float noise1 = abs(cnoise(pt1.xy + time * 20.0) * 15.0);
 
   pt1 += normalize(pt1) * noise1;  
 
 
+
   vec3 pt2 = ballify(randomBall + nextPos, 15.0);
-  float noise2 = rand(pt2.xy + time * 20.0);
-  pt2 += normalize(pt1) * noise2;  
+  float noise2 = rand(pt2.yz + time * 20.0);
+
+  pt2 += normalize(pt1) * noise2;
   
   nextPos = mix(pt1, pt2, smoothstep(0.0, 1.0, abs(distance(mouseMini, vec3(0.0))) / 0.5));
   

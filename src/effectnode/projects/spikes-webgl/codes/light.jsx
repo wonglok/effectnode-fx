@@ -23,13 +23,10 @@ export function Runtime({ ui, useStore, io }) {
         <EffectComposer enableNormalPass={false}>
           <Bloom
             intensity={5}
-            luminanceThreshold={0.15}
+            luminanceThreshold={0.5}
             mipmapBlur={true}
           ></Bloom>
         </EffectComposer>
-        {/*  */}
-        {/*  */}
-        {/*  */}
       </Insert3D>
     </>
   );
