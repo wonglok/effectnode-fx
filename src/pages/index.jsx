@@ -268,8 +268,11 @@ export default function Landing() {
             <div className="container mx-auto px-4">
               <div className="flex flex-wrap items-center">
                 <div className="mx-auto w-full px-4 md:w-4/12">
-                  <div className=" size-96">
-                    <Canvas className="absolute left-0 top-0 size-full bg-gray-900">
+                  <div className=" size-96 relative">
+                    <EffectNode
+                      projectName={"examples-0001-webgpu-components"}
+                    ></EffectNode>
+                    {/* <Canvas className="absolute left-0 top-0 size-full bg-gray-900">
                       <FastFlameCompo></FastFlameCompo>
                       <EffectComposer enableNormalPass={false}>
                         <Bloom
@@ -278,7 +281,7 @@ export default function Landing() {
                           mipmapBlur={true}
                         ></Bloom>
                       </EffectComposer>
-                    </Canvas>
+                    </Canvas> */}
                     {false && (
                       <Canvas className=" rounded-lg shadow-lg">
                         <color attach="background" args={["#000000"]}></color>
