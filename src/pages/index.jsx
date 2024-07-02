@@ -269,25 +269,37 @@ export default function Landing() {
               <div className="flex flex-wrap items-center">
                 <div className="mx-auto w-full px-4 md:w-4/12">
                   <div className=" size-96">
-                    <Canvas className=" rounded-lg shadow-lg">
-                      <color attach="background" args={["#000000"]}></color>
-                      {/* <FastClothCompo></FastClothCompo> */}
-                      <PerspectiveCamera
-                        makeDefault
-                        position={[0, 0, 150]}
-                      ></PerspectiveCamera>
-                      <EnergyArtCompo></EnergyArtCompo>
-                      <EffectComposer
-                        multisampling={0}
-                        enableNormalPass={false}
-                      >
+                    <Canvas className="absolute left-0 top-0 size-full bg-gray-900">
+                      <FastFlameCompo></FastFlameCompo>
+                      <EffectComposer enableNormalPass={false}>
                         <Bloom
-                          intensity={0.25}
+                          intensity={5}
                           luminanceThreshold={0.15}
                           mipmapBlur={true}
                         ></Bloom>
                       </EffectComposer>
                     </Canvas>
+                    {false && (
+                      <Canvas className=" rounded-lg shadow-lg">
+                        <color attach="background" args={["#000000"]}></color>
+                        {/* <FastClothCompo></FastClothCompo> */}
+                        <PerspectiveCamera
+                          makeDefault
+                          position={[0, 0, 150]}
+                        ></PerspectiveCamera>
+                        <EnergyArtCompo></EnergyArtCompo>
+                        <EffectComposer
+                          multisampling={0}
+                          enableNormalPass={false}
+                        >
+                          <Bloom
+                            intensity={0.25}
+                            luminanceThreshold={0.15}
+                            mipmapBlur={true}
+                          ></Bloom>
+                        </EffectComposer>
+                      </Canvas>
+                    )}
                   </div>
                 </div>
                 {true && (
