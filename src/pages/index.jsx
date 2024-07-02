@@ -81,7 +81,7 @@ export default function Landing() {
             <span className="absolute inset-0 size-full bg-black opacity-100"></span>
 
             <span className="absolute inset-0 size-full">
-              <Canvas className="absolute left-0 top-0 size-full">
+              {/* <Canvas className="absolute left-0 top-0 size-full">
                 <FastFlameCompo></FastFlameCompo>
                 <EffectComposer enableNormalPass={false}>
                   <Bloom
@@ -90,8 +90,8 @@ export default function Landing() {
                     mipmapBlur={true}
                   ></Bloom>
                 </EffectComposer>
-              </Canvas>
-              {/* <EffectNode projectName={"apple"}></EffectNode> */}
+              </Canvas> */}
+              <EffectNode projectName={"spikes-webgl"}></EffectNode>
             </span>
 
             <span className="absolute inset-0 size-full bg-black opacity-30"></span>

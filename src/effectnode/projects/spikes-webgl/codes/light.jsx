@@ -22,8 +22,8 @@ export function Runtime({ ui, useStore, io }) {
         <Environment files={[hdr]}></Environment>
         <EffectComposer enableNormalPass={false}>
           <Bloom
-            intensity={5}
-            luminanceThreshold={0.5}
+            intensity={15}
+            luminanceThreshold={0}
             mipmapBlur={true}
           ></Bloom>
         </EffectComposer>
