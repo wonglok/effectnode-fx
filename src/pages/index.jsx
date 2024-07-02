@@ -306,7 +306,7 @@ export default function Landing() {
                   </div>
                 </div>
                 {true && (
-                  <div className="mx-auto w-full px-4 md:w-5/12">
+                  <div className="mx-auto w-full px-4 md:w-5/12 mt-4">
                     <div className="md:pr-12">
                       <div className="mb-6 inline-flex size-16 items-center justify-center rounded-full bg-gray-200 p-3 text-center text-gray-500 shadow-lg">
                         <FontAwesomeIcon
