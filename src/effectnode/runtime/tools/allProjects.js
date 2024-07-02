@@ -69,7 +69,7 @@ async function loadProjects({}) {
   window.dispatchEvent(
     new CustomEvent("effectNode", { detail: { projects: projectGraphs } })
   );
-  window.addEventListener("requestEffectNode", () => {
+  window.addEventListener("requestEffectNodeProjectJSON", () => {
     window.dispatchEvent(
       new CustomEvent("effectNode", { detail: { projects: projectGraphs } })
     );

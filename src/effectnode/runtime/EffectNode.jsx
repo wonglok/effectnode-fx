@@ -19,6 +19,7 @@ export function EffectNode({
 }) {
   //
   projectName = projectName.toLowerCase();
+  //
 
   //
   let [api, setDisplay] = useState({ domElement: false });
@@ -67,7 +68,7 @@ export function EffectNode({
     let lastText = "";
     let lastCode = "";
 
-    window.addEventListener("effectNode", ({ detail }) => {
+    let hh = ({ detail }) => {
       let { projects } = detail;
 
       let { text, codes } = getSignature(projects);
@@ -96,9 +97,16 @@ export function EffectNode({
           });
         }
       }
-    });
+    };
+    window.addEventListener("effectNode", hh);
 
-    window.dispatchEvent(new CustomEvent("requestEffectNode", { detail: {} }));
+    window.dispatchEvent(
+      new CustomEvent("requestEffectNodeProjectJSON", { detail: {} })
+    );
+
+    return () => {
+      window.removeEventListener("effectNode", hh);
+    };
   }, [projectName]);
 
   let randID = useMemo(() => {
