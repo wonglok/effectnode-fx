@@ -91,10 +91,12 @@ export default function Landing() {
                   ></Bloom>
                 </EffectComposer>
               </Canvas> */}
-              <EffectNode projectName={"spikes-webgl"}></EffectNode>
+              <div className="absolute left-0 top-0 size-full">
+                <EffectNode projectName={"spikes-webgl"}></EffectNode>
+              </div>
             </span>
 
-            <span className="absolute inset-0 size-full bg-black opacity-30"></span>
+            <span className="absolute inset-0 size-full bg-black opacity-20"></span>
           </div>
           <div className="container relative mx-auto">
             <div className="flex flex-wrap items-center">
