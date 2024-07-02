@@ -78,8 +78,10 @@ function Content({ ui }) {
       tCubeObj,
       display: (
         <>
-          <primitive object={sphere}></primitive>
-          <primitive object={spike}></primitive>
+          <group position={[0, 0, 0]} scale={0.1}>
+            <primitive object={sphere}></primitive>
+            <primitive object={spike}></primitive>
+          </group>
         </>
       ),
     });

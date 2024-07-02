@@ -66,7 +66,7 @@ function Avatar({ useStore }) {
                   vertexColors={false}
                   color={"#ffffff"}
                   emissive={"#000000"}
-                  metalness={0}
+                  metalness={0.3}
                   roughness={0}
                   transmission={1}
                   thickness={1}

@@ -179,37 +179,6 @@
         }
       ],
       "title": "color"
-    },
-    {
-      "codeID": "_8iejjbq_98wviwp",
-      "nodeID": "_8j4hzoi_j1934x3",
-      "nodeTitle": "node",
-      "spaceID": "new-space",
-      "code": "",
-      "data": [
-        {
-          "_id": "_iw3ippu_w3xjopi",
-          "label": "speed",
-          "type": "range",
-          "min": 0,
-          "max": 1,
-          "step": 0.01,
-          "value": 0
-        },
-        {
-          "_id": "_2a2a8rv_9x2uw55",
-          "label": "baseColor",
-          "type": "color",
-          "value": "#ff0000"
-        },
-        {
-          "_id": "_8129thf_8itrjsl",
-          "label": "name",
-          "type": "text",
-          "value": "hi dear"
-        }
-      ],
-      "title": "fafa"
     }
   ],
   "graph": {
@@ -580,80 +549,6 @@
             "_id": "_4ozne9k_4vikpzd",
             "type": "output",
             "nodeID": "_x801t0d_2qm4x7k",
-            "label": ""
-          }
-        ]
-      },
-      {
-        "spaceID": "new-space",
-        "_id": "_8j4hzoi_j1934x3",
-        "title": "avatar",
-        "position": [
-          -1.5820770716322732,
-          0,
-          2.1728300831348806
-        ],
-        "inputs": [
-          {
-            "_id": "_ec0xgo7_fxh2z9j",
-            "type": "input",
-            "nodeID": "_8j4hzoi_j1934x3",
-            "label": ""
-          },
-          {
-            "_id": "_z17r51b_ze0cy3d",
-            "type": "input",
-            "nodeID": "_8j4hzoi_j1934x3",
-            "label": ""
-          },
-          {
-            "_id": "_czja30z_55soabf",
-            "type": "input",
-            "nodeID": "_8j4hzoi_j1934x3",
-            "label": ""
-          },
-          {
-            "_id": "_3yxj077_efngnvm",
-            "type": "input",
-            "nodeID": "_8j4hzoi_j1934x3",
-            "label": ""
-          },
-          {
-            "_id": "_po7d3fp_c2j9odn",
-            "type": "input",
-            "nodeID": "_8j4hzoi_j1934x3",
-            "label": ""
-          }
-        ],
-        "outputs": [
-          {
-            "_id": "_soo4ijg_ljnsm04",
-            "type": "output",
-            "nodeID": "_8j4hzoi_j1934x3",
-            "label": ""
-          },
-          {
-            "_id": "_haljwgh_bee10na",
-            "type": "output",
-            "nodeID": "_8j4hzoi_j1934x3",
-            "label": ""
-          },
-          {
-            "_id": "_p23tjyf_2e9g2xi",
-            "type": "output",
-            "nodeID": "_8j4hzoi_j1934x3",
-            "label": ""
-          },
-          {
-            "_id": "_j406peb_ii2emis",
-            "type": "output",
-            "nodeID": "_8j4hzoi_j1934x3",
-            "label": ""
-          },
-          {
-            "_id": "_gaipmjf_0ylsryf",
-            "type": "output",
-            "nodeID": "_8j4hzoi_j1934x3",
             "label": ""
           }
         ]
