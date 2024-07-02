@@ -102,7 +102,7 @@ export default function Navbar(props) {
                             </li> */}
 
               <li className="flex justify-center items-center mt-3 mr-3">
-                <Link href={`/examples`}>
+                <a target="_blank" href={`https://github.com/wonglok`}>
                   <button
                     className="bg-white text-gray-700 active:bg-gray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150 flex items-center"
                     type="button"
@@ -115,9 +115,9 @@ export default function Navbar(props) {
                     >
                       <path d="M13.033 2v-2l10 3v18l-10 3v-2h-9v-7h1v6h8v-18h-8v7h-1v-8h9zm1 20.656l8-2.4v-16.512l-8-2.4v21.312zm-3.947-10.656l-3.293-3.293.707-.707 4.5 4.5-4.5 4.5-.707-.707 3.293-3.293h-9.053v-1h9.053z" />
                     </svg>
-                    <span className="ml-3">Examples</span>
+                    <span className="ml-3">Github</span>
                   </button>
-                </Link>
+                </a>
 
                 {process.env.NODE_ENV === "development" && (
                   <Link href={`/dev`}>
