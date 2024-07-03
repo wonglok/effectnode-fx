@@ -369,9 +369,9 @@ void main() {
 
   diffuseColor.rgb = mix(color1, color2, rand(myVUV.xy));
 
-  vec3 colorPos = abs(ballify(pos.rgb, 0.5)+ 0.5);
+  // vec3 colorPos = abs(ballify(pos.rgb, 0.5)+ 0.5);
   
-  diffuseColor.rgb *= colorPos.rgb;
+  // diffuseColor.rgb *= colorPos.rgb;
 
   diffuseColor.rgb += 0.15;
 
