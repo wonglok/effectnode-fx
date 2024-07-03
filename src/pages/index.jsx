@@ -163,8 +163,9 @@ export default function Landing() {
                       </h6>
                       <p className="mb-4 mt-2 text-gray-500">
                         {/*  */}
-                        The tools only runs in local development envrionment,
-                        the outputs are securely hardcoded.
+                        The devtools only runs in local development envrionment
+                        and is excluded in Production. All outputs are static
+                        JSON in production envrionment.
                         {/*  */}
                       </p>
                     </div>
