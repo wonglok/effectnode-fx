@@ -64,6 +64,20 @@ export default function Footer() {
                     Inspiration
                   </span>
                   <ul className="list-unstyled">
+                    {/*  */}
+                    {/*  */}
+                    {/*  */}
+                    <li>
+                      <a
+                        className="text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm"
+                        href="https://www.bible.com/bible/59/rev.12.11"
+                      >
+                        Jesus & Bible
+                      </a>
+                    </li>
+                    {/*  */}
+                    {/*  */}
+                    {/*  */}
                     <li>
                       <a
                         className="text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm"
