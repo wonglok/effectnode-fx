@@ -314,6 +314,11 @@ export default function Landing() {
                     )}
                   </div>
                 </div>
+
+                {/*  */}
+                {/*  */}
+                {/*  */}
+                {/*  */}
                 {true && (
                   <div className="mx-auto w-full px-4 md:w-5/12 mt-4">
                     <div className="md:pr-12">
@@ -324,7 +329,7 @@ export default function Landing() {
                         ></FontAwesomeIcon>
                       </div>
                       <h3 className="text-3xl font-semibold">
-                        {`EffectNode FX`}
+                        {`Effect Node FX`}
                       </h3>
                       <p className="mt-4 text-lg leading-relaxed text-gray-500">
                         {`We are building a lot of example codes for you to clone from github to get started. `}
