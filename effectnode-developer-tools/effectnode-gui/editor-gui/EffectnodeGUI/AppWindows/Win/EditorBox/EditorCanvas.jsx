@@ -301,7 +301,7 @@ function Content({ useStore }) {
 }
 
 export function EditorCanvas({ useStore }) {
-  let zoom = 1;
+  let zoom = 2;
   //
   return (
     <>
