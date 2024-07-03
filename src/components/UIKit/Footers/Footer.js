@@ -126,7 +126,7 @@ export default function Footer() {
           <div className="flex flex-wrap items-center md:justify-between justify-center">
             <div className="w-full md:w-4/12 px-4 mx-auto text-center">
               <div className="text-sm text-gray-500 font-semibold py-1">
-                Copyright © {new Date().getFullYear()} Campus LLM App by{" "}
+                Copyright © {new Date().getFullYear()} WONG LOK by{" "}
                 <a
                   href="https://twitter.com/wonglok831"
                   className="text-gray-500 hover:text-gray-800"
