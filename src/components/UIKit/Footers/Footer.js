@@ -1,5 +1,7 @@
 import {
   faBible,
+  faFlask,
+  faGear,
   faGrinTongueWink,
   faNetworkWired,
   faShare,
@@ -71,9 +73,9 @@ export default function Footer() {
             </div>
             <div className="w-full lg:w-6/12 px-4">
               <div className="flex flex-wrap items-top mb-6">
-                <div className="w-full lg:w-4/12 px-4 ml-auto">
+                <div className="w-full lg:w-5/12 px-4 ml-auto">
                   <span className="block uppercase text-gray-500 text-sm font-semibold mb-2">
-                    Inspiration
+                    by @wonglok831
                   </span>
                   <ul className="list-unstyled">
                     {/*  */}
@@ -99,14 +101,38 @@ export default function Footer() {
                       ></FontAwesomeIcon>
                       <a
                         className="text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm"
-                        href="https://effectnode.com"
+                        href="https://legacy.effectnode.com"
                       >
-                        Effect Node
+                        Effect Node GEN1
+                      </a>
+                    </li>
+                    <li className="flex">
+                      <FontAwesomeIcon
+                        className="mr-2 text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm"
+                        icon={faGear}
+                      ></FontAwesomeIcon>
+                      <a
+                        className="text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm"
+                        href="https://age.wonglok.com"
+                      >
+                        Assisted Graphcis Engineering
+                      </a>
+                    </li>
+                    <li className="flex">
+                      <FontAwesomeIcon
+                        className="mr-2 text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm"
+                        icon={faFlask}
+                      ></FontAwesomeIcon>
+                      <a
+                        className="text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm"
+                        href="https://age.wonglok.com"
+                      >
+                        Creative Code Lab
                       </a>
                     </li>
                   </ul>
                 </div>
-                <div className="w-full lg:w-4/12 px-4">
+                <div className="w-full lg:w-7/12 px-4">
                   <span className="block uppercase text-gray-500 text-sm font-semibold mb-2">
                     Contact Lok
                   </span>
