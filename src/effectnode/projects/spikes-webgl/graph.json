@@ -73,13 +73,13 @@
           "_id": "_rkxq750_",
           "label": "spikeColor",
           "type": "color",
-          "value": "#8072ff"
+          "value": "#9488ff"
         },
         {
           "_id": "_te6reeu_",
           "label": "ballColor",
           "type": "color",
-          "value": "#45c2ff"
+          "value": "#ff669d"
         }
       ],
       "title": "edge"
@@ -169,13 +169,13 @@
           "_id": "_z1kc9ik_",
           "label": "sphereColor",
           "type": "color",
-          "value": "#00facb"
+          "value": "#00ffcf"
         },
         {
           "_id": "_94li3wk_",
           "label": "spikeColor",
           "type": "color",
-          "value": "#2a95ff"
+          "value": "#ffffff"
         }
       ],
       "title": "sphere"
@@ -262,9 +262,9 @@
         "_id": "_q77qs09_mwqkfse",
         "title": "spike",
         "position": [
-          1.0905451380198152,
+          1.0180214703335664,
           0,
-          0.02022302995745156
+          0.25266310198553704
         ],
         "inputs": [
           {
