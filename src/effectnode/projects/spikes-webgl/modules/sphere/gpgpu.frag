@@ -212,9 +212,9 @@ void main () {
   // pt2.z += rand(pt2.xy + time * 20.0);
   
   nextPos = mix(pt1, pt2, smoothstep(0.0, 1.0, abs(distance(mouseMini, vec3(0.5))) / 0.5));
-  nextPos += getDiff(nextPos, lastPos.rgb + ballify(nextPos.rgb, 0.3) + mouseMini) * 1.1;
+  nextPos += getDiff(nextPos, lastPos.rgb + nextPos.rgb * ballify(nextPos.rgb, 0.3) + mouseMini) * 1.1;
 
-  nextPos *= rotateY(mouseMini.x * 0.2);
+  nextPos *= rotateY(mouseMini.x * 0.2 + time * 0.01);
   nextPos *= rotateX(mouseMini.y * 0.2);
   nextPos *= rotateX(mouseMini.z * 0.2);
 
