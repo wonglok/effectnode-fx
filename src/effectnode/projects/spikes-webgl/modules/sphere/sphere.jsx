@@ -155,13 +155,6 @@ export class Sphere extends Object3D {
     //
     //
     //
-
-    //
-    //
-    //
-    //
-    //
-    //
     let iGeo = new InstancedBufferGeometry();
     let count = SIZE * SIZE;
     iGeo.instanceCount = count;
