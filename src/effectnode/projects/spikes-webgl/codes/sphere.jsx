@@ -22,7 +22,10 @@ export function Runtime({ ui, io, useStore, onLoop }) {
   return (
     <>
       <Insert3D>
-        <Content key={[sphereGPU].join("___")} ui={ui}></Content>
+        <Content
+          key={[sphereGPU, Sphere.toString()].join("___")}
+          ui={ui}
+        ></Content>
       </Insert3D>
     </>
   );
