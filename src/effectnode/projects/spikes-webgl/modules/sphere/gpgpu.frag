@@ -147,6 +147,38 @@ uniform sampler2D indexerTexture;
 
 uniform vec3 mouse;
 
+const mat2 m = mat2( 0.80,  0.60, -0.60,  0.80 );
+
+float noise( in vec2 p ) {
+  return sin(p.x)*sin(p.y);
+}
+
+float fbm4( vec2 p ) {
+  float f = 0.0;
+  f += 0.5000 * noise( p ); p = m * p * 2.02;
+  f += 0.2500 * noise( p ); p = m * p * 2.03;
+  f += 0.1250 * noise( p ); p = m * p * 2.01;
+  f += 0.0625 * noise( p );
+  return f / 0.9375;
+}
+
+float fbm6( vec2 p ) {
+  float f = 0.0;
+  f += 0.500000*(0.5+0.5*noise( p )); p = m*p*2.02;
+  f += 0.250000*(0.5+0.5*noise( p )); p = m*p*2.03;
+  f += 0.125000*(0.5+0.5*noise( p )); p = m*p*2.01;
+  f += 0.062500*(0.5+0.5*noise( p )); p = m*p*2.04;
+  f += 0.031250*(0.5+0.5*noise( p )); p = m*p*2.01;
+  f += 0.015625*(0.5+0.5*noise( p ));
+  return f/0.96875;
+}
+
+float pattern (vec2 p) {
+  float vout = fbm4(p / fbm6(p));
+  return (vout);
+}
+
+
 void main () {
   vec2 uv = gl_FragCoord.xy / resolution.xy;
 
@@ -167,9 +199,15 @@ void main () {
   
   vec3 randomBall = ballify(vec3(x, y, z) + mouseMini, 1.0);
   
-  vec3 pt1 = ballify(randomBall + nextPos, 5.0);
-  // pt1.z += cnoise(pt1.xy + time * 20.0) * 30.0;
+  float rx = pattern(uv + sin((0.01 + 0.1) * 2.0 * M_PI + time * 2.0));
+  float ry = pattern(uv + sin((0.0 + 0.1) * 2.0 * M_PI + time * 2.0));
+  float rz = pattern(uv + sin((-0.01 + 0.1) * 2.0 * M_PI + time * 2.0));
   
+  // float fbmPattern = pattern(lastPos.xy * 30.0);
+
+  vec3 pt1 = ballify(randomBall * vec3(rx, ry, rz) + nextPos, 15.0);
+  // pt1.z += cnoise(pt1.xy + time * 20.0) * 30.0;
+
   vec3 pt2 = ballify(randomBall + nextPos, 15.0);
   pt2.z += rand(pt2.xy + time * 20.0);
   

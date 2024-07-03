@@ -21,7 +21,6 @@ export function EffectNode({
   projectName = projectName.toLowerCase();
   //
 
-  //
   let [api, setDisplay] = useState({ domElement: false });
 
   let [{ socketMap, useRuntime }, setProjects] = useState({

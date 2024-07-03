@@ -334,7 +334,7 @@ void main() {
 
     float avgColor = (sampledDiffuseColor.r + sampledDiffuseColor.g + sampledDiffuseColor.b) / 3.0;
 
-    diffuseColor.rgb *= vec3(avgColor);
+    diffuseColor.rgb *= vec3(avgColor) * 5.0;
     // diffuseColor.a *= sampledDiffuseColor.a;
 
   #endif
