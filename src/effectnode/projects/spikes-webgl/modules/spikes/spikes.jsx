@@ -206,6 +206,7 @@ export class Spike extends Object3D {
 
           let glsl = (v) => v[0];
 
+          shader.uniforms.time = time;
           shader.uniforms.posTex = posTex;
           shader.uniforms.color1 = {
             value: new Color(ui.spikeColor),
@@ -240,6 +241,7 @@ uniform vec3 color1;
 uniform vec3 color2;
 varying vec3 vReflect;
 
+varying float amp;
 void main() {
 	#include <uv_vertex>
 	#include <color_vertex>
@@ -278,7 +280,11 @@ void main() {
   vReflect = reflect( I, worldNormal );
 
 
+
   gl_Position = projectionMatrix * mvPosition2;
+
+  amp = length(mvPosition2.rgb);
+  
 
   //
 }
@@ -312,6 +318,7 @@ uniform vec3 color1;
 uniform vec3 color2;
 varying vec2 myVUV;
 uniform sampler2D posTex;
+varying float amp;
 
 const mat2 m = mat2(0.80,  0.60, -0.60,  0.80);
 
@@ -398,9 +405,9 @@ void main() {
 
   vec4 pos = texture2D(posTex, myVUV);
 
-  float noiseValue = pattern(pos.xy * 1.5 + sin(time), time);
+  float noiseValue = pattern(pos.xy * 0.25 + 30.0 * sin(time), time);
 
-  diffuseColor.rgb = mix(color1, color2, noiseValue + rand(myVUV.xy));
+  diffuseColor.rgb = mix(color1, color2, (amp / 15.0) * noiseValue + rand(myVUV.xy));
 
 
   // vec4 pos = texture2D(posTex, myVUV);
@@ -411,7 +418,7 @@ void main() {
   
   // diffuseColor.rgb *= colorPos.rgb;
 
-  diffuseColor.rgb += 0.15;
+  diffuseColor.rgb += 0.1;
 
   #include <clipping_planes_fragment>
 	#include <logdepthbuf_fragment>

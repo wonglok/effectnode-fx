@@ -1,7 +1,7 @@
 // import { Box, PerspectiveCamera } from "@react-three/drei";
 // import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Sphere, gpgpu as sphereGPU } from "../modules/sphere/sphere";
 
 export function ToolBox({ ui, io, useStore, onLoop }) {
@@ -9,9 +9,9 @@ export function ToolBox({ ui, io, useStore, onLoop }) {
 
   return (
     <>
-      {/* <Canvas className="bg-gray-800">
+      <Canvas className="bg-gray-800">
         <Content ui={ui}></Content>
-      </Canvas> */}
+      </Canvas>
     </>
   );
 }

@@ -2,16 +2,16 @@
 // import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import { Spike, gpgpu as spikeGPU } from "../modules/spikes/spikes";
-import { useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 
 export function ToolBox({ ui, io, useStore, onLoop }) {
   //
 
   return (
     <>
-      {/* <Canvas className="bg-gray-800">
+      <Canvas className="bg-gray-800">
         <Content ui={ui}></Content>
-      </Canvas> */}
+      </Canvas>
     </>
   );
 }
