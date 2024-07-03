@@ -23,7 +23,7 @@ export function Runtime({ ui, io, useStore, onLoop }) {
   return (
     <>
       <Insert3D>
-        <Content ui={ui}></Content>
+        <Content key={[spikeGPU, sphereGPU].join("___")} ui={ui}></Content>
       </Insert3D>
     </>
   );
@@ -33,9 +33,12 @@ function Content({ ui }) {
   let gl = useThree((r) => r.gl);
   let [api, setDisplay] = useState({ display: null });
   let pointer = useThree((r) => r.pointer);
+
+  //
   useEffect(() => {
     let spike = new Spike({
       ui,
+
       //
       renderer: gl,
       pointer,
@@ -47,19 +50,20 @@ function Content({ ui }) {
       renderer: gl,
       pointer,
     });
+
     setDisplay({
       spike,
       sphere,
       display: (
         <>
-          <group position={[0, 0, 0]} scale={0.1}>
+          <group position={[0, 0, 0]} scale={0.065}>
             <primitive object={sphere}></primitive>
             <primitive object={spike}></primitive>
           </group>
         </>
       ),
     });
-  }, [gl, pointer, ui, spikeGPU, sphereGPU]);
+  }, [gl, pointer, ui]);
 
   useFrame(() => {
     if (api && api.spike) {
