@@ -205,15 +205,15 @@ void main () {
   
   // float fbmPattern = pattern(lastPos.xy * 30.0);
 
-  vec3 pt1 = ballify(randomBall * vec3(rx, ry, rz) + nextPos, 15.0);
+  vec3 pt1 = ballify(randomBall + nextPos, 15.0);// + vec3(rx, ry, rz) * 2.5;
   // pt1.z += cnoise(pt1.xy + time * 20.0) * 30.0;
 
   vec3 pt2 = ballify(randomBall + nextPos, 15.0);
-  pt2.z += rand(pt2.xy + time * 20.0);
+  // pt2.z += rand(pt2.xy + time * 20.0);
   
   nextPos = mix(pt1, pt2, smoothstep(0.0, 1.0, abs(distance(mouseMini, vec3(0.0))) / 0.5));
-  // nextPos += getDiff(nextPos, mouse * 17.0) * 50.0;
-  
-  // remix code end here//
+  nextPos += getDiff(nextPos, mouse * 17.0) * 50.0;
+
+  // remix code end here//  
   gl_FragColor = vec4(nextPos, 1.0);
 }

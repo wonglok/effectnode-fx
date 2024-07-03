@@ -1,10 +1,9 @@
 // import { Box, PerspectiveCamera } from "@react-three/drei";
 // import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
-import { Spike } from "../modules/spikes/spikes";
+import { Spike, gpgpu as spikeGPU } from "../modules/spikes/spikes";
 import { useFrame, useThree } from "@react-three/fiber";
-import { Sphere } from "../modules/sphere/sphere";
-import { getCanvasCube } from "../modules/CanvasCube/CanvasCube";
+import { Sphere, gpgpu as sphereGPU } from "../modules/sphere/sphere";
 
 export function ToolBox({ ui, io, useStore, onLoop }) {
   //
@@ -60,7 +59,7 @@ function Content({ ui }) {
         </>
       ),
     });
-  }, [gl, pointer, ui]);
+  }, [gl, pointer, ui, spikeGPU, sphereGPU]);
 
   useFrame(() => {
     if (api && api.spike) {

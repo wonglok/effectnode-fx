@@ -91,7 +91,7 @@ export default function Landing() {
                   ></Bloom>
                 </EffectComposer>
               </Canvas> */}
-              <div className="absolute left-0 top-0 size-full">
+              <div className="absolute left-0 top-0 size-full opacity-80">
                 <EffectNode projectName={"spikes-webgl"}></EffectNode>
               </div>
             </span>

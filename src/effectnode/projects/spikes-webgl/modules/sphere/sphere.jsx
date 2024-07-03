@@ -437,3 +437,5 @@ void main() {
     // this.add(points);
   }
 }
+
+export { gpgpu };
