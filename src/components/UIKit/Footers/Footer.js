@@ -1,3 +1,11 @@
+import {
+  faBible,
+  faGrinTongueWink,
+  faNetworkWired,
+  faShare,
+  faX,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 export default function Footer() {
@@ -30,11 +38,11 @@ export default function Footer() {
         <div className="container mx-auto px-4 py-20">
           <div className="flex flex-wrap text-center lg:text-left">
             <div className="w-full lg:w-6/12 px-4">
-              <h4 className="text-3xl font-semibold">{`A-Yo!`}</h4>
+              <h4 className="text-3xl font-semibold">{`A-Yo! 😆 `}</h4>
               <h5 className="text-lg mt-0 mb-2 text-gray-600">
-                {`Dont be shy, Let's say hi!`}
+                {`Dont be shy. 🙈 Let's say hi! 👋🏼`}
               </h5>
-              <div className="mt-6 lg:mb-0 mb-6 hidden">
+              {/* <div className="mt-6 lg:mb-0 mb-6 hidden">
                 <button
                   className="bg-white text-blue-400 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2"
                   type="button"
@@ -59,7 +67,7 @@ export default function Footer() {
                 >
                   <i className="fab fa-github"></i>
                 </button>
-              </div>
+              </div> */}
             </div>
             <div className="w-full lg:w-6/12 px-4">
               <div className="flex flex-wrap items-top mb-6">
@@ -70,7 +78,11 @@ export default function Footer() {
                   <ul className="list-unstyled">
                     {/*  */}
                     {/*  */}
-                    <li>
+                    <li className="flex">
+                      <FontAwesomeIcon
+                        className="mr-2 text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm"
+                        icon={faBible}
+                      ></FontAwesomeIcon>
                       <a
                         className="text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm"
                         href="https://www.bible.com/bible/8/JHN.3.16.AMPC"
@@ -80,7 +92,11 @@ export default function Footer() {
                     </li>
                     {/*  */}
                     {/*  */}
-                    <li>
+                    <li className="flex">
+                      <FontAwesomeIcon
+                        className="mr-2 text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm"
+                        icon={faNetworkWired}
+                      ></FontAwesomeIcon>
                       <a
                         className="text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm"
                         href="https://effectnode.com"
@@ -95,7 +111,7 @@ export default function Footer() {
                     Contact Lok
                   </span>
                   <ul className="list-unstyled">
-                    <li>
+                    <li className="flex">
                       <a
                         className="text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm"
                         href="https://twitter.com/wonglok831"
