@@ -75,7 +75,7 @@ function FastFlameCode({ onAPI = () => {} }) {
       renderer: gl,
       camera: camera,
       resX: 128,
-      resY: 128,
+      resY: 64,
 
       onLoop,
       onResize: onResize,
