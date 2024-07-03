@@ -340,7 +340,7 @@ export default function Landing() {
                                 </span>
                               </div>
                               <div>
-                                <h4 className="text-gray-500">3D World</h4>
+                                <h4 className="text-gray-500">3D Ecom World</h4>
                               </div>
                             </div>
                           </li>
@@ -353,7 +353,9 @@ export default function Landing() {
                                 </span>
                               </div>
                               <div>
-                                <h4 className="text-gray-500">3D WebSites</h4>
+                                <h4 className="text-gray-500">
+                                  3D Landing WebSites
+                                </h4>
                               </div>
                             </div>
                           </li>
@@ -366,7 +368,7 @@ export default function Landing() {
                               </div>
                               <div>
                                 <h4 className="text-gray-500">
-                                  Generative Art
+                                  3D Creative Coding and Generative Art
                                 </h4>
                               </div>
                             </div>
