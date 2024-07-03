@@ -70,7 +70,7 @@ export default function Footer() {
                     <li>
                       <a
                         className="text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm"
-                        href="https://www.bible.com/bible/59/rev.12.11"
+                        href="https://www.bible.com/bible/59/jhn.3.16"
                       >
                         Jesus & Bible
                       </a>
