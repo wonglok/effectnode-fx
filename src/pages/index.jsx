@@ -618,10 +618,10 @@ export default function Landing() {
                     ></FontAwesomeIcon>
                   </div>
                   <h5 className="mt-5 text-xl font-semibold text-white">
-                    Immersive Data Visualsation AR/BR
+                    DataART Visualsation via Immersive AR/VR/XR
                   </h5>
                   <p className="mb-4 mt-2 text-gray-400">
-                    {`Immerse yourself into data-arts in AR / VR`}
+                    {`Immerse yourself into data-arts in AR/VR`}
                   </p>
                 </div>
               </div>
