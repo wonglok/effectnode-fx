@@ -115,7 +115,7 @@ export default function Landing() {
             className="pointer-events-none absolute inset-x-0 bottom-0 top-auto h-16 w-full overflow-hidden"
             style={{ transform: "translateY(1px)" }}
           >
-            <svg
+            {/* <svg
               className="absolute bottom-0 overflow-hidden"
               xmlns="http://www.w3.org/2000/svg"
               preserveAspectRatio="none"
@@ -128,7 +128,12 @@ export default function Landing() {
                 className="fill-current text-gray-200"
                 points="2560 0 2560 100 0 100"
               ></polygon>
-            </svg>
+            </svg> */}
+            <img
+              className="absolute top-0 left-0 w-full h-full"
+              src={`/hr/hr-el-2.svg`}
+              alt="yoyo"
+            ></img>
           </div>
         </div>
 
@@ -233,6 +238,7 @@ export default function Landing() {
                             className="fill-current text-gray-700"
                           ></polygon>
                         </svg>
+
                         <h4 className="text-xl font-bold text-white">
                           Node I/O System for Data ART
                         </h4>
@@ -255,10 +261,17 @@ export default function Landing() {
         {
           <section className="relative py-24 pb-32">
             <div
-              className="pointer-events-none absolute inset-x-0 bottom-auto top-0 -mt-20 h-20 w-full overflow-hidden"
+              className="pointer-events-none absolute inset-x-0 bottom-auto top-0 -mt-20 h-20 w-full "
               style={{ transform: "translateY(1px)" }}
             >
-              <svg
+              {/* <div className="bg-red-500 p-2">123</div> */}
+              <img
+                className="absolute top-0 left-0 w-full h-full"
+                src={`/hr/hr-el.svg`}
+                alt="yoyo"
+              ></img>
+
+              {/* <svg
                 className="absolute bottom-0 overflow-hidden"
                 xmlns="http://www.w3.org/2000/svg"
                 preserveAspectRatio="none"
@@ -271,7 +284,7 @@ export default function Landing() {
                   className="fill-current text-white"
                   points="2560 0 2560 100 0 100"
                 ></polygon>
-              </svg>
+              </svg> */}
             </div>
 
             <div className="container mx-auto px-4">
@@ -555,7 +568,11 @@ export default function Landing() {
               className="pointer-events-none absolute inset-x-0 bottom-auto top-0 -mt-20 h-20 w-full overflow-hidden"
               style={{ transform: "translateY(1px)" }}
             >
-              <svg
+              <img
+                className="w-full h-full absolute top-0 left-0"
+                src={`/hr/hr-el-3.svg`}
+              ></img>
+              {/* <svg
                 className="absolute bottom-0 overflow-hidden"
                 xmlns="http://www.w3.org/2000/svg"
                 preserveAspectRatio="none"
@@ -568,7 +585,7 @@ export default function Landing() {
                   className="fill-current text-gray-800"
                   points="2560 0 2560 100 0 100"
                 ></polygon>
-              </svg>
+              </svg> */}
             </div>
 
             <div className="container mx-auto px-4 lg:pb-64 lg:pt-24">
