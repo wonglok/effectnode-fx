@@ -106,7 +106,7 @@ export default function Landing() {
                   <p className="mt-4 text-xl font-bold text-gray-200">
                     WebGPU + WebGL + Canvas
                   </p>
-                  <p className="mt-4 text-lg text-gray-200">{`EffectNode is a NodeGraph signaling software that accelerate VFX and 3D Development for the Web Ecosystem.`}</p>
+                  <p className="mt-4 text-lg text-gray-200">{`EffectNode is a NodeGraph & Signaling Framework that accelerate VFX and 3D Development for the Web Ecosystem.`}</p>
                 </div>
               </div>
             </div>
@@ -178,7 +178,7 @@ export default function Landing() {
                         Low Learning Curve
                       </h6>
                       <p className="mb-4 mt-2 text-gray-500">
-                        {`If you already know react-three-fiber, nextjs, three.js and zustand... You're good to go! Also.... `}
+                        {`If you already know react-three-fiber, nextjs, three.js and zustand... You're good to go!!!`}
                       </p>
                     </div>
                   </div>
@@ -199,8 +199,8 @@ export default function Landing() {
                     </h3>
 
                     <p className="my-4 text-lg font-light leading-relaxed text-gray-600">
-                      {`EffectNode is agnositc towards renderers. You can use
-                    babalyon and threejs or p5.js to suit your needs etc... `}
+                      {`EffectNode is agnositc towards renderers. You can use @react-three/fiber, pure vanilla js,
+                    babalyon.js and three.js or p5.js to suit your needs etc... `}
                     </p>
                     <p className="my-4 text-lg font-light leading-relaxed text-gray-600">
                       {`Organise huge amount of algorithms into workspaces.`}
@@ -324,7 +324,7 @@ export default function Landing() {
                         ></FontAwesomeIcon>
                       </div>
                       <h3 className="text-3xl font-semibold">
-                        EffectNode Solution Pack
+                        {`EffectNode FX`}
                       </h3>
                       <p className="mt-4 text-lg leading-relaxed text-gray-500">
                         {`We are building a lot of example codes for you to clone from github to get started. `}
