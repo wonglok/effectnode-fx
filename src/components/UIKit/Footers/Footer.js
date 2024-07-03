@@ -28,7 +28,7 @@ export default function Footer() {
             <div className="w-full lg:w-6/12 px-4">
               <h4 className="text-3xl font-semibold">{`A-Yo!`}</h4>
               <h5 className="text-lg mt-0 mb-2 text-gray-600">
-                {` Let's dont be shy to say hi!`}
+                {`Dont be shy, Let's say hi!`}
               </h5>
               <div className="mt-6 lg:mb-0 mb-6 hidden">
                 <button
