@@ -574,9 +574,9 @@ export default function Landing() {
             <div className="container mx-auto px-4 lg:pb-64 lg:pt-24">
               <div className="flex flex-wrap justify-center text-center">
                 <div className="w-full px-4 lg:w-6/12">
-                  <h2 className="text-4xl font-semibold text-white">{`Solution Templates`}</h2>
+                  <h2 className="text-4xl font-semibold text-white">{`Community Solution Templates`}</h2>
                   <p className="my-4 text-lg leading-relaxed text-gray-400">
-                    {`Let's make the internet more inter-connected...`}
+                    {`Let's make the internet more friendly through co-created software...`}
                   </p>
                 </div>
               </div>
@@ -589,10 +589,11 @@ export default function Landing() {
                     ></FontAwesomeIcon>
                   </div>
                   <h6 className="mt-5 text-xl font-semibold text-white">
-                    {`123`}
+                    {`Creative Coding`}
                   </h6>
                   <p className="mb-4 mt-2 text-gray-400">
-                    {`Effect Node can work with WebGL1, WebGL2.`}
+                    Realtime live preview of Color Pickers, React HMR, Shader
+                    Updates and etc
                   </p>
                 </div>
                 <div className="w-full px-4 text-center lg:w-3/12">
@@ -603,10 +604,10 @@ export default function Landing() {
                     ></FontAwesomeIcon>
                   </div>
                   <h5 className="mt-5 text-xl font-semibold text-white">
-                    WebGL + WebGPU
+                    {`Ecommerce Solution`}
                   </h5>
                   <p className="mb-4 mt-2 text-gray-400">
-                    {`Effect Node is a renderer agnositc signaling software for acceelratiing VFX on web.`}
+                    {`Sell more stuff with 3D WOW Content`}
                   </p>
                 </div>
                 <div className="w-full px-4 text-center lg:w-3/12">
@@ -617,10 +618,10 @@ export default function Landing() {
                     ></FontAwesomeIcon>
                   </div>
                   <h5 className="mt-5 text-xl font-semibold text-white">
-                    React
+                    Immersive Data Visualsation AR/BR
                   </h5>
                   <p className="mb-4 mt-2 text-gray-400">
-                    {`Realtime InterSite communication is the future of the web.`}
+                    {`Immerse yourself into data-arts in AR / VR`}
                   </p>
                 </div>
               </div>
