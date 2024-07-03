@@ -129,7 +129,7 @@ export default function Landing() {
           </div>
         </div>
 
-        {false && (
+        {true && (
           <section className="-mt-24 bg-gray-200 pb-20">
             <div className="container mx-auto px-4">
               <div className="flex flex-wrap">
@@ -139,10 +139,14 @@ export default function Landing() {
                       <div className="mb-5 inline-flex size-12 items-center justify-center rounded-full bg-red-400 p-3 text-center text-white shadow-lg">
                         <i className="fas fa-award"></i>
                       </div>
-                      <h6 className="text-xl font-semibold">Cross Site</h6>
+                      <h6 className="text-xl font-semibold">
+                        Faster FX Development
+                      </h6>
                       <p className="mb-4 mt-2 text-gray-500">
-                        What if chat can work like email? What if you can send a
-                        message to a user on another site?
+                        {/*  */}
+                        VFX Node Graph allows us to reduce the time cost of
+                        connecting different parts of code.
+                        {/*  */}
                       </p>
                     </div>
                   </div>
@@ -154,10 +158,14 @@ export default function Landing() {
                       <div className="mb-5 inline-flex size-12 items-center justify-center rounded-full bg-blue-400 p-3 text-center text-white shadow-lg">
                         <i className="fas fa-retweet"></i>
                       </div>
-                      <h6 className="text-xl font-semibold">Better Privacy</h6>
+                      <h6 className="text-xl font-semibold">
+                        Completely Secure
+                      </h6>
                       <p className="mb-4 mt-2 text-gray-500">
-                        What if you can keep your messages locally like all your
-                        emails?
+                        {/*  */}
+                        The tools only runs in local development envrionment,
+                        the outputs are securely hardcoded.
+                        {/*  */}
                       </p>
                     </div>
                   </div>
@@ -169,10 +177,10 @@ export default function Landing() {
                       <div className="mb-5 inline-flex size-12 items-center justify-center rounded-full bg-emerald-400 p-3 text-center text-white shadow-lg">
                         <i className="fas fa-fingerprint"></i>
                       </div>
-                      <h6 className="text-xl font-semibold">Better Controls</h6>
+                      <h6 className="text-xl font-semibold">Focus on VFX</h6>
                       <p className="mb-4 mt-2 text-gray-500">
-                        Write a few lines about each one. A paragraph describing
-                        a feature will be enough. Keep you user engaged!
+                        We are making developing creative coding easier and
+                        easier.
                       </p>
                     </div>
                   </div>
@@ -182,11 +190,11 @@ export default function Landing() {
               {
                 <div className="mt-32 flex flex-wrap items-center">
                   <div className="mx-auto w-full px-4 md:w-5/12">
-                    <div className="mb-6 inline-flex size-16 items-center justify-center rounded-full bg-white p-3 text-center text-gray-500 shadow-lg">
-                      <i className="fas fa-user-friends text-xl"></i>
+                    <div className="mb-6 inline-flex size-16 items-center justify-center rounded-full bg-white text-center text-gray-500 shadow-lg">
+                      <FontAwesomeIcon icon={faEarthAsia} />
                     </div>
                     <h3 className="mb-2 text-3xl font-semibold leading-normal">
-                      Working with us is a pleasure
+                      Working Project
                     </h3>
                     <p className="my-4 text-lg font-light leading-relaxed text-gray-600">
                       {`Don't let your uses guess by attaching tooltips and popoves to any element. Just
@@ -268,7 +276,7 @@ export default function Landing() {
             <div className="container mx-auto px-4">
               <div className="flex flex-wrap items-center">
                 <div className="mx-auto w-full px-4 md:w-4/12">
-                  <div className=" size-96 relative w-full">
+                  <div className=" size-96 relative w-full rounded-full overflow-hidden">
                     {/* <EffectNode
                       projectName={"examples-0001-webgpu-components"}
                     ></EffectNode> */}
@@ -316,7 +324,7 @@ export default function Landing() {
                       </div>
                       <h3 className="text-3xl font-semibold">EffectNode FX</h3>
                       <p className="mt-4 text-lg leading-relaxed text-gray-500">
-                        {`Effect node is a javascript creative coder tooling software.`}
+                        {`EffectNode is a javascript creative coder tooling software which are good for developing hardcore visuals.`}
                       </p>
                       {true && (
                         <ul className="mt-6 list-none">
@@ -332,6 +340,7 @@ export default function Landing() {
                               </div>
                             </div>
                           </li>
+
                           <li className="py-2">
                             <div className="flex items-center">
                               <div>
@@ -340,9 +349,7 @@ export default function Landing() {
                                 </span>
                               </div>
                               <div>
-                                <h4 className="text-gray-500">
-                                  Creative Coding
-                                </h4>
+                                <h4 className="text-gray-500">3D WebSites</h4>
                               </div>
                             </div>
                           </li>
@@ -354,7 +361,9 @@ export default function Landing() {
                                 </span>
                               </div>
                               <div>
-                                <h4 className="text-gray-500">3D WebSites</h4>
+                                <h4 className="text-gray-500">
+                                  Generative Art
+                                </h4>
                               </div>
                             </div>
                           </li>
