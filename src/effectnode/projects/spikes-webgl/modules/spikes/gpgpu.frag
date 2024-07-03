@@ -173,8 +173,6 @@ void main () {
 
   pt1 += normalize(pt1) * noise1;  
 
-
-
   vec3 pt2 = ballify(randomBall + nextPos, 15.0);
   float noise2 = rand(pt2.yz + time * 20.0);
 

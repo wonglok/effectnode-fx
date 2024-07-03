@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Spike, gpgpu as spikeGPU } from "../modules/spikes/spikes";
 import { useFrame, useThree } from "@react-three/fiber";
-import { Sphere, gpgpu as sphereGPU } from "../modules/sphere/sphere";
 
 export function ToolBox({ ui, io, useStore, onLoop }) {
   //
@@ -23,7 +22,7 @@ export function Runtime({ ui, io, useStore, onLoop }) {
   return (
     <>
       <Insert3D>
-        <Content key={[spikeGPU, sphereGPU].join("___")} ui={ui}></Content>
+        <Content key={[spikeGPU].join("___")} ui={ui}></Content>
       </Insert3D>
     </>
   );
@@ -44,20 +43,11 @@ function Content({ ui }) {
       pointer,
     });
 
-    let sphere = new Sphere({
-      ui,
-      //
-      renderer: gl,
-      pointer,
-    });
-
     setDisplay({
       spike,
-      sphere,
       display: (
         <>
           <group position={[0, 0, 0]} scale={0.065}>
-            <primitive object={sphere}></primitive>
             <primitive object={spike}></primitive>
           </group>
         </>
@@ -68,9 +58,6 @@ function Content({ ui }) {
   useFrame(() => {
     if (api && api.spike) {
       api.spike.compute();
-    }
-    if (api && api.sphere) {
-      api.sphere.compute();
     }
   });
 

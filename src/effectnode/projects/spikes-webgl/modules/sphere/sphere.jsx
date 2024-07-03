@@ -165,7 +165,7 @@ export class Sphere extends Object3D {
     let iGeo = new InstancedBufferGeometry();
     let count = SIZE * SIZE;
     iGeo.instanceCount = count;
-    iGeo.copy(new CircleGeometry(0.1 / 2, 8, 8));
+    iGeo.copy(new CircleGeometry(0.05 / 2, 8, 8));
     let myUVData = [];
     for (let y = 0; y < SIZE; y++) {
       for (let x = 0; x < SIZE; x++) {
@@ -307,6 +307,7 @@ uniform float opacity;
 #include <logdepthbuf_pars_fragment>
 #include <clipping_planes_pars_fragment>
 
+uniform float time;
 const mat2 m = mat2(0.80,  0.60, -0.60,  0.80);
 
 float noise(in vec2 p) {
@@ -344,12 +345,13 @@ uniform vec3 color2;
 varying vec2 myVUV;
 uniform sampler2D posTex;
 
+
 void main() {
 	vec4 diffuseColor = vec4( diffuse, opacity );
 
   vec4 pos = texture2D(posTex, myVUV);
 
-  float noiseValue = pattern(pos.xy, time);
+  float noiseValue = pattern(pos.xy * 0.2, time);
 
   diffuseColor.rgb = mix(color1, color2, noiseValue + rand(myVUV.xy));
 
