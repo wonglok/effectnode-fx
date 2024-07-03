@@ -373,7 +373,7 @@ void main() {
 
     
 
-    diffuseColor.rgb *= vec3(avgColor) * 2.0;
+    diffuseColor.rgb *= vec3(avgColor) * 5.0;
     // diffuseColor.a *= sampledDiffuseColor.a;
 
   #endif

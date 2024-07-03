@@ -169,13 +169,13 @@
           "_id": "_z1kc9ik_",
           "label": "sphereColor",
           "type": "color",
-          "value": "#00ffcf"
+          "value": "#2354cd"
         },
         {
           "_id": "_94li3wk_",
           "label": "spikeColor",
           "type": "color",
-          "value": "#ffffff"
+          "value": "#369bff"
         }
       ],
       "title": "sphere"
