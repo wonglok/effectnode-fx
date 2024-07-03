@@ -147,9 +147,7 @@ export default function Landing() {
                       </h6>
                       <p className="mb-4 mt-2 text-gray-500">
                         VFX Node Graph allows us to reduce the time & repeated
-                        effort of connecting different parts of code. EffectNode
-                        is agnositc towards renderers, you can use babalyon and
-                        threejs or p5.js.
+                        effort of connecting different parts of code.
                       </p>
                     </div>
                   </div>
@@ -161,13 +159,10 @@ export default function Landing() {
                       <div className="mb-5 inline-flex size-12 items-center justify-center rounded-full bg-blue-400 p-3 text-center text-white shadow-lg">
                         <i className="fas fa-retweet"></i>
                       </div>
-                      <h6 className="text-xl font-semibold">
-                        Completely Secure
-                      </h6>
+                      <h6 className="text-xl font-semibold">Secure Runtime</h6>
                       <p className="mb-4 mt-2 text-gray-500">
-                        The devtools only runs in local development envrionment
-                        and is excluded in Production. All outputs are static
-                        JSON in production envrionment.
+                        {` The devtools only runs in local development envrionment
+                        and is excluded in production phase. so it's only static JSON and Frontend js code.`}
                       </p>
                     </div>
                   </div>
@@ -183,7 +178,7 @@ export default function Landing() {
                         Low Learning Curve
                       </h6>
                       <p className="mb-4 mt-2 text-gray-500">
-                        {`If you already know react-three-fiber, nextjs, three.js and zustand... You're good to go! Also.... We are building a lot of example codes for you to clone from github to get started.`}
+                        {`If you already know react-three-fiber, nextjs, three.js and zustand... You're good to go! Also.... `}
                       </p>
                     </div>
                   </div>
@@ -200,14 +195,20 @@ export default function Landing() {
                       />
                     </div>
                     <h3 className="mb-2 text-3xl font-semibold leading-normal">
-                      Neat and Tidy
+                      Renderer & Freedom
                     </h3>
+
+                    <p className="my-4 text-lg font-light leading-relaxed text-gray-600">
+                      {`EffectNode is agnositc towards renderers. You can use
+                    babalyon and threejs or p5.js to suit your needs etc... `}
+                    </p>
                     <p className="my-4 text-lg font-light leading-relaxed text-gray-600">
                       {`Organise huge amount of algorithms into workspaces.`}
                     </p>
                     <p className="mb-4 mt-0 text-lg font-light leading-relaxed text-gray-600">
                       {`Developing Node and Connection driven software has been more and more fun!`}
                     </p>
+
                     <p className="mb-4">
                       <img src={`/img/dash.png`} />
                     </p>
@@ -322,10 +323,13 @@ export default function Landing() {
                           icon={faPerson}
                         ></FontAwesomeIcon>
                       </div>
-                      <h3 className="text-3xl font-semibold">EffectNode FX</h3>
+                      <h3 className="text-3xl font-semibold">
+                        EffectNode Solution Pack
+                      </h3>
                       <p className="mt-4 text-lg leading-relaxed text-gray-500">
-                        {`EffectNode is a javascript creative coder tooling software which are good for developing hardcore visuals.`}
+                        {`We are building a lot of example codes for you to clone from github to get started. `}
                       </p>
+
                       {true && (
                         <ul className="mt-6 list-none">
                           <li className="py-2">
