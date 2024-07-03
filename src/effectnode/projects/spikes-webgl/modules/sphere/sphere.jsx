@@ -165,7 +165,7 @@ export class Sphere extends Object3D {
     let iGeo = new InstancedBufferGeometry();
     let count = SIZE * SIZE;
     iGeo.instanceCount = count;
-    iGeo.copy(new CircleGeometry(0.05 / 2, 8, 8));
+    iGeo.copy(new CircleGeometry(0.1 / 2, 8, 8));
     let myUVData = [];
     for (let y = 0; y < SIZE; y++) {
       for (let x = 0; x < SIZE; x++) {
