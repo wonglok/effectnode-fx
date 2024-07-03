@@ -73,13 +73,13 @@
           "_id": "_rkxq750_",
           "label": "spikeColor",
           "type": "color",
-          "value": "#0028ff"
+          "value": "#ffffff"
         },
         {
           "_id": "_te6reeu_",
           "label": "ballColor",
           "type": "color",
-          "value": "#00ff4b"
+          "value": "#00ffef"
         }
       ],
       "title": "edge"
@@ -231,9 +231,9 @@
         "_id": "_q77qs09_mwqkfse",
         "title": "mesh",
         "position": [
-          1.0000897045172843,
+          1.0524291409159665,
           0,
-          0.21247952827215263
+          0.2194991983973927
         ],
         "inputs": [
           {

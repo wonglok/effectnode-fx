@@ -167,7 +167,7 @@ void main () {
   
   vec3 randomBall = ballify(vec3(x, y, z) + mouseMini, 1.0);
   
-  vec3 pt1 = ballify(randomBall + nextPos, 15.0);
+  vec3 pt1 = ballify(randomBall + nextPos, 5.0);
   // pt1.z += cnoise(pt1.xy + time * 20.0) * 30.0;
   
   vec3 pt2 = ballify(randomBall + nextPos, 15.0);
