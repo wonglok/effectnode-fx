@@ -191,35 +191,30 @@ export default function Landing() {
                 <div className="mt-32 flex flex-wrap items-center">
                   <div className="mx-auto w-full px-4 md:w-5/12">
                     <div className="mb-6 inline-flex size-16 items-center justify-center rounded-full bg-white text-center text-gray-500 shadow-lg">
-                      <FontAwesomeIcon icon={faEarthAsia} />
+                      <FontAwesomeIcon
+                        className="text-2xl"
+                        icon={faEarthAsia}
+                      />
                     </div>
                     <h3 className="mb-2 text-3xl font-semibold leading-normal">
-                      Working Project
+                      Neat and Tidy
                     </h3>
                     <p className="my-4 text-lg font-light leading-relaxed text-gray-600">
-                      {`Don't let your uses guess by attaching tooltips and popoves to any element. Just
-                                    make sure you enable them first via JavaScript.`}
+                      {`Organise huge amount of algorithms into workspaces.`}
                     </p>
                     <p className="mb-4 mt-0 text-lg font-light leading-relaxed text-gray-600">
-                      {`The kit comes with three pre-built pages to help you get started faster. You can
-                                    change the text and images and you're good to go. Just make sure you enable them
-                                    first via JavaScript.`}
+                      {`Developing Node and Connection driven software has been more and more fun!`}
                     </p>
-                    <Link href="/">
-                      <span
-                        href="#pablo"
-                        className="mt-8 font-bold text-gray-700"
-                      >
-                        Check Notus NextJS!
-                      </span>
-                    </Link>
+                    <p className="mb-4">
+                      <img src={`/img/dash.png`} />
+                    </p>
                   </div>
 
                   <div className="mx-auto w-full px-4 md:w-4/12">
                     <div className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded-lg bg-gray-700 shadow-lg">
                       <img
                         alt="..."
-                        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1051&q=80"
+                        src="/img/node-editor.png"
                         className="w-full rounded-t-lg align-middle"
                       />
                       <blockquote className="relative mb-4 p-8">
@@ -235,12 +230,14 @@ export default function Landing() {
                           ></polygon>
                         </svg>
                         <h4 className="text-xl font-bold text-white">
-                          Top Notch Services
+                          Node I/O System for Data ART
                         </h4>
                         <p className="text-md mt-2 font-light text-white">
-                          The Arctic Ocean freezes every winter and much of the
-                          sea-ice then thaws every summer, and that process will
-                          continue whatever happens.
+                          Oragnise huge sum of code into modules and fine tune
+                          the visuals.
+                        </p>
+                        <p className="text-md mt-2 font-light text-white">
+                          Good for data viuslations and data arts.
                         </p>
                       </blockquote>
                     </div>
