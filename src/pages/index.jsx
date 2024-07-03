@@ -607,7 +607,7 @@ export default function Landing() {
                     {`Ecommerce Solution`}
                   </h5>
                   <p className="mb-4 mt-2 text-gray-400">
-                    {`Sell more stuff with 3D WOW Content`}
+                    {`Higher Converstaion Rate with Creatively Stunning 3D Content`}
                   </p>
                 </div>
                 <div className="w-full px-4 text-center lg:w-3/12">
