@@ -143,10 +143,8 @@ export default function Landing() {
                         Faster FX Development
                       </h6>
                       <p className="mb-4 mt-2 text-gray-500">
-                        {/*  */}
                         VFX Node Graph allows us to reduce the time cost of
                         connecting different parts of code.
-                        {/*  */}
                       </p>
                     </div>
                   </div>
@@ -162,11 +160,9 @@ export default function Landing() {
                         Completely Secure
                       </h6>
                       <p className="mb-4 mt-2 text-gray-500">
-                        {/*  */}
                         The devtools only runs in local development envrionment
                         and is excluded in Production. All outputs are static
                         JSON in production envrionment.
-                        {/*  */}
                       </p>
                     </div>
                   </div>
