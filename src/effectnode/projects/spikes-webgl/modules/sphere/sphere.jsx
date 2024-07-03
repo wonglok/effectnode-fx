@@ -120,13 +120,10 @@ export class Sphere extends Object3D {
     //     },
     //     uniforms: {
     //       mainColor: { value: mainColor },
-
     //       time: { value: 0 },
     //       opacity: { value: 0.5 },
     //       posTex: { value: null },
-
     //       tCube: { value: tCube },
-
     //       indexerTexture: { value: indexerTexture },
     //       pointSize: { value: window.devicePixelRatio || 1.0 },
     //     },
@@ -151,6 +148,7 @@ export class Sphere extends Object3D {
     // points.frustumCulled = false;
     //
     //
+
     //
     //
     //
