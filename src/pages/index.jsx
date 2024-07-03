@@ -91,7 +91,7 @@ export default function Landing() {
                   ></Bloom>
                 </EffectComposer>
               </Canvas> */}
-              <div className="absolute left-0 top-0 size-full opacity-70">
+              <div className="absolute left-0 top-0 size-full opacity-60">
                 <EffectNode projectName={"spikes-webgl"}></EffectNode>
               </div>
             </span>
@@ -103,7 +103,10 @@ export default function Landing() {
               <div className="mx-auto w-full px-4 text-center lg:w-6/12">
                 <div className="pr-12">
                   <h1 className="text-5xl font-semibold text-white">{`Effect Node FX`}</h1>
-                  <p className="mt-4 text-lg text-gray-200">{`WebGPU + WebGL`}</p>
+                  <p className="mt-4 text-xl font-bold text-gray-200">
+                    WebGPU + WebGL + Canvas
+                  </p>
+                  <p className="mt-4 text-lg text-gray-200">{`EffectNode is a NodeGraph signaling software that accelerate VFX and 3D Development for the Web Ecosystem.`}</p>
                 </div>
               </div>
             </div>
@@ -143,8 +146,10 @@ export default function Landing() {
                         Faster FX Development
                       </h6>
                       <p className="mb-4 mt-2 text-gray-500">
-                        VFX Node Graph allows us to reduce the time cost of
-                        connecting different parts of code.
+                        VFX Node Graph allows us to reduce the time & repeated
+                        effort of connecting different parts of code. EffectNode
+                        is agnositc towards renderers, you can use babalyon and
+                        threejs or p5.js.
                       </p>
                     </div>
                   </div>
@@ -178,7 +183,7 @@ export default function Landing() {
                         Low Learning Curve
                       </h6>
                       <p className="mb-4 mt-2 text-gray-500">
-                        {`If you already know react-three-fiber, nextjs, three.js and zustand... You're good to go!`}
+                        {`If you already know react-three-fiber, nextjs, three.js and zustand... You're good to go! Also.... We are building a lot of example codes for you to clone from github to get started.`}
                       </p>
                     </div>
                   </div>
@@ -533,7 +538,7 @@ export default function Landing() {
           </section>
         )}
 
-        {false && (
+        {true && (
           <section className="relative block bg-gray-800 py-20">
             <div
               className="pointer-events-none absolute inset-x-0 bottom-auto top-0 -mt-20 h-20 w-full overflow-hidden"
@@ -558,7 +563,7 @@ export default function Landing() {
             <div className="container mx-auto px-4 lg:pb-64 lg:pt-24">
               <div className="flex flex-wrap justify-center text-center">
                 <div className="w-full px-4 lg:w-6/12">
-                  <h2 className="text-4xl font-semibold text-white">{`Vision`}</h2>
+                  <h2 className="text-4xl font-semibold text-white">{`Solution Templates`}</h2>
                   <p className="my-4 text-lg leading-relaxed text-gray-400">
                     {`Let's make the internet more inter-connected...`}
                   </p>
@@ -572,9 +577,11 @@ export default function Landing() {
                       icon={faCubes}
                     ></FontAwesomeIcon>
                   </div>
-                  <h6 className="mt-5 text-xl font-semibold text-white">3D</h6>
+                  <h6 className="mt-5 text-xl font-semibold text-white">
+                    {`123`}
+                  </h6>
                   <p className="mb-4 mt-2 text-gray-400">
-                    {`WebGL has alwasys been an fascinating technology to Lok.`}
+                    {`Effect Node can work with WebGL1, WebGL2.`}
                   </p>
                 </div>
                 <div className="w-full px-4 text-center lg:w-3/12">
@@ -584,9 +591,11 @@ export default function Landing() {
                       icon={faEarthAsia}
                     ></FontAwesomeIcon>
                   </div>
-                  <h5 className="mt-5 text-xl font-semibold text-white">AI</h5>
+                  <h5 className="mt-5 text-xl font-semibold text-white">
+                    WebGL + WebGPU
+                  </h5>
                   <p className="mb-4 mt-2 text-gray-400">
-                    {`AI like the movie called "her".... to help you do things on the internet.`}
+                    {`Effect Node is a renderer agnositc signaling software for acceelratiing VFX on web.`}
                   </p>
                 </div>
                 <div className="w-full px-4 text-center lg:w-3/12">
@@ -597,7 +606,7 @@ export default function Landing() {
                     ></FontAwesomeIcon>
                   </div>
                   <h5 className="mt-5 text-xl font-semibold text-white">
-                    HTTP / WS
+                    React
                   </h5>
                   <p className="mb-4 mt-2 text-gray-400">
                     {`Realtime InterSite communication is the future of the web.`}
@@ -607,6 +616,7 @@ export default function Landing() {
             </div>
           </section>
         )}
+
         {false && (
           <section
             className="relative block bg-gray-800 py-24 lg:pt-0"
