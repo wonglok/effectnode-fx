@@ -214,9 +214,9 @@ void main () {
   nextPos = mix(pt1, pt2, smoothstep(0.0, 1.0, abs(distance(mouseMini, vec3(0.0))) / 0.5));
   nextPos += getDiff(nextPos, lastPos.rgb + mouseMini) * 1.1;
 
-  nextPos *= rotateY(mouseMini.x * 0.3 + time * 0.0003);
-  nextPos *= rotateX(mouseMini.y * 0.3 + time * 0.0003);
-  nextPos *= rotateX(mouseMini.z * 0.3 + time * 0.0003);
+  nextPos *= rotateY(mouseMini.x * 0.1 + time * 0.0003);
+  nextPos *= rotateX(mouseMini.y * 0.1 + time * 0.0003);
+  nextPos *= rotateX(mouseMini.z * 0.1 + time * 0.0003);
 
   // remix code end here//  
   gl_FragColor = vec4(nextPos, 1.0);
