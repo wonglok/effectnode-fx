@@ -187,6 +187,8 @@ export default function Landing() {
                 </div>
               </div>
 
+              {/*  */}
+              {/*  */}
               {
                 <div className="mt-32 flex flex-wrap items-center">
                   <div className="mx-auto w-full px-4 md:w-5/12">
