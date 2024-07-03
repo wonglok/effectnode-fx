@@ -177,10 +177,11 @@ export default function Landing() {
                       <div className="mb-5 inline-flex size-12 items-center justify-center rounded-full bg-emerald-400 p-3 text-center text-white shadow-lg">
                         <i className="fas fa-fingerprint"></i>
                       </div>
-                      <h6 className="text-xl font-semibold">Focus on VFX</h6>
+                      <h6 className="text-xl font-semibold">
+                        Low Learning Curve
+                      </h6>
                       <p className="mb-4 mt-2 text-gray-500">
-                        We are making developing creative coding easier and
-                        easier.
+                        {` If you already know react-three-fiber, reactjs and threejs... You're good to go!`}
                       </p>
                     </div>
                   </div>

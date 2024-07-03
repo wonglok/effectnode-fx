@@ -73,13 +73,13 @@
           "_id": "_rkxq750_",
           "label": "spikeColor",
           "type": "color",
-          "value": "#62a113"
+          "value": "#85d420"
         },
         {
           "_id": "_te6reeu_",
           "label": "ballColor",
           "type": "color",
-          "value": "#1478cc"
+          "value": "#2b1b60"
         }
       ],
       "title": "edge"
