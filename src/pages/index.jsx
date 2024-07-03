@@ -182,7 +182,7 @@ export default function Landing() {
                         Low Learning Curve
                       </h6>
                       <p className="mb-4 mt-2 text-gray-500">
-                        {` If you already know react-three-fiber, nextjs, three.js and zustand... You're good to go!`}
+                        {`If you already know react-three-fiber, nextjs, three.js and zustand... You're good to go!`}
                       </p>
                     </div>
                   </div>
