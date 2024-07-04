@@ -157,7 +157,7 @@
           "_id": "_1ko0o77_i9qjb4e",
           "label": "baseColor",
           "type": "color",
-          "value": "#ff0000"
+          "value": "#1361ff"
         },
         {
           "_id": "_yykfz1w_owrte7e",
@@ -472,9 +472,9 @@
         "_id": "_x801t0d_2qm4x7k",
         "title": "color",
         "position": [
-          1.3069325083904124,
+          1.4701516141993112,
           0,
-          0.15554753828018464
+          0.4584738832869229
         ],
         "inputs": [
           {

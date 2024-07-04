@@ -179,6 +179,7 @@ button.TopBar-Button svg {
 }
 
 .FileManager .FileManager-Body {
+  height: calc(100% - 6rem * 0.0);
   flex: auto;
   overflow: auto;
   border-left: 1px solid rgba(0, 0, 0, 0.2);

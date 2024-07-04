@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
  */
-
-import React, { useEffect, useState } from "react";
+import Dropzone from "dropzone";
+import React, { useEffect, useRef, useState } from "react";
 import TopBar from "./TopBar";
 import Footer from "./Footer";
 import MiddleArea from "./MiddleArea";
@@ -172,6 +172,7 @@ export default function FileManager({
 
   return (
     <div
+      id="my-upload-pad"
       className={"FileManager" + (loading ? " FileManager-Loading" : "")}
       style={{ height: "100%" }}
     >
@@ -185,6 +186,7 @@ export default function FileManager({
         reload={reload}
         enabledFeatures={enabledFeatures}
       />
+
       <MiddleArea
         collapsed={collapsed}
         setCollapsed={setCollapsed}

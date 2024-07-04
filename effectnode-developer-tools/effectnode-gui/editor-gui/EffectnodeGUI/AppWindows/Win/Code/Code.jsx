@@ -30,6 +30,7 @@ export function Code({ win, useStore }) {
         });
       }
     };
+
     window.addEventListener("keydown", hh);
 
     return () => {
