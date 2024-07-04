@@ -59,6 +59,7 @@ export default function FileManager({
   getDownloadLink,
   getFileChangedDate,
   getFileSizeBytes,
+  project,
 }) {
   const [collapsed, setCollapsed] = useState({});
   const [structure, setStructure] = useState({});
@@ -188,6 +189,7 @@ export default function FileManager({
       />
 
       <MiddleArea
+        project={project}
         collapsed={collapsed}
         setCollapsed={setCollapsed}
         structure={structure}

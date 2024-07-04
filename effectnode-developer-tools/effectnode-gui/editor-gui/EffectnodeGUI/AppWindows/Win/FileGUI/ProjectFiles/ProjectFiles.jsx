@@ -164,6 +164,7 @@ export function ProjectFiles({ projectName = "lok" }) {
   return (
     <div className="w-full h-full">
       <FileManager
+        project={projectName}
         height={"100%"}
         getList={apis.getList}
         createDirectory={apis.createDirectory}

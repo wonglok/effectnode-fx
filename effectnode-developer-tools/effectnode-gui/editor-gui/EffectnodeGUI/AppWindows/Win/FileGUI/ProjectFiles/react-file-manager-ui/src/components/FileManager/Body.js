@@ -15,6 +15,7 @@ export default function Body({
   rename,
   enabledFeatures,
   uploadFiles,
+  project,
 }) {
   const list = structure[currentPath] || [];
 
@@ -98,7 +99,7 @@ export default function Body({
                   >
                     <div className="Body-Item-Icon">
                       {item.type === 1 ? (
-                        <div className="h-28 w-28 bg-gray-200">{/*  */}</div>
+                        <Thumb project={project} path={path}></Thumb>
                       ) : (
                         <FaRegFolder />
                       )}
@@ -127,5 +128,19 @@ export default function Body({
         </div>
       </div>
     </div>
+  );
+}
+
+function Thumb({ path, project }) {
+  //
+
+  let basePath = `/devapi/fs/file/pipe${path}?project=${project}`;
+
+  return (
+    <>
+      <div className="w-full h-full bg-gray-500 rounded-xl">
+        <img src={`${basePath}`} className="w-full h-full object-contain"></img>
+      </div>
+    </>
   );
 }

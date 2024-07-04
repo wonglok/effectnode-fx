@@ -19,6 +19,7 @@ export default function MiddleArea({
   selectionToPaths,
   selectionChanged,
   uploadFiles,
+  project,
 }) {
   return (
     <div className="FileManager-MiddleArea">
@@ -34,6 +35,7 @@ export default function MiddleArea({
       />
 
       <Body
+        project={project}
         uploadFiles={uploadFiles}
         structure={structure}
         rename={rename}

@@ -194,6 +194,8 @@ button.TopBar-Button svg {
   text-align: center;
   padding: 8px;
   border-radius: 8px;
+
+  height: 100px;
 }
 
 .Body-Item .Body-Item-Name {
@@ -202,7 +204,7 @@ button.TopBar-Button svg {
   white-space: nowrap;
 }
 
-.Body-Item .Body-Item-Icon svg {
+.Body-Item .Body-Item-Icon {
   width: 80px;
   height: 80px;
   display: inline-flex;
