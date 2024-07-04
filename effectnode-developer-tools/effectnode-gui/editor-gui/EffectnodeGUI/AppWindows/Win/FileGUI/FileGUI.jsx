@@ -1,4 +1,4 @@
-import { ProjectFiles } from "effectnode-developer-tools/effectnode-gui/editor-gui/ProjectFiles/ProjectFIles";
+import { ProjectFiles } from "./ProjectFiles/ProjectFiles.jsx";
 // import { EffectNode } from "effectnode-developer-tools/effectnode-runtime/EffectNode";
 
 export function FileGUI({ win, useStore }) {
@@ -35,7 +35,7 @@ export function FileGUI({ win, useStore }) {
       {/* {spaceID} */}
 
       {/*  */}
-      <div className="w-full h-full">
+      <div className="w-full h-full overflow-hidden">
         <ProjectFiles projectName={spaceID}></ProjectFiles>
       </div>
     </>

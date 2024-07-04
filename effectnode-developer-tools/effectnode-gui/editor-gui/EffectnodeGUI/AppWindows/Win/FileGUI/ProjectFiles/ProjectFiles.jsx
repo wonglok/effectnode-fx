@@ -117,8 +117,8 @@ const getAPIS = ({ projectName }) => {
       const name = prompt("New name", parts[parts.length - 1]);
       if (name) {
         try {
-          await fetch(apiPath + "/file/rename", {
-            method: "put",
+          await fetch(apiPath + "/file/rename?project=" + projectURI + "", {
+            method: "post",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ path, name }),
           });
@@ -161,6 +161,7 @@ export function ProjectFiles({ projectName = "lok" }) {
   let apis = getAPIS({ projectName: projectName });
   return (
     <FileManager
+      height={"100%"}
       getList={apis.getList}
       createDirectory={apis.createDirectory}
       deletePaths={apis.deletePaths}

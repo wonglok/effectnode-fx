@@ -234,7 +234,9 @@ button.TopBar-Button svg {
 
 .Footer-Right button.Icon-Button {
   padding: 0;
-
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .Footer-Right button svg {

@@ -45,6 +45,15 @@ export function ThankYouList({ useStore }) {
                     <a
                       target="_blank"
                       className="text-blue-500"
+                      href={`https://github.com/ghzcool/react-file-manager-ui`}
+                    >
+                      react-file-manager-ui
+                    </a>
+                  </li>
+                  <li className=" underline  list-decimal">
+                    <a
+                      target="_blank"
+                      className="text-blue-500"
                       href={`https://icons8.com`}
                     >
                       Icons8

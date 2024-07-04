@@ -172,7 +172,7 @@ export default function FileManager({
   return (
     <div
       className={"FileManager" + (loading ? " FileManager-Loading" : "")}
-      style={{ height: height || "100vh" }}
+      style={{ height: "100%" }}
     >
       <TopBar
         currentPath={currentPath}

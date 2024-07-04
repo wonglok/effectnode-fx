@@ -60,7 +60,7 @@ export default class FileController {
     app.put("/devapi/fs/file/put", (req, res) => this.contentPut(req, res));
     app.delete("/devapi/fs/file/delete", (req, res) => this.delete(req, res));
     app.post("/devapi/fs/file/mkdir", (req, res) => this.createDir(req, res));
-    app.put("/devapi/fs/file/rename", (req, res) => this.rename(req, res));
+    app.post("/devapi/fs/file/rename", (req, res) => this.rename(req, res));
     app.post("/devapi/fs/file/upload", (req, res) => this.upload(req, res));
     app.get("/devapi/fs/file/extract", (req, res) => this.extract(req, res));
 
@@ -72,7 +72,7 @@ export default class FileController {
   }
 
   getProjectBaseURL(req) {
-    return join(projectAll, req.query.project);
+    return join(projectAll, `${req.query.project}`);
   }
 
   listGet(req, res) {
@@ -191,7 +191,9 @@ export default class FileController {
   rename(req, res) {
     const { body } = req;
     const baseURL = this.getProjectBaseURL(req);
-    const path = baseURL + (body.path || "");
+    const path = `${baseURL}/${body.path || ""}`;
+
+    // const path = this.getPath(baseURL, body.path || "");
     const { name } = body;
 
     this.fileService
