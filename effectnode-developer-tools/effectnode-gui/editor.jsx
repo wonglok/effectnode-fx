@@ -19,20 +19,31 @@ export function Editor() {
     }
 
     setHasFile("loading");
-    useDeveloper
-      .getState()
-      .hasOne({
-        title,
-      })
-      .then((r) => {
-        console.log(r);
-        if (r?.hasOne) {
-          setHasFile("has");
-        } else {
-          setHasFile("donthave");
-        }
-      });
-    //
+
+    let load = ({ i = 15 }) => {
+      useDeveloper
+        .getState()
+        .hasOne({
+          title,
+        })
+        .then((r) => {
+          console.log(r);
+          if (r?.hasOne) {
+            setHasFile("has");
+          } else {
+            if (i <= 0) {
+              setHasFile("donthave");
+            } else {
+              setTimeout(() => {
+                i--;
+                load({ i });
+              }, 2000);
+            }
+          }
+        });
+    };
+
+    load({ i: 15 });
   }, [title]);
 
   return (
