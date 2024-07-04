@@ -92,7 +92,7 @@ function FastFlameCode({ onAPI = () => {} }) {
     return () => {
       window.removeEventListener("resize", hhResize);
     };
-  }, [gl, camera]);
+  }, [gl, camera, onClean, onLoop]);
 
   useEffect(() => {
     if (!api) {

@@ -215,7 +215,7 @@ export default function Landing() {
                     </p>
 
                     <p className="mb-4">
-                      <img src={`/img/dash.png`} />
+                      <img alt="slide" src={`/img/dash.png`} />
                     </p>
                   </div>
 
@@ -570,6 +570,7 @@ export default function Landing() {
             >
               <img
                 className="w-full h-full absolute top-0 left-0"
+                alt="slide"
                 src={`/hr/hr-el-3.svg`}
               ></img>
               {/* <svg

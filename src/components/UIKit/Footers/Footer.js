@@ -33,6 +33,7 @@ export default function Footer() {
             ></polygon>
           </svg> */}
           <img
+            alt="slide"
             className="w-full h-full absolute top-0 left-0"
             src={`/hr/hr-el-4.svg`}
           ></img>
