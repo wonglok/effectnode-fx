@@ -61,7 +61,7 @@ export default function Body({
             <div className="Body-Item-Icon cursor-pointer">
               <div
                 {...getRootProps()}
-                className="hover:bg-gray-200 bg-gray-200 p-2 h-20  rounded-lg w-20 flex items-center justify-center"
+                className="hover:bg-gray-200 bg-gray-200 p-2 w-full h-full rounded-lg flex items-center justify-center"
               >
                 <FontAwesomeIcon className="text-2xl" icon={faCloudArrowUp} />
               </div>
