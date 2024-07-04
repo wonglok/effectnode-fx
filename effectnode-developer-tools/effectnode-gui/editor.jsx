@@ -21,6 +21,7 @@ export function Editor() {
     setHasFile("loading");
 
     let load = ({ i = 15 }) => {
+      console.log(i);
       useDeveloper
         .getState()
         .hasOne({
@@ -31,19 +32,16 @@ export function Editor() {
           if (r?.hasOne) {
             setHasFile("has");
           } else {
-            if (i <= 0) {
-              setHasFile("donthave");
-            } else {
-              setTimeout(() => {
-                i--;
-                load({ i });
-              }, 2000);
-            }
+            setHasFile("donthave");
           }
         });
     };
 
     load({ i: 15 });
+
+    return () => {
+      setHasFile("loading");
+    };
   }, [title]);
 
   return (
