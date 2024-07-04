@@ -46,6 +46,7 @@ SOFTWARE.
  */
 
 import fs from "node:fs";
+import { join } from "path";
 import mime from "mime";
 import unzipper from "unzipper";
 
@@ -170,7 +171,7 @@ export default class FileService {
           return;
         }
         files.forEach((item) => {
-          item.mv(path + item.name);
+          item.mv(join(path, item.name));
         });
         resolve();
       });
@@ -205,7 +206,7 @@ export default class FileService {
     if (fs.existsSync(path)) {
       if (fs.lstatSync(path).isDirectory()) {
         fs.readdirSync(path).forEach((file) => {
-          const curPath = path + "/" + file;
+          const curPath = join(path, file);
           this.deleteFolderRecursive(curPath);
         });
         fs.rmdirSync(path);
@@ -240,7 +241,7 @@ export default class FileService {
           reject(err);
           return;
         }
-        fs.mkdir(path + "/" + name, (err) => {
+        fs.mkdir(join(path, name), (err) => {
           if (err) {
             reject(err);
             return;
@@ -260,7 +261,7 @@ export default class FileService {
         }
         const parts = path.split("/");
         parts.splice(parts.length - 1, 1);
-        const newPath = parts.join("/") + "/" + name;
+        const newPath = join(parts.join("/"), name); // + "/" + name;
         fs.rename(path, newPath, (err) => {
           if (err) {
             reject(err);

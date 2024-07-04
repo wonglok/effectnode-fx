@@ -287,10 +287,6 @@ export class EditorCore {
         });
       }
 
-      //
-      //
-      //
-
       if (!apps.some((r) => r.type === "previewer")) {
         let appID = getID();
 
@@ -301,6 +297,31 @@ export class EditorCore {
 
         let win = JSON.parse(
           JSON.stringify(myWins.find((r) => r.type === "previewer"))
+        );
+        win._id = getID();
+        win.appID = appID;
+        win.zIndex = wins.length;
+
+        apps.push(app);
+        wins.push(win);
+
+        this.setState({
+          apps: [...apps],
+          wins: [...wins],
+          overlayPop: "",
+        });
+      }
+
+      if (!apps.some((r) => r.type === "files")) {
+        let appID = getID();
+
+        let app = JSON.parse(
+          JSON.stringify(myApps.find((r) => r.type === "files"))
+        );
+        app._id = appID;
+
+        let win = JSON.parse(
+          JSON.stringify(myWins.find((r) => r.type === "files"))
         );
         win._id = getID();
         win.appID = appID;
@@ -352,6 +373,25 @@ export class EditorCore {
           win.height = (window.innerHeight - 130) / 2 - 15;
           win.top = (window.innerHeight - 130) / 2 + 30;
           win.left = 10;
+        }
+
+        this.setState({
+          apps: [...apps],
+          wins: [...wins],
+          overlayPop: "",
+        });
+      }
+
+      ///////
+
+      ///////
+      {
+        let win = wins.find((r) => r.type === "files");
+        if (win) {
+          win.width = window.innerWidth * 0.5 - 30;
+          win.height = (window.innerHeight - 130) / 2 - 15;
+          win.top = (window.innerHeight - 130) / 2 + 30;
+          win.left = window.innerWidth * 0.5 + 20;
         }
 
         this.setState({

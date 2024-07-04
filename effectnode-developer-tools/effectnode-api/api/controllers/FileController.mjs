@@ -49,6 +49,7 @@ SOFTWARE.
 import FileService from "../services/FileService.mjs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
+import fs from "fs/promises";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectAll = `${join(__dirname, "../../../../", "src/effectnode/projects")}`;
@@ -67,21 +68,29 @@ export default class FileController {
     console.log("FilesController registered");
   }
 
-  getPath(baseURL, path) {
-    return baseURL + (path || "") + (path !== "/" ? "/" : "");
+  getPath(baseURL, path = "") {
+    // return baseURL + (path || "") + (path !== "/" ? "/" : "");
+    return join(baseURL, path);
   }
 
   getProjectBaseURL(req) {
-    return join(projectAll, `${req.query.project}`);
+    return join(projectAll, `${req.query.project}/assets/`);
   }
 
   listGet(req, res) {
     res.setHeader("Content-Type", "application/json-patch+json");
 
     const baseURL = this.getProjectBaseURL(req);
+    try {
+      fs.access(baseURL, fs.constants.R_OK);
+    } catch (e) {
+      fs.mkdir(baseURL, { recursive: true });
+      console.log(e);
+    }
+
     const { query } = req;
 
-    const path = baseURL + (query.path || "");
+    const path = join(baseURL, query.path || "");
 
     this.fileService
       .list(path)

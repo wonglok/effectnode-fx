@@ -162,12 +162,12 @@ function Content({ useStore }) {
                 //
                 let dist = graphCursorState.ts.distanceTo(point);
 
-                let offset = ({ win }) => {
+                let offsetWindow = ({ win }) => {
                   let sizeWidth = window.innerWidth / 2 + 20;
                   win.left = sizeWidth;
                   win.top = 10;
                   //
-                  win.height = window.innerHeight - 130;
+                  win.height = (window.innerHeight - 130) / 2 - 20;
                   win.width = window.innerWidth - sizeWidth - 10;
 
                   //
@@ -187,7 +187,7 @@ function Content({ useStore }) {
 
                     editorAPI.upWindow({ win });
 
-                    offset({ win });
+                    offsetWindow({ win });
 
                     useStore.setState({
                       wins: [...wins],
@@ -199,7 +199,7 @@ function Content({ useStore }) {
                     win.nodeID = n._id;
                     editorAPI.upWindow({ win });
 
-                    offset({ win });
+                    offsetWindow({ win });
 
                     useStore.setState({
                       wins: [...wins],

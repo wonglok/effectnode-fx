@@ -96,6 +96,7 @@ export default function FileManager({
 
   const reload = async () => {
     setLoading(true);
+    await new Promise(setTimeout, 300);
     const updated = {};
     const notChanged = {};
     try {

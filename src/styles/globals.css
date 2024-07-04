@@ -145,6 +145,7 @@ button.TopBar-Button svg {
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  width: 100%;
 }
 .SideBar-TreeNode .TreeNode-Name > svg {
   margin-right: 5px;
@@ -172,7 +173,7 @@ button.TopBar-Button svg {
 }
 
 .FileManager .FileManager-SideBar {
-  min-width: 250px;
+  min-width: 170px;
   padding: 8px 0;
   overflow: auto;
 }
@@ -201,8 +202,12 @@ button.TopBar-Button svg {
 }
 
 .Body-Item .Body-Item-Icon svg {
-  width: 64px;
-  height: 64px;
+  width: 80px;
+  height: 80px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;  
+  margin-bottom: 5px;
 }
 
 .Body-Item.Item-Selected {
@@ -218,10 +223,13 @@ button.TopBar-Button svg {
   display: flex;
   flex-direction: row;
 }
-
+.FileManager-Footer .Footer-Left{
+  text-align: left;
+  width: calc(100% - 100px);
+}
 .FileManager-Footer .Footer-Right {
-  flex: auto;
   text-align: right;
+  width: 100px;
 }
 
 .Footer-Right button {
