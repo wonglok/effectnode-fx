@@ -64,11 +64,6 @@ export default function Body({
           }}
         >
           <input {...getInputProps()} />
-          {/* {!isDragActive && (
-            <>
-             
-            </>
-          )} */}
 
           <div className="Body-Item">
             <div className="Body-Item-Icon cursor-pointer">
