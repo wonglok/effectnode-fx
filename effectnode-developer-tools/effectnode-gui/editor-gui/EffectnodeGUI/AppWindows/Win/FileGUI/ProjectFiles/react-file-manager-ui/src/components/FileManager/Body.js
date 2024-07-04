@@ -43,6 +43,7 @@ export default function Body({
   return (
     <div className="w-full h-full">
       <div className="w-full h-full">
+        {/*  */}
         {/* !!list<div className={`w-full h-24 border p-3 cursor-pointer `}>
           <div className="flex items-center justify-center border border-dashed rounded-lg h-full w-full">
             {isDragActive ? (
@@ -55,23 +56,32 @@ export default function Body({
          */}
 
         <div
-          className={"FileManager-Body cursor-pointer"}
+          className={"FileManager-Body "}
           onClick={(event) => {
             event.stopPropagation();
             event.preventDefault();
             setSelection([]);
           }}
-          {...getRootProps()}
         >
           <input {...getInputProps()} />
-          {!isDragActive && (
+          {/* {!isDragActive && (
             <>
-              <div className="w-full h-full hover:bg-gray-200 bg-gray-300 flex items-center justify-center">
-                Upload
-                <FontAwesomeIcon className="mx-2" icon={faCloudArrowUp} />
-              </div>
+             
             </>
-          )}
+          )} */}
+
+          <div className="Body-Item">
+            <div className="Body-Item-Icon cursor-pointer">
+              <div
+                {...getRootProps()}
+                className="hover:bg-gray-200 bg-gray-200 p-2 h-20  rounded-lg w-20 flex items-center justify-center"
+              >
+                <FontAwesomeIcon className="text-2xl" icon={faCloudArrowUp} />
+              </div>
+            </div>
+            <div className="Body-Item-Name">Upload Files</div>
+          </div>
+
           {!!list && (
             <>
               {list.map((item, index) => {
@@ -97,7 +107,7 @@ export default function Body({
                       }
                     }}
                   >
-                    <div className="Body-Item-Icon">
+                    <div className="Body-Item-Icon cursor-pointer">
                       {item.type === 1 ? (
                         <Thumb project={project} path={path}></Thumb>
                       ) : (
@@ -138,8 +148,13 @@ function Thumb({ path, project }) {
 
   return (
     <>
-      <div className="w-full h-full bg-gray-500 rounded-xl">
-        <img src={`${basePath}`} className="w-full h-full object-contain"></img>
+      <div className="w-full h-full bg-gray-200 p-2 rounded-xl">
+        {(basePath.includes(".png") || basePath.includes(".jpg")) && (
+          <img
+            src={`${basePath}`}
+            className="w-full h-full object-contain"
+          ></img>
+        )}
       </div>
     </>
   );
