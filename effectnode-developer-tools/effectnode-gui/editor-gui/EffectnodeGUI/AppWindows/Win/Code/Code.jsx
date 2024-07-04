@@ -21,6 +21,23 @@ export function Code({ win, useStore }) {
   let [monaco, setMonaco] = useState(false);
 
   useEffect(() => {
+    let hh = (ev) => {
+      if (ev.key === "Escape") {
+        useStore.setState({
+          wins: JSON.parse(
+            JSON.stringify(wins.filter((r) => r._id !== win._id))
+          ),
+        });
+      }
+    };
+    window.addEventListener("keydown", hh);
+
+    return () => {
+      window.removeEventListener("keydown", hh);
+    };
+  }, [win, wins, useStore]);
+
+  useEffect(() => {
     if (!monaco) {
       return;
     }
