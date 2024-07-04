@@ -17,6 +17,7 @@
     "next": "^14.2.4",
     "react": "^18",
     "react-dom": "^18",
+    "react-file-manager-ui": "^1.1.0",
     "tunnel-rat": "^0.1.2"
   },
   "devDependencies": {
@@ -24,11 +25,14 @@
     "@react-three/drei": "^9.107.0",
     "@react-three/fiber": "^8.16.8",
     "@react-three/postprocessing": "^2.16.2",
+    "body-parser": "^1.20.2",
     "concurrently": "^8.2.2",
     "copy-dir": "^1.3.0",
+    "cors": "^2.8.5",
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "express": "^4.19.2",
+    "express-fileupload": "^1.5.0",
     "file-loader": "^6.2.0",
     "glslify-loader": "^2.0.0",
     "killport": "^1.0.2",
@@ -36,6 +40,7 @@
     "lowdb": "^7.0.1",
     "lowdb-node": "^3.0.2",
     "md5": "^2.3.0",
+    "mime": "^4.0.3",
     "moment": "^2.30.1",
     "nodemon": "^3.1.4",
     "open-in-editor": "^2.2.0",
@@ -46,6 +51,7 @@
     "tailwindcss": "^3.4.1",
     "three": "^0.165.0",
     "tweakpane": "^4.0.3",
+    "unzipper": "^0.12.1",
     "write": "^2.0.0",
     "zustand": "^4.5.2"
   },

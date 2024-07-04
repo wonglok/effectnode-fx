@@ -31,6 +31,28 @@ export function BeginMenu({ useStore }) {
         wins: [...wins],
         overlayPop: "",
       });
+    } else if (!apps.some((r) => r.type === winType)) {
+      let appID = getID();
+
+      let app = JSON.parse(
+        JSON.stringify(myApps.find((r) => r.type === winType))
+      );
+      app._id = appID;
+
+      let win = JSON.parse(
+        JSON.stringify(myWins.find((r) => r.type === winType))
+      );
+      win._id = getID();
+      win.appID = appID;
+
+      apps.push(app);
+      wins.push(win);
+
+      useStore.setState({
+        apps: [...apps],
+        wins: [...wins],
+        overlayPop: "",
+      });
     } else {
       let app = apps.find((r) => r.type === winType);
       let appID = app._id;
@@ -113,6 +135,14 @@ export function BeginMenu({ useStore }) {
               className="cursor-pointer mr-3 mb-3 select-none inline-block p-5 px-6 shadow-md hover:shadow-xl hover:bg-gray-100 active:shadow-lg transition-all duration-300 rounded-2xl border-gray-300 border "
             >
               🖼️ Previewer
+            </div>
+            <div
+              onClick={() => {
+                openWindow({ winType: "files" });
+              }}
+              className="cursor-pointer mr-3 mb-3 select-none inline-block p-5 px-6 shadow-md hover:shadow-xl hover:bg-gray-100 active:shadow-lg transition-all duration-300 rounded-2xl border-gray-300 border "
+            >
+              🗂️ Files
             </div>
           </div>
         </div>

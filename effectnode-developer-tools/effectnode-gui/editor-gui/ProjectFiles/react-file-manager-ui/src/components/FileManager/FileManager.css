@@ -1,0 +1,208 @@
+.FileManager {
+    color: rgba(0, 0, 0, 0.9);
+    font-family: Helvetica, sans-serif;
+    font-size: 14px;
+    letter-spacing: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.FileManager * {
+    box-sizing: border-box;
+}
+
+.FileManager.FileManager-Loading {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.FileManager .FileManager-TopBar {
+    height: 48px;
+    line-height: 32px;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.FileManager-TopBar .TopBar-Left {
+    flex: auto;
+    white-space: nowrap;
+    display: flex;
+    flex-direction: row;
+}
+
+.FileManager-TopBar .TopBar-Button {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    line-height: 32px;
+}
+
+.FileManager button, .FileManager input {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px -4px rgba(0, 0, 0, 0.5);
+}
+
+.FileManager button:hover, .FileManager input:hover, .FileManager button:focus, .FileManager input:focus {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    outline: none;
+}
+
+.TopBar-Button.Icon-Button {
+    padding: 0;
+}
+
+.TopBar-Button svg {
+    width: 16px;
+    height: 16px;
+    transform: translateY(2px);
+}
+
+.TopBar-Left input[type=text] {
+    flex: auto;
+    line-height: 32px;
+    height: 32px;
+    padding: 0 8px;
+}
+
+.TopBar-Left button {
+    margin-right: 4px;
+}
+
+.TopBar-Right button {
+    margin-left: 4px;
+}
+
+.FileManager-SideBar .SideBar-TreeNode {
+
+}
+
+.SideBar-TreeNode .TreeNode-Name {
+    height: 28px;
+    line-height: 28px;
+    cursor: pointer;
+}
+
+.TreeNode-Name.TreeNode-Current {
+    color: #000000;
+    background-color: rgba(0, 0, 255, 0.1);
+}
+
+.SideBar-TreeNode .TreeNode-Children {
+
+}
+
+.FileManager .FileManager-MiddleArea {
+    flex: auto;
+    overflow: auto;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.FileManager .FileManager-SideBar {
+    min-width: 250px;
+    padding: 8px 0;
+    overflow: auto;
+}
+
+.FileManager .FileManager-Body {
+    flex: auto;
+    overflow: auto;
+    border-left: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 8px;
+    display: grid;
+    grid-gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(96px, 1fr));
+}
+
+.FileManager-Body .Body-Item {
+    text-align: center;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.Body-Item .Body-Item-Name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.Body-Item .Body-Item-Icon svg {
+    width: 64px;
+    height: 64px;
+}
+
+.Body-Item.Item-Selected {
+    color: #000000;
+    background-color: rgba(0, 0, 255, 0.1);
+}
+
+.FileManager .FileManager-Footer {
+    height: 32px;
+    line-height: 28px;
+    padding: 2px 8px;
+    background-color: rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: row;
+}
+
+.FileManager-Footer .Footer-Right {
+    display: flex;
+    flex: auto;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+}
+
+.Footer-Right button {
+    min-width: 28px;
+    height: 28px;
+    padding: 0 8px;
+    line-height: 28px;
+    margin-left: 4px;
+}
+
+.Footer-Right button.Icon-Button {
+    padding: 0;
+}
+
+.Footer-Right button svg {
+    width: 16px;
+    height: 16px;
+    transform: translateY(2px);
+}
+
+.Footer-Right a.Icon-Button {
+    display: block;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 8px;
+    line-height: 28px;
+    margin-left: 4px;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px -4px rgba(0, 0, 0, 0.5);
+}
+
+.Footer-Right a svg {
+    width: 16px;
+    height: 16px;
+    transform: translateY(2px);
+}
+
+a.Icon-Button, a.Icon-Button:active, a.Icon-Button:hover, a.Icon-Button:link, a.Icon-Button:visited {
+    color: #000000;
+}

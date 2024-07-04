@@ -7,7 +7,12 @@ export const myApps = [
   {
     _id: "appID",
     type: "previewer",
-    appIconText: " 🖼️ previewer",
+    appIconText: " 🖼️ Previewer",
+  },
+  {
+    _id: "appID",
+    type: "files",
+    appIconText: " 🖼️ Files",
   },
 ];
 
@@ -39,6 +44,18 @@ export const myWins = [
     appID: "appID",
     type: "coder",
     title: ` 👨🏼‍💻 Coder`,
+    top: 20,
+    left: 20,
+    width: 600,
+    height: 500,
+    zIndex: 0,
+    data: {},
+  },
+  {
+    _id: "winID",
+    appID: "appID",
+    type: "files",
+    title: ` 🗂️ Files`,
     top: 20,
     left: 20,
     width: 600,

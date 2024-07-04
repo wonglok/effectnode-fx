@@ -8,11 +8,35 @@ import { removeProject } from "./removeProject.mjs";
 import { cloneProject } from "./cloneProject.mjs";
 import { openEditorCoder } from "./openEditorCoder.mjs";
 import { getProjectGraphs } from "./getProjectGraphs.mjs";
+import fileUpload from "express-fileupload";
+import cors from "cors";
+import bodyParser from "body-parser";
+import FileController from "./api/controllers/FileController.mjs";
+
 const port = 3456;
 
 const app = express();
 
-app.use(json({ limit: "999GB" }));
+app.set("etag", false);
+app.use((req, res, next) => {
+  res.set("Cache-Control", "no-store");
+  next();
+});
+
+app.use(cors());
+app.use(express.json());
+app.use(
+  fileUpload({
+    createParentPath: true,
+  })
+);
+app.use(bodyParser.urlencoded({ extended: false, limit: "100mb" }));
+app.use(bodyParser.json({ type: "application/*+json", limit: "100mb" }));
+app.use(bodyParser.text({ type: "text/html", limit: "100mb" }));
+
+new FileController(app, { path: "" });
+
+// app.use(json({ limit: "999GB" }));
 
 app.post("/devapi/project/listAllGraph", async (req, res) => {
   let title = req.body.title;
