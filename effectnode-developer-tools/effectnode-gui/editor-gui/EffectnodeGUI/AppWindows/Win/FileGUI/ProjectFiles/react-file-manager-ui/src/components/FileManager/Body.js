@@ -2,7 +2,11 @@ import React, { useEffect, useCallback, useRef } from "react";
 import { FaRegFile, FaRegFolder } from "react-icons/fa";
 import { useDropzone } from "react-dropzone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCloudArrowUp, faUpload } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCloudArrowUp,
+  faFolder,
+  faUpload,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Body({
   structure,
@@ -43,18 +47,6 @@ export default function Body({
   return (
     <div className="w-full h-full">
       <div className="w-full h-full">
-        {/*  */}
-        {/* !!list<div className={`w-full h-24 border p-3 cursor-pointer `}>
-          <div className="flex items-center justify-center border border-dashed rounded-lg h-full w-full">
-            {isDragActive ? (
-              <p>{`Drop the files here ...`}</p>
-            ) : (
-              <p>{`Drag 'n' drop some files here, or click to select files`}</p>
-            )}
-          </div>
-        </div>
-         */}
-
         <div
           className={"FileManager-Body "}
           onClick={(event) => {
@@ -106,7 +98,7 @@ export default function Body({
                       {item.type === 1 ? (
                         <Thumb project={project} path={path}></Thumb>
                       ) : (
-                        <FaRegFolder />
+                        <FontAwesomeIcon className="text2-xl" icon={faFolder} />
                       )}
                     </div>
                     <div
