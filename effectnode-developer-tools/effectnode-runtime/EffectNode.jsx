@@ -29,6 +29,7 @@ export function EffectNode({
     }),
     useRuntime: create(() => {
       return {
+        projectName: projectName,
         codes: [],
         settings: [],
         project: false,
@@ -79,8 +80,15 @@ export function EffectNode({
         let project = projects.find((r) => r.projectName === projectName);
 
         if (project) {
+          let files = {};
+          project.assets.forEach((ac) => {
+            files[ac._id.split("/assets")[1]] = ac.assetURL;
+          });
+
           let useRuntime = create(() => {
+            //
             return {
+              files: files,
               project: project,
               codes: project.codes,
               settings: project.settings,
@@ -135,6 +143,7 @@ export function EffectNode({
   let [{ onLoop }, setAPI] = useState({
     onLoop: () => {},
   });
+
   useEffect(() => {
     if (!socketMap) {
       return;
@@ -165,7 +174,7 @@ export function EffectNode({
     <>
       <Emit></Emit>
       {socketMap && useRuntime && (
-        <div id={randID} className="w-full h-full overflow-hidden">
+        <div id={randID} className="w-full h-full overflow-hidden relative">
           {mode === "runtime" &&
             api.domElement &&
             codes

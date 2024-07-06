@@ -1,4 +1,4 @@
-import fs, { constants } from "fs/promises";
+import fs, { access, constants } from "fs/promises";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -9,7 +9,7 @@ export const hasOneProject = async ({ title }) => {
 
   const fexists = async (path) => {
     try {
-      await access(path);
+      await fs.stat(path);
       return true;
     } catch {
       return false;
@@ -25,8 +25,6 @@ export const hasOneProject = async ({ title }) => {
   )}`;
 
   let url = projectURL;
-
-  console.log(projectURL);
 
   return await fexists(url);
 };

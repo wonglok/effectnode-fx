@@ -49,7 +49,7 @@ SOFTWARE.
 import FileService from "../services/FileService.mjs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
-import fs from "fs/promises";
+import fs from "fs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectAll = `${join(__dirname, "../../../../", "src/effectnode/projects")}`;
@@ -68,7 +68,7 @@ export default class FileController {
     console.log("FilesController registered");
   }
 
-  getPath(baseURL, path = "") {
+  getPath(baseURL, path = "/") {
     // return baseURL + (path || "") + (path !== "/" ? "/" : "");
     return join(baseURL, path);
   }
@@ -82,10 +82,10 @@ export default class FileController {
 
     const baseURL = this.getProjectBaseURL(req);
     try {
-      fs.access(baseURL, fs.constants.R_OK);
+      fs.accessSync(baseURL, fs.constants.R);
     } catch (e) {
-      fs.mkdir(baseURL, { recursive: true });
-      console.log(e);
+      // console.log(e);
+      fs.mkdirSync(baseURL, { recursive: true });
     }
 
     const { query } = req;

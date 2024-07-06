@@ -207,6 +207,7 @@ export default function FileManager({
         rename={rename}
       />
       <Footer
+        project={project}
         structure={structure}
         setStructure={setStructure}
         currentPath={currentPath}

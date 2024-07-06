@@ -16,6 +16,9 @@ export function CodeRun({
   let nodes = graph.nodes || [];
   let nodeOne = nodes.find((r) => r.title === codeName);
   let setting = settings.find((r) => r.nodeID === nodeOne?._id);
+  // let projectName = useStore((r) => r.projectName);
+
+  // console.log(projectName);
 
   let [{ onClean, cleanAll }] = useState(() => {
     let api = {

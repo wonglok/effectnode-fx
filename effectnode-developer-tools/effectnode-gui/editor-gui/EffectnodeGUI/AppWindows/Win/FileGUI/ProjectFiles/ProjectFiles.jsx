@@ -51,7 +51,7 @@ const getAPIS = ({ projectName }) => {
   const apiPath = "/devapi/fs";
   const projectURI = `${encodeURIComponent(projectName)}`;
   const core = {};
-  core.getList = (path) => {
+  core.getList = (path = "/") => {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await fetch(
@@ -154,25 +154,36 @@ const getAPIS = ({ projectName }) => {
     });
   };
 
+  core.getDownloadLink = (path) => {
+    let link = apiPath + "/file/pipe" + path + "?project=" + projectURI + "";
+    return link;
+  };
   return core;
 };
 
 //
 
 export function ProjectFiles({ projectName = "lok" }) {
-  let apis = getAPIS({ projectName: projectName });
+  let core = getAPIS({ projectName: projectName });
   return (
     <div className="w-full h-full">
       <FileManager
         project={projectName}
         height={"100%"}
-        getList={apis.getList}
-        createDirectory={apis.createDirectory}
-        deletePaths={apis.deletePaths}
-        openFile={apis.openFile}
-        uploadFiles={apis.uploadFiles}
-        rename={apis.rename}
-        features={["createDirectory", "uploadFiles", "deletePaths", "rename"]}
+        getList={core.getList}
+        createDirectory={core.createDirectory}
+        deletePaths={core.deletePaths}
+        openFile={core.openFile}
+        uploadFiles={core.uploadFiles}
+        rename={core.rename}
+        getDownloadLink={core.getDownloadLink}
+        features={[
+          "createDirectory",
+          "getDownloadLink",
+          "uploadFiles",
+          "deletePaths",
+          "rename",
+        ]}
       />
     </div>
   );

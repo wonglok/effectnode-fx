@@ -39,6 +39,46 @@ function loadCodes({ projectName }) {
   return codes;
 }
 
+function loadAssets({ projectName }) {
+  let bucket = [];
+
+  let rr = require.context(
+    "src/effectnode/projects",
+    true,
+    /\/assets\/(.*).(png|jpg|hdr|jpeg|glb|fbx|exr|mp4)$/,
+    "sync"
+  );
+
+  let list = rr.keys();
+
+  list.forEach((key) => {
+    // console.log(key);
+    //
+
+    if (key.startsWith("./") && key.includes(`/${projectName}/`)) {
+      // console.log(key);
+      let ext = extname(key);
+
+      let codeName = basename(key).replace(ext, "");
+      let item = {
+        _id: key,
+        projectName: projectName,
+        codeName: codeName,
+        fileName: basename(key),
+        assetURL: rr(key),
+      };
+
+      bucket.push(item);
+    }
+
+    //
+
+    //
+  });
+
+  return bucket;
+}
+
 async function loadProjects({}) {
   let projectGraphs = [];
 
@@ -56,6 +96,8 @@ async function loadProjects({}) {
 
       let codes = loadCodes({ projectName: projectName });
 
+      let assets = loadAssets({ projectName: projectName });
+
       projectGraphs.push({
         _id: key,
         projectName: projectName,
@@ -63,6 +105,7 @@ async function loadProjects({}) {
         ...req(key),
 
         codes: codes,
+        assets: assets,
       });
     }
   });
@@ -94,4 +137,5 @@ async function loadProjects({}) {
 if (typeof window !== "undefined") {
   loadProjects({ onData: () => {} });
 }
+
 export const getAllProjects = loadProjects;

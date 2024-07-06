@@ -1,7 +1,15 @@
-import React from "react";
-import { FaEdit, FaTrash, FaDownload } from "react-icons/fa";
-
+import React, { useState } from "react";
+import {
+  FaRegClipboard,
+  FaEdit,
+  FaTrash,
+  FaDownload,
+  FaMix,
+} from "react-icons/fa";
+import { join } from "path";
 import { humanReadableByteCount, stripLeadingDirectories } from "./Utils";
+import { Emit } from "effectnode-developer-tools/effectnode-runtime/Emit";
+import copy from "copy-to-clipboard";
 
 export default function Footer({
   structure,
@@ -16,6 +24,7 @@ export default function Footer({
   getDownloadLink,
   getFileSizeBytes,
   getFileChangedDate,
+  project,
 }) {
   const list = structure[currentPath] || [];
   const footerText = getFooterText();
@@ -76,9 +85,41 @@ export default function Footer({
       .catch((error) => error && console.error(error));
   };
 
+  let [assetArray, setAssets] = useState([]);
+  //
+  //
+  let selectedName = selection[0];
+
+  let assetSelected = assetArray.find((r) => r._id.endsWith(selectedName));
+
+  // console.log(selectedName, currentPath, assetArray, assetSelected);
+
+  // console.log(selection);
   return (
     <div className="FileManager-Footer">
-      <div className="Footer-Left">{footerText}</div>
+      <Emit
+        onData={(data) => {
+          //
+          let projectData = data.projects.find(
+            (r) => r.projectName === project
+          );
+
+          let assets = projectData.assets || [];
+
+          setAssets(assets);
+
+          // console.log(projectData);
+
+          //
+        }}
+      ></Emit>
+      {/* <div className="Footer-Left">{footerText}</div> */}
+      <div className="Footer-Left">
+        {assetSelected && (
+          <>{`${join(currentPath, `${assetSelected.fileName}`)}`}</>
+        )}
+        {/*  */}
+      </div>
       <div className="Footer-Right">
         {selection.length === 1 && enabledFeatures.indexOf("rename") !== -1 && (
           <button
@@ -101,6 +142,27 @@ export default function Footer({
               <FaTrash />
             </button>
           )}
+
+        {/*  */}
+        {/* files["/texture/uv_grid_opengl.jpg"] */}
+        {/*  */}
+
+        {assetSelected && (
+          <button
+            className="Icon-Button"
+            type="button"
+            onClick={() => {
+              //
+              copy(
+                `files["${join(currentPath, `${assetSelected.fileName}`)}"]`
+              );
+            }}
+            title={labels["download"]}
+          >
+            <FaRegClipboard />
+          </button>
+        )}
+
         {!!selection.length &&
           enabledFeatures.indexOf("getDownloadLink") !== -1 && (
             <a
