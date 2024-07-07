@@ -1,4 +1,4 @@
-import { PerspectiveCamera } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 
 export function ToolBox({}) {
   return <>camera</>;
@@ -14,6 +14,7 @@ export function Runtime({ ui, useStore, io }) {
           makeDefault
           position={[0, 0, ui.positionZ]}
         ></PerspectiveCamera>
+        <OrbitControls makeDefault></OrbitControls>
       </Insert3D>
     </>
   );

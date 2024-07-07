@@ -2,7 +2,6 @@
 // import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import { Clock } from "three";
-import { Mouse } from "../../../../components/CursorTrackerTail/Mouse";
 
 export function ToolBox({}) {
   ///

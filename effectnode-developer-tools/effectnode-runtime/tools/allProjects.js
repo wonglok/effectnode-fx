@@ -5,11 +5,29 @@ function loadImplementations({ projectName }) {
   let codes = [];
 
   if (process.env.NODE_ENV === "development") {
+    let r0 = require.context(
+      "raw-loader!src/components/",
+      true,
+      /(.*).(js|jsx|ts|tsx)$/
+    );
+
+    //
+    //
+    //
+    let signatureCode = r0
+      .keys()
+      .reduce((ac, accessKey) => {
+        ac.push(md5(r0(accessKey).default));
+        return ac;
+      }, [])
+      .join("__");
+
     let rr = require.context(
       "src/effectnode/projects",
       true,
       /\/codes\/(.*).(js|jsx|ts|tsx)$/
     );
+
     let rawRaw = require.context(
       "raw-loader!src/effectnode/projects",
       true,
@@ -19,15 +37,10 @@ function loadImplementations({ projectName }) {
     let list = rr.keys();
 
     list.forEach((key) => {
-      // console.log(key);
       //
 
       if (key.startsWith("./") && key.includes(`/${projectName}/`)) {
-        // console.log(key);
         let ext = extname(key);
-
-        // let yo = rawRaw(key).default;
-        // console.log(yo);
 
         let codeName = basename(key).replace(ext, "");
         let item = {
@@ -35,9 +48,12 @@ function loadImplementations({ projectName }) {
           projectName: projectName,
           codeName: codeName,
           fileName: basename(key),
-          signature: Object.values(rawRaw(key))
-            .map((r) => md5(r))
-            .join("-"),
+
+          //
+          signature:
+            Object.values(rawRaw(key))
+              .map((r) => md5(r))
+              .join("-") + signatureCode,
 
           loadCode: async () => rr(key),
         };

@@ -1,3 +1,4 @@
+import { CursorTrackerTail } from "src/components/CursorTrackerTail/CursorTrackerTail";
 import { Mouse } from "src/components/CursorTrackerTail/Mouse";
 
 export function ToolBox({}) {

@@ -564,7 +564,6 @@ class LokLokWiggleDisplay {
           uniform vec3 tailColor;
           uniform float time;
   
-  
           const float PI = 3.14159265;
           const float SCALE = 1.0;
           const mat3 m = mat3(

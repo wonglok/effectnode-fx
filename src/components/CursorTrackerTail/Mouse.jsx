@@ -20,6 +20,7 @@ export function Mouse() {
   let camera = useThree((r) => r.camera);
 
   let [mount, setMount] = useState(null);
+
   useEffect(() => {
     //
     let st = get();
@@ -28,7 +29,6 @@ export function Mouse() {
       mini.set(key, st[key]);
     }
 
-    // mini.
     let mounter = new Object3D();
     let cursor = new Object3D();
 
@@ -52,6 +52,7 @@ export function Mouse() {
           </group>,
           camera
         )}
+
         <primitive object={camera}></primitive>
         <primitive object={mounter}></primitive>
       </>
