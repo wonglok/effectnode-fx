@@ -43,10 +43,10 @@ export function Mouse() {
       <>
         {createPortal(
           <group>
-            <group position={[0, 0, -2]}>
+            <group position={[0, 0, -3]}>
               <Gltf src={cursorGLBURL}></Gltf>
             </group>
-            <group position={[0, 0, -2]}>
+            <group position={[0, 0, -3]}>
               <primitive object={cursor}></primitive>
             </group>
           </group>,
