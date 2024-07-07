@@ -9,7 +9,7 @@ import { useFrame } from "@react-three/fiber";
 import { MeshTransmissionMaterial, Sphere } from "@react-three/drei";
 
 //
-export function ToolBox({ ui, useStore, domElement }) {
+export function ToolBox({}) {
   return <>avatar</>;
 }
 

@@ -61,7 +61,7 @@ import {
 import motionURL from "../assets/rpm/moiton/thriller4.fbx";
 import lok from "../assets/rpm/lok.glb";
 
-export function ToolBox({ ui, useStore, domElement }) {
+export function ToolBox({}) {
   return <>avatar</>;
 }
 

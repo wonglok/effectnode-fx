@@ -1,6 +1,6 @@
 import { PerspectiveCamera } from "@react-three/drei";
 
-export function ToolBox({ ui, useStore, domElement }) {
+export function ToolBox({}) {
   return <>camera</>;
 }
 

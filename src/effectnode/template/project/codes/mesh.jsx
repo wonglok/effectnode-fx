@@ -3,10 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Clock } from "three";
 
-export function ToolBox({ ui, io, useStore, onLoop }) {
-  //
-
-  return <>Toolbox HAHA {ui.baseColor}</>;
+export function ToolBox({}) {
+  ///
+  return <>Toolbox HAHA</>;
 }
 
 export function Runtime({ ui, io, useStore, onLoop }) {

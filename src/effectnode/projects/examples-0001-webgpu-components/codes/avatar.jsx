@@ -61,10 +61,6 @@ import {
 import motionURL from "../assets/rpm/moiton/thriller4.fbx";
 import lok from "../assets/rpm/lok.glb";
 
-export function ToolBox({ ui, useStore, domElement }) {
-  return <>avatar</>;
-}
-
 export function Runtime({ ui, useStore, io, domElement, onLoop }) {
   let Insert3D = useStore((r) => r.Insert3D) || (() => null);
 

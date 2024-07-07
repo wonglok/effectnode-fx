@@ -2,7 +2,7 @@ import { Canvas, useThree } from "@react-three/fiber";
 import { useEffect } from "react";
 // import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer";
 import tunnel from "tunnel-rat";
-export function ToolBox({ ui, useStore, domElement }) {
+export function ToolBox({}) {
   return (
     <>
       Note: {ui.name}

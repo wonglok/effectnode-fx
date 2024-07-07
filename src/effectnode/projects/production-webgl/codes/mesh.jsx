@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Clock } from "three";
 
-export function ToolBox({ ui, io, useStore, onLoop }) {
+export function ToolBox({}) {
   //
 
   return <>Toolbox Abc {ui.baseColor}</>;

@@ -63,7 +63,7 @@ import motionURL from "../assets/rpm/moiton/breakdance.fbx";
 // import { atan2 } from "three/examples/jsm/nodes/Nodes.js";
 // import { ballify } from "../loklok/ballify.js";
 
-export function ToolBox({ ui, useStore, domElement }) {
+export function ToolBox({}) {
   return (
     <>
       {/*  */}

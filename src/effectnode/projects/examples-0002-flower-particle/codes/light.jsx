@@ -2,7 +2,7 @@ import { Environment } from "@react-three/drei";
 import { Suspense, useEffect } from "react";
 import hdr from "../assets/hdr/symmetrical_garden_02_1k.hdr";
 
-export function ToolBox({ ui, useStore, domElement }) {
+export function ToolBox({}) {
   return <>light</>;
 }
 

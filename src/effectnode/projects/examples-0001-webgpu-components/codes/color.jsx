@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export function ToolBox({ ui, useStore, domElement }) {
+export function ToolBox({}) {
   return (
     <>
       {/*  */}

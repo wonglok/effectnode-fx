@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Sphere, gpgpu as sphereGPU } from "../modules/sphere/sphere";
 
-export function ToolBox({ ui, io, useStore, onLoop }) {
+export function ToolBox({}) {
   //
 
   return (
