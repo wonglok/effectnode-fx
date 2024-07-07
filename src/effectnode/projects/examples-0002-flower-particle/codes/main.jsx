@@ -6,7 +6,6 @@ import tunnel from "tunnel-rat";
 export function ToolBox({}) {
   return (
     <>
-      Note: {ui.name}
       {/*  */}
       {/*  */}
     </>

@@ -6,7 +6,7 @@ import { Clock } from "three";
 export function ToolBox({}) {
   //
 
-  return <>Toolbox Abc {ui.baseColor}</>;
+  return <>Toolbox Abc</>;
 }
 
 export function Runtime({ ui, io, useStore, onLoop }) {

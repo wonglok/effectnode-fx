@@ -67,7 +67,7 @@ export function ToolBox({}) {
   return (
     <>
       {/*  */}
-      Note: {ui.name}
+
       {/*  */}
     </>
   );
