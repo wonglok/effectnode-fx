@@ -67,7 +67,7 @@
           "min": 0,
           "max": 1,
           "step": 0.01,
-          "value": -2.0000000000000004
+          "value": -2.3800000000000003
         }
       ],
       "title": "edge"
@@ -151,13 +151,13 @@
           "min": 0,
           "max": 1,
           "step": 0.01,
-          "value": 0
+          "value": -0.15
         },
         {
           "_id": "_1ko0o77_i9qjb4e",
           "label": "baseColor",
           "type": "color",
-          "value": "#00ff61"
+          "value": "#9811ff"
         },
         {
           "_id": "_yykfz1w_owrte7e",
