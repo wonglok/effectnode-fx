@@ -54,25 +54,6 @@
       "title": "happy"
     },
     {
-      "codeID": "_i7ryzif_nf5k7uj",
-      "nodeID": "_q77qs09_mwqkfse",
-      "nodeTitle": "node",
-      "spaceID": "new-space",
-      "code": "",
-      "data": [
-        {
-          "_id": "_ejlt0ph_1skvyiu",
-          "label": "speed",
-          "type": "range",
-          "min": 0,
-          "max": 1,
-          "step": 0.01,
-          "value": -2.3800000000000003
-        }
-      ],
-      "title": "edge"
-    },
-    {
       "codeID": "_x027a1w_24c0grb",
       "nodeID": "_ck2nyne_fksh47i",
       "nodeTitle": "node",
@@ -138,37 +119,6 @@
       "title": "camera"
     },
     {
-      "codeID": "_e7jaen2_0bdd9xz",
-      "nodeID": "_x801t0d_2qm4x7k",
-      "nodeTitle": "node",
-      "spaceID": "new-space",
-      "code": "",
-      "data": [
-        {
-          "_id": "_trk3v9r_x6fakj6",
-          "label": "opacity",
-          "type": "range",
-          "min": 0,
-          "max": 1,
-          "step": 0.01,
-          "value": -0.15
-        },
-        {
-          "_id": "_1ko0o77_i9qjb4e",
-          "label": "baseColor",
-          "type": "color",
-          "value": "#970fff"
-        },
-        {
-          "_id": "_yykfz1w_owrte7e",
-          "label": "name",
-          "type": "text",
-          "value": "hi dear"
-        }
-      ],
-      "title": "color"
-    },
-    {
       "codeID": "_8iejjbq_98wviwp",
       "nodeID": "_8j4hzoi_j1934x3",
       "nodeTitle": "node",
@@ -210,9 +160,9 @@
         "_id": "_ne7rk2f_qwuxwti",
         "title": "main",
         "position": [
-          -1.6343526490555114,
+          -1.6885757198506999,
           0,
-          -1.4662966640526722
+          -1.0841996815148653
         ],
         "inputs": [
           {
@@ -281,86 +231,12 @@
       },
       {
         "spaceID": "new-space",
-        "_id": "_q77qs09_mwqkfse",
-        "title": "mesh",
-        "position": [
-          1.0829191569788335,
-          0,
-          2.0106917191398597
-        ],
-        "inputs": [
-          {
-            "_id": "_qiynf9j_6a60fn3",
-            "type": "input",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          },
-          {
-            "_id": "_crnk1qi_lwahuqp",
-            "type": "input",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          },
-          {
-            "_id": "_ao9flf4_di5qrr7",
-            "type": "input",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          },
-          {
-            "_id": "_mantm59_qvmluzb",
-            "type": "input",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          },
-          {
-            "_id": "_ne235zj_rnja6gy",
-            "type": "input",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          }
-        ],
-        "outputs": [
-          {
-            "_id": "_1v3yx4a_farfskq",
-            "type": "output",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          },
-          {
-            "_id": "_4kr32nw_xwn6sqd",
-            "type": "output",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          },
-          {
-            "_id": "_wmflcet_t2fbk4g",
-            "type": "output",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          },
-          {
-            "_id": "_he0gbpe_y1njtud",
-            "type": "output",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          },
-          {
-            "_id": "_gunacnt_vpzk5k2",
-            "type": "output",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          }
-        ]
-      },
-      {
-        "spaceID": "new-space",
         "_id": "_ck2nyne_fksh47i",
         "title": "light",
         "position": [
-          -1.4693623518868688,
+          -1.6191106454519317,
           0,
-          1.6670930272519042
+          0.5917613778830331
         ],
         "inputs": [
           {
@@ -432,9 +308,9 @@
         "_id": "_5zdzfzx_t2sevtt",
         "title": "camera",
         "position": [
-          0.6083436844413646,
+          0.8164431553991316,
           0,
-          -1.3018330268877638
+          -1.04920640993407
         ],
         "inputs": [
           {
@@ -503,86 +379,12 @@
       },
       {
         "spaceID": "new-space",
-        "_id": "_x801t0d_2qm4x7k",
-        "title": "color",
-        "position": [
-          0.787982828388205,
-          0,
-          0.23012875927230364
-        ],
-        "inputs": [
-          {
-            "_id": "_k31qdzs_dvuk8qj",
-            "type": "input",
-            "nodeID": "_x801t0d_2qm4x7k",
-            "label": ""
-          },
-          {
-            "_id": "_h570vzg_pbv4mvj",
-            "type": "input",
-            "nodeID": "_x801t0d_2qm4x7k",
-            "label": ""
-          },
-          {
-            "_id": "_lnwc9np_mxzvoya",
-            "type": "input",
-            "nodeID": "_x801t0d_2qm4x7k",
-            "label": ""
-          },
-          {
-            "_id": "_2afcptv_873yh75",
-            "type": "input",
-            "nodeID": "_x801t0d_2qm4x7k",
-            "label": ""
-          },
-          {
-            "_id": "_txcy7fg_zummklg",
-            "type": "input",
-            "nodeID": "_x801t0d_2qm4x7k",
-            "label": ""
-          }
-        ],
-        "outputs": [
-          {
-            "_id": "_fd4l9y1_qsmj20x",
-            "type": "output",
-            "nodeID": "_x801t0d_2qm4x7k",
-            "label": ""
-          },
-          {
-            "_id": "_6xqltsq_oow2qq7",
-            "type": "output",
-            "nodeID": "_x801t0d_2qm4x7k",
-            "label": ""
-          },
-          {
-            "_id": "_h0fg6no_uromjkv",
-            "type": "output",
-            "nodeID": "_x801t0d_2qm4x7k",
-            "label": ""
-          },
-          {
-            "_id": "_324kpwm_tdwas79",
-            "type": "output",
-            "nodeID": "_x801t0d_2qm4x7k",
-            "label": ""
-          },
-          {
-            "_id": "_4ozne9k_4vikpzd",
-            "type": "output",
-            "nodeID": "_x801t0d_2qm4x7k",
-            "label": ""
-          }
-        ]
-      },
-      {
-        "spaceID": "new-space",
         "_id": "_8j4hzoi_j1934x3",
         "title": "avatar",
         "position": [
-          -1.7572480224853189,
+          0.9378562796824982,
           0,
-          0.000003480503968894544
+          0.5690884612064727
         ],
         "inputs": [
           {
@@ -650,23 +452,7 @@
         ]
       }
     ],
-    "edges": [
-      {
-        "id": "_sw42cgt_",
-        "input": {
-          "_id": "_qiynf9j_6a60fn3",
-          "type": "input",
-          "nodeID": "_q77qs09_mwqkfse",
-          "label": ""
-        },
-        "output": {
-          "_id": "_fd4l9y1_qsmj20x",
-          "type": "output",
-          "nodeID": "_x801t0d_2qm4x7k",
-          "label": ""
-        }
-      }
-    ]
+    "edges": []
   },
   "title": "examples-0001-webgpu-components"
 }
