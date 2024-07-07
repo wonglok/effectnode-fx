@@ -150,26 +150,10 @@ export function EffectNode({
   }, []);
 
   useEffect(() => {
-    let codeSetLast = false;
     let hh = ({ detail: { projects } }) => {
       //
-      getSignature(projects).then(({ text, codeSet }) => {
-        let canRun = false;
-        if (codeSetLast) {
-          for (let item of codeSetLast) {
-            if (!codeSet.has(item)) {
-              if (!canRun) {
-                canRun = true;
-              }
-            }
-          }
-        }
-        if (canRun) {
-          onData({ projects });
-          return;
-        }
+      getSignature(projects).then(({ text }) => {
         if (text !== LastCache[id]) {
-          codeSetLast = codeSet;
           LastCache[id] = text;
           onData({ projects });
         }

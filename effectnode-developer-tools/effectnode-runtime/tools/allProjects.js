@@ -1,41 +1,87 @@
 // import { useDeveloper } from "effectnode-developer-tools/effectnode-gui/store/useDeveloper";
+import md5 from "md5";
 import { basename, extname } from "path";
-function loadCodes({ projectName }) {
+function loadImplementations({ projectName }) {
   let codes = [];
 
-  let rr = require.context(
-    "src/effectnode/projects",
-    true,
-    /\/codes\/(.*).(js|jsx|ts|tsx)$/,
-    "lazy"
-  );
+  if (process.env.NODE_ENV === "development") {
+    let rr = require.context(
+      "src/effectnode/projects",
+      true,
+      /\/codes\/(.*).(js|jsx|ts|tsx)$/
+    );
+    let rawRaw = require.context(
+      "raw-loader!src/effectnode/projects",
+      true,
+      /\/codes\/(.*).(js|jsx|ts|tsx)$/
+    );
 
-  let list = rr.keys();
+    let list = rr.keys();
 
-  list.forEach((key) => {
-    // console.log(key);
-    //
-
-    if (key.startsWith("./") && key.includes(`/${projectName}/`)) {
+    list.forEach((key) => {
       // console.log(key);
-      let ext = extname(key);
+      //
 
-      let codeName = basename(key).replace(ext, "");
-      let item = {
-        _id: key,
-        projectName: projectName,
-        codeName: codeName,
-        fileName: basename(key),
-        loadCode: async () => rr(key),
-      };
+      if (key.startsWith("./") && key.includes(`/${projectName}/`)) {
+        // console.log(key);
+        let ext = extname(key);
 
-      codes.push(item);
-    }
+        // let yo = rawRaw(key).default;
+        // console.log(yo);
 
-    //
+        let codeName = basename(key).replace(ext, "");
+        let item = {
+          _id: key,
+          projectName: projectName,
+          codeName: codeName,
+          fileName: basename(key),
+          signature: Object.values(rawRaw(key))
+            .map((r) => md5(r))
+            .join("-"),
 
-    //
-  });
+          loadCode: async () => rr(key),
+        };
+
+        codes.push(item);
+      }
+      //
+    });
+  } else {
+    let rr = require.context(
+      "src/effectnode/projects",
+      true,
+      /\/codes\/(.*).(js|jsx|ts|tsx)$/,
+      "lazy"
+    );
+
+    let list = rr.keys();
+
+    list.forEach((key) => {
+      // console.log(key);
+      //
+
+      if (key.startsWith("./") && key.includes(`/${projectName}/`)) {
+        // console.log(key);
+        let ext = extname(key);
+
+        let codeName = basename(key).replace(ext, "");
+        let item = {
+          _id: key,
+          projectName: projectName,
+          codeName: codeName,
+          fileName: basename(key),
+          signature: "",
+          loadCode: async () => rr(key),
+        };
+
+        codes.push(item);
+      }
+
+      //
+
+      //
+    });
+  }
 
   return codes;
 }
@@ -72,53 +118,6 @@ function loadAssets({ projectName }) {
   return bucket;
 }
 
-// function loadCodeString({ projectName }) {
-//   let bucket = [];
-
-//   if (process.env.NODE_ENV === "development") {
-//     let rr = require.context(
-//       "src/effectnode/projects",
-//       true,
-//       /\/codes\/(.*).(js|jsx|ts|tsx)$/,
-//       "sync"
-//     );
-
-//     let list = rr.keys();
-
-//     list.forEach((key) => {
-//       if (key.startsWith("./") && key.includes(`/${projectName}/`)) {
-//         // let ext = extname(key);
-
-//         // let codeName = basename(key).replace(ext, "");
-//         let mod = rr(key);
-
-//         let Runtime = "";
-//         if (mod?.Runtime) {
-//           Runtime = mod.Runtime.toString();
-//         }
-//         let ToolBox = "";
-//         if (mod?.ToolBox) {
-//           ToolBox = mod.ToolBox.toString();
-//         }
-//         let item = {
-//           _id: key,
-//           projectName: projectName,
-//           // codeName: codeName,
-//           // fileName: basename(key),
-//           codeString: JSON.stringify({
-//             Runtime: Runtime,
-//             ToolBox: ToolBox,
-//           }),
-//         };
-
-//         bucket.push(item);
-//       }
-//     });
-//   }
-
-//   return bucket;
-// }
-
 export async function loadProjects({}) {
   let projectGraphs = [];
 
@@ -137,15 +136,11 @@ export async function loadProjects({}) {
       //
       let projectName = key.replace("./", "").replace("/graph.json", "");
 
-      let codes = loadCodes({ projectName: projectName });
+      let codes = loadImplementations({ projectName: projectName });
 
       let assets = loadAssets({ projectName: projectName });
 
       let signature = "";
-
-      // if (process.env.NODE_ENV === "development") {
-      //   signature = loadCodeString({ projectName: projectName }).join("");
-      // }
 
       projectGraphs.push({
         _id: key,

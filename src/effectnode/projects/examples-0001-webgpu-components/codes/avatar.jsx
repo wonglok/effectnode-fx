@@ -227,7 +227,7 @@ let setup = ({
   const boundingBoxSize = new Vector3();
   skinnedMesh.geometry.boundingBox.getSize(boundingBoxSize);
 
-  const particleCount = 256 * 128;
+  const particleCount = 256 * 256;
 
   const size = uniform(ui.size);
   ui.on("size", (num) => {

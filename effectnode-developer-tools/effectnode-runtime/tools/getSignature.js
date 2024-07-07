@@ -1,17 +1,9 @@
 export let getSignature = async (projects) => {
   let text = "";
-  let codeSet = new Set();
   for (let projectRaw of projects) {
     let project = JSON.parse(JSON.stringify(projectRaw));
 
-    for (let code of projectRaw.codes) {
-      if (codeSet.has(code.loadCode)) {
-        console.log("repated");
-      } else {
-        codeSet.add(code.loadCode);
-      }
-    }
-
+    console.log(project.codes);
     text += JSON.stringify({
       _id: project._id,
       projectName: project.projectName,
@@ -30,9 +22,8 @@ export let getSignature = async (projects) => {
         });
         return r;
       }),
-      // signature: project.signature,
     });
   }
 
-  return { text, codeSet };
+  return { text };
 };

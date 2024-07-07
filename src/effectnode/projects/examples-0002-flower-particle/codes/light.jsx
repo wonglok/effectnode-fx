@@ -13,13 +13,13 @@ export function Runtime({ ui, useStore, io }) {
     <>
       <Insert3D>
         <Suspense fallback={null}>
-          <Environment files={[hdr]}></Environment>
+          <Environment background files={[hdr]}></Environment>
         </Suspense>
-        <pointLight
+        {/* <pointLight
           position={[-2.0, 1.3, 1]}
           color={ui.pointLightColor}
           intensity={ui.intensity}
-        ></pointLight>
+        ></pointLight> */}
       </Insert3D>
     </>
   );
