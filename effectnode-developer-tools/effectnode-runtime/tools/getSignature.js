@@ -1,29 +1,29 @@
-export let getSignature = (list) => {
-  let yo = JSON.stringify(
-    list.map((gra) => {
-      gra = JSON.parse(JSON.stringify(gra));
+export let getSignature = async (projects) => {
+  let text = "";
+  for (let projectRaw of projects) {
+    let project = JSON.parse(JSON.stringify(projectRaw));
 
-      return {
-        _id: gra._id,
-        projectName: gra.projectName,
-        codes: gra.codes,
-        graph: {
-          nodes: gra.graph.nodes.map((r) => {
-            r.position = [0, 0, 0];
-            return r;
-          }),
-          edges: gra.graph.edges,
-        },
-        settings: gra.settings.map((r) => {
-          r.data = r.data.map((da) => {
-            da.value = null;
-            return da;
-          });
+    text += JSON.stringify({
+      _id: project._id,
+      projectName: project.projectName,
+      // codes: project.codes,
+      graph: {
+        nodes: project.graph.nodes.map((r) => {
+          r.position = [0, 0, 0];
           return r;
         }),
-      };
-    })
-  );
+        edges: project.graph.edges,
+      },
+      settings: project.settings.map((r) => {
+        r.data = r.data.map((da) => {
+          da.value = null;
+          return da;
+        });
+        return r;
+      }),
+      // signature: project.signature,
+    });
+  }
 
-  return { text: yo, codes: list.map((r) => r.codes.map((r) => r.loadCode)) };
+  return { text };
 };

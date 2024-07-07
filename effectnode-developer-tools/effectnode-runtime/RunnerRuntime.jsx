@@ -4,7 +4,6 @@ import { CodeRun } from "./CodeRun";
 export function RunnerRuntime({
   onLoop,
   socketMap,
-  win,
   code,
   useStore,
   domElement,
@@ -24,7 +23,6 @@ export function RunnerRuntime({
       setMount(
         <CodeRun
           onLoop={onLoop}
-          win={win}
           socketMap={socketMap}
           domElement={domElement}
           useStore={useStore}
@@ -37,7 +35,7 @@ export function RunnerRuntime({
     return () => {
       setMount(null);
     };
-  }, [codeName, onLoop, socketMap, codePromise, domElement, win, useStore]);
+  }, [codeName, onLoop, socketMap, codePromise, domElement, useStore]);
 
   //
   return (

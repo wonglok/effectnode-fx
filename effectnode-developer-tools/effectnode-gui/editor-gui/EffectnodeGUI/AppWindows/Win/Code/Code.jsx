@@ -319,13 +319,18 @@ export function Code({ win, useStore }) {
             <div className="flex w-full h-full">
               <div className="h-full" style={{ width: `calc(100% - 300px)` }}>
                 <div className="w-full h-full code-window" id={`${win.nodeID}`}>
-                  <EffectNode
-                    node={node}
-                    projectName={spaceID}
-                    useStore={useStore}
-                    mode="toolbox"
-                  ></EffectNode>
+                  {/* {node?.title} */}
+
+                  {
+                    <EffectNode
+                      projectName={spaceID}
+                      mode="toolbox"
+                      useEditorStore={useStore}
+                      extNode={node}
+                    ></EffectNode>
+                  }
                 </div>
+
                 {/* {code && (
                   <Editor
                     height={`100%`}

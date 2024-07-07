@@ -1,24 +1,35 @@
 import { useEffect } from "react";
-import "./tools/allProjects";
+import { getAllProjects } from "./tools/allProjects";
+import { getSignature } from "./tools/getSignature";
+import { LastCache } from "./tools/LastCache";
 
 export function Emit({ onData = () => {} }) {
   useEffect(() => {
-    let tt = ({ detail }) => {
+    let hh = ({ detail: { projects } }) => {
       //
-      //
-      onData(detail);
-
-      //
+      onData({ projects });
     };
-    window.addEventListener("effectNode", tt);
-
-    window.dispatchEvent(
-      new CustomEvent("requestEffectNodeProjectJSON", { detail: {} })
-    );
-
+    window.addEventListener("effectnode", hh);
     return () => {
-      window.removeEventListener("effectNode", tt);
+      window.removeEventListener("effectnode", hh);
     };
-  });
+  }, []);
+
+  useEffect(() => {
+    let i = "";
+    getAllProjects({}).then(async (data) => {
+      let { text } = await getSignature(data);
+
+      if (text !== i) {
+        i = text;
+        window.dispatchEvent(
+          new CustomEvent("effectnode", { detail: { projects: data } })
+        );
+      }
+    });
+
+    return () => {};
+  }, []);
+
   return null;
 }

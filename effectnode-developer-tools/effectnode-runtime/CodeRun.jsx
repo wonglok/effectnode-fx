@@ -7,7 +7,6 @@ export function CodeRun({
   Algorithm = () => null,
   codeName,
   domElement,
-  win = false,
   socketMap,
   onLoop,
 }) {
@@ -202,7 +201,6 @@ export function CodeRun({
       {io && socketMap && (
         <Algorithm
           //
-          win={win}
           onLoop={onLoop}
           onClean={onClean}
           useStore={useStore}

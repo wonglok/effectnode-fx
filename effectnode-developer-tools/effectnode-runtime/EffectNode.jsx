@@ -1,21 +1,19 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { RunnerRuntime } from "./RunnerRuntime";
-import { RunnerToolBox } from "./RunnerToolBox";
 import md5 from "md5";
 import { create } from "zustand";
-import { getSignature } from "./tools/getSignature";
 import { Emit } from "./Emit";
+import { LastCache } from "./tools/LastCache";
+import { ToolboxEditor } from "./ToolboxEditor";
 
 export function EffectNode({
-  useStore = false,
   projectName, //
 
   // optional for toolbox
-  win = false,
-  node = { title: false },
   mode = "runtime",
-  onReady = () => {},
+  extNode = false,
+  useEditorStore = false,
 }) {
   //
   projectName = projectName.toLowerCase();
@@ -23,98 +21,46 @@ export function EffectNode({
 
   let [api, setDisplay] = useState({ domElement: false });
 
-  let [{ socketMap, useRuntime }, setProjects] = useState({
-    socketMap: create(() => {
-      return {};
-    }),
-    useRuntime: create(() => {
+  let useRuntime = useMemo(() => {
+    return create((set, get) => {
+      //
       return {
-        projectName: projectName,
-        codes: [],
+        socketMap: create(() => ({})),
+
+        codes: false,
         settings: [],
+
+        projectName: projectName,
+        files: false,
         project: false,
         graph: false,
       };
-    }),
-  });
+      //
+    });
+  }, [projectName]);
+
+  let files = useRuntime((r) => r.files);
+  let socketMap = useRuntime((r) => r.socketMap);
   let codes = useRuntime((r) => r.codes);
   let graph = useRuntime((r) => r.graph);
   let project = useRuntime((r) => r.project);
   let nodes = graph.nodes || [];
 
-  useEffect(() => {
-    if (graph) {
-      onReady({ useRuntime });
-    }
-  }, [graph, onReady, useRuntime]);
-
-  useEffect(() => {
-    if (!useRuntime) {
-      return;
-    }
-    if (!useStore) {
-      return;
-    }
-    return useStore.subscribe((state, before) => {
-      if (state.settings) {
-        useRuntime.setState({
-          settings: JSON.parse(JSON.stringify(state.settings)),
-        });
-      }
-    });
-  }, [useRuntime, useStore]);
-
-  useEffect(() => {
-    let lastText = "";
-    let lastCode = "";
-
-    let hh = ({ detail }) => {
-      let { projects } = detail;
-
-      let { text, codes } = getSignature(projects);
-
-      if (lastText !== text) {
-        lastText = text;
-        lastCode = codes;
-
-        let project = projects.find((r) => r.projectName === projectName);
-
-        if (project) {
-          let files = {};
-          project.assets.forEach((ac) => {
-            files[ac._id.split("/assets")[1]] = ac.assetURL;
-          });
-
-          let useRuntime = create(() => {
-            //
-            return {
-              files: files,
-              project: project,
-              codes: project.codes,
-              settings: project.settings,
-              graph: project.graph,
-            };
-          });
-
-          setProjects({
-            useRuntime: useRuntime,
-            socketMap: create(() => {
-              return {};
-            }),
-          });
-        }
-      }
-    };
-    window.addEventListener("effectNode", hh);
-
-    window.dispatchEvent(
-      new CustomEvent("requestEffectNodeProjectJSON", { detail: {} })
-    );
-
-    return () => {
-      window.removeEventListener("effectNode", hh);
-    };
-  }, [projectName]);
+  // useEffect(() => {
+  //   if (!useRuntime) {
+  //     return;
+  //   }
+  //   if (!useStore) {
+  //     return;
+  //   }
+  //   return useStore.subscribe((state, before) => {
+  //     if (state.settings) {
+  //       useRuntime.setState({
+  //         settings: JSON.parse(JSON.stringify(state.settings)),
+  //       });
+  //     }
+  //   });
+  // }, [useRuntime, useStore]);
 
   let randID = useMemo(() => {
     return `_${md5(projectName)}`;
@@ -170,16 +116,52 @@ export function EffectNode({
     };
   }, [socketMap]);
 
+  let onData = useCallback(
+    async (data) => {
+      //
+      let projects = data.projects;
+      let project = projects.find((r) => r.projectName === projectName);
+
+      if (project) {
+        let files = {};
+        project.assets.forEach((ac) => {
+          files[ac._id.split("/assets")[1]] = ac.assetURL;
+        });
+
+        useRuntime.setState({
+          socketMap: create(() => {
+            return {};
+          }),
+          files: files,
+          project: project,
+          codes: project.codes,
+          settings: project.settings,
+          graph: project.graph,
+        });
+      }
+    },
+
+    [projectName, useRuntime]
+  );
+
+  useEffect(() => {
+    LastCache.text = "";
+  }, []);
+
+  // console.log(nodeID);
+
   return (
     <>
-      <Emit></Emit>
-      {socketMap && useRuntime && (
+      {/*  */}
+      {/*  */}
+      <Emit onData={onData}></Emit>
+
+      {socketMap && files && useRuntime && (
         <div id={randID} className="w-full h-full overflow-hidden relative">
           {mode === "runtime" &&
             api.domElement &&
             codes
               .filter((code) => {
-                //
                 return nodes.some((node) => node.title === code.codeName);
               })
               .map((code) => {
@@ -187,7 +169,6 @@ export function EffectNode({
                   <RunnerRuntime
                     onLoop={onLoop}
                     socketMap={socketMap}
-                    win={win}
                     key={code._id}
                     code={code}
                     useStore={useRuntime}
@@ -196,29 +177,24 @@ export function EffectNode({
                   ></RunnerRuntime>
                 );
               })}
-
-          {mode === "toolbox" &&
-            api.domElement &&
-            codes
-              .filter((r) => {
-                return r.codeName === node.title;
-              })
-              .map((code) => {
-                return (
-                  <RunnerToolBox
-                    onLoop={onLoop}
-                    win={win}
-                    socketMap={socketMap}
-                    key={code._id}
-                    code={code}
-                    useStore={useRuntime}
-                    project={project}
-                    domElement={api.domElement}
-                  ></RunnerToolBox>
-                );
-              })}
         </div>
       )}
+
+      {/*  */}
+
+      {mode === "toolbox" &&
+        codes &&
+        process.env.NODE_ENV === "development" && (
+          <div className="w-full h-full overflow-hidden relative">
+            {codes.map((r) => r.codeName).join("_")}
+            <ToolboxEditor
+              useEditorStore={useEditorStore}
+              code={codes.find((r) => r.codeName === extNode.title)}
+            ></ToolboxEditor>
+          </div>
+        )}
+
+      {/*  */}
     </>
   );
 }

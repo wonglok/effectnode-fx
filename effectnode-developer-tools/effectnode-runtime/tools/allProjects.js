@@ -28,6 +28,7 @@ function loadCodes({ projectName }) {
         fileName: basename(key),
         loadCode: async () => rr(key),
       };
+
       codes.push(item);
     }
 
@@ -52,11 +53,7 @@ function loadAssets({ projectName }) {
   let list = rr.keys();
 
   list.forEach((key) => {
-    // console.log(key);
-    //
-
     if (key.startsWith("./") && key.includes(`/${projectName}/`)) {
-      // console.log(key);
       let ext = extname(key);
 
       let codeName = basename(key).replace(ext, "");
@@ -70,14 +67,57 @@ function loadAssets({ projectName }) {
 
       bucket.push(item);
     }
-
-    //
-
-    //
   });
 
   return bucket;
 }
+
+// function loadCodeString({ projectName }) {
+//   let bucket = [];
+
+//   if (process.env.NODE_ENV === "development") {
+//     let rr = require.context(
+//       "src/effectnode/projects",
+//       true,
+//       /\/codes\/(.*).(js|jsx|ts|tsx)$/,
+//       "sync"
+//     );
+
+//     let list = rr.keys();
+
+//     list.forEach((key) => {
+//       if (key.startsWith("./") && key.includes(`/${projectName}/`)) {
+//         // let ext = extname(key);
+
+//         // let codeName = basename(key).replace(ext, "");
+//         let mod = rr(key);
+
+//         let Runtime = "";
+//         if (mod?.Runtime) {
+//           Runtime = mod.Runtime.toString();
+//         }
+//         let ToolBox = "";
+//         if (mod?.ToolBox) {
+//           ToolBox = mod.ToolBox.toString();
+//         }
+//         let item = {
+//           _id: key,
+//           projectName: projectName,
+//           // codeName: codeName,
+//           // fileName: basename(key),
+//           codeString: JSON.stringify({
+//             Runtime: Runtime,
+//             ToolBox: ToolBox,
+//           }),
+//         };
+
+//         bucket.push(item);
+//       }
+//     });
+//   }
+
+//   return bucket;
+// }
 
 async function loadProjects({}) {
   let projectGraphs = [];
@@ -89,7 +129,10 @@ async function loadProjects({}) {
     /graph\.json$/,
     "sync"
   );
-  req.keys().forEach((key) => {
+
+  let allkeys = req.keys();
+
+  allkeys.forEach((key) => {
     if (key.startsWith("./")) {
       //
       let projectName = key.replace("./", "").replace("/graph.json", "");
@@ -98,44 +141,40 @@ async function loadProjects({}) {
 
       let assets = loadAssets({ projectName: projectName });
 
+      let signature = "";
+
+      // if (process.env.NODE_ENV === "development") {
+      //   signature = loadCodeString({ projectName: projectName }).join("");
+      // }
+
       projectGraphs.push({
         _id: key,
         projectName: projectName,
 
         ...req(key),
 
+        signature: signature,
         codes: codes,
         assets: assets,
       });
     }
   });
 
-  // setTimeout(() => {
-  //   onData({ projects: projectGraphs });
-  // }, 1);
+  // window.dispatchEvent(
+  //   new CustomEvent("effectNode", { detail: { projects: projectGraphs } })
+  // );
 
-  window.dispatchEvent(
-    new CustomEvent("effectNode", { detail: { projects: projectGraphs } })
-  );
-  window.addEventListener("requestEffectNodeProjectJSON", () => {
-    window.dispatchEvent(
-      new CustomEvent("effectNode", { detail: { projects: projectGraphs } })
-    );
-  });
-  //
-  // console.log(projectGraphs);
+  // window.addEventListener("requestEffectNodeProjectJSON", () => {
+  //   window.dispatchEvent(
+  //     new CustomEvent("effectNode", { detail: { projects: projectGraphs } })
+  //   );
+  // });
+
   return projectGraphs;
 }
 
-// // loadProjects(require.context("../projects", true, /graph\.json$/, "lazy"));
-// export const allProjects = loadProjects(
-//   require.context("src/effectnode/projects", true, /graph\.json$/, "sync")
-// );
-
-// loadProjects(require.context("../projects", true, /graph\.json$/, "lazy"));
-
-if (typeof window !== "undefined") {
-  loadProjects({ onData: () => {} });
-}
+// if (typeof window !== "undefined") {
+//   loadProjects({});
+// }
 
 export const getAllProjects = loadProjects;
