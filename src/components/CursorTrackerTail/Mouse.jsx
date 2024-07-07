@@ -34,7 +34,7 @@ export function Mouse() {
 
     new CursorTrackerTail({
       mini,
-      mounter,
+      mounter: mounter,
       cursor: cursor,
       color: new Color("#ffffff"),
     });

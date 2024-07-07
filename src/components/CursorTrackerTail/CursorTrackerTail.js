@@ -616,7 +616,7 @@ class LokLokWiggleDisplay {
               4.0 * pow(pattern(vec3(vT + time * 0.3) + -0.35 * cos(time * 0.1)), 1.0),
               4.0 * pow(pattern(vec3(vT + time * 0.3) +   0.0 * cos(time * 0.1)), 1.0),
               4.0 * pow(pattern(vec3(vT + time * 0.3) +  0.35 * cos(time * 0.1)), 1.0)
-            ), (1.0 - vT));
+            ) * tailColor, (1.0 - vT));
   
             // gl_FragColor = vec4(tailColor, (1.0 - vT));
           }
