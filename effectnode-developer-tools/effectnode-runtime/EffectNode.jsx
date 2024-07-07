@@ -174,7 +174,7 @@ export function EffectNode({
       {/*  */}
       {/* <Emit ></Emit> */}
 
-      {socketMap && files && useRuntime && (
+      {socketMap && files && useRuntime && mode === "runtime" && (
         <div id={randID} className="w-full h-full overflow-hidden relative">
           {mode === "runtime" &&
             api.domElement &&
@@ -204,7 +204,7 @@ export function EffectNode({
         codes &&
         process.env.NODE_ENV === "development" && (
           <div className="w-full h-full overflow-hidden relative">
-            {codes.map((r) => r.codeName).join("_")}
+            {/* {codes.map((r) => r.codeName).join("_")} */}
             <ToolboxEditor
               useEditorStore={useEditorStore}
               code={codes.find((r) => r.codeName === extNode.title)}

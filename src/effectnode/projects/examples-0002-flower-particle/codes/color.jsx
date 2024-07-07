@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 
-export function ToolBox({}) {
+export function ToolBox({ useEditorStore }) {
+  // let editorStoree = useEditorStore
   return (
     <>
       {/*  */}
-      color
+      123
       {/*  */}
     </>
   );
@@ -15,16 +16,7 @@ export function Runtime({ ui, useStore, io }) {
 
   useEffect(() => {
     io.output(0, ui.baseColor);
-  });
-
-  // useEffect(() => {
-  //
-  //   return io.response(0, async (value) => {
-  //     console.log(value);
-  //     return ui.baseColor;
-  //   });
-  //
-  // }, [io, ui]);
+  }, [io, ui.baseColor]);
 
   return (
     <>
