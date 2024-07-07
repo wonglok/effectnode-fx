@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 export function ToolBox({}) {
-  return <>light</>;
+  return <></>;
 }
 
 export function Runtime({ ui, useStore, io }) {

@@ -118,7 +118,7 @@ export function EditorApp({ useStore }) {
               onClick={() => {
                 //
                 let confirm = window.prompt(
-                  "To recycle workspace please type yes",
+                  "To Remove workspace please type yes",
                   "no"
                 );
                 if (confirm === "yes") {
@@ -136,7 +136,7 @@ export function EditorApp({ useStore }) {
               }}
               className=" mr-2 underline inline-block text-xs text-red-500 hover:text-red-500 hover:underline px-3 py-1 hover:bg-white rounded-2xl cursor-pointer"
             >
-              Recycle Workspace
+              Remove Workspace
             </span>
           </div>
         </div>
