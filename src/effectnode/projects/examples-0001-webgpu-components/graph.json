@@ -157,7 +157,7 @@
           "_id": "_1ko0o77_i9qjb4e",
           "label": "baseColor",
           "type": "color",
-          "value": "#9811ff"
+          "value": "#970fff"
         },
         {
           "_id": "_yykfz1w_owrte7e",
@@ -284,9 +284,9 @@
         "_id": "_q77qs09_mwqkfse",
         "title": "mesh",
         "position": [
-          0.9182012392290132,
+          1.0829191569788335,
           0,
-          1.7106205508072978
+          2.0106917191398597
         ],
         "inputs": [
           {
@@ -580,9 +580,9 @@
         "_id": "_8j4hzoi_j1934x3",
         "title": "avatar",
         "position": [
-          -1.702494498235156,
+          -1.7572480224853189,
           0,
-          -0.003904480220479442
+          0.000003480503968894544
         ],
         "inputs": [
           {
@@ -652,7 +652,7 @@
     ],
     "edges": [
       {
-        "id": "_jvkchzy_myjb85m",
+        "id": "_sw42cgt_",
         "input": {
           "_id": "_qiynf9j_6a60fn3",
           "type": "input",

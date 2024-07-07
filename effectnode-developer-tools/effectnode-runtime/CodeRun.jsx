@@ -3,8 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { getID } from "./tools/getID";
 
 export function CodeRun({
-  useStore,
   Algorithm = () => null,
+  useStore,
   codeName,
   domElement,
   socketMap,

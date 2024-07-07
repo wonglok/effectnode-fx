@@ -14,14 +14,16 @@ import {
   Raycaster,
   Vector2,
   Color,
+  BufferGeometry,
+  SkinnedMesh,
 } from "three";
 import { unmountComponentAtNode, useFrame } from "@react-three/fiber";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGL from "three/addons/capabilities/WebGL.js";
 
 import StorageInstancedBufferAttribute from "three/addons/renderers/common/StorageInstancedBufferAttribute.js";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import Stats from "three/examples/jsm/libs/stats.module.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { rand } from "../loklok/rand.js";
 //
@@ -60,6 +62,11 @@ import {
 
 import motionURL from "../assets/rpm/moiton/thriller4.fbx";
 import lok from "../assets/rpm/lok.glb";
+// import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+
+export function ToolBox({}) {
+  return null;
+}
 
 export function Runtime({ ui, useStore, io, domElement, onLoop }) {
   let Insert3D = useStore((r) => r.Insert3D) || (() => null);
@@ -81,6 +88,7 @@ export function Runtime({ ui, useStore, io, domElement, onLoop }) {
 
 function Avatar({ useStore, domElement, onLoop, io, ui }) {
   let gl = useStore((r) => r.gl);
+  let files = useStore((r) => r.files);
   let [out, setOut] = useState(null);
 
   let mixer = useMemo(() => new AnimationMixer(), []);
@@ -123,64 +131,103 @@ function Avatar({ useStore, domElement, onLoop, io, ui }) {
     }
 
     let draco = new DRACOLoader();
-    draco.setDecoderPath("/draco/");
+    draco.setDecoderPath("/draco/gltf/");
 
     let fbxLoader = new FBXLoader();
+    let fbxLoader2 = new FBXLoader();
     let gltfLoader = new GLTFLoader();
     gltfLoader.setDRACOLoader(draco);
+
+    let lokOrig = files["/rpm/lok-orig2.glb"];
     Promise.all([
       gltfLoader.loadAsync(`${lok}`),
       fbxLoader.loadAsync(`${motionURL}`),
-    ]).then(([glb, motion]) => {
+      gltfLoader.loadAsync(`${lokOrig}`),
+      fbxLoader2.loadAsync(`${files[`/rpm/orig-motion/quad-punch.fbx`]}`),
+    ]).then(([glb, motion, glb2, motion2]) => {
       //
 
       //
       let skinnedMesh;
 
+      let meshes = [];
       //
-      glb.scene.traverse((it) => {
+      // glb.scene.traverse((it) => {
+      //   if (it.isSkinnedMesh) {
+      //     if (!skinnedMesh) {
+      //       skinnedMesh = it;
+      //       skinnedMesh.frustumCulled = false;
+      //     }
+      //   }
+      // });
+
+      let action = mixer.clipAction(motion.animations[0], glb2.scene);
+      action.play();
+
+      // let action2 = mixer.clipAction(motion.animations[0], glb2.scene);
+      // action2.play();
+
+      let gp = new Object3D();
+      gp.add(glb2.scene);
+
+      // gp.add(glb2.scene);
+      // setup({
+      //   skinnedMesh,
+      //   group: gp,
+      //   domElement,
+      //   renderer,
+      //   onLoop,
+      //   io,
+      //   ui,
+      // });
+
+      glb2.scene.traverse((it) => {
+        it.updateMatrixWorld(true);
         if (it.isSkinnedMesh) {
-          if (!skinnedMesh) {
-            skinnedMesh = it;
-            skinnedMesh.frustumCulled = false;
-          }
+          it.geometry = it.geometry.toNonIndexed();
+          // it.geometry.deleteAttribute("tangent");
+          it.geometry.computeVertexNormals();
+          it.geometry.computeBoundingSphere();
+          it.geometry.computeBoundingBox();
+
+          setup({
+            skip: ["EyeLeft", "EyeRight", "Wolf3D_Teeth"].includes(it.name),
+            skinnedMesh: it,
+            group: gp,
+            domElement,
+            renderer,
+            onLoop,
+            io,
+            ui,
+          });
         }
       });
 
-      // skinnedMesh.material = new MeshBasicNodeMaterial({
-      //   // opacity: 1,
-      //   // transparent: true,
-      //   wireframe: false,
-      // });
-
-      // console.log(skinnedMesh);
-
-      skinnedMesh.geometry = skinnedMesh.geometry.toNonIndexed();
-      skinnedMesh.updateMatrixWorld(true);
-      // skinnedMesh.geometry.applyMatrix4(skinnedMesh.matrixWorld);
-      skinnedMesh.geometry.deleteAttribute("tangent");
-      skinnedMesh.geometry.computeVertexNormals();
-      skinnedMesh.geometry.computeBoundingSphere();
-      skinnedMesh.geometry.computeBoundingBox();
-
-      let action = mixer.clipAction(motion.animations[0], glb.scene);
-      action.play();
-
-      let gp = new Object3D();
-      gp.add(glb.scene);
-      setup({ skinnedMesh, group: gp, domElement, renderer, onLoop, io, ui });
       setOut(<primitive object={gp}></primitive>);
     });
-  }, [domElement, gl, mixer, renderer, onLoop, io, ui]);
+  }, [domElement, gl, mixer, renderer, onLoop, io, ui, files]);
 
   return <>{out}</>;
 }
 
-let setup = ({ skinnedMesh, group, domElement, renderer, onLoop, io, ui }) => {
+let setup = ({
+  skip,
+  skinnedMesh,
+  group,
+  domElement,
+  renderer,
+  onLoop,
+  io,
+  ui,
+}) => {
+  if (skip) {
+    return;
+  }
+
   const boundingBoxSize = new Vector3();
   skinnedMesh.geometry.boundingBox.getSize(boundingBoxSize);
 
-  const particleCount = 256 * 512;
+  const particleCount = 256 * 128;
 
   const size = uniform(ui.size);
   ui.on("size", (num) => {
@@ -473,8 +520,8 @@ let setup = ({ skinnedMesh, group, domElement, renderer, onLoop, io, ui }) => {
     // velocity.assign(skinPosition.sub(position).normalize().mul(0.1));
   })().compute(particleCount);
 
-  onLoop(() => {
-    renderer.computeAsync(computeParticles);
-    renderer.computeAsync(computeHit);
+  onLoop(async () => {
+    await renderer.computeAsync(computeParticles);
+    await renderer.computeAsync(computeHit);
   });
 };

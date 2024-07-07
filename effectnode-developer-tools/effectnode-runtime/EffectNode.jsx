@@ -150,10 +150,26 @@ export function EffectNode({
   }, []);
 
   useEffect(() => {
+    let codeSetLast = false;
     let hh = ({ detail: { projects } }) => {
       //
-      getSignature(projects).then(({ text }) => {
+      getSignature(projects).then(({ text, codeSet }) => {
+        let canRun = false;
+        if (codeSetLast) {
+          for (let item of codeSetLast) {
+            if (!codeSet.has(item)) {
+              if (!canRun) {
+                canRun = true;
+              }
+            }
+          }
+        }
+        if (canRun) {
+          onData({ projects });
+          return;
+        }
         if (text !== LastCache[id]) {
+          codeSetLast = codeSet;
           LastCache[id] = text;
           onData({ projects });
         }
@@ -170,10 +186,6 @@ export function EffectNode({
 
   return (
     <>
-      {/*  */}
-      {/*  */}
-      {/* <Emit ></Emit> */}
-
       {socketMap && files && useRuntime && mode === "runtime" && (
         <div id={randID} className="w-full h-full overflow-hidden relative">
           {mode === "runtime" &&
