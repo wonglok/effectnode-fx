@@ -3,7 +3,6 @@ export let getSignature = async (projects) => {
   for (let projectRaw of projects) {
     let project = JSON.parse(JSON.stringify(projectRaw));
 
-    console.log(project.codes);
     text += JSON.stringify({
       _id: project._id,
       projectName: project.projectName,

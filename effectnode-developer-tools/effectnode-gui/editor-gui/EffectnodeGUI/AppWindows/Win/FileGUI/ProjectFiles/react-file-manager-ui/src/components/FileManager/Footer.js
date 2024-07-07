@@ -89,6 +89,8 @@ export default function Footer({
   //
   //
   let selectedName = selection[0];
+  //
+  //
 
   let assetSelected = assetArray.find((r) => r._id.endsWith(selectedName));
 
@@ -104,9 +106,10 @@ export default function Footer({
             (r) => r.projectName === project
           );
 
-          let assets = projectData.assets || [];
-
-          setAssets(assets);
+          if (projectData) {
+            let assets = projectData.assets || [];
+            setAssets(assets);
+          }
 
           // console.log(projectData);
 

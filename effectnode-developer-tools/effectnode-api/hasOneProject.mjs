@@ -1,4 +1,5 @@
 import fs, { access, constants } from "fs/promises";
+import fsSync from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -7,11 +8,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export const hasOneProject = async ({ title }) => {
   //
 
-  const fexists = async (path) => {
+  const isHere = async (path) => {
     try {
-      await fs.stat(path);
-      return true;
-    } catch {
+      if (fsSync.accessSync(path, constants.R_OK)) {
+        return true;
+      }
+      return false;
+    } catch (e) {
       return false;
     }
   };
@@ -26,5 +29,5 @@ export const hasOneProject = async ({ title }) => {
 
   let url = projectURL;
 
-  return await fexists(url);
+  return await isHere(url);
 };
