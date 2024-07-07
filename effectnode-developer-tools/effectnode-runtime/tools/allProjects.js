@@ -119,7 +119,7 @@ function loadAssets({ projectName }) {
 //   return bucket;
 // }
 
-async function loadProjects({}) {
+export async function loadProjects({}) {
   let projectGraphs = [];
 
   //
@@ -160,21 +160,23 @@ async function loadProjects({}) {
     }
   });
 
-  // window.dispatchEvent(
-  //   new CustomEvent("effectNode", { detail: { projects: projectGraphs } })
-  // );
+  window.dispatchEvent(
+    new CustomEvent("effectnode-signal", {
+      detail: { projects: projectGraphs },
+    })
+  );
 
-  // window.addEventListener("requestEffectNodeProjectJSON", () => {
-  //   window.dispatchEvent(
-  //     new CustomEvent("effectNode", { detail: { projects: projectGraphs } })
-  //   );
-  // });
+  window.addEventListener("request-effectnode-signal", () => {
+    window.dispatchEvent(
+      new CustomEvent("effectnode-signal", {
+        detail: { projects: projectGraphs },
+      })
+    );
+  });
 
   return projectGraphs;
 }
 
-// if (typeof window !== "undefined") {
-//   loadProjects({});
-// }
-
-export const getAllProjects = loadProjects;
+if (typeof window !== "undefined") {
+  loadProjects({});
+}

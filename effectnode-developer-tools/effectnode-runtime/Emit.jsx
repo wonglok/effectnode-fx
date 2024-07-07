@@ -1,34 +1,31 @@
-import { useEffect } from "react";
-import { getAllProjects } from "./tools/allProjects";
+//
+
+import { useEffect, useMemo } from "react";
+import "./tools/allProjects";
 import { getSignature } from "./tools/getSignature";
 import { LastCache } from "./tools/LastCache";
-
 export function Emit({ onData = () => {} }) {
-  useEffect(() => {
-    let hh = ({ detail: { projects } }) => {
-      //
-      onData({ projects });
-    };
-    window.addEventListener("effectnode", hh);
-    return () => {
-      window.removeEventListener("effectnode", hh);
-    };
+  let id = useMemo(() => {
+    return "_" + Math.floor(Math.random() * 1000000000);
   }, []);
 
   useEffect(() => {
-    let i = "";
-    getAllProjects({}).then(async (data) => {
-      let { text } = await getSignature(data);
+    let hh = ({ detail: { projects } }) => {
+      //
+      getSignature(projects).then(({ text }) => {
+        if (text !== LastCache[id]) {
+          LastCache[id] = text;
+          onData({ projects });
+        }
+      });
+    };
+    window.addEventListener("effectnode-signal", hh);
 
-      if (text !== i) {
-        i = text;
-        window.dispatchEvent(
-          new CustomEvent("effectnode", { detail: { projects: data } })
-        );
-      }
-    });
+    window.dispatchEvent(new CustomEvent("request-effectnode-signal"));
 
-    return () => {};
+    return () => {
+      window.removeEventListener("effectnode-signal", hh);
+    };
   }, []);
 
   return null;

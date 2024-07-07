@@ -6,6 +6,7 @@ import { create } from "zustand";
 import { Emit } from "./Emit";
 import { LastCache } from "./tools/LastCache";
 import { ToolboxEditor } from "./ToolboxEditor";
+import { getSignature } from "./tools/getSignature";
 
 export function EffectNode({
   projectName, //
@@ -46,21 +47,21 @@ export function EffectNode({
   let project = useRuntime((r) => r.project);
   let nodes = graph.nodes || [];
 
-  // useEffect(() => {
-  //   if (!useRuntime) {
-  //     return;
-  //   }
-  //   if (!useStore) {
-  //     return;
-  //   }
-  //   return useStore.subscribe((state, before) => {
-  //     if (state.settings) {
-  //       useRuntime.setState({
-  //         settings: JSON.parse(JSON.stringify(state.settings)),
-  //       });
-  //     }
-  //   });
-  // }, [useRuntime, useStore]);
+  useEffect(() => {
+    if (!useRuntime) {
+      return;
+    }
+    if (!useEditorStore) {
+      return;
+    }
+    return useEditorStore.subscribe((state, before) => {
+      if (state.settings) {
+        useRuntime.setState({
+          settings: JSON.parse(JSON.stringify(state.settings)),
+        });
+      }
+    });
+  }, [useRuntime, useEditorStore]);
 
   let randID = useMemo(() => {
     return `_${md5(projectName)}`;
@@ -144,17 +145,34 @@ export function EffectNode({
     [projectName, useRuntime]
   );
 
-  useEffect(() => {
-    LastCache.text = "";
+  let id = useMemo(() => {
+    return "_" + Math.floor(Math.random() * 1000000000);
   }, []);
 
-  // console.log(nodeID);
+  useEffect(() => {
+    let hh = ({ detail: { projects } }) => {
+      //
+      getSignature(projects).then(({ text }) => {
+        if (text !== LastCache[id]) {
+          LastCache[id] = text;
+          onData({ projects });
+        }
+      });
+    };
+    window.addEventListener("effectnode-signal", hh);
+
+    window.dispatchEvent(new CustomEvent("request-effectnode-signal"));
+
+    return () => {
+      window.removeEventListener("effectnode-signal", hh);
+    };
+  }, [id, onData]);
 
   return (
     <>
       {/*  */}
       {/*  */}
-      <Emit onData={onData}></Emit>
+      {/* <Emit ></Emit> */}
 
       {socketMap && files && useRuntime && (
         <div id={randID} className="w-full h-full overflow-hidden relative">

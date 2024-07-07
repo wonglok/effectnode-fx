@@ -34,11 +34,8 @@ export function Previewer({ win, useStore }) {
       {/* {spaceID} */}
 
       {/*  */}
-      <EffectNode
-        win={win}
-        useStore={useStore}
-        projectName={spaceID}
-      ></EffectNode>
+
+      <EffectNode useEditorStore={useStore} projectName={spaceID}></EffectNode>
     </>
   );
 }

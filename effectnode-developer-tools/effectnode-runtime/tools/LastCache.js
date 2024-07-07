@@ -1,1 +1,1 @@
-export const LastCache = { text: "" };
+export const LastCache = {};
