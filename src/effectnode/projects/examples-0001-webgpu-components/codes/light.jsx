@@ -1,5 +1,4 @@
 import { Environment } from "@react-three/drei";
-import { useEffect } from "react";
 import hdr from "../assets/hdr/symmetrical_garden_02_1k.hdr";
 
 export function ToolBox({}) {
