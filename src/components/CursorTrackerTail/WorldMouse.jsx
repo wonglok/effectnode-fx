@@ -92,15 +92,15 @@ export function WorldMouse({ src }) {
 
       let res = bvh.raycastFirst(raycaster.ray, DoubleSide);
 
-      console.log(res.point);
+      // console.log(res.point);
 
       if (res) {
         cursor.position.lerp(res.point, 1);
         cursor.lookAt(camera.position);
 
         let dist = res.point.distanceTo(camera.position);
-        if (dist >= 20) {
-          dist = 20;
+        if (dist >= 10) {
+          dist = 10;
         }
 
         let distanceLooker = scene.getObjectByName("distanceLooker");
@@ -112,6 +112,11 @@ export function WorldMouse({ src }) {
           );
         }
         // arr[0].faces[0].normal
+      } else {
+        let distanceLooker = scene.getObjectByName("distanceLooker");
+        if (distanceLooker) {
+          distanceLooker.getWorldPosition(cursor.position);
+        }
       }
     });
 
