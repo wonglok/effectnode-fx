@@ -76,7 +76,7 @@ export default function Footer() {
               <div className="flex flex-wrap items-top mb-6">
                 <div className="w-full lg:w-5/12 px-4 ml-auto">
                   <span className="block uppercase text-gray-500 text-sm font-semibold mb-2">
-                    by @wonglok831
+                    ❤️ by @wonglok831
                   </span>
                   <ul className="list-unstyled">
                     {/*  */}
