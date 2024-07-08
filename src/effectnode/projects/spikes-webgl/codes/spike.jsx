@@ -7,13 +7,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 export function ToolBox({}) {
   //
 
-  return (
-    <>
-      <Canvas className="bg-gray-800">
-        <Content ui={ui}></Content>
-      </Canvas>
-    </>
-  );
+  return <></>;
 }
 
 export function Runtime({ ui, io, useStore, onLoop }) {

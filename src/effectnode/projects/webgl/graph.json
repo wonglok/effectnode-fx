@@ -206,11 +206,7 @@
         "spaceID": "new-space",
         "_id": "_ne7rk2f_qwuxwti",
         "title": "main",
-        "position": [
-          -1.6343526490555114,
-          0,
-          -1.4662966640526722
-        ],
+        "position": [-1.6343526490555114, 0, -1.4662966640526722],
         "inputs": [
           {
             "_id": "_jryjlwi_5v5h9n5",
@@ -280,11 +276,7 @@
         "spaceID": "new-space",
         "_id": "_q77qs09_mwqkfse",
         "title": "mesh",
-        "position": [
-          1.6564618165427034,
-          0,
-          2.1664429032155135
-        ],
+        "position": [1.6564618165427034, 0, 2.1664429032155135],
         "inputs": [
           {
             "_id": "_qiynf9j_6a60fn3",
@@ -354,11 +346,7 @@
         "spaceID": "new-space",
         "_id": "_ck2nyne_fksh47i",
         "title": "light",
-        "position": [
-          -1.6929277307896173,
-          0,
-          0.03614633607764439
-        ],
+        "position": [-1.6929277307896173, 0, 0.03614633607764439],
         "inputs": [
           {
             "_id": "_xa0pr15_13dvvis",
@@ -428,11 +416,7 @@
         "spaceID": "new-space",
         "_id": "_5zdzfzx_t2sevtt",
         "title": "camera",
-        "position": [
-          0.6804173819364595,
-          0,
-          -1.4539513156442483
-        ],
+        "position": [0.6804173819364595, 0, -1.4539513156442483],
         "inputs": [
           {
             "_id": "_afnl8q0_ostxx2k",
@@ -502,11 +486,7 @@
         "spaceID": "new-space",
         "_id": "_x801t0d_2qm4x7k",
         "title": "color",
-        "position": [
-          1.0575379502123425,
-          0,
-          0.06009662749050694
-        ],
+        "position": [1.0575379502123425, 0, 0.06009662749050694],
         "inputs": [
           {
             "_id": "_k31qdzs_dvuk8qj",
@@ -576,11 +556,7 @@
         "spaceID": "new-space",
         "_id": "_8j4hzoi_j1934x3",
         "title": "avatar",
-        "position": [
-          -1.5820770716322732,
-          0,
-          2.1728300831348806
-        ],
+        "position": [-1.5820770716322732, 0, 2.1728300831348806],
         "inputs": [
           {
             "_id": "_ec0xgo7_fxh2z9j",
