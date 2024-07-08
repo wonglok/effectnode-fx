@@ -79,7 +79,7 @@ export class Mini {
     };
 
     this.lastTime = window.performance.now();
-    this.work = () => {
+    this.work = (st) => {
       this.timeNow = window.performance.now();
       if (isAborted) {
         return {
@@ -105,7 +105,7 @@ export class Mini {
           dt = 100;
         }
         for (let tsk of this.tasks) {
-          tsk(t, dt);
+          tsk(st, dt);
         }
       } catch (e) {
         console.error(e);

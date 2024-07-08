@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   FaRegClipboard,
   FaEdit,
@@ -97,26 +97,43 @@ export default function Footer({
   // console.log(selectedName, currentPath, assetArray, assetSelected);
 
   // console.log(selection);
+  let projectName = project;
+  let onData = useCallback(
+    async (data) => {
+      let projectData = data.projects.find(
+        (r) => r.projectName === projectName
+      );
+
+      if (projectData) {
+        let assets = projectData.assets || [];
+        setAssets(assets);
+      }
+    },
+
+    [projectName]
+  );
+
+  let rid = useMemo(() => {
+    return "_" + Math.floor(Math.random() * 1000000000);
+  }, []);
+
+  useEffect(() => {
+    let hh = ({ detail: { projects } }) => {
+      //
+      onData({ projects });
+    };
+    window.addEventListener("effectnode-signal", hh);
+
+    window.dispatchEvent(new CustomEvent("request-effectnode-signal"));
+
+    return () => {
+      window.removeEventListener("effectnode-signal", hh);
+    };
+  }, [rid, onData]);
+
   return (
     <div className="FileManager-Footer">
-      <Emit
-        onData={(data) => {
-          //
-          let projectData = data.projects.find(
-            (r) => r.projectName === project
-          );
-
-          if (projectData) {
-            let assets = projectData.assets || [];
-            setAssets(assets);
-          }
-
-          // console.log(projectData);
-
-          //
-        }}
-      ></Emit>
-      {/* <div className="Footer-Left">{footerText}</div> */}
+      <Emit></Emit>
       <div className="Footer-Left">
         {assetSelected && (
           <>{`${join(currentPath, `${assetSelected.fileName}`)}`}</>

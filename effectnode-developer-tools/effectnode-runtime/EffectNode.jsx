@@ -168,7 +168,7 @@ export function EffectNode({
   }, [rid, onData]);
 
   codes = codes || [];
-  let code2 = codes.find((r) => r.codeName === extNode.title);
+  let codeOne = codes.find((r) => r.codeName === extNode.title);
   return (
     <>
       {socketMap && files && useRuntime && (
@@ -194,12 +194,12 @@ export function EffectNode({
                 );
               })}
 
-          {mode === "toolbox" && code2 && codes && (
+          {mode === "toolbox" && codeOne && codes && (
             <RunnerRuntime
               onLoop={onLoop}
               socketMap={socketMap}
-              key={code2._id}
-              code={code2}
+              key={codeOne._id}
+              code={codeOne}
               useStore={useRuntime}
               project={project}
               domElement={api.domElement}
