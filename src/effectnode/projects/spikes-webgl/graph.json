@@ -73,13 +73,7 @@
           "_id": "_rkxq750_",
           "label": "spikeColor",
           "type": "color",
-          "value": "#ff0045"
-        },
-        {
-          "_id": "_te6reeu_",
-          "label": "ballColor",
-          "type": "color",
-          "value": "#ff71a4"
+          "value": "#0ab135"
         }
       ],
       "title": "edge"
@@ -169,13 +163,7 @@
           "_id": "_z1kc9ik_",
           "label": "sphereColor",
           "type": "color",
-          "value": "#2354cd"
-        },
-        {
-          "_id": "_94li3wk_",
-          "label": "spikeColor",
-          "type": "color",
-          "value": "#369bff"
+          "value": "#00c1ff"
         }
       ],
       "title": "sphere"
@@ -188,9 +176,9 @@
         "_id": "_ne7rk2f_qwuxwti",
         "title": "main",
         "position": [
-          -1.3672386726893193,
+          0.03041920893814412,
           0,
-          -0.6754504815356532
+          -2.179367855206807
         ],
         "inputs": [
           {
@@ -262,9 +250,9 @@
         "_id": "_q77qs09_mwqkfse",
         "title": "spike",
         "position": [
-          1.537939956873567,
+          0.19722186387254764,
           0,
-          1.0898393934855868
+          0.858478495218141
         ],
         "inputs": [
           {
@@ -336,9 +324,9 @@
         "_id": "_ck2nyne_fksh47i",
         "title": "light",
         "position": [
-          -1.1936069028224914,
+          -2.1097155425414997,
           0,
-          -2.3017748372619056
+          -2.2325400925161603
         ],
         "inputs": [
           {
@@ -410,9 +398,9 @@
         "_id": "_5zdzfzx_t2sevtt",
         "title": "camera",
         "position": [
-          1.3037387261517779,
+          2.202039594877624,
           0,
-          -0.6415578126056795
+          -2.2520383627833818
         ],
         "inputs": [
           {
@@ -484,9 +472,9 @@
         "_id": "_u0kldxz_",
         "title": "sphere",
         "position": [
-          -1.371242259439363,
+          -0.7256331480225053,
           0,
-          1.1486744576667627
+          -0.3822815059600942
         ],
         "inputs": [
           {

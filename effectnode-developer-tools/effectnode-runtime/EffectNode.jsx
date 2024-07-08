@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { RunnerRuntime } from "./RunnerRuntime";
 import md5 from "md5";
 import { create } from "zustand";
-import { Emit } from "./Emit";
+// import { Emit } from "./Emit";
 import { LastCache } from "./tools/LastCache";
 import { getSignature } from "./tools/getSignature";
 
@@ -144,7 +144,7 @@ export function EffectNode({
     [projectName, useRuntime]
   );
 
-  let id = useMemo(() => {
+  let rid = useMemo(() => {
     return "_" + Math.floor(Math.random() * 1000000000);
   }, []);
 
@@ -152,8 +152,8 @@ export function EffectNode({
     let hh = ({ detail: { projects } }) => {
       //
       getSignature(projects).then(({ text }) => {
-        if (text !== LastCache[id]) {
-          LastCache[id] = text;
+        if (text !== LastCache[rid]) {
+          LastCache[rid] = text;
           onData({ projects });
         }
       });
@@ -165,7 +165,7 @@ export function EffectNode({
     return () => {
       window.removeEventListener("effectnode-signal", hh);
     };
-  }, [id, onData]);
+  }, [rid, onData]);
 
   codes = codes || [];
   let code = codes.find((r) => r.codeName === extNode.title);

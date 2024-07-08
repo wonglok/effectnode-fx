@@ -199,17 +199,15 @@ export class Sphere extends Object3D {
 
           shader.uniforms.posTex = posTex;
           shader.uniforms.color1 = {
-            value: new Color(ui.spikeColor),
+            value: new Color(ui.sphereColor),
           };
           shader.uniforms.color2 = {
             value: new Color(ui.sphereColor),
           };
 
-          ui.on("ballColor", (val) => {
+          ui.on("sphereColor", (val) => {
             shader.uniforms.color1.value.set(val);
-          });
-          ui.on("spikeColor", (val) => {
-            shader.uniforms.color2.value.set(val);
+            shader.uniforms.color2.value.set(val).offsetHSL(0, 0.3, 0.0);
           });
 
           shader.vertexShader = glsl`

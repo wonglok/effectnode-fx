@@ -212,14 +212,12 @@ export class Spike extends Object3D {
             value: new Color(ui.spikeColor),
           };
           shader.uniforms.color2 = {
-            value: new Color(ui.sphereColor),
+            value: new Color(ui.spikeColor),
           };
 
-          ui.on("ballColor", (val) => {
-            shader.uniforms.color1.value.set(val);
-          });
           ui.on("spikeColor", (val) => {
-            shader.uniforms.color2.value.set(val);
+            shader.uniforms.color1.value.set(val);
+            shader.uniforms.color2.value.set(val).offsetHSL(0, 0.3, 0.0);
           });
 
           shader.vertexShader = glsl`
