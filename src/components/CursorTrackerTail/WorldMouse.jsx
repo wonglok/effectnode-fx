@@ -33,7 +33,7 @@ export function WorldMouse({ src }) {
 
   let { bvh, geo } = useMemo(() => {
     let arr = [];
-    // glb.scene.position.y = 15.133;
+    glb.scene.position.y = 0;
     glb.scene.updateMatrixWorld(true);
     glb.scene.traverse((it) => {
       if (it.geometry) {
@@ -98,11 +98,16 @@ export function WorldMouse({ src }) {
         cursor.position.lerp(res.point, 1);
         cursor.lookAt(camera.position);
 
+        let dist = res.point.distanceTo(camera.position);
+        if (dist >= 20) {
+          dist = 20;
+        }
+
         let distanceLooker = scene.getObjectByName("distanceLooker");
         if (distanceLooker) {
           distanceLooker.position.z = MathUtils.lerp(
             distanceLooker.position.z,
-            res.point.distanceTo(camera.position) * -1 + 0.5,
+            dist * -0.8,
             0.1
           );
         }

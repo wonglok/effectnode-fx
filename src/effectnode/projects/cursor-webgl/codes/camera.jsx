@@ -13,16 +13,14 @@ export function Runtime({ ui, useStore, io }) {
       <Insert3D>
         <PerspectiveCamera
           makeDefault
-          position={[0, 1.5, ui.positionZ]}
+          position={[0, 1.87, ui.positionZ]}
         ></PerspectiveCamera>
         <OrbitControls
-          object-position={[0, 1.5, ui.positionZ]}
-          target={[0, 1.5, 0]}
+          object-position={[0, 1.87, ui.positionZ]}
+          target={[0, 1.87, 0]}
           makeDefault
           rotateSpeed={1}
         ></OrbitControls>
-
-        {/* <Mouse></Mouse> */}
       </Insert3D>
     </>
   );

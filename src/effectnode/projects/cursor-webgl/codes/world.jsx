@@ -22,27 +22,18 @@ export function Runtime({ ui, io, useStore, onLoop }) {
   return (
     <>
       <Insert3D>
-        <InsertHTML>
+        {/* <InsertHTML>
           <div className=" absolute bottom-0 right-0 w-full p-3 bg-white bg-opacity-50">
             {`  "Mirror's Edge Apartment - Interior Scene" (https://skfb.ly/YZoC) by
         Aurélien Martel is licensed under Creative Commons
         Attribution-NonCommercial
         (http://creativecommons.org/licenses/by-nc/4.0/).`}
-            {/* {`"Old church modeling - Interior Scene" (https://skfb.ly/STIp) by Aurélien Martel is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).`} */}
           </div>
-        </InsertHTML>
+        </InsertHTML> */}
 
         <Suspense fallback={null}>
-          {files[
-            `/mirrors_edge_apartment/mirrors_edge_apartment_-_interior_scene-4k-v2.glb`
-          ] && (
-            <WorldMouse
-              src={
-                files[
-                  `/mirrors_edge_apartment/mirrors_edge_apartment_-_interior_scene-4k-v2.glb`
-                ]
-              }
-            ></WorldMouse>
+          {files["/places/church-2.glb"] && (
+            <WorldMouse src={files["/places/church-2.glb"]}></WorldMouse>
           )}
         </Suspense>
       </Insert3D>
