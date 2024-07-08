@@ -169,11 +169,11 @@ void main () {
   
   vec3 pt1 = ballify(randomBall + nextPos, 8.0);
 
-  float noise1 = abs(cnoise(pt1.xy + time * 20.0) * 15.0);
+  float noise1 = abs(cnoise(pt1.xy + time * 6.0) * 30.0);
 
   pt1 += normalize(pt1) * noise1;  
 
-  vec3 pt2 = ballify(randomBall + nextPos, 15.0);
+  vec3 pt2 = ballify(randomBall + nextPos, 30.0);
   float noise2 = rand(pt2.yz + time * 20.0);
 
   pt2 += normalize(pt1) * noise2;

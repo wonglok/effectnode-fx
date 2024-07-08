@@ -20,6 +20,7 @@ export function Runtime({ ui, useStore, io }) {
         ></pointLight>
 
         <Environment files={[hdr]}></Environment>
+
         <EffectComposer enableNormalPass={false}>
           <Bloom
             intensity={10}

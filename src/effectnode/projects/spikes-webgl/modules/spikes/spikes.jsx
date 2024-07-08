@@ -4,6 +4,7 @@ import {
   InstancedBufferAttribute,
   InstancedBufferGeometry,
   InstancedMesh,
+  MathUtils,
   Mesh,
   MeshBasicMaterial,
   Object3D,
@@ -491,8 +492,10 @@ void main() {
       time.value = window.performance.now() * 0.0001;
       // material.uniforms.time.value = window.performance.now() * 0.0001;
 
-      mouseV3.x = pointer.x;
-      mouseV3.y = pointer.y;
+      mouseV3.x = MathUtils.lerp(mouseV3.x, pointer.x, 0.2);
+      mouseV3.y = MathUtils.lerp(mouseV3.y, pointer.y, 0.2);
+      // mouseV3.x = pointer.x;
+      // mouseV3.y = pointer.y;
     };
     // object.display = points;
     object.mouse = mouseV3;
