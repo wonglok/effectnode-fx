@@ -10,9 +10,6 @@ export function RunnerRuntime({
   mode,
 }) {
   //
-  console.log(mode);
-
-  //
 
   let [mounted, setMount] = useState(null);
   //
