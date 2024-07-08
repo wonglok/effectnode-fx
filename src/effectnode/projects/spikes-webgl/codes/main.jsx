@@ -14,7 +14,7 @@ export function ToolBox({}) {
 
 let t3d = tunnel();
 let t2d = tunnel();
-export function Runtime({ ui, useStore, io }) {
+export function Runtime({ useStore, ui, io }) {
   //
   useEffect(() => {
     useStore.setState({
@@ -60,6 +60,9 @@ function State3D({ useStore }) {
   useEffect(() => {
     let st = get();
     for (let kn in st) {
+      if (kn === "get") {
+        continue;
+      }
       useStore.setState({ [kn]: st[kn] });
     }
 
