@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { RunnerRuntime } from "./RunnerRuntime";
 import md5 from "md5";
 import { create } from "zustand";
-// import { Emit } from "./Emit";
+import { Emit } from "./Emit";
 import { LastCache } from "./tools/LastCache";
 import { getSignature } from "./tools/getSignature";
 
@@ -168,7 +168,7 @@ export function EffectNode({
   }, [rid, onData]);
 
   codes = codes || [];
-  let code = codes.find((r) => r.codeName === extNode.title);
+  let code2 = codes.find((r) => r.codeName === extNode.title);
   return (
     <>
       {socketMap && files && useRuntime && (
@@ -194,12 +194,12 @@ export function EffectNode({
                 );
               })}
 
-          {mode === "toolbox" && code && codes && (
+          {mode === "toolbox" && code2 && codes && (
             <RunnerRuntime
               onLoop={onLoop}
               socketMap={socketMap}
-              key={code._id}
-              code={code}
+              key={code2._id}
+              code={code2}
               useStore={useRuntime}
               project={project}
               domElement={api.domElement}
@@ -208,6 +208,8 @@ export function EffectNode({
           )}
         </div>
       )}
+
+      <Emit></Emit>
 
       {/*  */}
 
