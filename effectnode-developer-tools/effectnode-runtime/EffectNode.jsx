@@ -5,7 +5,6 @@ import md5 from "md5";
 import { create } from "zustand";
 import { Emit } from "./Emit";
 import { LastCache } from "./tools/LastCache";
-import { ToolboxEditor } from "./ToolboxEditor";
 import { getSignature } from "./tools/getSignature";
 
 export function EffectNode({
@@ -64,8 +63,8 @@ export function EffectNode({
   }, [useRuntime, useEditorStore]);
 
   let randID = useMemo(() => {
-    return `_${md5(projectName)}`;
-  }, [projectName]);
+    return `_${md5(projectName)}${mode}${extNode?._id || ""}`;
+  }, [projectName, mode, extNode]);
 
   useEffect(() => {
     let tt = setInterval(() => {
@@ -168,9 +167,11 @@ export function EffectNode({
     };
   }, [id, onData]);
 
+  codes = codes || [];
+  let code = codes.find((r) => r.codeName === extNode.title);
   return (
     <>
-      {socketMap && files && useRuntime && mode === "runtime" && (
+      {socketMap && files && useRuntime && (
         <div id={randID} className="w-full h-full overflow-hidden relative">
           {mode === "runtime" &&
             api.domElement &&
@@ -188,25 +189,27 @@ export function EffectNode({
                     useStore={useRuntime}
                     project={project}
                     domElement={api.domElement}
+                    mode={"runtime"}
                   ></RunnerRuntime>
                 );
               })}
+
+          {mode === "toolbox" && code && codes && (
+            <RunnerRuntime
+              onLoop={onLoop}
+              socketMap={socketMap}
+              key={code._id}
+              code={code}
+              useStore={useRuntime}
+              project={project}
+              domElement={api.domElement}
+              mode={"toolbox"}
+            ></RunnerRuntime>
+          )}
         </div>
       )}
 
       {/*  */}
-
-      {mode === "toolbox" &&
-        codes &&
-        process.env.NODE_ENV === "development" && (
-          <div className="w-full h-full overflow-hidden relative">
-            {/* {codes.map((r) => r.codeName).join("_")} */}
-            <ToolboxEditor
-              useEditorStore={useEditorStore}
-              code={codes.find((r) => r.codeName === extNode.title)}
-            ></ToolboxEditor>
-          </div>
-        )}
 
       {/*  */}
     </>

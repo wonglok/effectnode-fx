@@ -4,10 +4,21 @@ import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Sphere, gpgpu as sphereGPU } from "../modules/sphere/sphere";
 
-export function ToolBox({}) {
+export function ToolBox({ ui, io, useStore, onLoop }) {
   //
 
-  return <></>;
+  return (
+    <>
+      <div className="w-full h-full">
+        <Canvas>
+          <Content
+            key={[sphereGPU, Sphere.toString()].join("___")}
+            ui={ui}
+          ></Content>
+        </Canvas>
+      </div>
+    </>
+  );
 }
 
 export function Runtime({ ui, io, useStore, onLoop }) {

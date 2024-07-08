@@ -7,8 +7,13 @@ export function RunnerRuntime({
   code,
   useStore,
   domElement,
+  mode,
 }) {
   //
+  console.log(mode);
+
+  //
+
   let [mounted, setMount] = useState(null);
   //
   let codePromise = useMemo(() => {
@@ -23,22 +28,37 @@ export function RunnerRuntime({
 
     ///
     codePromise.then((mod) => {
-      setMount(
-        <CodeRun
-          onLoop={onLoop}
-          socketMap={socketMap}
-          domElement={domElement}
-          useStore={useStore}
-          codeName={codeName}
-          Algorithm={mod.Runtime}
-        ></CodeRun>
-      );
+      if (mode === "runtime") {
+        setMount(
+          <CodeRun
+            onLoop={onLoop}
+            socketMap={socketMap}
+            domElement={domElement}
+            useStore={useStore}
+            codeName={codeName}
+            Algorithm={mod.Runtime}
+          ></CodeRun>
+        );
+      }
+
+      if (mode === "toolbox") {
+        setMount(
+          <CodeRun
+            onLoop={onLoop}
+            socketMap={socketMap}
+            domElement={domElement}
+            useStore={useStore}
+            codeName={codeName}
+            Algorithm={mod.ToolBox}
+          ></CodeRun>
+        );
+      }
     });
 
     return () => {
       setMount(null);
     };
-  }, [codeName, onLoop, socketMap, codePromise, domElement, useStore]);
+  }, [codeName, onLoop, socketMap, codePromise, domElement, useStore, mode]);
 
   //
   return (

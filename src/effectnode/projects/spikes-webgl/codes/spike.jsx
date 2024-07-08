@@ -4,10 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { Spike, gpgpu as spikeGPU } from "../modules/spikes/spikes";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 
-export function ToolBox({}) {
-  //
-
-  return <></>;
+export function ToolBox({ ui, io, useStore, onLoop }) {
+  return (
+    <>
+      {/*  */}
+      123
+      {/*  */}
+    </>
+  );
 }
 
 export function Runtime({ ui, io, useStore, onLoop }) {
