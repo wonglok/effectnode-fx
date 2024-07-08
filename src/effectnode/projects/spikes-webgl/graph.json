@@ -73,7 +73,7 @@
           "_id": "_rkxq750_",
           "label": "spikeColor",
           "type": "color",
-          "value": "#0ab135"
+          "value": "#ff7e00"
         }
       ],
       "title": "edge"
@@ -163,7 +163,7 @@
           "_id": "_z1kc9ik_",
           "label": "sphereColor",
           "type": "color",
-          "value": "#00c1ff"
+          "value": "#77bbff"
         }
       ],
       "title": "sphere"
@@ -250,9 +250,9 @@
         "_id": "_q77qs09_mwqkfse",
         "title": "spike",
         "position": [
-          0.19722186387254764,
+          1.288761362149185,
           0,
-          0.858478495218141
+          0.8798637706199581
         ],
         "inputs": [
           {
@@ -398,9 +398,9 @@
         "_id": "_5zdzfzx_t2sevtt",
         "title": "camera",
         "position": [
-          2.202039594877624,
+          2.2896577499229456,
           0,
-          -2.2520383627833818
+          -2.3393779169685494
         ],
         "inputs": [
           {
@@ -472,9 +472,9 @@
         "_id": "_u0kldxz_",
         "title": "sphere",
         "position": [
-          -0.7256331480225053,
+          -1.4229568472758714,
           0,
-          -0.3822815059600942
+          0.44266812424019975
         ],
         "inputs": [
           {
