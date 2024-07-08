@@ -31,12 +31,9 @@ function Content({ ui }) {
   let [api, setDisplay] = useState({ display: null });
   let pointer = useThree((r) => r.pointer);
 
-  //
   useEffect(() => {
     let spike = new Spike({
       ui,
-
-      //
       renderer: gl,
       pointer,
     });
@@ -63,6 +60,7 @@ function Content({ ui }) {
     <>
       {/*  */}
       {api.display}
+      {/*  */}
     </>
   );
 }
