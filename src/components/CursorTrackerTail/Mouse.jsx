@@ -1,4 +1,4 @@
-import { Gltf } from "@react-three/drei";
+import { Box, Gltf } from "@react-three/drei";
 import { createPortal, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useState } from "react";
 import { CursorTrackerTail } from "src/components/CursorTrackerTail/CursorTrackerTail";
@@ -62,10 +62,9 @@ export function Mouse() {
 
   return (
     <>
+      {/* <Box></Box> */}
       {/*  */}
-
       {mount}
-
       {/*  */}
     </>
   );

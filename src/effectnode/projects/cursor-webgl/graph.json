@@ -157,7 +157,7 @@
           "_id": "_1ko0o77_i9qjb4e",
           "label": "baseColor",
           "type": "color",
-          "value": "#62ff00"
+          "value": "#0007ff"
         },
         {
           "_id": "_yykfz1w_owrte7e",
@@ -250,9 +250,9 @@
         "_id": "_q77qs09_mwqkfse",
         "title": "mesh",
         "position": [
-          1.306828188481523,
+          1.2845068574560856,
           0,
-          1.194239508689072
+          1.1874838675728208
         ],
         "inputs": [
           {
@@ -398,9 +398,9 @@
         "_id": "_5zdzfzx_t2sevtt",
         "title": "camera",
         "position": [
-          1.0115197160637155,
+          0.4419795941867046,
           0,
-          -1.8963715945996733
+          -1.9620379072164305
         ],
         "inputs": [
           {
@@ -544,7 +544,7 @@
     ],
     "edges": [
       {
-        "id": "_jvkchzy_myjb85m",
+        "id": "_dzat0q0_",
         "input": {
           "_id": "_qiynf9j_6a60fn3",
           "type": "input",

@@ -15,8 +15,9 @@ import {
 import { Geometry } from "./Geo.js";
 import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer";
 
-export class CursorTrackerTail {
+export class CursorTrackerTail extends Object3D {
   constructor({ mini, mounter, cursor, color = new Color("#ffffff") }) {
+    super();
     let node = mini;
 
     // minimum 8
@@ -31,7 +32,13 @@ export class CursorTrackerTail {
       trailSize: TAIL_LENGTH,
     });
 
-    let display = new LokLokWiggleDisplay({ node, sim, mounter, color });
+    let display = new LokLokWiggleDisplay({
+      numberOfTrail: SCAN_COUNT,
+      node,
+      sim,
+      mounter,
+      color,
+    });
     this.display = display;
 
     let trackers = [];
@@ -67,7 +74,7 @@ export class CursorTrackerTail {
       trackers.push(lerpWorldPos);
     };
 
-    let count = 7;
+    let count = SCAN_COUNT;
     for (let i = 0; i < count; i++) {
       makeTracker({
         setup: ({ origin, orbit }) => {
@@ -76,6 +83,7 @@ export class CursorTrackerTail {
         update: ({ origin, orbit }) => {
           //
           origin.rotation.z += 0.1;
+
           orbit.position.x =
             0.35 + 0.35 * Math.sin((window.performance.now() / 1000) * 1);
           //
@@ -134,7 +142,6 @@ class LokLokWiggleSimulation {
     this.node = node;
     this.WIDTH = trailSize;
     this.HEIGHT = numberOfScans; // number of trackers
-    this.COUNT = this.WIDTH * this.HEIGHT;
     this.v3v000 = new Vector3(0, 0, 0);
     this.wait = this.setup({ node });
   }
@@ -296,11 +303,12 @@ class LokLokWiggleSimulation {
 }
 
 class LokLokWiggleDisplay {
-  constructor({ node, sim, mounter, color }) {
+  constructor({ node, sim, mounter, color, numberOfTrail }) {
     this.mounter = mounter;
     this.node = node;
     this.sim = sim;
     this.color = color;
+    this.numberOfTrail = numberOfTrail;
     this.wait = this.setup({ node });
   }
 
@@ -308,7 +316,7 @@ class LokLokWiggleDisplay {
     let mounter = this.mounter;
 
     let { geometry, subdivisions, count } = new NoodleGeo({
-      count: this.sim.HEIGHT,
+      count: this.numberOfTrail,
       numSides: 4,
       subdivisions: this.sim.WIDTH * 1,
       openEnded: true,

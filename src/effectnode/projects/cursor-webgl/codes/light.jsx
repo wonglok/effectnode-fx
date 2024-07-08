@@ -1,6 +1,3 @@
-import { CursorTrackerTail } from "src/components/CursorTrackerTail/CursorTrackerTail";
-import { Mouse } from "src/components/CursorTrackerTail/Mouse";
-
 export function ToolBox({}) {
   return <></>;
 }
@@ -16,7 +13,6 @@ export function Runtime({ ui, useStore, io }) {
           color={ui.pointLightColor}
           intensity={ui.intensity}
         ></pointLight>
-        <Mouse></Mouse>
       </Insert3D>
     </>
   );
