@@ -21,7 +21,7 @@ import { EnergyArtCompo } from "src/components/EnergyArt/EnergyArtCompo";
 
 // import { LandingWater } from "@/components/UIKit/App/World/LandingSea"
 // import { Protect } from "@/components/Protect/Protect"
-import Link from "next/link";
+// import Link from "next/link";
 import { EffectNode } from "effectnode-developer-tools/effectnode-runtime/EffectNode";
 
 // export function PageOld() {

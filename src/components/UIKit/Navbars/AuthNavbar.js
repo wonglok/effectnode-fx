@@ -102,7 +102,10 @@ export default function Navbar(props) {
                             </li> */}
 
               <li className="flex justify-center items-center mt-3 mr-3">
-                <a target="_blank" href={`https://github.com/wonglok`}>
+                <a
+                  target="_blank"
+                  href={`https://github.com/wonglok/effectnode-fx`}
+                >
                   <button
                     className="bg-white text-gray-700 active:bg-gray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150 flex items-center"
                     type="button"
