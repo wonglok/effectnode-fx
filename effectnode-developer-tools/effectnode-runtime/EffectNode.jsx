@@ -4,7 +4,6 @@ import { RunnerRuntime } from "./RunnerRuntime";
 import md5 from "md5";
 import { create } from "zustand";
 import { Emit } from "./Emit";
-import { LastCache } from "./tools/LastCache";
 import { getSignature } from "./tools/getSignature";
 import { usePopStore } from "./tools/usePopStore";
 

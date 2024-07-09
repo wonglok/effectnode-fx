@@ -72,6 +72,11 @@ export default class FileService {
               reject(err);
               return;
             }
+
+            files = files.filter((r) => {
+              return !r.name.includes(".DS_Store");
+            });
+
             resolve(
               files
                 .sort((a, b) => {

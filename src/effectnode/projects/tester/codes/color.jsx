@@ -15,7 +15,7 @@ export function Runtime({ ui, useStore, io }) {
   //
   useEffect(() => {
     io.output(0, ui.baseColor);
-  });
+  }, [io, ui.baseColor]);
 
   return (
     <>
@@ -23,7 +23,5 @@ export function Runtime({ ui, useStore, io }) {
     </>
   );
 }
-
-//
 
 //
