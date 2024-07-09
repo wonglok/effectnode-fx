@@ -166,11 +166,11 @@ export default function Landing() {
                         <i className="fas fa-retweet"></i>
                       </div>
                       <h6 className="text-xl font-semibold">
-                        Static Safe Runtime
+                        Safe Static Runtime
                       </h6>
                       <p className="mb-4 mt-2 text-gray-500">
                         {` The devtools only runs in local development envrionment
-                        and is excluded in production phase. so it's only static JSON and Frontend js code.`}
+                        and is excluded in production phase. so it's only static JSON and Frontend JS code.`}
                       </p>
                     </div>
                   </div>
