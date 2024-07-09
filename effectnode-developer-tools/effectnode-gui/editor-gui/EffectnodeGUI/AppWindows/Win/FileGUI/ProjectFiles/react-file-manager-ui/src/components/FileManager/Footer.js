@@ -8,7 +8,6 @@ import {
 } from "react-icons/fa";
 import { join } from "path";
 import { humanReadableByteCount, stripLeadingDirectories } from "./Utils";
-import { Emit } from "effectnode-developer-tools/effectnode-runtime/Emit";
 import copy from "copy-to-clipboard";
 
 export default function Footer({
@@ -85,61 +84,56 @@ export default function Footer({
       .catch((error) => error && console.error(error));
   };
 
-  let [assetArray, setAssets] = useState([]);
-  //
-  //
   let selectedName = selection[0];
+
+  // let [assetArray, setAssets] = useState([]);
+  //
+  //
   //
   //
 
-  let assetSelected = assetArray.find((r) => r._id.endsWith(selectedName));
+  // let assetSelected = assetArray.find((r) => r._id.endsWith(selectedName));
 
   // console.log(selectedName, currentPath, assetArray, assetSelected);
 
   // console.log(selection);
-  let projectName = project;
-  let onData = useCallback(
-    async (data) => {
-      let projectData = data.projects.find(
-        (r) => r.projectName === projectName
-      );
+  // let projectName = project;
+  // let onData = useCallback(
+  //   async (data) => {
+  //     let projectData = data.projects.find(
+  //       (r) => r.projectName === projectName
+  //     );
 
-      if (projectData) {
-        let assets = projectData.assets || [];
-        setAssets(assets);
-      }
-    },
+  //     if (projectData) {
+  //       let assets = projectData.assets || [];
+  //       setAssets(assets);
+  //     }
+  //   },
 
-    [projectName]
-  );
-
-  let rid = useMemo(() => {
-    return "_" + Math.floor(Math.random() * 1000000000);
-  }, []);
-
-  useEffect(() => {
-    let hh = ({ detail: { projects } }) => {
-      //
-      onData({ projects });
-    };
-    window.addEventListener("effectnode-signal", hh);
-
-    window.dispatchEvent(new CustomEvent("request-effectnode-signal"));
-
-    return () => {
-      window.removeEventListener("effectnode-signal", hh);
-    };
-  }, [rid, onData]);
+  //   [projectName]
+  // );
 
   return (
     <div className="FileManager-Footer">
-      <Emit></Emit>
-      <div className="Footer-Left">
-        {assetSelected && (
-          <>{`${join(currentPath, `${assetSelected.fileName}`)}`}</>
+      <div className="Footer-Left flex items-center">
+        {selectedName && (
+          <button
+            className="Icon-Button h-6 w-6 inline-flex items-center justify-center mr-1"
+            type="button"
+            onClick={() => {
+              //
+              copy(`files[${JSON.stringify(selectedName)}]`);
+            }}
+            title={labels["download"]}
+          >
+            <FaRegClipboard />
+          </button>
         )}
+
+        {selectedName && <>{`files[${JSON.stringify(selectedName)}]`}</>}
         {/*  */}
       </div>
+
       <div className="Footer-Right">
         {selection.length === 1 && enabledFeatures.indexOf("rename") !== -1 && (
           <button
@@ -166,22 +160,6 @@ export default function Footer({
         {/*  */}
         {/* files["/texture/uv_grid_opengl.jpg"] */}
         {/*  */}
-
-        {assetSelected && (
-          <button
-            className="Icon-Button"
-            type="button"
-            onClick={() => {
-              //
-              copy(
-                `files["${join(currentPath, `${assetSelected.fileName}`)}"]`
-              );
-            }}
-            title={labels["download"]}
-          >
-            <FaRegClipboard />
-          </button>
-        )}
 
         {!!selection.length &&
           enabledFeatures.indexOf("getDownloadLink") !== -1 && (

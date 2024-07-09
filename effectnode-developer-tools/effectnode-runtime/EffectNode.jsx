@@ -6,6 +6,7 @@ import { create } from "zustand";
 import { Emit } from "./Emit";
 import { LastCache } from "./tools/LastCache";
 import { getSignature } from "./tools/getSignature";
+import { usePopStore } from "./tools/usePopStore";
 
 export function EffectNode({
   projectName, //
@@ -144,28 +145,19 @@ export function EffectNode({
     [projectName, useRuntime]
   );
 
-  let rid = useMemo(() => {
-    return "_" + Math.floor(Math.random() * 1000000000);
-  }, []);
+  let projects = usePopStore((s) => s.projects);
 
   useEffect(() => {
-    let hh = ({ detail: { projects } }) => {
-      //
-      getSignature(projects).then(({ text }) => {
-        if (text !== LastCache[rid]) {
-          LastCache[rid] = text;
-          onData({ projects });
-        }
-      });
-    };
-    window.addEventListener("effectnode-signal", hh);
+    onData({ projects: usePopStore.getState().projects });
 
-    window.dispatchEvent(new CustomEvent("request-effectnode-signal"));
-
-    return () => {
-      window.removeEventListener("effectnode-signal", hh);
-    };
-  }, [rid, onData]);
+    return usePopStore.subscribe(async (now, b4) => {
+      let nowSig = await getSignature(now.projects);
+      let b4Sig = await getSignature(b4.projects);
+      if (nowSig.text !== b4Sig.text) {
+        onData({ projects: projects });
+      }
+    });
+  }, [onData, projects]);
 
   codes = codes || [];
   let codeOne = codes.find((r) => r.codeName === extNode.title);
@@ -209,7 +201,7 @@ export function EffectNode({
         </div>
       )}
 
-      <Emit></Emit>
+      <Emit projectName={projectName}></Emit>
 
       {/*  */}
 
