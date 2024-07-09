@@ -39,7 +39,7 @@ export class Spike extends Object3D {
     }
 
     let ticker = 0;
-    let SIZE = 512;
+    let SIZE = 768;
 
     let gpuCompute = new GPUComputationRenderer(SIZE, SIZE, renderer);
 

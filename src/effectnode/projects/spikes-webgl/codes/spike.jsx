@@ -32,6 +32,28 @@ function Content({ ui }) {
   let pointer = useThree((r) => r.pointer);
 
   useEffect(() => {
+    gl.domElement.addEventListener(
+      "touchstart",
+      (ev) => {
+        ev.preventDefault();
+      },
+      {
+        passive: true,
+      }
+    );
+
+    gl.domElement.addEventListener(
+      "touchmove",
+      (ev) => {
+        ev.preventDefault();
+      },
+      {
+        passive: true,
+      }
+    );
+
+    //
+
     let spike = new Spike({
       ui,
       renderer: gl,
