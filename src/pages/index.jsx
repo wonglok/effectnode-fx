@@ -6,10 +6,20 @@ import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import {
   faCubes,
   faEarthAsia,
+  faFastBackward,
+  faFastForward,
+  faFingerprint,
+  faForwardFast,
   faInbox,
   faPerson,
   faPhone,
   faPhoneAlt,
+  faSatellite,
+  faSatelliteDish,
+  faSchool,
+  faStaffAesculapius,
+  faStepForward,
+  faSterlingSign,
   faTimeline,
   faTimesCircle,
   faUserTimes,
@@ -146,7 +156,7 @@ export default function Landing() {
                   <div className="relative mb-8 flex w-full min-w-0 flex-col break-words rounded-lg bg-white shadow-lg">
                     <div className="flex-auto px-4 py-5">
                       <div className="mb-5 inline-flex size-12 items-center justify-center rounded-full bg-red-400 p-3 text-center text-white shadow-lg">
-                        <i className="fas fa-award"></i>
+                        <FontAwesomeIcon icon={faFastForward}></FontAwesomeIcon>
                       </div>
                       <h6 className="text-xl font-semibold">
                         Faster FX Development
@@ -163,7 +173,9 @@ export default function Landing() {
                   <div className="relative mb-8 flex w-full min-w-0 flex-col break-words rounded-lg bg-white shadow-lg">
                     <div className="flex-auto px-4 py-5">
                       <div className="mb-5 inline-flex size-12 items-center justify-center rounded-full bg-blue-400 p-3 text-center text-white shadow-lg">
-                        <i className="fas fa-retweet"></i>
+                        <FontAwesomeIcon
+                          icon={faSatelliteDish}
+                        ></FontAwesomeIcon>
                       </div>
                       <h6 className="text-xl font-semibold">
                         Safe Static Runtime
@@ -180,7 +192,7 @@ export default function Landing() {
                   <div className="relative mb-8 flex w-full min-w-0 flex-col break-words rounded-lg bg-white shadow-lg">
                     <div className="flex-auto px-4 py-5">
                       <div className="mb-5 inline-flex size-12 items-center justify-center rounded-full bg-emerald-400 p-3 text-center text-white shadow-lg">
-                        <i className="fas fa-fingerprint"></i>
+                        <FontAwesomeIcon icon={faSchool}></FontAwesomeIcon>
                       </div>
                       <h6 className="text-xl font-semibold">
                         Low Learning Curve
