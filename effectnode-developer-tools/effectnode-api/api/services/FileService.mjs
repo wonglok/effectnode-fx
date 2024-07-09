@@ -64,6 +64,9 @@ export default class FileService {
           reject(err);
           return;
         }
+
+        //
+
         fs.readdir(
           path,
           { encoding: "utf8", withFileTypes: true },
