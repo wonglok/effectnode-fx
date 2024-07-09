@@ -73,7 +73,7 @@
           "_id": "_rkxq750_",
           "label": "spikeColor",
           "type": "color",
-          "value": "#d46cf0"
+          "value": "#18bd00"
         }
       ],
       "title": "edge"
@@ -225,9 +225,9 @@
         "_id": "_q77qs09_mwqkfse",
         "title": "spike",
         "position": [
-          1.110345188406387,
+          1.156812140135093,
           0,
-          1.1451119110282706
+          1.1905419158676713
         ],
         "inputs": [
           {

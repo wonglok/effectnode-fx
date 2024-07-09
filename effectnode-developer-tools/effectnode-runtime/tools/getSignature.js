@@ -15,10 +15,12 @@ export let getSignature = async (projects) => {
         edges: project.graph.edges,
       },
       settings: project.settings.map((r) => {
-        r.data = r.data.map((da) => {
-          da.value = null;
-          return da;
-        });
+        if (window.location.href.includes("localhost")) {
+          r.data = r.data.map((da) => {
+            da.value = null;
+            return da;
+          });
+        }
         return r;
       }),
     });
