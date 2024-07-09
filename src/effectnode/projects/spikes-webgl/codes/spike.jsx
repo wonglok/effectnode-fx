@@ -38,7 +38,7 @@ function Content({ ui }) {
         ev.preventDefault();
       },
       {
-        passive: true,
+        passive: false,
       }
     );
 
@@ -48,7 +48,7 @@ function Content({ ui }) {
         ev.preventDefault();
       },
       {
-        passive: true,
+        passive: false,
       }
     );
 
