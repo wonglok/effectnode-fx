@@ -91,6 +91,7 @@ export default function Landing() {
                   ></Bloom>
                 </EffectComposer>
               </Canvas> */}
+
               <div className="absolute left-0 top-0 size-full opacity-60">
                 <EffectNode projectName={"spikes-webgl"}></EffectNode>
               </div>
@@ -164,7 +165,9 @@ export default function Landing() {
                       <div className="mb-5 inline-flex size-12 items-center justify-center rounded-full bg-blue-400 p-3 text-center text-white shadow-lg">
                         <i className="fas fa-retweet"></i>
                       </div>
-                      <h6 className="text-xl font-semibold">Secure Runtime</h6>
+                      <h6 className="text-xl font-semibold">
+                        Static Safe Runtime
+                      </h6>
                       <p className="mb-4 mt-2 text-gray-500">
                         {` The devtools only runs in local development envrionment
                         and is excluded in production phase. so it's only static JSON and Frontend js code.`}
