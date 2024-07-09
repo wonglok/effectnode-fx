@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 
-export function ToolBox({}) {
+export function ToolBox({ ui, useStore, io }) {
   return (
     <>
       {/*  */}
-      123123
       {/*  */}
     </>
   );
