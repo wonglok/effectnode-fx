@@ -99,13 +99,13 @@ export default function Landing() {
 
             {/* <span className="absolute inset-0 size-full bg-black opacity-20"></span> */}
           </div>
-          <div className="container relative mx-auto pointer-events-none">
-            <div className="flex flex-wrap items-center">
+          <div className=" relative mx-auto pointer-events-none">
+            <div className="flex flex-wrap justify-center items-center">
               <div className="mx-auto w-full px-4 text-center lg:w-6/12">
-                <div className="pr-12">
+                <div className="">
                   <h1 className="text-5xl font-semibold text-white">{`Effect Node FX`}</h1>
                   <p className="mt-4 text-xl font-bold text-gray-200">
-                    WebGPU + WebGL + Canvas
+                    {`WebGPU + WebGL + Canvas`}
                   </p>
                   <p className="mt-4 text-lg text-gray-200">{`EffectNode is a NodeGraph & Signaling Framework that accelerate VFX and 3D Development for the Web Ecosystem.`}</p>
                 </div>
