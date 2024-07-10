@@ -139,11 +139,13 @@ function Avatar({ useStore, domElement, onLoop, io, ui }) {
     gltfLoader.setDRACOLoader(draco);
 
     let lokOrig = files["/rpm/lok-orig2.glb"];
+
     Promise.all([
       gltfLoader.loadAsync(`${lok}`),
       fbxLoader.loadAsync(`${motionURL}`),
       gltfLoader.loadAsync(`${lokOrig}`),
       fbxLoader2.loadAsync(`${files[`/rpm/orig-motion/quad-punch.fbx`]}`),
+      // gltfLoader.loadAsync(`${lokOrig}`),
     ]).then(([glb, motion, glb2, motion2]) => {
       //
 
@@ -171,7 +173,7 @@ function Avatar({ useStore, domElement, onLoop, io, ui }) {
       gp.add(glb2.scene);
 
       // gp.add(glb2.scene);
-      // setup({
+      // setupSkinnedMesh({
       //   skinnedMesh,
       //   group: gp,
       //   domElement,
@@ -190,7 +192,7 @@ function Avatar({ useStore, domElement, onLoop, io, ui }) {
           it.geometry.computeBoundingSphere();
           it.geometry.computeBoundingBox();
 
-          setup({
+          setupSkinnedMesh({
             skip: ["EyeLeft", "EyeRight", "Wolf3D_Teeth"].includes(it.name),
             skinnedMesh: it,
             group: gp,
@@ -210,7 +212,7 @@ function Avatar({ useStore, domElement, onLoop, io, ui }) {
   return <>{out}</>;
 }
 
-let setup = ({
+let setupSkinnedMesh = ({
   skip,
   skinnedMesh,
   group,

@@ -9,33 +9,45 @@ function loadImplementations({ projectName }) {
   let rr = require.context(
     "src/effectnode/projects",
     true,
-    /\/codes\/(.*).(js|jsx|ts|tsx)$/,
+    /.(js|jsx|ts|tsx)$/,
     "lazy"
   );
 
-  let list = rr.keys();
+  let rawRR = false;
 
+  if (process.env.NODE_ENV === "development") {
+    rawRR = require.context(
+      "raw-loader!src/effectnode/projects",
+      true,
+      /.(js|jsx|ts|tsx)$/
+    );
+  }
+
+  let list = rr.keys();
   list.forEach((key) => {
     //
 
     if (key.startsWith("./") && key.includes(`/${projectName}/`)) {
       let ext = extname(key);
+      let signature = "";
+
+      if (rawRR) {
+        signature = rawRR(key).default;
+      }
 
       let codeName = basename(key).replace(ext, "");
+
       let item = {
         _id: key,
         projectName: projectName,
         codeName: codeName,
         fileName: basename(key),
-        signature: "",
+        signature: signature,
         loadCode: async () => rr(key),
       };
 
       codes.push(item);
     }
-
-    //
-
     //
   });
 
