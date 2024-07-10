@@ -64,8 +64,6 @@ function Load({ useStore }) {
       return;
     }
 
-    //src/effectnode/projects/examples-0002-fox/assets/sakura.jpg
-
     let rgbe = new RGBELoader();
     rgbe.setDataType(HalfFloatType);
     rgbe.loadAsync(files["/hdr/symmetrical_garden_02_1k.hdr"]).then((tex) => {
