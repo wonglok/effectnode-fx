@@ -173,6 +173,7 @@ function Avatar({ useStore, domElement, onLoop, io, ui }) {
           it.updateMatrixWorld(true);
           if (it.isSkinnedMesh) {
             it.geometry = it.geometry.toNonIndexed();
+
             // it.geometry.deleteAttribute("tangent");
             it.geometry.computeVertexNormals();
             it.geometry.computeBoundingSphere();

@@ -1,14 +1,37 @@
 import { Environment, useTexture } from "@react-three/drei";
 import hdr from "../assets/hdr/symmetrical_garden_02_1k.hdr";
 import {
+  CubeCamera,
+  CubeTexture,
+  CubeTextureLoader,
   EquirectangularReflectionMapping,
   FloatType,
   HalfFloatType,
+  LinearFilter,
+  LinearMipmapLinearFilter,
+  Matrix4,
+  PMREMGenerator,
+  RenderTarget,
+  Scene,
+  TextureLoader,
+  WebGLCubeRenderTarget,
 } from "three";
 import { useLoader, useThree } from "@react-three/fiber";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { Suspense, useEffect } from "react";
-import { texture, uv } from "three/examples/jsm/nodes/Nodes";
+import {
+  EnvironmentNode,
+  normalGeometry,
+  normalLocal,
+  normalWorld,
+  pmremTexture,
+  reflectVector,
+  texture,
+  tslFn,
+  uniform,
+  uv,
+} from "three/examples/jsm/nodes/Nodes";
+import { CubeUVReflectionMapping } from "three";
 export function ToolBox({}) {
   return <>toolbox</>;
 }
@@ -19,35 +42,52 @@ export function Runtime({ ui, useStore, io }) {
     <>
       <Insert3D>
         <Suspense fallback={null}>
-          <Load></Load>
-          <pointLight
+          <Load useStore={useStore}></Load>
+          {/* <pointLight
             position={[0, 1.3, 5]}
             color={ui.pointLightColor}
             intensity={ui.intensity}
-          ></pointLight>
+          ></pointLight> */}
         </Suspense>
       </Insert3D>
     </>
   );
 }
 
-function Load() {
+function Load({ useStore }) {
   let gl = useThree((r) => r.gl);
   let scene = useThree((r) => r.scene);
+  let files = useStore((r) => r.files);
   useEffect(() => {
+    if (!scene) {
+      return;
+    }
+
+    //src/effectnode/projects/examples-0002-fox/assets/sakura.jpg
+
     let rgbe = new RGBELoader();
     rgbe.setDataType(HalfFloatType);
-
-    rgbe.loadAsync(hdr).then((tex) => {
+    rgbe.loadAsync(files["/hdr/symmetrical_garden_02_1k.hdr"]).then((tex) => {
       tex.mapping = EquirectangularReflectionMapping;
 
-      let imageNode = texture(tex, uv());
-      scene.backgroundNode = imageNode;
-      scene.environmentNode = imageNode;
+      tex.generateMipmaps = true;
+
+      let tsl = tslFn(() => {
+        let color = texture(tex, normalWorld);
+
+        return color;
+      });
+
+      scene.environmentNode = tsl();
+      scene.backgroundNode = texture(tex, uv());
+
+      //
     });
 
-    return () => {};
-  }, [gl, scene]);
+    return () => {
+      //
+    };
+  }, [gl, scene, files]);
 
   return (
     <>
@@ -57,5 +97,3 @@ function Load() {
     </>
   );
 }
-
-//
