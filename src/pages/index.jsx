@@ -117,7 +117,8 @@ export default function Landing() {
                   <p className="mt-4 text-xl font-bold text-gray-200">
                     {`WebGPU + WebGL + Canvas`}
                   </p>
-                  <p className="mt-4 text-lg text-gray-200">{`EffectNode is a NodeGraph & Signaling Framework that accelerate VFX and 3D Development for the Web Ecosystem.`}</p>
+                  <p className="mt-4 text-lg text-gray-200">{`EffectNode is a NodeGraph & Signaling Framework that accelerate VFX and 3D Development for the Web Ecosystem. `}</p>
+                  <p className="text-white text-sm">Web and Immersive 3D Web</p>
                 </div>
               </div>
             </div>
