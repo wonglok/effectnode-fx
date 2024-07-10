@@ -31,9 +31,6 @@ export function Runtime({ ui, useStore, io }) {
   );
 }
 
-//
-
-//
 function Load() {
   let gl = useThree((r) => r.gl);
   let scene = useThree((r) => r.scene);
@@ -44,8 +41,9 @@ function Load() {
     rgbe.loadAsync(hdr).then((tex) => {
       tex.mapping = EquirectangularReflectionMapping;
 
-      scene.backgroundNode = texture(tex, uv());
-      scene.environmentNode = texture(tex, uv());
+      let imageNode = texture(tex, uv());
+      scene.backgroundNode = imageNode;
+      scene.environmentNode = imageNode;
     });
 
     return () => {};
