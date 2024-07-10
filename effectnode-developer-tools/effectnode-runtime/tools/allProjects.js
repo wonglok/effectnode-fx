@@ -9,8 +9,7 @@ function loadImplementations({ projectName }) {
   let rr = require.context(
     "src/effectnode/projects",
     true,
-    /.(js|jsx|ts|tsx)$/,
-    "lazy"
+    /.(js|jsx|ts|tsx)$/
   );
 
   let rawRR = false;
@@ -43,7 +42,7 @@ function loadImplementations({ projectName }) {
         codeName: codeName,
         fileName: basename(key),
         signature: signature,
-        loadCode: async () => rr(key),
+        mod: rr(key),
       };
 
       codes.push(item);

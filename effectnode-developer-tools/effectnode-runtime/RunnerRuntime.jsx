@@ -14,7 +14,7 @@ export function RunnerRuntime({
   let [mounted, setMount] = useState(null);
   //
   let codePromise = useMemo(() => {
-    return code.loadCode();
+    return Promise.resolve(code.mod);
   }, [code]);
   //
   let codeName = code.codeName;

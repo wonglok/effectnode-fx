@@ -99,15 +99,16 @@ export function EffectNode({
       onLoop: (v) => {
         api.tsk.push(v);
       },
-      workAll: () => {},
     };
 
     setAPI(api);
 
     let rAFID = 0;
-    let rAF = () => {
+    let rAF = async () => {
+      for (let t of api.tsk) {
+        await t();
+      }
       rAFID = requestAnimationFrame(rAF);
-      api.tsk.forEach((t) => t());
     };
     rAFID = requestAnimationFrame(rAF);
 

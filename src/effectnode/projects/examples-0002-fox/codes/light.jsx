@@ -16,11 +16,11 @@ export function Runtime({ ui, useStore, io }) {
         <Suspense fallback={null}>
           <Load></Load>
         </Suspense>
-        {/* <pointLight
+        <pointLight
           position={[0, 1.3, 5]}
           color={ui.pointLightColor}
           intensity={ui.intensity}
-        ></pointLight> */}
+        ></pointLight>
       </Insert3D>
     </>
   );
@@ -33,6 +33,8 @@ function Load() {
   let scene = useThree((r) => r.scene);
   useEffect(() => {
     let rgbe = new RGBELoader();
+    scene.environment = null;
+    scene.background = null;
 
     rgbe.loadAsync(hdr).then((texture) => {
       texture.mapping = EquirectangularReflectionMapping;
@@ -40,10 +42,7 @@ function Load() {
       scene.background = texture;
     });
 
-    return () => {
-      scene.environment = null;
-      scene.background = null;
-    };
+    return () => {};
   }, [scene]);
   return (
     <>
