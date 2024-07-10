@@ -21,6 +21,7 @@ import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { Suspense, useEffect } from "react";
 import {
   EnvironmentNode,
+  MeshStandardNodeMaterial,
   normalGeometry,
   normalLocal,
   normalWorld,
@@ -78,7 +79,8 @@ function Load({ useStore }) {
         return color;
       });
 
-      scene.environmentNode = tsl();
+      let node = tsl();
+      scene.environmentNode = node;
       scene.backgroundNode = texture(tex, uv());
 
       //
