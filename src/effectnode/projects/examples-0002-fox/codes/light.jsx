@@ -5,7 +5,7 @@ import { useLoader, useThree } from "@react-three/fiber";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { Suspense, useEffect } from "react";
 export function ToolBox({}) {
-  return <>light</>;
+  return <>toolbox</>;
 }
 
 export function Runtime({ ui, useStore, io }) {
@@ -16,11 +16,11 @@ export function Runtime({ ui, useStore, io }) {
         <Suspense fallback={null}>
           <Load></Load>
         </Suspense>
-        <pointLight
+        {/* <pointLight
           position={[0, 1.3, 5]}
           color={ui.pointLightColor}
           intensity={ui.intensity}
-        ></pointLight>
+        ></pointLight> */}
       </Insert3D>
     </>
   );
@@ -30,18 +30,27 @@ export function Runtime({ ui, useStore, io }) {
 
 //
 function Load() {
-  let texture = useLoader(RGBELoader, hdr);
-
   let scene = useThree((r) => r.scene);
   useEffect(() => {
-    if (!texture) {
-      return;
-    }
-    texture.mapping = EquirectangularReflectionMapping;
-    scene.environment = texture;
-    scene.background = texture;
-  }, [texture, scene]);
-  return <>{/* <Environment blur={0.15} map={texture}></Environment> */}</>;
+    let rgbe = new RGBELoader();
+
+    rgbe.loadAsync(hdr).then((texture) => {
+      texture.mapping = EquirectangularReflectionMapping;
+      scene.environment = texture;
+      scene.background = texture;
+    });
+
+    return () => {
+      scene.environment = null;
+      scene.background = null;
+    };
+  }, [scene]);
+  return (
+    <>
+      {/*  */}
+      {/* <Environment blur={0.15} background files={[hdr]}></Environment> */}
+    </>
+  );
 }
 
 //

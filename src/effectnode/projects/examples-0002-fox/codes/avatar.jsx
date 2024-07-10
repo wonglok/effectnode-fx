@@ -139,49 +139,17 @@ function Avatar({ useStore, domElement, onLoop, io, ui }) {
     gltfLoader.setDRACOLoader(draco);
 
     Promise.all([
-      gltfLoader.loadAsync(`${files["/rpm/lok.glb"]}`),
-      fbxLoader.loadAsync(`${files["/rpm/moiton/warmup.fbx"]}`),
+      // gltfLoader.loadAsync(`${files["/rpm/lok.glb"]}`),
       gltfLoader.loadAsync(`${files["/rpm/lok-orig2.glb"]}`),
-      fbxLoader2.loadAsync(`${files[`/rpm/orig-motion/quad-punch.fbx`]}`),
-    ]).then(([glb, motion, glb2, motion2]) => {
+      fbxLoader.loadAsync(`${files["/rpm/moiton/warmup.fbx"]}`),
+      // fbxLoader2.loadAsync(`${files[`/rpm/orig-motion/quad-punch.fbx`]}`),
+    ]).then(([glb2, motion]) => {
       //
-      let motion3 = glb2;
-
-      //
-      let skinnedMesh;
-
-      let meshes = [];
-      //
-
-      //
-      // glb.scene.traverse((it) => {
-      //   if (it.isSkinnedMesh) {
-      //     if (!skinnedMesh) {
-      //       skinnedMesh = it;
-      //       skinnedMesh.frustumCulled = false;
-      //     }
-      //   }
-      // });
-
       let action = mixer.clipAction(motion.animations[0], glb2.scene);
       action.play();
 
-      // let action2 = mixer.clipAction(motion.animations[0], glb2.scene);
-      // action2.play();
-
       let gp = new Object3D();
       gp.add(glb2.scene);
-
-      // gp.add(glb2.scene);
-      // setupSkinnedMesh({
-      //   skinnedMesh,
-      //   group: gp,
-      //   domElement,
-      //   renderer,
-      //   onLoop,
-      //   io,
-      //   ui,
-      // });
 
       glb2.scene.traverse((it) => {
         it.updateMatrixWorld(true);
@@ -375,7 +343,7 @@ let setupSkinnedMesh = ({
     // const skinNormal = processedNormalBuffer.node.element(instanceIndex);
 
     const dist = mouseUni.sub(position).length().mul(1);
-    const normalValue = mouseUni.sub(position).normalize().mul(-0.015);
+    const normalValue = mouseUni.sub(position).normalize().mul(0.005);
 
     // spinner
     // velocity.addAssign(vec3(0.0, gravity.mul(life.y), 0.0));
@@ -385,7 +353,7 @@ let setupSkinnedMesh = ({
       skinPosition
         .sub(position)
         .normalize()
-        .mul(0.003 * 2.0)
+        .mul(0.003 * 1.0)
     );
 
     let addVel = velocity.add(normalValue);
@@ -403,13 +371,13 @@ let setupSkinnedMesh = ({
     // })
 
     const life = lifeBuffer.node.element(instanceIndex);
-    life.addAssign(rand(position.xy).mul(-0.05));
+    life.addAssign(rand(position.xy).mul(0.14));
 
     If(
       life.y.lessThan(0.01),
       () => {
         life.xyz.assign(vec3(1.0, 1.0, 1.0));
-        velocity.assign(skinPosition.sub(position).normalize().mul(0.001));
+        velocity.assign(skinPosition.sub(position).normalize().mul(-0.01));
         position.assign(skinPosition.xyz);
       },
       () => {

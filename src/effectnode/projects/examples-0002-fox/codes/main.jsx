@@ -55,16 +55,22 @@ function RenderStuff({ children, useStore }) {
       st.gl
         .init()
         .then(() => {
-          useStore.setState({ ___canShow: true });
+          setTimeout(() => {
+            useStore.setState({ ___canShow: true });
+          });
         })
         .catch(() => {});
     } catch (e) {
-      useStore.setState({ ___canShow: true });
+      setTimeout(() => {
+        useStore.setState({ ___canShow: true });
+      });
     }
   }, [get, useStore]);
 
   useFrame(({ gl, camera, scene }) => {
-    gl.renderAsync(scene, camera);
+    if (___canShow) {
+      gl.renderAsync(scene, camera);
+    }
   }, 100);
 
   return <>{___canShow && children}</>;
