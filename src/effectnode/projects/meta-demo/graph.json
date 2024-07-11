@@ -1,0 +1,822 @@
+{
+  "settings": [
+    {
+      "codeID": "_kit5h2c_xgm7ojm",
+      "nodeID": "_ne7rk2f_qwuxwti",
+      "nodeTitle": "node",
+      "spaceID": "new-space",
+      "code": "",
+      "data": [
+        {
+          "_id": "_hc1bmqv_gfx2nsl",
+          "label": "name",
+          "type": "text",
+          "value": "my webgl canvas"
+        }
+      ],
+      "title": "main"
+    },
+    {
+      "codeID": "_6wwhxoe_fp2fg97",
+      "nodeID": "_quzfyzi_iybz833",
+      "nodeTitle": "node",
+      "spaceID": "new-space",
+      "code": "",
+      "data": [
+        {
+          "_id": "_340ozy1_bvl61x2",
+          "label": "speed",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 0.48000000000000004
+        },
+        {
+          "_id": "_wqx0zng_5cvbuet",
+          "label": "baseColor",
+          "type": "color",
+          "value": "#003eff"
+        },
+        {
+          "_id": "_v22exa7_h0arilg",
+          "label": "name",
+          "type": "text",
+          "value": "hi dear"
+        },
+        {
+          "_id": "_uxvekoz_vlcqhii",
+          "label": "happyColor",
+          "type": "color",
+          "value": "#c10e0e"
+        }
+      ],
+      "title": "happy"
+    },
+    {
+      "codeID": "_x027a1w_24c0grb",
+      "nodeID": "_ck2nyne_fksh47i",
+      "nodeTitle": "node",
+      "spaceID": "new-space",
+      "code": "",
+      "data": [
+        {
+          "_id": "_qyubhzw_05aof46",
+          "label": "pointLightColor",
+          "type": "color",
+          "value": "#ffffff"
+        },
+        {
+          "_id": "_3cr50ux_ktd5kuq",
+          "label": "intensity",
+          "type": "range",
+          "min": 0,
+          "max": 100.00000000000001,
+          "step": 0.09999999999999998,
+          "value": 2.999999999999999
+        },
+        {
+          "_id": "_lxrp2lu_",
+          "label": "baseColor",
+          "type": "color",
+          "value": "#1338ff"
+        }
+      ],
+      "title": "light"
+    },
+    {
+      "codeID": "_hbuh2ad_05kot3i",
+      "nodeID": "_5zdzfzx_t2sevtt",
+      "nodeTitle": "node",
+      "spaceID": "new-space",
+      "code": "",
+      "data": [
+        {
+          "_id": "_swgs8mf_xsr52yi",
+          "label": "baseColor",
+          "type": "color",
+          "value": "#ff0000"
+        },
+        {
+          "_id": "_ak23u2c_yrx8fim",
+          "label": "name",
+          "type": "text",
+          "value": "hi dear"
+        },
+        {
+          "_id": "_1e6obts_a5r83xl",
+          "label": "positionZ",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 5
+        },
+        {
+          "_id": "_e1h29nd_2x7vny0",
+          "label": "speed",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 0
+        }
+      ],
+      "title": "camera"
+    },
+    {
+      "codeID": "_hpcfbwy_",
+      "nodeID": "_mwndmzd_",
+      "nodeTitle": "node",
+      "spaceID": "canvas-land-demo",
+      "code": "",
+      "data": [
+        {
+          "_id": "_oqej75b_",
+          "label": "speed",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 0
+        },
+        {
+          "_id": "_smy0zcj_",
+          "label": "baseColor",
+          "type": "color",
+          "value": "#d71e1e"
+        },
+        {
+          "_id": "_1hhbgly_",
+          "label": "name",
+          "type": "text",
+          "value": "hi dear"
+        }
+      ],
+      "title": "env"
+    },
+    {
+      "codeID": "_z46fte8_",
+      "nodeID": "_6frtt5u_",
+      "nodeTitle": "node",
+      "spaceID": "canvas-land-demo",
+      "code": "",
+      "data": [
+        {
+          "_id": "_2leaqfe_",
+          "label": "speed",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 0
+        },
+        {
+          "_id": "_0e4f0x7_",
+          "label": "baseColor",
+          "type": "color",
+          "value": "#ff7f6f"
+        },
+        {
+          "_id": "_i51a2n0_",
+          "label": "name",
+          "type": "text",
+          "value": "hi dear"
+        }
+      ],
+      "title": "collider"
+    },
+    {
+      "codeID": "_lp7asio_",
+      "nodeID": "_py32rh0_",
+      "nodeTitle": "node",
+      "spaceID": "canvas-land-demo",
+      "code": "",
+      "data": [
+        {
+          "_id": "_8ztract_",
+          "label": "speed",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 0
+        },
+        {
+          "_id": "_rxoc3oz_",
+          "label": "baseColor",
+          "type": "color",
+          "value": "#ff0000"
+        },
+        {
+          "_id": "_0wrfhkz_",
+          "label": "name",
+          "type": "text",
+          "value": "hi dear"
+        }
+      ],
+      "title": "display"
+    },
+    {
+      "codeID": "_5srca6c_",
+      "nodeID": "_jx7eybj_",
+      "nodeTitle": "node",
+      "spaceID": "canvas-land-demo",
+      "code": "",
+      "data": [
+        {
+          "_id": "_e96kkco_",
+          "label": "speed",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 0
+        },
+        {
+          "_id": "_0fgd1vv_",
+          "label": "baseColor",
+          "type": "color",
+          "value": "#ffffff"
+        },
+        {
+          "_id": "_3p1f5x7_",
+          "label": "name",
+          "type": "text",
+          "value": "hi dear"
+        }
+      ],
+      "title": "display"
+    }
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "spaceID": "new-space",
+        "_id": "_ne7rk2f_qwuxwti",
+        "title": "main",
+        "position": [
+          0.663659852204411,
+          0,
+          -2.253845088640709
+        ],
+        "inputs": [
+          {
+            "_id": "_jryjlwi_5v5h9n5",
+            "type": "input",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          },
+          {
+            "_id": "_6wp8g5z_tyczfim",
+            "type": "input",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          },
+          {
+            "_id": "_j8k4f1z_8hhfesp",
+            "type": "input",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          },
+          {
+            "_id": "_0lrrrfm_vtokg3h",
+            "type": "input",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          },
+          {
+            "_id": "_1wn7q2h_mkv01l9",
+            "type": "input",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          }
+        ],
+        "outputs": [
+          {
+            "_id": "_xkvyio0_o2nfl5d",
+            "type": "output",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          },
+          {
+            "_id": "_gafl8xn_jiqa2bo",
+            "type": "output",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          },
+          {
+            "_id": "_241hy01_rjtatf9",
+            "type": "output",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          },
+          {
+            "_id": "_zusb7ux_0tnil7s",
+            "type": "output",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          },
+          {
+            "_id": "_66fn3o5_364yhdf",
+            "type": "output",
+            "nodeID": "_ne7rk2f_qwuxwti",
+            "label": ""
+          }
+        ]
+      },
+      {
+        "spaceID": "new-space",
+        "_id": "_ck2nyne_fksh47i",
+        "title": "light",
+        "position": [
+          1.9645737441823385,
+          0,
+          -0.7086775576899998
+        ],
+        "inputs": [
+          {
+            "_id": "_xa0pr15_13dvvis",
+            "type": "input",
+            "nodeID": "_ck2nyne_fksh47i",
+            "label": ""
+          },
+          {
+            "_id": "_iqg4y2i_td3fnf5",
+            "type": "input",
+            "nodeID": "_ck2nyne_fksh47i",
+            "label": ""
+          },
+          {
+            "_id": "_igd7w4b_pflm513",
+            "type": "input",
+            "nodeID": "_ck2nyne_fksh47i",
+            "label": ""
+          },
+          {
+            "_id": "_xfdr6s3_gfedwg5",
+            "type": "input",
+            "nodeID": "_ck2nyne_fksh47i",
+            "label": ""
+          },
+          {
+            "_id": "_0ecnary_k6sck6v",
+            "type": "input",
+            "nodeID": "_ck2nyne_fksh47i",
+            "label": ""
+          }
+        ],
+        "outputs": [
+          {
+            "_id": "_6lpmebm_26fs6wf",
+            "type": "output",
+            "nodeID": "_ck2nyne_fksh47i",
+            "label": ""
+          },
+          {
+            "_id": "_odf69fi_np77r7a",
+            "type": "output",
+            "nodeID": "_ck2nyne_fksh47i",
+            "label": ""
+          },
+          {
+            "_id": "_2suc7zt_8bit4cg",
+            "type": "output",
+            "nodeID": "_ck2nyne_fksh47i",
+            "label": ""
+          },
+          {
+            "_id": "_zvqp56q_3giiktp",
+            "type": "output",
+            "nodeID": "_ck2nyne_fksh47i",
+            "label": ""
+          },
+          {
+            "_id": "_5vjbyyd_jkiqyp0",
+            "type": "output",
+            "nodeID": "_ck2nyne_fksh47i",
+            "label": ""
+          }
+        ]
+      },
+      {
+        "spaceID": "new-space",
+        "_id": "_5zdzfzx_t2sevtt",
+        "title": "camera",
+        "position": [
+          3.1932776731700336,
+          0,
+          -2.06496017879647
+        ],
+        "inputs": [
+          {
+            "_id": "_afnl8q0_ostxx2k",
+            "type": "input",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          },
+          {
+            "_id": "_d2j94h1_ho110ik",
+            "type": "input",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          },
+          {
+            "_id": "_xvolt5l_1sfl324",
+            "type": "input",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          },
+          {
+            "_id": "_a3orcxk_eyxde2f",
+            "type": "input",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          },
+          {
+            "_id": "_qkwamx4_zfcduag",
+            "type": "input",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          }
+        ],
+        "outputs": [
+          {
+            "_id": "_rgyj3e1_dlzfhqt",
+            "type": "output",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          },
+          {
+            "_id": "_8btw6u2_ddxj98p",
+            "type": "output",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          },
+          {
+            "_id": "_hcfmdky_0cflsy7",
+            "type": "output",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          },
+          {
+            "_id": "_vk9t1hq_4nhbkbe",
+            "type": "output",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          },
+          {
+            "_id": "_l3am5d2_7lyukhm",
+            "type": "output",
+            "nodeID": "_5zdzfzx_t2sevtt",
+            "label": ""
+          }
+        ]
+      },
+      {
+        "spaceID": "canvas-land-demo",
+        "_id": "_mwndmzd_",
+        "title": "place-loader",
+        "position": [
+          -2.554601575002072,
+          0,
+          -2.176076403875756
+        ],
+        "inputs": [
+          {
+            "_id": "_hzme06d_",
+            "type": "input",
+            "nodeID": "_mwndmzd_",
+            "label": ""
+          },
+          {
+            "_id": "_impmo2g_",
+            "type": "input",
+            "nodeID": "_mwndmzd_",
+            "label": ""
+          },
+          {
+            "_id": "_m2vmryu_",
+            "type": "input",
+            "nodeID": "_mwndmzd_",
+            "label": ""
+          },
+          {
+            "_id": "_rqx2px1_",
+            "type": "input",
+            "nodeID": "_mwndmzd_",
+            "label": ""
+          },
+          {
+            "_id": "_h1bjqfy_",
+            "type": "input",
+            "nodeID": "_mwndmzd_",
+            "label": ""
+          }
+        ],
+        "outputs": [
+          {
+            "_id": "_0k1jg2y_",
+            "type": "output",
+            "nodeID": "_mwndmzd_",
+            "label": ""
+          },
+          {
+            "_id": "_d0n8gn0_",
+            "type": "output",
+            "nodeID": "_mwndmzd_",
+            "label": ""
+          },
+          {
+            "_id": "_0m1hw1j_",
+            "type": "output",
+            "nodeID": "_mwndmzd_",
+            "label": ""
+          },
+          {
+            "_id": "_fv0upnt_",
+            "type": "output",
+            "nodeID": "_mwndmzd_",
+            "label": ""
+          },
+          {
+            "_id": "_jnt481v_",
+            "type": "output",
+            "nodeID": "_mwndmzd_",
+            "label": ""
+          }
+        ]
+      },
+      {
+        "spaceID": "canvas-land-demo",
+        "_id": "_6frtt5u_",
+        "title": "collider",
+        "position": [
+          -0.5831145663680898,
+          0,
+          0.574749657748432
+        ],
+        "inputs": [
+          {
+            "_id": "_sjnphol_",
+            "type": "input",
+            "nodeID": "_6frtt5u_",
+            "label": ""
+          },
+          {
+            "_id": "_lwai5yu_",
+            "type": "input",
+            "nodeID": "_6frtt5u_",
+            "label": ""
+          },
+          {
+            "_id": "_isn7u5a_",
+            "type": "input",
+            "nodeID": "_6frtt5u_",
+            "label": ""
+          },
+          {
+            "_id": "_ll529vq_",
+            "type": "input",
+            "nodeID": "_6frtt5u_",
+            "label": ""
+          },
+          {
+            "_id": "_vxjs4mj_",
+            "type": "input",
+            "nodeID": "_6frtt5u_",
+            "label": ""
+          }
+        ],
+        "outputs": [
+          {
+            "_id": "_cxatrp8_",
+            "type": "output",
+            "nodeID": "_6frtt5u_",
+            "label": ""
+          },
+          {
+            "_id": "_h52dqf8_",
+            "type": "output",
+            "nodeID": "_6frtt5u_",
+            "label": ""
+          },
+          {
+            "_id": "_5b0heyu_",
+            "type": "output",
+            "nodeID": "_6frtt5u_",
+            "label": ""
+          },
+          {
+            "_id": "_n70h5n8_",
+            "type": "output",
+            "nodeID": "_6frtt5u_",
+            "label": ""
+          },
+          {
+            "_id": "_zdwoeif_",
+            "type": "output",
+            "nodeID": "_6frtt5u_",
+            "label": ""
+          }
+        ]
+      },
+      {
+        "spaceID": "canvas-land-demo",
+        "_id": "_py32rh0_",
+        "title": "display",
+        "position": [
+          0.07237092017544583,
+          0,
+          2.321330772716876
+        ],
+        "inputs": [
+          {
+            "_id": "_8z7qwzz_",
+            "type": "input",
+            "nodeID": "_py32rh0_",
+            "label": ""
+          },
+          {
+            "_id": "_st0ioxf_",
+            "type": "input",
+            "nodeID": "_py32rh0_",
+            "label": ""
+          },
+          {
+            "_id": "_vgcdm3r_",
+            "type": "input",
+            "nodeID": "_py32rh0_",
+            "label": ""
+          },
+          {
+            "_id": "_xriapxw_",
+            "type": "input",
+            "nodeID": "_py32rh0_",
+            "label": ""
+          },
+          {
+            "_id": "_o7pm3w8_",
+            "type": "input",
+            "nodeID": "_py32rh0_",
+            "label": ""
+          }
+        ],
+        "outputs": [
+          {
+            "_id": "_w9cfikz_",
+            "type": "output",
+            "nodeID": "_py32rh0_",
+            "label": ""
+          },
+          {
+            "_id": "_1fxek1q_",
+            "type": "output",
+            "nodeID": "_py32rh0_",
+            "label": ""
+          },
+          {
+            "_id": "_p65lfcn_",
+            "type": "output",
+            "nodeID": "_py32rh0_",
+            "label": ""
+          },
+          {
+            "_id": "_wfpyv28_",
+            "type": "output",
+            "nodeID": "_py32rh0_",
+            "label": ""
+          },
+          {
+            "_id": "_2emi5f5_",
+            "type": "output",
+            "nodeID": "_py32rh0_",
+            "label": ""
+          }
+        ]
+      },
+      {
+        "spaceID": "canvas-land-demo",
+        "_id": "_jx7eybj_",
+        "title": "display",
+        "position": [
+          -3.178866394391342,
+          0,
+          0.6275898051863741
+        ],
+        "inputs": [
+          {
+            "_id": "_nj5kjtj_",
+            "type": "input",
+            "nodeID": "_jx7eybj_",
+            "label": ""
+          },
+          {
+            "_id": "_5p06nwa_",
+            "type": "input",
+            "nodeID": "_jx7eybj_",
+            "label": ""
+          },
+          {
+            "_id": "_38j2gbv_",
+            "type": "input",
+            "nodeID": "_jx7eybj_",
+            "label": ""
+          },
+          {
+            "_id": "_bpzqx90_",
+            "type": "input",
+            "nodeID": "_jx7eybj_",
+            "label": ""
+          },
+          {
+            "_id": "_abjbw9t_",
+            "type": "input",
+            "nodeID": "_jx7eybj_",
+            "label": ""
+          }
+        ],
+        "outputs": [
+          {
+            "_id": "_7lwz0wl_",
+            "type": "output",
+            "nodeID": "_jx7eybj_",
+            "label": ""
+          },
+          {
+            "_id": "_ypz176w_",
+            "type": "output",
+            "nodeID": "_jx7eybj_",
+            "label": ""
+          },
+          {
+            "_id": "_zpmolqw_",
+            "type": "output",
+            "nodeID": "_jx7eybj_",
+            "label": ""
+          },
+          {
+            "_id": "_wls3qel_",
+            "type": "output",
+            "nodeID": "_jx7eybj_",
+            "label": ""
+          },
+          {
+            "_id": "_e5kdcg3_",
+            "type": "output",
+            "nodeID": "_jx7eybj_",
+            "label": ""
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "id": "_52y1uw0_",
+        "input": {
+          "_id": "_sjnphol_",
+          "type": "input",
+          "nodeID": "_6frtt5u_",
+          "label": ""
+        },
+        "output": {
+          "_id": "_d0n8gn0_",
+          "type": "output",
+          "nodeID": "_mwndmzd_",
+          "label": ""
+        }
+      },
+      {
+        "id": "_e6ytgi0_",
+        "input": {
+          "_id": "_nj5kjtj_",
+          "type": "input",
+          "nodeID": "_jx7eybj_",
+          "label": ""
+        },
+        "output": {
+          "_id": "_d0n8gn0_",
+          "type": "output",
+          "nodeID": "_mwndmzd_",
+          "label": ""
+        }
+      },
+      {
+        "id": "_wgepffq_",
+        "input": {
+          "_id": "_8z7qwzz_",
+          "type": "input",
+          "nodeID": "_py32rh0_",
+          "label": ""
+        },
+        "output": {
+          "_id": "_cxatrp8_",
+          "type": "output",
+          "nodeID": "_6frtt5u_",
+          "label": ""
+        }
+      }
+    ]
+  },
+  "title": "meta-demo"
+}
