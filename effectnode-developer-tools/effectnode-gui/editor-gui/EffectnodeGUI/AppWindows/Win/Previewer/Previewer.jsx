@@ -1,4 +1,5 @@
 import { EffectNode } from "effectnode-developer-tools/effectnode-runtime/EffectNode";
+import { useEffect, useState } from "react";
 
 export function Previewer({ win, useStore }) {
   let spaceID = useStore((r) => r.spaceID);
@@ -20,8 +21,19 @@ export function Previewer({ win, useStore }) {
 
   //
 
+  let [ef, setEf] = useState(null);
+  useEffect(() => {
+    setEf(
+      <EffectNode
+        key={spaceID}
+        useEditorStore={useStore}
+        projectName={spaceID}
+      ></EffectNode>
+    );
+  }, [spaceID, useStore]);
   return (
     <>
+      {ef}
       {/* {spaceID && (
         <AppRunner
           win={win}
@@ -34,8 +46,6 @@ export function Previewer({ win, useStore }) {
       {/* {spaceID} */}
 
       {/*  */}
-
-      <EffectNode useEditorStore={useStore} projectName={spaceID}></EffectNode>
     </>
   );
 }

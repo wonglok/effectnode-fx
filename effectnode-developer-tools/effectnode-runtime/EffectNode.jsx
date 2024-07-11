@@ -1,22 +1,22 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { RunnerRuntime } from "./RunnerRuntime";
 import md5 from "md5";
 import { create } from "zustand";
 import { Emit } from "./Emit";
 import { getSignature } from "./tools/getSignature";
 import { usePopStore } from "./tools/usePopStore";
+import { CodeRun } from "./CodeRun";
 
 export function EffectNode({
   projectName, //
 
   // optional for toolbox
   mode = "runtime",
-  extNode = false,
+  extNodeID = false,
   useEditorStore = false,
 }) {
   //
-  projectName = projectName.toLowerCase();
+  // projectName = projectName.toLowerCase();
   //
 
   let [api, setDisplay] = useState({ domElement: false });
@@ -41,10 +41,11 @@ export function EffectNode({
 
   let files = useRuntime((r) => r.files);
   let socketMap = useRuntime((r) => r.socketMap);
-  let codes = useRuntime((r) => r.codes);
+  let codes = useRuntime((r) => r.codes) || [];
   let graph = useRuntime((r) => r.graph);
-  let project = useRuntime((r) => r.project);
   let nodes = graph.nodes || [];
+  let node = nodes.find((r) => r._id === extNodeID);
+  let codeImple = codes.find((r) => r.codeName === node?.title);
 
   useEffect(() => {
     if (!useRuntime) {
@@ -53,18 +54,38 @@ export function EffectNode({
     if (!useEditorStore) {
       return;
     }
+
+    let last = "";
     return useEditorStore.subscribe((state, before) => {
-      if (state.settings) {
+      let now = JSON.stringify({
+        settings: state.settings,
+        graph: {
+          nodes: state.graph.nodes.map((r) => {
+            return {
+              ...r,
+              position: [0, 0, 0],
+            };
+          }),
+          edges: state.graph.edges,
+        },
+      });
+      if (now !== last) {
+        last = now;
+        console.log("re-render");
         useRuntime.setState({
           settings: JSON.parse(JSON.stringify(state.settings)),
+          socketMap: create(() => {
+            return {};
+          }),
+          graph: JSON.parse(JSON.stringify(state.graph)),
         });
       }
     });
   }, [useRuntime, useEditorStore]);
 
   let randID = useMemo(() => {
-    return `_${md5(projectName)}${mode}${extNode?._id || ""}`;
-  }, [projectName, mode, extNode]);
+    return `_${md5(projectName)}${mode}${extNodeID || ""}`;
+  }, [projectName, mode, extNodeID]);
 
   useEffect(() => {
     let tt = setInterval(() => {
@@ -91,9 +112,6 @@ export function EffectNode({
   });
 
   useEffect(() => {
-    if (!socketMap) {
-      return;
-    }
     let api = {
       tsk: [],
       onLoop: (v) => {
@@ -115,7 +133,7 @@ export function EffectNode({
     return () => {
       cancelAnimationFrame(rAFID);
     };
-  }, [socketMap]);
+  }, []);
 
   let onData = useCallback(
     async (data) => {
@@ -129,20 +147,28 @@ export function EffectNode({
           files[ac._id.split("/assets")[1]] = ac.assetURL;
         });
 
-        useRuntime.setState({
-          socketMap: create(() => {
-            return {};
-          }),
-          files: files,
-          project: project,
-          codes: project.codes,
-          settings: project.settings,
-          graph: project.graph,
-        });
+        if (useEditorStore) {
+          useRuntime.setState({
+            files: files,
+            project: project,
+            codes: project.codes,
+          });
+        } else {
+          useRuntime.setState({
+            socketMap: create(() => {
+              return {};
+            }),
+            files: files,
+            project: project,
+            codes: project.codes,
+            settings: project.settings,
+            graph: project.graph,
+          });
+        }
       }
     },
 
-    [projectName, useRuntime]
+    [projectName, useRuntime, useEditorStore]
   );
 
   let projects = usePopStore((s) => s.projects);
@@ -159,44 +185,42 @@ export function EffectNode({
     });
   }, [onData, projects]);
 
-  codes = codes || [];
-  let codeOne = codes.find((r) => r.codeName === extNode.title);
   return (
     <>
       {socketMap && files && useRuntime && (
         <div id={randID} className="w-full h-full overflow-hidden relative">
           {mode === "runtime" &&
             api.domElement &&
-            codes
-              .filter((code) => {
-                return nodes.some((node) => node.title === code.codeName);
+            nodes
+              .filter((node) => {
+                return codes.some((code) => node.title === code.codeName);
               })
-              .map((code) => {
+              .map((node) => {
+                let codeImple = codes.find((r) => r.codeName === node.title);
+
                 return (
-                  <RunnerRuntime
+                  <CodeRun
+                    key={node._id + codeImple._id}
                     onLoop={onLoop}
+                    nodeID={node._id}
                     socketMap={socketMap}
-                    key={code._id}
-                    code={code}
-                    useStore={useRuntime}
-                    project={project}
                     domElement={api.domElement}
-                    mode={"runtime"}
-                  ></RunnerRuntime>
+                    useStore={useRuntime}
+                    Algorithm={codeImple.mod.Runtime}
+                  ></CodeRun>
                 );
               })}
 
-          {mode === "toolbox" && codeOne && codes && (
-            <RunnerRuntime
+          {mode === "toolbox" && extNodeID && (
+            <CodeRun
+              key={extNodeID + codeImple._id}
               onLoop={onLoop}
+              nodeID={extNodeID}
               socketMap={socketMap}
-              key={codeOne._id}
-              code={codeOne}
-              useStore={useRuntime}
-              project={project}
               domElement={api.domElement}
-              mode={"toolbox"}
-            ></RunnerRuntime>
+              useStore={useRuntime}
+              Algorithm={codeImple.mod.ToolBox}
+            ></CodeRun>
           )}
         </div>
       )}

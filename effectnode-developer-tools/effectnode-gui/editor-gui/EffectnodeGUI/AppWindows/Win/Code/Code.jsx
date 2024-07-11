@@ -326,7 +326,7 @@ export function Code({ win, useStore }) {
                       projectName={spaceID}
                       mode="toolbox"
                       useEditorStore={useStore}
-                      extNode={node}
+                      extNodeID={node._id}
                     ></EffectNode>
                   }
                 </div>

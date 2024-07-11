@@ -5,15 +5,16 @@ import { getID } from "./tools/getID";
 export function CodeRun({
   Algorithm = () => null,
   useStore,
-  codeName,
+  nodeID,
   domElement,
   socketMap,
   onLoop,
 }) {
   let settings = useStore((r) => r.settings);
   let graph = useStore((r) => r.graph) || {};
-  let nodes = graph.nodes || [];
-  let nodeOne = nodes.find((r) => r.title === codeName);
+  let nodes = graph.nodes;
+  let edges = graph.edges;
+  let nodeOne = nodes.find((r) => r._id === nodeID);
   let setting = settings.find((r) => r.nodeID === nodeOne?._id);
   // let projectName = useStore((r) => r.projectName);
 
@@ -133,6 +134,7 @@ export function CodeRun({
 
     let ioPXY = new Proxy(
       {
+        edges,
         //
       },
       {
@@ -147,7 +149,6 @@ export function CodeRun({
               let edges = useStore?.getState()?.graph?.edges || [];
 
               let destEdges = edges.filter((r) => r.output._id === output._id);
-
               destEdges.forEach((edge) => {
                 socketMap.setState({
                   [edge.input._id]: val,
@@ -167,7 +168,10 @@ export function CodeRun({
                 let input = node.inputs[idx];
 
                 let clean = socketMap.subscribe((state, before) => {
-                  if (typeof state[input._id] !== "undefined") {
+                  if (
+                    typeof state[input._id] !== "undefined" &&
+                    state[input._id] !== before[input._id]
+                  ) {
                     handler(state[input._id]);
                   }
                 });
@@ -193,8 +197,10 @@ export function CodeRun({
 
     setIO(ioPXY);
 
-    return () => {};
-  }, [domElement, nodeOne, socketMap, useStore]);
+    return () => {
+      setIO(false);
+    };
+  }, [domElement, nodeOne, socketMap, useStore, edges]);
 
   return (
     <>
