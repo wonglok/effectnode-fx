@@ -42,6 +42,7 @@ export function EffectNode({
   let socketMap = useRuntime((r) => r.socketMap);
   let codes = useRuntime((r) => r.codes) || [];
   let graph = useRuntime((r) => r.graph);
+  let edges = graph.edges || [];
   let nodes = graph.nodes || [];
   let node = nodes.find((r) => r._id === nodeID);
   let codeImple = codes.find((r) => r.codeName === node?.title);
