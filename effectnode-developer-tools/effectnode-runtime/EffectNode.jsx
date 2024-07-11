@@ -12,7 +12,7 @@ export function EffectNode({
 
   // optional for toolbox
   mode = "runtime",
-  extNodeID = false,
+  nodeID = false,
   useEditorStore = false,
 }) {
   //
@@ -32,7 +32,6 @@ export function EffectNode({
 
         projectName: projectName,
         files: false,
-        project: false,
         graph: false,
       };
       //
@@ -44,7 +43,7 @@ export function EffectNode({
   let codes = useRuntime((r) => r.codes) || [];
   let graph = useRuntime((r) => r.graph);
   let nodes = graph.nodes || [];
-  let node = nodes.find((r) => r._id === extNodeID);
+  let node = nodes.find((r) => r._id === nodeID);
   let codeImple = codes.find((r) => r.codeName === node?.title);
 
   useEffect(() => {
@@ -71,7 +70,6 @@ export function EffectNode({
       });
       if (now !== last) {
         last = now;
-        console.log("re-render");
         useRuntime.setState({
           settings: JSON.parse(JSON.stringify(state.settings)),
           socketMap: create(() => {
@@ -84,8 +82,8 @@ export function EffectNode({
   }, [useRuntime, useEditorStore]);
 
   let randID = useMemo(() => {
-    return `_${md5(projectName)}${mode}${extNodeID || ""}`;
-  }, [projectName, mode, extNodeID]);
+    return `_${md5(projectName)}${mode}${nodeID || ""}`;
+  }, [projectName, mode, nodeID]);
 
   useEffect(() => {
     let tt = setInterval(() => {
@@ -211,11 +209,11 @@ export function EffectNode({
                 );
               })}
 
-          {mode === "toolbox" && extNodeID && (
+          {mode === "toolbox" && nodeID && (
             <CodeRun
-              key={extNodeID + codeImple._id}
+              key={nodeID + codeImple._id}
               onLoop={onLoop}
-              nodeID={extNodeID}
+              nodeID={nodeID}
               socketMap={socketMap}
               domElement={api.domElement}
               useStore={useRuntime}

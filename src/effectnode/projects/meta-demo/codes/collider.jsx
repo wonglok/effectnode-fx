@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CENTER, MeshBVH } from "three-mesh-bvh";
 import {
   Box3,
@@ -17,11 +17,15 @@ export function ToolBox({}) {
   return <></>;
 }
 
-const useCompute = create(() => {
-  return {};
-});
-
 export function Runtime({ ui, useStore, io, files }) {
+  const useCompute = useMemo(() => {
+    return create(() => {
+      return {
+        io,
+      };
+    });
+  }, [io]);
+
   let Insert3D = useStore((r) => r.Insert3D) || (() => null);
 
   let scene = useCompute((r) => r.scene);
@@ -32,7 +36,7 @@ export function Runtime({ ui, useStore, io, files }) {
     io.in(0, (scene) => {
       useCompute.setState({ scene });
     });
-  }, [io]);
+  }, [io, useCompute]);
 
   useEffect(() => {
     if (colliderPromise) {
@@ -44,7 +48,13 @@ export function Runtime({ ui, useStore, io, files }) {
     useCompute.setState({
       colliderPromise: sceneToCollider({ scene }),
     });
-  }, [colliderPromise, scene]);
+
+    return () => {
+      useCompute.setState(() => {
+        return {};
+      });
+    };
+  }, [colliderPromise, scene, useCompute]);
 
   useEffect(() => {
     if (colliderPromise) {

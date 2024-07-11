@@ -20,9 +20,11 @@ export function Runtime({ ui, useStore, io }) {
   const useCompute = useMemo(
     () =>
       create(() => {
-        return {};
+        return {
+          io,
+        };
       }),
-    []
+    [io]
   );
 
   let Insert3D = useStore((r) => r.Insert3D) || (() => null);
