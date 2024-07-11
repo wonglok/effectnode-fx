@@ -36,6 +36,7 @@ export function Runtime({ ui, useStore, io }) {
     if (filePromise) {
       return;
     }
+
     let draco = new DRACOLoader();
     draco.setDecoderPath("/draco/");
 
@@ -48,6 +49,8 @@ export function Runtime({ ui, useStore, io }) {
       }
     });
     useCompute.setState({ [link]: promise });
+
+    return () => {};
   }, [filePromise, link, useCompute]);
 
   useEffect(() => {
