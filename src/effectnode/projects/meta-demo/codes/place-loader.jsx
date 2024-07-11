@@ -1,8 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
-import { Canvas } from "@react-three/fiber";
-import { Gltf } from "@react-three/drei";
 import { create } from "zustand";
 
 export function ToolBox({ ui, useStore, io }) {
