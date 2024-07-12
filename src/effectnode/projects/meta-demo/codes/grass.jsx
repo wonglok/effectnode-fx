@@ -6,26 +6,44 @@
 // } from "@react-three/drei";
 // import { useEffect } from "react";
 
-export function ToolBox({ nodeID, useEditorStore }) {
-  let settings = useEditorStore((r) => r.settings);
-  let setting = settings.find((r) => r.nodeID === nodeID);
+import { Text } from "@react-three/drei";
 
+export function ToolBox({ boxData, saveBoxData }) {
+  // useEditorStore
   //
+
   return (
     <>
       {/*  */}
-      {JSON.stringify(setting)}
+
+      <button
+        onClick={() => {
+          boxData.happy = Math.random();
+          saveBoxData();
+        }}
+      >
+        SetData
+      </button>
+
+      {/*  */}
+
+      <br />
+
+      {/*  */}
+      {JSON.stringify(boxData)}
+
       {/*  */}
     </>
   );
 }
 
-export function Runtime({ ui, useStore, io, files }) {
+export function Runtime({ ui, useStore, io, files, boxData }) {
   let Insert3D = useStore((r) => r.Insert3D) || (() => null);
   return (
     <>
       <Insert3D>
         {/*  */}
+        <Text>{JSON.stringify(boxData)}</Text>
 
         {/*  */}
       </Insert3D>

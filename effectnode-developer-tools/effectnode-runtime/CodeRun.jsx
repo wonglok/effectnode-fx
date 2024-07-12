@@ -10,17 +10,18 @@ export function CodeRun({
   socketMap,
   onLoop,
   useEditorStore,
+  mode,
 }) {
-  let settings = useStore((r) => r.settings);
   let graph = useStore((r) => r.graph) || {};
   let nodes = graph.nodes;
   let edges = graph.edges;
   let nodeOne = nodes?.find((r) => r._id === nodeID);
-  let setting = settings.find((r) => r.nodeID === nodeOne?._id);
-  // let projectName = useStore((r) => r.projectName);
 
-  // console.log(projectName);
+  //
+  let settings = useStore((r) => r.settings);
+  let setting = settings.find((r) => r.nodeID === nodeID);
 
+  //
   let [{ onClean, cleanAll }] = useState(() => {
     let api = {
       cleans: [],
@@ -48,7 +49,7 @@ export function CodeRun({
         onClean(
           useStore.subscribe((state) => {
             let settings = state.settings;
-            let setting = settings.find((r) => r.nodeID === nodeOne?._id);
+            let setting = settings.find((r) => r.nodeID === nodeID);
             let datas = setting.data.filter((r) => r.label === label);
             if (datas.length > 1) {
               console.log("error, duplicated settings name", label);
@@ -65,60 +66,60 @@ export function CodeRun({
           settings: [...useStore.getState().settings],
         });
       },
-      provide: ({
-        label = "objectName",
-        type = "text",
-        defaultValue,
-        ...config
-      }) => {
-        //
-        if (!["text", "range", "color", "number"].includes(type)) {
-          throw new Error("not supported type: " + type);
-        }
-        if (type === "number") {
-          type = "range";
-        }
+      // provide: ({
+      //   label = "objectName",
+      //   type = "text",
+      //   defaultValue,
+      //   ...config
+      // }) => {
+      //   //
+      //   if (!["text", "range", "color", "number"].includes(type)) {
+      //     throw new Error("not supported type: " + type);
+      //   }
+      //   if (type === "number") {
+      //     type = "range";
+      //   }
 
-        let settings = useStore.getState().settings;
-        let setting = settings.find((r) => r.nodeID === nodeOne?._id);
-        if (!setting.data.some((r) => r.label === label)) {
-          let entry = {
-            _id: `${md5(getID())}`,
-            label: `${label}`,
-            type: `${type}`,
-            value: defaultValue,
-            ...config,
-          };
-          setting.data.push(entry);
-        }
+      //   let settings = useStore.getState().settings;
+      //   let setting = settings.find((r) => r.nodeID === nodeOne?._id);
+      //   if (!setting.data.some((r) => r.label === label)) {
+      //     let entry = {
+      //       _id: `${md5(getID())}`,
+      //       label: `${label}`,
+      //       type: `${type}`,
+      //       value: defaultValue,
+      //       ...config,
+      //     };
+      //     setting.data.push(entry);
+      //   }
 
-        let data = setting.data.find((r) => r.label === label);
-        let output = {
-          value: data.value,
-          onChange: (fnc) => {
-            return useStore.subscribe(() => {
-              let data = setting.data.find((r) => r.label === label);
-              output.value = data.value;
-              fnc(data.value);
-            });
-          },
-        };
+      //   let data = setting.data.find((r) => r.label === label);
+      //   let output = {
+      //     value: data.value,
+      //     onChange: (fnc) => {
+      //       return useStore.subscribe(() => {
+      //         let data = setting.data.find((r) => r.label === label);
+      //         output.value = data.value;
+      //         fnc(data.value);
+      //       });
+      //     },
+      //   };
 
-        useStore.subscribe(() => {
-          let data = setting.data.find((r) => r.label === label);
-          output.value = data.value;
-        });
+      //   useStore.subscribe(() => {
+      //     let data = setting.data.find((r) => r.label === label);
+      //     output.value = data.value;
+      //   });
 
-        setTimeout(() => {
-          useStore.setState({
-            settings: JSON.parse(JSON.stringify(useStore.getState().settings)),
-          });
-        });
+      //   setTimeout(() => {
+      //     useStore.setState({
+      //       settings: JSON.parse(JSON.stringify(useStore.getState().settings)),
+      //     });
+      //   });
 
-        return output;
-      },
+      //   return output;
+      // },
     };
-  }, [nodeOne?._id, onClean, useStore]);
+  }, [nodeID, onClean, useStore]);
 
   if (setting && setting?.data) {
     for (let userInput of setting.data) {
@@ -127,8 +128,6 @@ export function CodeRun({
   }
 
   let [io, setIO] = useState(false);
-
-  //
   useEffect(() => {
     let cleans = [];
 
@@ -198,8 +197,46 @@ export function CodeRun({
     setIO(ioPXY);
 
     return () => {};
-  }, [domElement, nodeOne, socketMap, useStore, edges.length]);
+  }, [domElement, nodeOne, socketMap, useStore, edges?.length]);
 
+  let extendAPI = {};
+  //
+  //
+
+  let diskSettings = useEditorStore((r) => r.settings);
+  let runtimeSettings = useStore((r) => r.settings);
+  if (mode === "toolbox") {
+    //
+    let diskSetting = diskSettings.find((r) => r.nodeID === nodeID);
+    diskSetting.metaData = diskSetting.metaData || {};
+    extendAPI.boxData = diskSetting.metaData;
+
+    extendAPI.saveBoxData = () => {
+      console.log("saving in saveBoxData");
+      useEditorStore.setState({
+        settings: diskSettings.map((r) => {
+          if (r.nodeID === nodeID) {
+            return diskSetting;
+          }
+          return r;
+        }),
+      });
+    };
+
+    //
+  }
+  if (mode === "runtime") {
+    //
+    let runtimeSetting = runtimeSettings.find((r) => r.nodeID === nodeID);
+    runtimeSetting.metaData = runtimeSetting.metaData || {};
+    extendAPI.boxData = runtimeSetting.metaData;
+
+    extendAPI.saveBoxData = () => {
+      console.log("cant save in saveBoxData");
+    };
+  }
+
+  //
   return (
     <>
       {io && socketMap && (
@@ -212,8 +249,8 @@ export function CodeRun({
           domElement={domElement}
           ui={ui}
           io={io}
-          useEditorStore={useEditorStore}
           //
+          {...extendAPI}
         ></Algorithm>
       )}
     </>

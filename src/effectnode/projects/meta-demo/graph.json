@@ -14,7 +14,8 @@
           "value": "my webgl canvas"
         }
       ],
-      "title": "main"
+      "title": "main",
+      "metaData": {}
     },
     {
       "codeID": "_6wwhxoe_fp2fg97",
@@ -82,7 +83,8 @@
           "value": "#1338ff"
         }
       ],
-      "title": "light"
+      "title": "light",
+      "metaData": {}
     },
     {
       "codeID": "_hbuh2ad_05kot3i",
@@ -122,7 +124,8 @@
           "value": 0
         }
       ],
-      "title": "camera"
+      "title": "camera",
+      "metaData": {}
     },
     {
       "codeID": "_hpcfbwy_",
@@ -159,7 +162,8 @@
           "value": "/place/church-lok.glb"
         }
       ],
-      "title": "env"
+      "title": "env",
+      "metaData": {}
     },
     {
       "codeID": "_z46fte8_",
@@ -175,7 +179,8 @@
           "value": "#760aff"
         }
       ],
-      "title": "collider"
+      "title": "collider",
+      "metaData": {}
     },
     {
       "codeID": "_lp7asio_",
@@ -206,7 +211,8 @@
           "value": "hi dear"
         }
       ],
-      "title": "display"
+      "title": "display",
+      "metaData": {}
     },
     {
       "codeID": "_5srca6c_",
@@ -237,7 +243,8 @@
           "value": "hi dear"
         }
       ],
-      "title": "display"
+      "title": "display",
+      "metaData": {}
     },
     {
       "codeID": "_ob5io1r_",
@@ -268,7 +275,15 @@
           "value": "hi dear"
         }
       ],
-      "title": "grass"
+      "title": "grass",
+      "boxData": {
+        "a": 123,
+        "a123": 123
+      },
+      "userData": {},
+      "metaData": {
+        "happy": 0.25540975685109824
+      }
     }
   ],
   "graph": {
@@ -796,9 +811,9 @@
         "_id": "_25u0yfr_",
         "title": "grass",
         "position": [
-          -3.1124716504249776,
+          -3.7287114045889216,
           0,
-          2.292454875295311
+          1.7831162708461117
         ],
         "inputs": [
           {

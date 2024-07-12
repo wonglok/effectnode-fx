@@ -13,7 +13,9 @@ export function EffectNode({
   // optional for toolbox
   mode = "runtime",
   nodeID = false,
-  useEditorStore = false,
+  useEditorStore = create(() => {
+    return {};
+  }),
 }) {
   //
   // projectName = projectName.toLowerCase();
@@ -220,6 +222,7 @@ export function EffectNode({
 
                 return (
                   <CodeRun
+                    mode={"runtime"}
                     key={node?._id + codeImple?._id}
                     onLoop={onLoop}
                     nodeID={node._id}
@@ -227,12 +230,14 @@ export function EffectNode({
                     domElement={api.domElement}
                     useStore={useRuntime}
                     Algorithm={codeImple?.mod?.Runtime}
+                    useEditorStore={useEditorStore}
                   ></CodeRun>
                 );
               })}
 
           {mode === "toolbox" && nodeID && (
             <CodeRun
+              mode={"toolbox"}
               key={nodeID + codeImple?._id}
               onLoop={onLoop}
               nodeID={nodeID}
