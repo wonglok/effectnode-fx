@@ -204,7 +204,6 @@ export function CodeRun({
   //
 
   let diskSettings = useEditorStore((r) => r.settings);
-  let runtimeSettings = useStore((r) => r.settings);
   if (mode === "toolbox") {
     //
     let diskSetting = diskSettings.find((r) => r.nodeID === nodeID);
@@ -225,6 +224,8 @@ export function CodeRun({
 
     //
   }
+
+  let runtimeSettings = useStore((r) => r.settings);
   if (mode === "runtime") {
     //
     let runtimeSetting = runtimeSettings.find((r) => r.nodeID === nodeID);

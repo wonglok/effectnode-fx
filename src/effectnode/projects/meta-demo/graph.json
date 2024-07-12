@@ -282,7 +282,7 @@
       },
       "userData": {},
       "metaData": {
-        "happy": "aiht1kx"
+        "happy": "d7orqlu-lok"
       }
     }
   ],
@@ -292,7 +292,11 @@
         "spaceID": "new-space",
         "_id": "_ne7rk2f_qwuxwti",
         "title": "main",
-        "position": [1.136617982168142, 0, -1.9062250908459457],
+        "position": [
+          1.136617982168142,
+          0,
+          -1.9062250908459457
+        ],
         "inputs": [
           {
             "_id": "_jryjlwi_5v5h9n5",
@@ -362,7 +366,11 @@
         "spaceID": "new-space",
         "_id": "_ck2nyne_fksh47i",
         "title": "light",
-        "position": [2.9243557205718336, 0, -0.4771195293968031],
+        "position": [
+          2.9243557205718336,
+          0,
+          -0.4771195293968031
+        ],
         "inputs": [
           {
             "_id": "_xa0pr15_13dvvis",
@@ -432,7 +440,11 @@
         "spaceID": "new-space",
         "_id": "_5zdzfzx_t2sevtt",
         "title": "camera",
-        "position": [3.994450229521081, 0, -1.9234301898440291],
+        "position": [
+          3.994450229521081,
+          0,
+          -1.9234301898440291
+        ],
         "inputs": [
           {
             "_id": "_afnl8q0_ostxx2k",
@@ -502,7 +514,11 @@
         "spaceID": "meta-demo",
         "_id": "_mwndmzd_",
         "title": "place-loader",
-        "position": [-2.63865360883244, 0, -2.261494308128139],
+        "position": [
+          -2.63865360883244,
+          0,
+          -2.261494308128139
+        ],
         "inputs": [
           {
             "_id": "_hzme06d_",
@@ -572,7 +588,11 @@
         "spaceID": "meta-demo",
         "_id": "_6frtt5u_",
         "title": "collider",
-        "position": [-0.6953204690934507, 0, 0.08808603698015609],
+        "position": [
+          -1.0645313669013206,
+          0,
+          -0.20928763891607358
+        ],
         "inputs": [
           {
             "_id": "_sjnphol_",
@@ -642,7 +662,11 @@
         "spaceID": "meta-demo",
         "_id": "_py32rh0_",
         "title": "display",
-        "position": [0.23312690068767755, 0, 2.2109714408250687],
+        "position": [
+          -0.2218049405856911,
+          0,
+          1.936479638670637
+        ],
         "inputs": [
           {
             "_id": "_8z7qwzz_",
@@ -712,7 +736,11 @@
         "spaceID": "meta-demo",
         "_id": "_jx7eybj_",
         "title": "display",
-        "position": [-3.3460752999649794, 0, 0.07519589834029139],
+        "position": [
+          -3.875877683030184,
+          0,
+          -0.20077876748068454
+        ],
         "inputs": [
           {
             "_id": "_nj5kjtj_",
@@ -782,7 +810,11 @@
         "spaceID": "meta-demo",
         "_id": "_25u0yfr_",
         "title": "grass",
-        "position": [-3.960265499830455, 0, 2.0603102216144165],
+        "position": [
+          -4.379529018746643,
+          0,
+          1.8683018446971764
+        ],
         "inputs": [
           {
             "_id": "_le841k4_",
