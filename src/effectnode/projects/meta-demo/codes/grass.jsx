@@ -1,13 +1,23 @@
-import {
-  Box,
-  Environment,
-  EnvironmentMap,
-  EnvironmentPortal,
-} from "@react-three/drei";
-import { useEffect } from "react";
+// import {
+//   Box,
+//   Environment,
+//   EnvironmentMap,
+//   EnvironmentPortal,
+// } from "@react-three/drei";
+// import { useEffect } from "react";
 
-export function ToolBox({}) {
-  return <></>;
+export function ToolBox({ nodeID, useEditorStore }) {
+  let settings = useEditorStore((r) => r.settings);
+  let setting = settings.find((r) => r.nodeID === nodeID);
+
+  //
+  return (
+    <>
+      {/*  */}
+      {JSON.stringify(setting)}
+      {/*  */}
+    </>
+  );
 }
 
 export function Runtime({ ui, useStore, io, files }) {
@@ -15,14 +25,9 @@ export function Runtime({ ui, useStore, io, files }) {
   return (
     <>
       <Insert3D>
-        <pointLight
-          position={[-1.5, 0.5, 1]}
-          color={ui.pointLightColor}
-          intensity={ui.intensity}
-        ></pointLight>
-        <Environment
-          files={[files[`/hdr/greenwich_park_02_1k.hdr`]]}
-        ></Environment>
+        {/*  */}
+
+        {/*  */}
       </Insert3D>
     </>
   );

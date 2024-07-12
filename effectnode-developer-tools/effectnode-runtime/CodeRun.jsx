@@ -9,12 +9,13 @@ export function CodeRun({
   domElement,
   socketMap,
   onLoop,
+  useEditorStore,
 }) {
   let settings = useStore((r) => r.settings);
   let graph = useStore((r) => r.graph) || {};
   let nodes = graph.nodes;
   let edges = graph.edges;
-  let nodeOne = nodes.find((r) => r._id === nodeID);
+  let nodeOne = nodes?.find((r) => r._id === nodeID);
   let setting = settings.find((r) => r.nodeID === nodeOne?._id);
   // let projectName = useStore((r) => r.projectName);
 
@@ -204,12 +205,14 @@ export function CodeRun({
       {io && socketMap && (
         <Algorithm
           //
+          nodeID={nodeID}
           onLoop={onLoop}
           onClean={onClean}
           useStore={useStore}
           domElement={domElement}
           ui={ui}
           io={io}
+          useEditorStore={useEditorStore}
           //
         ></Algorithm>
       )}

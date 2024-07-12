@@ -240,6 +240,7 @@ export function EffectNode({
               domElement={api.domElement}
               useStore={useRuntime}
               Algorithm={codeImple?.mod?.ToolBox}
+              useEditorStore={useEditorStore}
             ></CodeRun>
           )}
         </div>

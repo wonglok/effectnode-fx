@@ -323,8 +323,8 @@ export function Code({ win, useStore }) {
 
                   {
                     <EffectNode
-                      projectName={spaceID}
                       mode="toolbox"
+                      projectName={spaceID}
                       useEditorStore={useStore}
                       nodeID={node._id}
                     ></EffectNode>
