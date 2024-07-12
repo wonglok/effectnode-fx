@@ -201,19 +201,17 @@ export function CodeRun({
     return () => {};
   }, [domElement, nodeOne, socketMap, useStore, edges?.length]);
 
-  let extendAPI = {};
-  //
-  //
-
   if (!useEditorStore) {
     useEditorStore = create(() => {
       return {};
     });
   }
 
+  let extendAPI = {};
+  //
+
   let diskSettings = useEditorStore((r) => r.settings);
   if (mode === "toolbox") {
-    //
     let diskSetting = diskSettings.find((r) => r.nodeID === nodeID);
     diskSetting.metaData = diskSetting.metaData || {};
     extendAPI.boxData = diskSetting.metaData;
@@ -229,13 +227,10 @@ export function CodeRun({
         }),
       });
     };
-
-    //
   }
 
   let runtimeSettings = useStore((r) => r.settings);
   if (mode === "runtime") {
-    //
     let runtimeSetting = runtimeSettings.find((r) => r.nodeID === nodeID);
     runtimeSetting.metaData = runtimeSetting.metaData || {};
     extendAPI.boxData = runtimeSetting.metaData;
