@@ -80,7 +80,6 @@ export function CodeRun({
 
         let settings = useStore.getState().settings;
         let setting = settings.find((r) => r.nodeID === nodeOne?._id);
-        // setting.data
         if (!setting.data.some((r) => r.label === label)) {
           let entry = {
             _id: `${md5(getID())}`,

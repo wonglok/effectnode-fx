@@ -28,6 +28,7 @@ export function Runtime({ ui, useStore, io }) {
   );
 
   let Insert3D = useStore((r) => r.Insert3D) || (() => null);
+
   let files = useStore((r) => r.files);
 
   let link = files["/place/church-lok.glb"];
@@ -50,6 +51,7 @@ export function Runtime({ ui, useStore, io }) {
         console.log(ev.loaded / ev.total);
       }
     });
+
     useCompute.setState({ [link]: promise });
 
     return () => {};
