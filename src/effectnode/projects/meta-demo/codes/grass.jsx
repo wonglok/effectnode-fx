@@ -45,26 +45,27 @@ export function ToolBox({ boxData, saveBoxData, files }) {
             object-position={[0, 1, 5]}
             target={[0, 1, 0]}
           ></OrbitControls>
-          <Bvh
-            firstHitOnly
-            indirect={true}
-            strategy={CENTER}
-            enabled={true}
-            onPointerMove={(ev) => {
-              boxData.flower = boxData.flower || [];
+          <Bvh firstHitOnly indirect={true} strategy={CENTER} enabled={true}>
+            <group
+              onPointerMove={(ev) => {
+                //
+                boxData.flower = boxData.flower || [];
 
-              boxData.flower.push({
-                _id: `_${Math.random().toString(36).slice(2, 9)}`,
-                position: ev.point.toArray().map((r) => r.toFixed(1) * 1),
-                color: "#" + new Color(Math.random() * 0xffffff).getHexString(),
-              });
+                //
+                boxData.flower.push({
+                  _id: `_${Math.random().toString(36).slice(2, 9)}`,
+                  position: ev.point.toArray().map((r) => r.toFixed(1) * 1),
+                  color:
+                    "#" + new Color(Math.random() * 0xffffff).getHexString(),
+                });
 
-              saveBoxData();
+                saveBoxData();
 
-              // console.log(ev);
-            }}
-          >
-            <Gltf src={files[`/place/church-lok.glb`]}></Gltf>
+                // console.log(ev);
+              }}
+            >
+              <Gltf src={files[`/place/church-lok.glb`]}></Gltf>
+            </group>
           </Bvh>
 
           <Grass boxData={boxData}></Grass>
