@@ -29,9 +29,9 @@ export function Runtime({ ui, useStore, io, files }) {
   let Insert3D = useStore((r) => r.Insert3D) || (() => null);
 
   let scene = useCompute((r) => r.scene);
+
   let colliderPromise = useCompute((r) => r.colliderPromise);
-  //
-  //
+
   useEffect(() => {
     io.in(0, (scene) => {
       useCompute.setState({ scene });

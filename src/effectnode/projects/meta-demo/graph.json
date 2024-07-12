@@ -163,25 +163,10 @@
       "code": "",
       "data": [
         {
-          "_id": "_2leaqfe_",
-          "label": "speed",
-          "type": "range",
-          "min": 0,
-          "max": 1,
-          "step": 0.01,
-          "value": 0
-        },
-        {
           "_id": "_0e4f0x7_",
           "label": "baseColor",
           "type": "color",
-          "value": "#00ffcf"
-        },
-        {
-          "_id": "_i51a2n0_",
-          "label": "name",
-          "type": "text",
-          "value": "hi dear"
+          "value": "#ff2700"
         }
       ],
       "title": "collider"
@@ -552,9 +537,9 @@
         "_id": "_6frtt5u_",
         "title": "collider",
         "position": [
-          -1.624360977879632,
+          -0.9085160648329874,
           0,
-          -0.6915039821632409
+          -0.05888029742318518
         ],
         "inputs": [
           {
@@ -626,9 +611,9 @@
         "_id": "_py32rh0_",
         "title": "display",
         "position": [
-          -1.0339830292723018,
+          -0.37117323786703715,
           0,
-          0.8724608535855042
+          1.5713807351486224
         ],
         "inputs": [
           {
@@ -700,9 +685,9 @@
         "_id": "_jx7eybj_",
         "title": "display",
         "position": [
-          -3.6015409052265515,
+          -3.4441067552262843,
           0,
-          0.7459682309458643
+          -0.13894381108956336
         ],
         "inputs": [
           {
@@ -802,7 +787,7 @@
         }
       },
       {
-        "id": "_qdgqmkc_",
+        "id": "_3n6qaho_",
         "input": {
           "_id": "_8z7qwzz_",
           "type": "input",
