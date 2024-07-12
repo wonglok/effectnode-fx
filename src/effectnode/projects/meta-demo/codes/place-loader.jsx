@@ -36,33 +36,35 @@ export function Runtime({ ui, useStore, io }) {
   let filePromise = useCompute((r) => r[link]);
 
   useEffect(() => {
-    if (filePromise) {
-      return;
+    try {
+      let draco = new DRACOLoader();
+      draco.setDecoderPath("/draco/");
+
+      let gltf = new GLTFLoader();
+      gltf.setDRACOLoader(draco);
+
+      let promise = gltf.loadAsync(link, (ev) => {
+        if (ev.lengthComputable) {
+          console.log(ev.loaded / ev.total);
+        }
+      });
+
+      useCompute.setState({ [link]: promise });
+    } catch (e) {
+      console.log(e);
     }
-
-    let draco = new DRACOLoader();
-    draco.setDecoderPath("/draco/");
-
-    let gltf = new GLTFLoader();
-    gltf.setDRACOLoader(draco);
-
-    let promise = gltf.loadAsync(link, (ev) => {
-      if (ev.lengthComputable) {
-        console.log(ev.loaded / ev.total);
-      }
-    });
-
-    useCompute.setState({ [link]: promise });
-
-    return () => {};
-  }, [filePromise, link, useCompute]);
+  }, [link, useCompute]);
 
   useEffect(() => {
     if (filePromise) {
-      filePromise.then((glb) => {
-        io.out(0, glb);
-        io.out(1, glb.scene);
-      });
+      filePromise
+        .then((glb) => {
+          io.out(0, glb);
+          io.out(1, glb.scene);
+        })
+        .catch((it) => {
+          console.log(it);
+        });
     }
   }, [filePromise, io]);
 
