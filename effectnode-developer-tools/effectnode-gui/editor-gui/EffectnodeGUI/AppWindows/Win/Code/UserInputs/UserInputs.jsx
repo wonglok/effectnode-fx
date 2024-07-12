@@ -4,7 +4,6 @@ import { Pane } from "tweakpane";
 
 export function UserInputs({ useStore, code, settings, graph }) {
   let data = code.data || [];
-  // console.log(data);
 
   return (
     <>
@@ -21,6 +20,8 @@ export function UserInputs({ useStore, code, settings, graph }) {
       {data.map((dat) => {
         return (
           <div key={dat._id}>
+            {/*  */}
+
             {/*  */}
             {dat.type === "range" && (
               <>
@@ -42,6 +43,30 @@ export function UserInputs({ useStore, code, settings, graph }) {
                     useStore={useStore}
                     dat={dat}
                   ></RangedInput>
+                </Gear>
+              </>
+            )}
+
+            {dat.type === "files" && (
+              <>
+                <Gear
+                  gear={
+                    <FilesGear
+                      code={code}
+                      settings={settings}
+                      useStore={useStore}
+                      dat={dat}
+                    ></FilesGear>
+                  }
+                  settings={settings}
+                  useStore={useStore}
+                  dat={dat}
+                >
+                  <FilesInput
+                    settings={settings}
+                    useStore={useStore}
+                    dat={dat}
+                  ></FilesInput>
                 </Gear>
               </>
             )}
@@ -132,6 +157,12 @@ function AddInputs({ useStore, code, settings }) {
         label: "name",
         type: "text",
         value: "hi dear",
+      },
+      {
+        _id: getID(),
+        label: "file",
+        type: "files",
+        value: "",
       },
     ];
 
@@ -236,6 +267,49 @@ function ColorGear({ useStore, code, settings, dat }) {
   );
 }
 
+function FilesGear({ useStore, code, settings, dat }) {
+  let refValue = useRef();
+
+  useEffect(() => {
+    const pane = new Pane({ container: refValue.current });
+
+    pane.addBinding(dat, "label", {}).on("change", (v) => {
+      dat.label = v.value;
+
+      useStore.setState({
+        settings: [...settings],
+      });
+    });
+
+    const btn = pane.addButton({
+      title: "remove this",
+      label: `${dat.label}`, // optional
+    });
+
+    btn.on("click", () => {
+      //
+      let res = window.confirm("remove " + dat.label + " ?");
+      if (res) {
+        code.data = code.data.filter((r) => r._id !== dat._id);
+
+        useStore.setState({
+          settings: [...settings],
+        });
+      }
+      //
+    });
+
+    return () => {
+      pane.dispose();
+    };
+  }, [dat]);
+
+  return (
+    <>
+      <div ref={refValue}></div>
+    </>
+  );
+}
 function TextGear({ useStore, code, settings, dat }) {
   let refValue = useRef();
 
@@ -478,8 +552,6 @@ function TextInput({ useStore, settings, dat }) {
   );
 }
 
-//
-
 function ColorInput({ useStore, settings, dat }) {
   let refValue = useRef();
 
@@ -509,3 +581,61 @@ function ColorInput({ useStore, settings, dat }) {
 }
 
 //
+
+function FilesInput({ useStore, settings, dat }) {
+  let refValue = useRef();
+  let spaceID = useStore((r) => r.spaceID);
+
+  useEffect(() => {
+    let options = loadAssets({ projectName: spaceID });
+    const PARAMS = {};
+    PARAMS[dat.label] = dat.value || " ";
+
+    const pane = new Pane({ container: refValue.current });
+
+    pane
+      .addBinding(PARAMS, dat.label, {
+        options: options,
+      })
+      .on("change", (v) => {
+        dat.value = v.value;
+
+        useStore.setState({
+          settings: [...settings],
+        });
+      });
+
+    return () => {
+      pane.dispose();
+    };
+  }, [dat]);
+
+  return (
+    <>
+      <div ref={refValue}></div>
+    </>
+  );
+}
+
+function loadAssets({ projectName }) {
+  let output = {};
+
+  let rr = require.context(
+    "src/effectnode/projects",
+    true,
+    /\/assets\/(.*).(png|jpg|hdr|jpeg|glb|fbx|exr|mp4)$/,
+    "sync"
+  );
+
+  let list = rr.keys();
+
+  list.forEach((key) => {
+    if (key.startsWith("./") && key.includes(`/${projectName}/`)) {
+      let filePath = key.split("/assets")[1];
+
+      output[filePath] = filePath;
+    }
+  });
+
+  return output;
+}

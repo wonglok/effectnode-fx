@@ -151,6 +151,12 @@
           "label": "name",
           "type": "text",
           "value": "hi dear"
+        },
+        {
+          "_id": "_a5ykopf_",
+          "label": "file",
+          "type": "files",
+          "value": "/place/church-lok.glb"
         }
       ],
       "title": "env"
@@ -166,7 +172,7 @@
           "_id": "_0e4f0x7_",
           "label": "baseColor",
           "type": "color",
-          "value": "#ff2700"
+          "value": "#00a71c"
         }
       ],
       "title": "collider"
@@ -463,9 +469,9 @@
         "_id": "_mwndmzd_",
         "title": "place-loader",
         "position": [
-          -2.554601575002072,
+          -2.63865360883244,
           0,
-          -2.176076403875756
+          -2.261494308128139
         ],
         "inputs": [
           {
@@ -537,9 +543,9 @@
         "_id": "_6frtt5u_",
         "title": "collider",
         "position": [
-          -0.9085160648329874,
+          -0.765124366437461,
           0,
-          -0.05888029742318518
+          0.08346828865471202
         ],
         "inputs": [
           {
@@ -611,9 +617,9 @@
         "_id": "_py32rh0_",
         "title": "display",
         "position": [
-          -0.37117323786703715,
+          -0.11150247389782098,
           0,
-          1.5713807351486224
+          1.9483766168654804
         ],
         "inputs": [
           {
@@ -757,22 +763,22 @@
     ],
     "edges": [
       {
-        "id": "_wkbgbvp_",
+        "id": "_pwaoxin_",
         "input": {
-          "_id": "_sjnphol_",
+          "_id": "_8z7qwzz_",
           "type": "input",
-          "nodeID": "_6frtt5u_",
+          "nodeID": "_py32rh0_",
           "label": ""
         },
         "output": {
-          "_id": "_d0n8gn0_",
+          "_id": "_cxatrp8_",
           "type": "output",
-          "nodeID": "_mwndmzd_",
+          "nodeID": "_6frtt5u_",
           "label": ""
         }
       },
       {
-        "id": "_hft13f7_",
+        "id": "_efcpmno_",
         "input": {
           "_id": "_nj5kjtj_",
           "type": "input",
@@ -787,17 +793,17 @@
         }
       },
       {
-        "id": "_3n6qaho_",
+        "id": "_mt1orgf_",
         "input": {
-          "_id": "_8z7qwzz_",
+          "_id": "_sjnphol_",
           "type": "input",
-          "nodeID": "_py32rh0_",
+          "nodeID": "_6frtt5u_",
           "label": ""
         },
         "output": {
-          "_id": "_cxatrp8_",
+          "_id": "_d0n8gn0_",
           "type": "output",
-          "nodeID": "_6frtt5u_",
+          "nodeID": "_mwndmzd_",
           "label": ""
         }
       }

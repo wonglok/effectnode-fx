@@ -28,6 +28,7 @@ function Ready({ io }) {
   let useCompute = useMemo(() => {
     return create(() => {
       return {
+        io,
         input: null,
       };
     });

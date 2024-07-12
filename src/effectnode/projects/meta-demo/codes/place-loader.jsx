@@ -31,7 +31,7 @@ export function Runtime({ ui, useStore, io }) {
 
   let files = useStore((r) => r.files);
 
-  let link = files["/place/church-lok.glb"];
+  let link = files[ui.file];
 
   let filePromise = useCompute((r) => r[link]);
 

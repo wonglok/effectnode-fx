@@ -228,7 +228,6 @@ export class EditorCore {
 
     this.saveKeys = [
       //
-      //
       "spaceID",
       "graph",
       "settings",
