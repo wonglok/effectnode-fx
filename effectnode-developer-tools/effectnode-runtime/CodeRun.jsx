@@ -135,7 +135,7 @@ export function CodeRun({
 
     let ioPXY = new Proxy(
       {
-        edgesLength: edges.length,
+        edgesLength: edges?.length,
         //
       },
       {
