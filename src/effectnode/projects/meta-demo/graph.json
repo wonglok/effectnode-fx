@@ -172,7 +172,7 @@
           "_id": "_0e4f0x7_",
           "label": "baseColor",
           "type": "color",
-          "value": "#00a71c"
+          "value": "#760aff"
         }
       ],
       "title": "collider"
@@ -543,9 +543,9 @@
         "_id": "_6frtt5u_",
         "title": "collider",
         "position": [
-          -0.765124366437461,
+          -0.7896079549985371,
           0,
-          0.08346828865471202
+          0.08840864296989491
         ],
         "inputs": [
           {

@@ -46,21 +46,6 @@ export function Runtime({ ui, useStore, io, files }) {
     scene.position.y = 0;
     scene.updateMatrixWorld(true);
     scene.traverse((it) => {
-      if (it.geometry && it.isMesh) {
-        //
-        let non = it.geometry.toNonIndexed();
-        it.updateMatrixWorld(true);
-        non.applyMatrix4(it.matrixWorld);
-
-        let geo = new BufferGeometry();
-        geo.setAttribute("position", non.attributes.position.clone());
-        geo.setAttribute("normal", non.attributes.normal.clone());
-
-        // geo.setAttribute("uv", non.attributes.uv.clone());
-        mergeList.push(geo);
-        //
-        //
-      }
       if (it.geometry && it.isInstancedMesh) {
         let n = it.count;
         for (let i = 0; i < n; i++) {
@@ -79,6 +64,17 @@ export function Runtime({ ui, useStore, io, files }) {
 
           mergeList.push(mesh);
         }
+      } else if (it.geometry && it.isMesh) {
+        //
+        let non = it.geometry.toNonIndexed();
+        it.updateMatrixWorld(true);
+        non.applyMatrix4(it.matrixWorld);
+
+        let geo = new BufferGeometry();
+        geo.setAttribute("position", non.attributes.position.clone());
+        geo.setAttribute("normal", non.attributes.normal.clone());
+
+        mergeList.push(geo);
       }
     });
 
