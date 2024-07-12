@@ -18,6 +18,7 @@ export function CodeRun({
   let nodeOne = nodes?.find((r) => r._id === nodeID);
 
   //
+  let files = useStore((r) => r.files);
   let settings = useStore((r) => r.settings);
   let setting = settings.find((r) => r.nodeID === nodeID);
 
@@ -233,7 +234,7 @@ export function CodeRun({
     extendAPI.boxData = runtimeSetting.metaData;
 
     extendAPI.saveBoxData = () => {
-      console.log("cant save in saveBoxData");
+      console.log("cant saveBoxData in runtime");
     };
   }
 
@@ -243,6 +244,7 @@ export function CodeRun({
       {io && socketMap && (
         <Algorithm
           //
+          files={files}
           nodeID={nodeID}
           onLoop={onLoop}
           onClean={onClean}

@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "1TB" }));
 app.use(
   fileUpload({
     createParentPath: true,
