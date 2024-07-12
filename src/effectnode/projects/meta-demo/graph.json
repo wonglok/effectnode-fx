@@ -128,7 +128,7 @@
       "codeID": "_hpcfbwy_",
       "nodeID": "_mwndmzd_",
       "nodeTitle": "node",
-      "spaceID": "canvas-land-demo",
+      "spaceID": "meta-demo",
       "code": "",
       "data": [
         {
@@ -159,7 +159,7 @@
       "codeID": "_z46fte8_",
       "nodeID": "_6frtt5u_",
       "nodeTitle": "node",
-      "spaceID": "canvas-land-demo",
+      "spaceID": "meta-demo",
       "code": "",
       "data": [
         {
@@ -175,7 +175,7 @@
           "_id": "_0e4f0x7_",
           "label": "baseColor",
           "type": "color",
-          "value": "#ff7f6f"
+          "value": "#8600ff"
         },
         {
           "_id": "_i51a2n0_",
@@ -190,7 +190,7 @@
       "codeID": "_lp7asio_",
       "nodeID": "_py32rh0_",
       "nodeTitle": "node",
-      "spaceID": "canvas-land-demo",
+      "spaceID": "meta-demo",
       "code": "",
       "data": [
         {
@@ -206,7 +206,7 @@
           "_id": "_rxoc3oz_",
           "label": "baseColor",
           "type": "color",
-          "value": "#ff0000"
+          "value": "#ff1414"
         },
         {
           "_id": "_0wrfhkz_",
@@ -221,7 +221,7 @@
       "codeID": "_5srca6c_",
       "nodeID": "_jx7eybj_",
       "nodeTitle": "node",
-      "spaceID": "canvas-land-demo",
+      "spaceID": "meta-demo",
       "code": "",
       "data": [
         {
@@ -474,7 +474,7 @@
         ]
       },
       {
-        "spaceID": "canvas-land-demo",
+        "spaceID": "meta-demo",
         "_id": "_mwndmzd_",
         "title": "place-loader",
         "position": [
@@ -548,13 +548,13 @@
         ]
       },
       {
-        "spaceID": "canvas-land-demo",
+        "spaceID": "meta-demo",
         "_id": "_6frtt5u_",
         "title": "collider",
         "position": [
-          -1.304749118507929,
+          -1.3451121341774752,
           0,
-          -0.5497192956979795
+          -0.5659846131207341
         ],
         "inputs": [
           {
@@ -622,13 +622,13 @@
         ]
       },
       {
-        "spaceID": "canvas-land-demo",
+        "spaceID": "meta-demo",
         "_id": "_py32rh0_",
         "title": "display",
         "position": [
-          -0.6086629077805121,
+          -0.6438236603590561,
           0,
-          1.0814940919171865
+          1.1232328330089185
         ],
         "inputs": [
           {
@@ -696,7 +696,7 @@
         ]
       },
       {
-        "spaceID": "canvas-land-demo",
+        "spaceID": "meta-demo",
         "_id": "_jx7eybj_",
         "title": "display",
         "position": [
@@ -772,22 +772,7 @@
     ],
     "edges": [
       {
-        "id": "_hhrgi74_",
-        "input": {
-          "_id": "_8z7qwzz_",
-          "type": "input",
-          "nodeID": "_py32rh0_",
-          "label": ""
-        },
-        "output": {
-          "_id": "_cxatrp8_",
-          "type": "output",
-          "nodeID": "_6frtt5u_",
-          "label": ""
-        }
-      },
-      {
-        "id": "_da4xj2j_",
+        "id": "_wkbgbvp_",
         "input": {
           "_id": "_sjnphol_",
           "type": "input",
@@ -802,7 +787,7 @@
         }
       },
       {
-        "id": "_ojfi93g_",
+        "id": "_hft13f7_",
         "input": {
           "_id": "_nj5kjtj_",
           "type": "input",
@@ -813,6 +798,21 @@
           "_id": "_d0n8gn0_",
           "type": "output",
           "nodeID": "_mwndmzd_",
+          "label": ""
+        }
+      },
+      {
+        "id": "_s7uwepe_",
+        "input": {
+          "_id": "_8z7qwzz_",
+          "type": "input",
+          "nodeID": "_py32rh0_",
+          "label": ""
+        },
+        "output": {
+          "_id": "_cxatrp8_",
+          "type": "output",
+          "nodeID": "_6frtt5u_",
           "label": ""
         }
       }

@@ -134,7 +134,7 @@ export function CodeRun({
 
     let ioPXY = new Proxy(
       {
-        edges,
+        edgesLength: edges.length,
         //
       },
       {
@@ -197,10 +197,8 @@ export function CodeRun({
 
     setIO(ioPXY);
 
-    return () => {
-      setIO(false);
-    };
-  }, [domElement, nodeOne, socketMap, useStore, edges]);
+    return () => {};
+  }, [domElement, nodeOne, socketMap, useStore, edges.length]);
 
   return (
     <>

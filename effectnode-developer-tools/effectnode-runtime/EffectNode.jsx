@@ -59,6 +59,28 @@ export function EffectNode({
     return useEditorStore.subscribe((state, before) => {
       let now = JSON.stringify({
         settings: state.settings,
+      });
+      if (now !== last) {
+        last = now;
+        useRuntime.setState({
+          settings: JSON.parse(JSON.stringify(state.settings)),
+        });
+      }
+    });
+  }, [useRuntime, useEditorStore]);
+
+  // Graph Editor
+  useEffect(() => {
+    if (!useRuntime) {
+      return;
+    }
+    if (!useEditorStore) {
+      return;
+    }
+
+    let last = "";
+    return useEditorStore.subscribe((state, before) => {
+      let now = JSON.stringify({
         graph: {
           nodes: state.graph.nodes.map((r) => {
             return {
@@ -72,7 +94,6 @@ export function EffectNode({
       if (now !== last) {
         last = now;
         useRuntime.setState({
-          settings: JSON.parse(JSON.stringify(state.settings)),
           socketMap: create(() => {
             return {};
           }),
@@ -199,26 +220,26 @@ export function EffectNode({
 
                 return (
                   <CodeRun
-                    key={node._id + codeImple._id}
+                    key={node?._id + codeImple?._id}
                     onLoop={onLoop}
                     nodeID={node._id}
                     socketMap={socketMap}
                     domElement={api.domElement}
                     useStore={useRuntime}
-                    Algorithm={codeImple.mod.Runtime}
+                    Algorithm={codeImple?.mod?.Runtime}
                   ></CodeRun>
                 );
               })}
 
           {mode === "toolbox" && nodeID && (
             <CodeRun
-              key={nodeID + codeImple._id}
+              key={nodeID + codeImple?._id}
               onLoop={onLoop}
               nodeID={nodeID}
               socketMap={socketMap}
               domElement={api.domElement}
               useStore={useRuntime}
-              Algorithm={codeImple.mod.ToolBox}
+              Algorithm={codeImple?.mod?.ToolBox}
             ></CodeRun>
           )}
         </div>

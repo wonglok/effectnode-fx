@@ -31,7 +31,7 @@ function Ready({ io }) {
         input: null,
       };
     });
-  }, []);
+  }, [io]);
 
   let input = useCompute((r) => r.input);
 
@@ -42,11 +42,7 @@ function Ready({ io }) {
       });
     });
 
-    return () => {
-      useCompute.setState({
-        input: null,
-      });
-    };
+    return () => {};
   }, [io, useCompute]);
 
   return (
