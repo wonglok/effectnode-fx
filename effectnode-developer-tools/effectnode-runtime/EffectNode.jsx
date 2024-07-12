@@ -13,9 +13,7 @@ export function EffectNode({
   // optional for toolbox
   mode = "runtime",
   nodeID = false,
-  useEditorStore = create(() => {
-    return {};
-  }),
+  useEditorStore = false,
 }) {
   //
   // projectName = projectName.toLowerCase();
@@ -40,7 +38,7 @@ export function EffectNode({
     });
   }, [projectName]);
 
-  let files = useRuntime((r) => r.files);
+  // let files = useRuntime((r) => r.files);
   let socketMap = useRuntime((r) => r.socketMap);
   let codes = useRuntime((r) => r.codes) || [];
   let graph = useRuntime((r) => r.graph);
@@ -209,7 +207,7 @@ export function EffectNode({
 
   return (
     <>
-      {socketMap && files && useRuntime && (
+      {socketMap && useRuntime && (
         <div id={randID} className="w-full h-full overflow-hidden relative">
           {mode === "runtime" &&
             api.domElement &&

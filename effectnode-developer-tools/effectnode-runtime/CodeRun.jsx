@@ -1,6 +1,7 @@
 import md5 from "md5";
 import { useEffect, useMemo, useState } from "react";
 import { getID } from "./tools/getID";
+import { create } from "zustand";
 
 export function CodeRun({
   Algorithm = () => null,
@@ -203,6 +204,12 @@ export function CodeRun({
   let extendAPI = {};
   //
   //
+
+  if (!useEditorStore) {
+    useEditorStore = create(() => {
+      return {};
+    });
+  }
 
   let diskSettings = useEditorStore((r) => r.settings);
   if (mode === "toolbox") {
