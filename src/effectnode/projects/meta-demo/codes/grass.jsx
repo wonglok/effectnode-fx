@@ -18,7 +18,7 @@ export function ToolBox({ boxData, saveBoxData }) {
 
       <button
         onClick={() => {
-          boxData.happy = Math.random();
+          boxData.happy = Math.random().toString(36).slice(2, 9);
           saveBoxData();
         }}
       >
@@ -30,6 +30,7 @@ export function ToolBox({ boxData, saveBoxData }) {
       <br />
 
       {/*  */}
+
       {JSON.stringify(boxData)}
 
       {/*  */}
@@ -43,7 +44,7 @@ export function Runtime({ ui, useStore, io, files, boxData }) {
     <>
       <Insert3D>
         {/*  */}
-        <Text>{JSON.stringify(boxData)}</Text>
+        <Text position={[0, 1, 0]}>{JSON.stringify(boxData)}</Text>
 
         {/*  */}
       </Insert3D>
