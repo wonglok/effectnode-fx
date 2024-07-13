@@ -1,4 +1,4 @@
-import md5 from "md5";
+// import md5 from "md5";
 import { useEffect, useMemo, useState } from "react";
 import { getID } from "./tools/getID";
 import { create } from "zustand";
@@ -207,39 +207,54 @@ export function CodeRun({
     });
   }
 
-  let extendAPI = {};
+  let [extendAPI, setExtendAPI] = useState({});
   //
 
-  let diskSettings = useEditorStore((r) => r.settings);
-  if (mode === "toolbox") {
-    let diskSetting = diskSettings.find((r) => r.nodeID === nodeID);
-    diskSetting.metaData = diskSetting.metaData || {};
-    extendAPI.boxData = diskSetting.metaData;
+  useEffect(() => {
+    let tt = 0;
+    let eAPI = {
+      get boxData() {
+        if (mode === "toolbox") {
+          let diskSettings = useEditorStore.getState().settings;
+          let diskSetting = diskSettings.find((r) => r.nodeID === nodeID);
 
-    extendAPI.saveBoxData = () => {
-      console.log("saving in saveBoxData");
-      useEditorStore.setState({
-        settings: diskSettings.map((r) => {
-          if (r.nodeID === nodeID) {
-            return diskSetting;
-          }
-          return r;
-        }),
-      });
+          diskSetting.metaData = diskSetting.metaData || {};
+          return diskSetting.metaData;
+        }
+        if (mode === "runtime") {
+          let runtimeSettings = useStore.getState().settings;
+          let runtimeSetting = runtimeSettings.find((r) => r.nodeID === nodeID);
+
+          runtimeSetting.metaData = runtimeSetting.metaData || {};
+          return runtimeSetting.metaData;
+        }
+      },
+
+      saveBoxData: () => {
+        if (mode === "toolbox") {
+          console.log("Saving in Toolbox Runtime");
+          let diskSettings = useEditorStore.getState().settings;
+          let diskSetting = diskSettings.find((r) => r.nodeID === nodeID);
+
+          useEditorStore.setState({
+            settings: diskSettings.map((r) => {
+              if (r.nodeID === nodeID) {
+                return diskSetting;
+              }
+              return r;
+            }),
+          });
+        }
+        if (mode === "runtime") {
+          console.log("cant saveBoxData in runtime");
+        }
+      },
     };
-  }
 
-  let runtimeSettings = useStore((r) => r.settings);
-  if (mode === "runtime") {
-    let runtimeSetting = runtimeSettings.find((r) => r.nodeID === nodeID);
-    runtimeSetting.metaData = runtimeSetting.metaData || {};
-    extendAPI.boxData = runtimeSetting.metaData;
+    setExtendAPI(eAPI);
+  }, [mode, nodeID, useEditorStore, useStore]);
 
-    extendAPI.saveBoxData = () => {
-      console.log("cant saveBoxData in runtime");
-    };
-  }
-
+  //
   //
   return (
     <>
