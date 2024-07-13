@@ -118,7 +118,7 @@ function Loader({ ui, useStore }) {
     };
     let arr = [];
 
-    let totalRings = 7;
+    let totalRings = 5;
     for (let ring = 0; ring < totalRings; ring++) {
       let bao = Math.PI * (0.3 - (0.15 * ring) / totalRings);
       let total = 3.5 + ring / totalRings;
@@ -127,10 +127,10 @@ function Loader({ ui, useStore }) {
         //
         arr.push(
           getOne({
-            radius: ring * 0.05,
+            radius: ring * 0.02,
             angle: (ring / totalRings) * Math.PI + (i / total) * 3.141592 * 2.0,
             bao: bao,
-            scale: Math.pow(ring / totalRings, 1.3),
+            scale: Math.pow(ring / totalRings, 1),
           })
         );
       }
@@ -158,9 +158,9 @@ function Loader({ ui, useStore }) {
 
       return new MeshPhysicalMaterial({
         transparent: true,
-        roughness: 0.5,
-        metalness: 0.5,
-        bumpScale: 3,
+        roughness: 0.25,
+        metalness: 1,
+        bumpScale: 1,
         alphaTest: 0.5,
         ...tex2,
         side: DoubleSide,
@@ -169,13 +169,11 @@ function Loader({ ui, useStore }) {
 
     return gps.map((v, i) => {
       return getOne({
-        x: Math.floor(Math.random() * 4),
-        y: Math.floor(Math.random() * 3),
+        x: 3,
+        y: 2,
       });
     });
   }, [tex, ui.height, ui.width, geo]);
-
-  //
 
   return (
     <>
