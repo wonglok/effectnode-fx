@@ -61,10 +61,9 @@ export function Runtime({ useStore, ui, io }) {
     <>
       <div className="w-full h-full">
         <Canvas
-          dpr={0.0001}
-          gl={(canvas) => {
-            return new WebGPURenderer({ canvas });
-          }}
+        // gl={(canvas) => {
+        //   return new WebGPURenderer({ canvas: canvas });
+        // }}
         >
           <State3D t3d useStore={useStore}></State3D>
           <OutH3D t3d={t3d} useStore={useStore}></OutH3D>
