@@ -207,11 +207,7 @@ export function CodeRun({
     });
   }
 
-  let [extendAPI, setExtendAPI] = useState({});
-  //
-
-  useEffect(() => {
-    let tt = 0;
+  let extendAPI = useMemo(() => {
     let eAPI = {
       get boxData() {
         if (mode === "toolbox") {
@@ -251,8 +247,8 @@ export function CodeRun({
       },
     };
 
-    setExtendAPI(eAPI);
-  }, [mode, nodeID, useEditorStore, useStore]);
+    return eAPI;
+  }, [mode, nodeID]);
 
   //
   //

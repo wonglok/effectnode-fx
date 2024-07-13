@@ -33,6 +33,7 @@ import { EnergyArtCompo } from "src/components/EnergyArt/EnergyArtCompo";
 // import { Protect } from "@/components/Protect/Protect"
 // import Link from "next/link";
 import { EffectNode } from "effectnode-developer-tools/effectnode-runtime/EffectNode";
+import Link from "next/link";
 
 // export function PageOld() {
 //     return (
@@ -77,7 +78,7 @@ export default function Landing() {
       <Navbar transparent={false} />
 
       <main>
-        <div className="relative flex min-h-screen-75 content-center items-center justify-center pb-32 pt-16">
+        <div className="relative flex flex-col min-h-screen-75 content-center items-center justify-center pb-32 pt-16">
           <div
             className=" absolute top-0 size-full bg-cover bg-center"
             style={
@@ -109,20 +110,42 @@ export default function Landing() {
 
             {/* <span className="absolute inset-0 size-full bg-black opacity-20"></span> */}
           </div>
-          <div className=" relative mx-auto pointer-events-none">
-            <div className="flex flex-wrap justify-center items-center">
-              <div className="mx-auto w-full px-4 text-center lg:w-6/12">
-                <div className="">
-                  <h1 className="text-5xl font-semibold text-white">{`Effect Node FX`}</h1>
-                  <p className="mt-4 text-xl font-bold text-gray-200">
-                    {`WebGPU + WebGL + Canvas`}
+          <div className="pointer-events-none relative mx-auto">
+            <div className="pointer-events-none flex flex-col justify-center items-center">
+              <div className="pointer-events-none mx-auto px-4 text-center">
+                <div className="pointer-events-none">
+                  <h1 className=" pointer-events-none text-5xl font-semibold text-white">{`Effect Node FX`}</h1>
+                  <p className=" pointer-events-none mt-4 text-xl font-bold text-gray-200">
+                    {`Developer Faster and More Funz`}
                   </p>
-                  <p className="mt-4 text-lg text-gray-200">{`EffectNode is a NodeGraph & Signaling Framework that accelerate VFX and 3D Development for the Web Ecosystem. `}</p>
-                  <p className="text-white text-xs">{`(Web/VR/XR/AR)`}</p>
+                  <p className=" pointer-events-none mt-4 text-lg text-gray-200 mb-5">{`Creative Coding and Visual Effect on the Web`}</p>
                 </div>
               </div>
             </div>
           </div>
+
+          <div className="relative mx-auto">
+            <div className="select-none">
+              <div>
+                <Link href={`/docs/quick-start`}>
+                  <button className=" bg-blue-500 text-white inline-block p-3 px-8 border rounded-lg mx-2">
+                    <>Quick Start</>
+                  </button>
+                </Link>
+                <a
+                  className="cursor-pointer"
+                  href={`https://github.com/wonglok/effectnode-fx/archive/refs/tags/r0001.zip`}
+                  download={"effectnode-fx.zip"}
+                  target="_blank"
+                >
+                  <button className="text-green-700 bg-green-300 inline-block p-3 px-8 border rounded-lg mx-2">
+                    <>Download</>
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
+
           <div
             className="pointer-events-none absolute inset-x-0 bottom-0 top-auto h-16 w-full overflow-hidden"
             style={{ transform: "translateY(1px)" }}
