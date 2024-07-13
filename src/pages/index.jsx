@@ -92,17 +92,6 @@ export default function Landing() {
             <span className="absolute inset-0 size-full bg-black opacity-100"></span>
 
             <span className="absolute inset-0 size-full">
-              {/* <Canvas className="absolute left-0 top-0 size-full">
-                <FastFlameCompo></FastFlameCompo>
-                <EffectComposer enableNormalPass={false}>
-                  <Bloom
-                    intensity={5}
-                    luminanceThreshold={0.15}
-                    mipmapBlur={true}
-                  ></Bloom>
-                </EffectComposer>
-              </Canvas> */}
-
               <div className="absolute left-0 top-0 size-full opacity-60">
                 <EffectNode projectName={"spikes-webgl"}></EffectNode>
               </div>
@@ -173,7 +162,7 @@ export default function Landing() {
         </div>
 
         {true && (
-          <section className="-mt-24 bg-gray-200 pb-20">
+          <section className="-mt-24 bg-indigo-100 pb-20">
             <div className="container mx-auto px-4">
               <div className="flex flex-wrap">
                 <div className="w-full px-4 pt-6 text-center md:w-4/12 lg:pt-12">
