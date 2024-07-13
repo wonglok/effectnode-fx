@@ -116,7 +116,7 @@ export default function Landing() {
                 <div className="pointer-events-none">
                   <h1 className=" pointer-events-none text-5xl font-semibold text-white">{`Effect Node FX`}</h1>
                   <p className=" pointer-events-none mt-4 text-xl font-bold text-gray-200">
-                    {`Developer Faster and More Funz`}
+                    {`Framework that help you Developer 3D Web Faster`}
                   </p>
                   <p className=" pointer-events-none mt-4 text-lg text-gray-200 mb-5">{`Creative Coding and Visual Effect on the Web`}</p>
                 </div>
