@@ -51,100 +51,74 @@ function Loader({ ui, useStore }) {
     bumpMap: files[ui.bump],
   });
 
-  let mat0 = useMemo(() => {
-    let idX = 0;
-    let idY = 1;
-
-    let tex2 = {};
-    for (let kn in tex) {
-      let texture = tex[kn].clone();
-      texture.repeat.set(1 / ui.width, 1 / ui.height);
-      texture.offset.set(idX / ui.width, idY / ui.height);
-      tex2[kn] = texture;
-    }
-
-    return new MeshPhysicalMaterial({
-      transparent: true,
-      roughness: 0.5,
-      metalness: 0.5,
-      bumpScale: 3,
-      alphaTest: 0.5,
-      ...tex2,
-      side: DoubleSide,
-    });
-  }, [tex, ui.height, ui.width]);
-
-  //
   //
   var cpX = (radius, angle) => radius * Math.cos((Math.PI * 1 * angle) / 180);
   var cpY = (radius, angle) => radius * Math.sin((Math.PI * 1 * angle) / 180);
-  let pts = [];
+  let curve = useMemo(() => {
+    let pts = [
+      //
+      new Vector3(0, 0, 0),
+      new Vector3(0.5, 1, 0),
+      new Vector3(1.5, 2, 0),
+      new Vector3(3, 3, 0),
+    ];
 
-  let curve = new CatmullRomCurve3(pts, false, "catmullrom");
+    let curve = new CatmullRomCurve3(pts, false, "catmullrom");
 
-  let geo = useMemo(() => {
-    let getOne = ({ angle, bao, radius, scale }) => {
-      let inter = new Vector3();
+    return curve;
+  }, []);
 
-      let fnc = (u, v, target) => {
-        let initPlaneX = u * 2.0 - 1.0;
-        let initPlaneY = v * 2.0 - 1.0;
-        let initPlaneZ = 0;
+  let { geo, mats } = useMemo(() => {
+    let getOneGeo = ({ petalID, totalRings, ring }) => {
+      let wrap = Math.PI * (0.3 - (0.15 * ring) / totalRings) * 0.8;
+      let petalsPerRing = 5 + ring;
 
-        target.x = initPlaneX;
-        target.y = initPlaneY;
-        target.z = initPlaneZ + cpY(0.5, (initPlaneX * 0.5 + 0.5) * 180);
+      let radius = ring * 0.3;
+      let petalAngle =
+        (ring / totalRings) * Math.PI * 2 +
+        0.5 +
+        (petalID / petalsPerRing) * 3.141592 * 2.0;
 
-        inter.copy(target);
-        inter.z += Math.sin((target.y * 0.5 + 0.5) * 3.141592 * bao * 1.4);
+      let scale = Math.pow(ring / totalRings, 1);
 
-        target.copy(inter);
+      let temp = new Vector3();
+      let init = new Vector3();
+
+      let ptInter = new Vector3();
+      let fnc = (u, v, output) => {
+        init.set(u * 2.0 - 1.0, v * 2.0 - 1.0, 0);
+
+        curve.getPointAt(v, ptInter);
+
+        temp.copy(init);
+
+        temp.z =
+          cpY(0.5, (init.x * 0.5 + 0.5) * 180) +
+          cpX(0.5, (init.y * 0.5 + 0.5) * 180);
+
+        temp.z += Math.sin((temp.y * 0.5 + 0.5) * 3.141592 * wrap * 1.4);
+
+        temp.z += ptInter.y;
+
+        temp.applyAxisAngle(new Vector3(1, 0, 0).normalize(), -0.5 * v);
+
+        // temp.z += radius;
+        temp.applyAxisAngle(new Vector3(0, 1, 0), petalAngle);
+
+        temp.multiplyScalar(scale);
+
+        output.copy(temp);
       };
 
       let param = new ParametricGeometry(fnc, 50, 50);
 
-      param.center();
-      param.rotateX(Math.PI * 0.1);
-      param.computeBoundingSphere();
-      param.computeBoundingBox();
-
-      param.rotateY(0.1 * Math.PI);
-      param.translate(0, 0, radius);
-      param.rotateY(angle);
-
-      param.scale(scale, scale, scale);
+      // param.center();
+      // param.computeBoundingSphere();
+      // param.translate(0, param.boundingSphere.radius * 0.5, 0);
 
       return param;
     };
-    let arr = [];
-
-    let totalRings = 5;
-    for (let ring = 0; ring < totalRings; ring++) {
-      let bao = Math.PI * (0.3 - (0.15 * ring) / totalRings);
-      let total = 3.5 + ring / totalRings;
-
-      for (let i = 0; i < total; i++) {
-        //
-        arr.push(
-          getOne({
-            radius: ring * 0.02,
-            angle: (ring / totalRings) * Math.PI + (i / total) * 3.141592 * 2.0,
-            bao: bao,
-            scale: Math.pow(ring / totalRings, 1),
-          })
-        );
-      }
-    }
-
-    return mergeGeometries(arr, true);
-  }, []);
-  //
-  //
-
-  let mat1 = useMemo(() => {
-    let gps = geo.groups;
-
-    let getOne = ({ x = 2, y = 2 }) => {
+    let getMaterial = ({ x = 2, y = 2 }) => {
       let idX = x;
       let idY = y;
 
@@ -167,17 +141,42 @@ function Loader({ ui, useStore }) {
       });
     };
 
-    return gps.map((v, i) => {
-      return getOne({
-        x: 3,
-        y: 2,
-      });
-    });
-  }, [tex, ui.height, ui.width, geo]);
+    let arr = [];
+
+    let totalRings = 7;
+    for (let ring = 0; ring < totalRings; ring++) {
+      let petalsPerRing = 5 + ring;
+
+      for (let petalID = 0; petalID < petalsPerRing; petalID++) {
+        arr.push({
+          geo: getOneGeo({
+            petalID,
+            totalRings,
+            ring,
+          }),
+          material: getMaterial({
+            x: 0,
+            y: 0,
+          }),
+        });
+      }
+    }
+
+    let geo = mergeGeometries(
+      arr.map((r) => r.geo),
+      true
+    );
+    return {
+      geo: geo,
+      mats: arr.map((r) => r.material),
+    };
+  }, [curve, tex, ui.height, ui.width]);
+  //
+  //
 
   return (
     <>
-      <mesh scale={5} geometry={geo} material={mat1}></mesh>
+      <mesh scale={5} geometry={geo} material={mats}></mesh>
     </>
   );
 }
