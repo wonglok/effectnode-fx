@@ -1,26 +1,63 @@
 import { Environment, OrbitControls, useTexture } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import { Suspense, useMemo } from "react";
-import { Matrix4, Object3D } from "three";
+import { Canvas, useThree } from "@react-three/fiber";
+import { Suspense, useEffect, useMemo } from "react";
 import {
-  CatmullRomCurve3,
-  DoubleSide,
-  MeshPhysicalMaterial,
-  Vector3,
+  BackSide,
+  FrontSide,
+  Matrix4,
+  Mesh,
+  MeshStandardMaterial,
+  Object3D,
 } from "three";
+import { CatmullRomCurve3, DoubleSide, Vector3 } from "three";
 import { ParametricGeometry } from "three/examples/jsm/geometries/ParametricGeometry";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils";
+import { USDZExporter } from "three/examples/jsm/exporters/USDZExporter";
 import BezierEditor from "bezier-easing-editor";
 import bezier from "bezier-easing";
 
-export function ToolBox({ boxData, saveBoxData, useStore, ui }) {
+export function ToolBox({ boxData, saveBoxData, useStore, ui, io }) {
   let files = useStore((r) => r.files);
   return (
     <>
       <div className="w-full h-full overflow-scroll">
+        <div className="w-full p-5">
+          <button
+            onClick={() => {
+              //
+              useStore.getState().api.download();
+            }}
+          >
+            Download Flower
+          </button>
+        </div>
+        <div className="w-full h-96 p-5">
+          <Canvas>
+            <OrbitControls
+              object-position={[0, 1, 2]}
+              makeDefault
+            ></OrbitControls>
+            <Environment
+              files={[files["/hdr/greenwich_park_02_1k.hdr"]]}
+            ></Environment>
+
+            <Content
+              onReady={(api) => {
+                useStore.setState({
+                  api: api,
+                });
+              }}
+              boxData={boxData}
+              ui={ui}
+              useStore={useStore}
+              io={io}
+            ></Content>
+          </Canvas>
+        </div>
+
         <div>boxData.bezierCurveU</div>
         <BezierEditor
-          defaultValue={
+          value={
             boxData.bezierCurveU || [
               0.6895306859205776, 0.058374999999999955, 0.851985559566787,
               0.338375,
@@ -35,7 +72,7 @@ export function ToolBox({ boxData, saveBoxData, useStore, ui }) {
 
         <div>boxData.bezierCurveV</div>
         <BezierEditor
-          defaultValue={
+          value={
             boxData.bezierCurveV || [
               0.6895306859205776, 0.058374999999999955, 0.851985559566787,
               0.338375,
@@ -58,20 +95,32 @@ export function Runtime({ boxData, ui, useStore, io }) {
   return (
     <>
       <Insert3D>
-        <Suspense fallback={null}>
-          <FlowerExpress
-            boxData={boxData}
-            at={"runtime"}
-            ui={ui}
-            useStore={useStore}
-          ></FlowerExpress>
-        </Suspense>
+        <Content
+          boxData={boxData}
+          ui={ui}
+          useStore={useStore}
+          io={io}
+        ></Content>
       </Insert3D>
     </>
   );
 }
 
-function FlowerExpress({ boxData, at, ui, useStore }) {
+function Content({ boxData, ui, useStore, io, onReady = () => {} }) {
+  return (
+    <Suspense fallback={null}>
+      <FlowerExpress
+        onReady={onReady}
+        boxData={boxData}
+        at={"runtime"}
+        ui={ui}
+        useStore={useStore}
+      ></FlowerExpress>
+    </Suspense>
+  );
+}
+
+function FlowerExpress({ boxData, at, ui, useStore, onReady }) {
   console.log(boxData);
 
   let files = useStore((r) => r.files) || {};
@@ -95,7 +144,7 @@ function FlowerExpress({ boxData, at, ui, useStore }) {
   // console.log(at, eachAngle);
 
   //
-  let { geo, mats } = useMemo(() => {
+  let { geo, mats, meshes } = useMemo(() => {
     let getMaterial = ({ x = 2, y = 2 }) => {
       let idX = x;
       let idY = y;
@@ -108,16 +157,15 @@ function FlowerExpress({ boxData, at, ui, useStore }) {
         tex2[kn] = texture;
       }
 
-      return new MeshPhysicalMaterial({
+      return new MeshStandardMaterial({
         transparent: true,
         roughness: 0.25,
         metalness: 1,
         bumpScale: 1,
         alphaTest: 0.5,
 
-        //
         ...tex2,
-        side: DoubleSide,
+        side: FrontSide,
       });
     };
 
@@ -135,8 +183,8 @@ function FlowerExpress({ boxData, at, ui, useStore }) {
       var easingU = bezier(...(boxData.bezierCurveU || val));
       var easingV = bezier(...(boxData.bezierCurveV || val));
 
-      let cpX = (radius, angle) => radius * Math.cos((Math.PI * angle) / 180);
-      let cpY = (radius, angle) => radius * Math.sin((Math.PI * angle) / 180);
+      // let cpX = (radius, angle) => radius * Math.cos((Math.PI * angle) / 180);
+      // let cpY = (radius, angle) => radius * Math.sin((Math.PI * angle) / 180);
 
       let vertex = new Object3D();
       let translate = new Object3D();
@@ -174,9 +222,16 @@ function FlowerExpress({ boxData, at, ui, useStore }) {
 
       param.translate(0, param.boundingBox.max.y / 2, 0);
 
-      // param
+      //
 
-      return param;
+      let cloned = param.clone();
+
+      cloned.index.array.reverse();
+
+      // cloned.scale(1, 1, 1);
+      //
+
+      return mergeGeometries([param, cloned], false);
     };
 
     let arr = [];
@@ -206,20 +261,70 @@ function FlowerExpress({ boxData, at, ui, useStore }) {
       }
     }
 
-    let geo = mergeGeometries(
-      arr.map((r) => r.geo),
-      true
-    );
+    // let geo = mergeGeometries(
+    //   arr.map((r) => r.geo),
+    //   true
+    // );
+
+    // return {
+    //   geo: geo,
+    //   mats: arr.map((r) => r.material),
+    // };
+
+    let meshes = arr.map((item, i) => {
+      return (
+        <group key={"flower-" + i}>
+          <primitive object={new Mesh(item.geo, item.material)}></primitive>
+        </group>
+      );
+    });
 
     return {
-      geo: geo,
-      mats: arr.map((r) => r.material),
+      meshes: meshes,
     };
   }, [boxData, texWrap, ui.height, ui.width]);
 
+  let scene = useThree((r) => r.scene);
+  useEffect(() => {
+    let api = {
+      download: () => {
+        //
+
+        let exp = new USDZExporter();
+
+        exp.parse(
+          scene.getObjectByName("flower"),
+          (resulltBuff) => {
+            let b = new Blob([resulltBuff], {
+              type: "vnd.usd+zip",
+            });
+            let url = URL.createObjectURL(b);
+            let an = document.createElement("a");
+            an.href = url;
+            an.download = "AR-Flower.usdz";
+            an.click();
+          },
+          (err) => {
+            console.log(err);
+          },
+          {
+            ar: { anchoring: "plane", planeAnchoring: { alignment: "any" } },
+            quickLookCompatible: true,
+            // includeAnchoringProperties: true,
+            // maxTextureSize: 2048,
+          }
+        );
+        // sceneTF
+      },
+    };
+    onReady(api);
+  }, [scene, onReady]);
   return (
     <>
-      <mesh scale={5} geometry={geo} material={mats}></mesh>
+      <group name="flower">
+        {meshes}
+        {/* <mesh scale={5} geometry={geo} material={mats}></mesh> */}
+      </group>
     </>
   );
 }
