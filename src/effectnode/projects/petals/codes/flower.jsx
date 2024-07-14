@@ -143,7 +143,7 @@ function FlowerExpress({ boxData, at, ui, useStore, onReady }) {
     bumpMap: files[ui.bump],
   });
 
-  let texWrap = useMemo(() => {
+  let texGroup = useMemo(() => {
     return tex;
   }, []);
 
@@ -158,8 +158,8 @@ function FlowerExpress({ boxData, at, ui, useStore, onReady }) {
       let idY = y;
 
       let tex2 = {};
-      for (let kn in texWrap) {
-        let texture = texWrap[kn].clone();
+      for (let kn in texGroup) {
+        let texture = texGroup[kn].clone();
         if (kn === "map") {
           texture.colorSpace = SRGBColorSpace;
         }
@@ -293,7 +293,7 @@ function FlowerExpress({ boxData, at, ui, useStore, onReady }) {
     return {
       meshes: meshes,
     };
-  }, [boxData, texWrap, ui.height, ui.width]);
+  }, [boxData, texGroup, ui.height, ui.width]);
 
   let scene = useThree((r) => r.scene);
   useEffect(() => {
