@@ -152,8 +152,8 @@ function FlowerExpress({ boxData, at, ui, useStore }) {
 
         translate.rotation.y = Math.PI * -0.5;
         translate.position.z = 1;
-        translate.rotation.x = 0.5 * Math.PI;
-        translate.rotation.z = 0.4 * Math.PI;
+        // translate.rotation.x = 0.5 * Math.PI;
+        // translate.rotation.z = 0.5 * Math.PI;
 
         translate.add(vertex);
         rotate.add(translate);
@@ -168,7 +168,7 @@ function FlowerExpress({ boxData, at, ui, useStore }) {
         output.applyAxisAngle(new Vector3(0, 1, 0), progRings * Math.PI * 2.0);
       };
 
-      let param = new ParametricGeometry(fnc, 20, 20);
+      let param = new ParametricGeometry(fnc, 25, 25);
 
       param.computeBoundingBox();
 
