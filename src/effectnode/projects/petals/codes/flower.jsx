@@ -152,6 +152,8 @@ function FlowerExpress({ boxData, at, ui, useStore }) {
 
         translate.rotation.y = Math.PI * -0.5;
         translate.position.z = 1;
+        translate.rotation.x = 0.5 * Math.PI;
+        translate.rotation.z = 0.4 * Math.PI;
 
         translate.add(vertex);
         rotate.add(translate);
@@ -198,7 +200,7 @@ function FlowerExpress({ boxData, at, ui, useStore }) {
           //
           material: getMaterial({
             x: 0,
-            y: 0,
+            y: eachRing % 3,
           }),
         });
       }
