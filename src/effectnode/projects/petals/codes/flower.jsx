@@ -121,7 +121,7 @@ function Content({ boxData, ui, useStore, io, onReady = () => {} }) {
 }
 
 function FlowerExpress({ boxData, at, ui, useStore, onReady }) {
-  console.log(boxData);
+  // console.log(boxData);
 
   let files = useStore((r) => r.files) || {};
 
