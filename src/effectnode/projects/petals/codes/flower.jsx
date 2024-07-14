@@ -1,6 +1,7 @@
 import { Environment, OrbitControls, useTexture } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useMemo } from "react";
+import { Matrix4, Object3D } from "three";
 import {
   CatmullRomCurve3,
   DoubleSide,
@@ -9,47 +10,51 @@ import {
 } from "three";
 import { ParametricGeometry } from "three/examples/jsm/geometries/ParametricGeometry";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils";
-import { useStore } from "zustand";
+import BezierEditor from "bezier-easing-editor";
+import bezier from "bezier-easing";
 
-export function ToolBox({ useStore, ui }) {
+export function ToolBox({ boxData, saveBoxData, useStore, ui }) {
   let files = useStore((r) => r.files);
   return (
     <>
-      <Canvas>
-        <Environment
-          background
-          files={[files[`/hdr/greenwich_park_02_1k.hdr`]]}
-        ></Environment>
-        <Content useStore={useStore} ui={ui}></Content>
-        <OrbitControls makeDefault object-position={[0, 5, 10]}></OrbitControls>
-      </Canvas>
+      <BezierEditor
+        defaultValue={[
+          0.6895306859205776, 0.058374999999999955, 0.851985559566787, 0.338375,
+        ]}
+        onChange={(value) => {
+          boxData.bezierCurve = value;
+
+          saveBoxData();
+        }}
+      />
     </>
   );
 }
-export const Content = ({ useStore, ui }) => {
-  return (
-    <Suspense fallback={null}>
-      <FlowerExpress ui={ui} useStore={useStore}></FlowerExpress>
-    </Suspense>
-  );
-};
 
-export function Runtime({ ui, useStore, io }) {
+export function Runtime({ boxData, ui, useStore, io }) {
   let Insert3D = useStore((r) => r.Insert3D) || (() => null);
 
   return (
     <>
       <Insert3D>
         <Suspense fallback={null}>
-          <FlowerExpress ui={ui} useStore={useStore}></FlowerExpress>
+          <FlowerExpress
+            boxData={boxData}
+            at={"runtime"}
+            ui={ui}
+            useStore={useStore}
+          ></FlowerExpress>
         </Suspense>
       </Insert3D>
     </>
   );
 }
 
-function FlowerExpress({ ui, useStore }) {
+function FlowerExpress({ boxData, at, ui, useStore }) {
+  console.log(boxData);
+
   let files = useStore((r) => r.files) || {};
+
   let tex = useTexture({
     aoMap: files[ui.ao],
     map: files[ui.base],
@@ -60,113 +65,26 @@ function FlowerExpress({ ui, useStore }) {
     bumpMap: files[ui.bump],
   });
 
-  var cpX = (radius, angle) => radius * Math.cos((Math.PI * 1 * angle) / 180);
-  var cpY = (radius, angle) => radius * Math.sin((Math.PI * 1 * angle) / 180);
-
-  let curveBackbone = useMemo(() => {
-    let pts = [
-      //
-      new Vector3(0, 0, 0),
-      new Vector3(0.5, 1, 0),
-      new Vector3(1.5, 2, 0),
-      new Vector3(3, 3, 0),
-    ];
-
-    let curveBackbone = new CatmullRomCurve3(pts, false, "chordal");
-
-    return curveBackbone;
+  let texWrap = useMemo(() => {
+    return tex;
   }, []);
 
-  let curveBowl = useMemo(() => {
-    let pts = [
-      //
-      new Vector3(0, 0, 0),
-      new Vector3(0.5, 1, 0),
-      new Vector3(1.5, 2, 0),
-      new Vector3(3, 3, 0),
-      new Vector3(1.5, 2, 0),
-      new Vector3(0.5, 1, 0),
-      new Vector3(0, 0, 0),
-    ];
+  let cpX = (radius, angle) => radius * Math.cos((Math.PI * angle) / 180);
+  let cpY = (radius, angle) => radius * Math.sin((Math.PI * angle) / 180);
 
-    let curveBowl = new CatmullRomCurve3(pts, false, "chordal");
+  // let eachAngle = ui.useSet("eachAngle", 0.2);
 
-    return curveBowl;
-  }, []);
+  // console.log(at, eachAngle);
 
+  //
   let { geo, mats } = useMemo(() => {
-    let getOneGeo = ({ eachPetal, totalPetals, eachRing, totalRings }) => {
-      let progRings = eachRing / totalRings;
-
-      let petalAngle = (eachPetal / totalPetals) * 3.141592 * 2.0;
-
-      let scale = Math.pow(eachRing / totalRings, 1);
-
-      let temp = new Vector3();
-      let init = new Vector3();
-
-      let backboneU = new Vector3();
-      let backboneV = new Vector3();
-
-      let bowlU = new Vector3();
-      let bowlV = new Vector3();
-      let fnc = (u, v, output) => {
-        curveBackbone.getPointAt(u, backboneU);
-        curveBackbone.getPointAt(v, backboneV);
-
-        curveBowl.getPointAt(u, bowlU);
-        curveBowl.getPointAt(v, bowlV);
-
-        //
-
-        init.set(u * 2.0 - 1.0, v * 2.0 - 1.0, 0);
-
-        //
-
-        temp.copy(init);
-
-        temp.z += cpY(ui.cruvePetal, u * 180);
-
-        let wrap = 0.7;
-
-        temp.z += Math.sin(v * Math.PI * wrap);
-
-        temp.multiplyScalar(scale);
-
-        temp.applyAxisAngle(new Vector3(1, 0, 0), progRings * 0.1);
-
-        temp.y += progRings * 0.5;
-
-        temp.applyAxisAngle(new Vector3(1, 0, 0), progRings * 0.3);
-
-        temp.z += -0.5 * progRings;
-
-        temp.applyAxisAngle(new Vector3(0, 1, 0), petalAngle);
-
-        temp.y *= 1.5;
-
-        temp.multiplyScalar(progRings);
-
-        temp.y -= progRings * 0.5;
-
-        output.copy(temp);
-      };
-
-      let param = new ParametricGeometry(fnc, 25, 25);
-      // param.center();
-      // param.computeBoundingSphere();
-      // param.translate(0, 0, radius * 3);
-      // param.rotateY(petalAngle);
-
-      return param;
-    };
     let getMaterial = ({ x = 2, y = 2 }) => {
       let idX = x;
       let idY = y;
 
       let tex2 = {};
-      for (let kn in tex) {
-        let texture = tex[kn].clone();
+      for (let kn in texWrap) {
+        let texture = texWrap[kn].clone();
         texture.repeat.set(1 / ui.width, 1 / ui.height);
         texture.offset.set(idX / ui.width, idY / ui.height);
         tex2[kn] = texture;
@@ -178,18 +96,70 @@ function FlowerExpress({ ui, useStore }) {
         metalness: 1,
         bumpScale: 1,
         alphaTest: 0.5,
+
+        //
         ...tex2,
         side: DoubleSide,
       });
     };
 
+    let getOneGeo = ({ eachPetal, totalPetals, eachRing, totalRings }) => {
+      let progRings = eachRing / totalRings;
+      let progPetla = eachPetal / totalPetals;
+      let petalAngle = progPetla * 3.141592 * 2.0;
+
+      let init = new Vector3();
+
+      var easing = bezier(...boxData.bezierCurve);
+
+      let fnc = (u, v, output = new Vector3()) => {
+        let vertex = new Object3D();
+        let translate = new Object3D();
+        let rotate = new Object3D();
+        let scale = new Object3D();
+
+        init.set(u * 2.0 - 1.0, v * 2.0 - 1.0, 0);
+        vertex.position.copy(init);
+
+        vertex.position.z = easing(u) * 2.0 - 1.0;
+        vertex.position.z *= easing(v) * 2.0 - 1.0;
+
+        translate.rotation.y = Math.PI * -0.5;
+        translate.position.z = 1;
+
+        translate.add(vertex);
+        rotate.add(translate);
+        scale.add(rotate);
+
+        rotate.rotation.y = petalAngle;
+
+        scale.scale.setScalar(progRings);
+
+        vertex.getWorldPosition(output);
+
+        output.applyAxisAngle(new Vector3(0, 1, 0), progRings * Math.PI * 2.0);
+      };
+
+      let param = new ParametricGeometry(fnc, 15, 15);
+
+      param.computeBoundingBox();
+
+      param.translate(0, param.boundingBox.max.y / 2, 0);
+
+      // param
+
+      return param;
+    };
+
     let arr = [];
 
-    let totalRings = 7;
+    let totalRings = 6;
     for (let eachRing = 0; eachRing < totalRings; eachRing++) {
-      let totalPetals = 3 + eachRing / 1.5;
+      let totalPetals = 5;
 
       for (let eachPetal = 0; eachPetal < totalPetals; eachPetal++) {
+        //
+
         arr.push({
           //
           geo: getOneGeo({
@@ -201,8 +171,8 @@ function FlowerExpress({ ui, useStore }) {
 
           //
           material: getMaterial({
-            x: (eachRing + 2) % 1,
-            y: (eachPetal + 3) % 1,
+            x: 0,
+            y: 0,
           }),
         });
       }
@@ -212,13 +182,12 @@ function FlowerExpress({ ui, useStore }) {
       arr.map((r) => r.geo),
       true
     );
+
     return {
       geo: geo,
       mats: arr.map((r) => r.material),
     };
-  }, [curveBackbone, curveBowl, tex, ui.height, ui.radius, ui.width]);
-  //
-  //
+  }, [boxData.bezierCurve, texWrap, ui.height, ui.width]);
 
   return (
     <>

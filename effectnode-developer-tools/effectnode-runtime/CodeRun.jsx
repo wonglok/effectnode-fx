@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { getID } from "./tools/getID";
 import { create } from "zustand";
+import md5 from "md5";
 
 export function CodeRun({
   Algorithm = () => null,
@@ -68,60 +69,66 @@ export function CodeRun({
           settings: [...useStore.getState().settings],
         });
       },
-      // provide: ({
-      //   label = "objectName",
-      //   type = "text",
-      //   defaultValue,
-      //   ...config
-      // }) => {
-      //   //
-      //   if (!["text", "range", "color", "number"].includes(type)) {
-      //     throw new Error("not supported type: " + type);
-      //   }
-      //   if (type === "number") {
-      //     type = "range";
-      //   }
+      useSet: (
+        label,
+        defaultValue = 0,
+        { type = "range", ...config } = { type: "range", min: -1, max: 1 }
+      ) => {
+        let [value, setValue] = useState(defaultValue);
 
-      //   let settings = useStore.getState().settings;
-      //   let setting = settings.find((r) => r.nodeID === nodeOne?._id);
-      //   if (!setting.data.some((r) => r.label === label)) {
-      //     let entry = {
-      //       _id: `${md5(getID())}`,
-      //       label: `${label}`,
-      //       type: `${type}`,
-      //       value: defaultValue,
-      //       ...config,
-      //     };
-      //     setting.data.push(entry);
-      //   }
+        useEffect(() => {
+          // //
+          if (!["text", "range", "color", "number"].includes(type)) {
+            throw new Error("not supported type: " + type);
+          }
 
-      //   let data = setting.data.find((r) => r.label === label);
-      //   let output = {
-      //     value: data.value,
-      //     onChange: (fnc) => {
-      //       return useStore.subscribe(() => {
-      //         let data = setting.data.find((r) => r.label === label);
-      //         output.value = data.value;
-      //         fnc(data.value);
-      //       });
-      //     },
-      //   };
+          let finalType = type;
+          if (finalType === "number") {
+            finalType = "range";
+          }
 
-      //   useStore.subscribe(() => {
-      //     let data = setting.data.find((r) => r.label === label);
-      //     output.value = data.value;
-      //   });
+          let useAdapter = useEditorStore || useStore;
 
-      //   setTimeout(() => {
-      //     useStore.setState({
-      //       settings: JSON.parse(JSON.stringify(useStore.getState().settings)),
-      //     });
-      //   });
+          let tt = setInterval(() => {
+            let settings = useAdapter.getState().settings;
+            if (settings) {
+              clearInterval(tt);
+              let setting = settings.find((r) => r.nodeID === nodeID);
+              if (setting && !setting.data.some((r) => r.label === label)) {
+                let entry = {
+                  _id: `${md5(getID())}`,
+                  label: `${label}`,
+                  type: `${finalType}`,
+                  value: defaultValue,
+                  ...config,
+                };
+                setting.data.push(entry);
 
-      //   return output;
-      // },
+                //
+                useAdapter.setState({
+                  settings: JSON.parse(
+                    JSON.stringify(useAdapter.getState().settings)
+                  ),
+                });
+              }
+
+              let data = setting.data.find((r) => r.label === label);
+
+              setValue(data.value);
+              useAdapter.subscribe(() => {
+                let data = setting.data.find((r) => r.label === label);
+                setValue(data.value);
+              });
+            }
+          }, 0);
+
+          return () => {};
+        }, [config, defaultValue, label, type]);
+
+        return value;
+      },
     };
-  }, [nodeID, onClean, useStore]);
+  }, [nodeID, onClean, useEditorStore, useStore]);
 
   if (setting && setting?.data) {
     for (let userInput of setting.data) {
@@ -226,20 +233,24 @@ export function CodeRun({
         }
       },
 
+      tt: 0,
       saveBoxData: () => {
         if (mode === "toolbox") {
           console.log("Saving in Toolbox Runtime");
           let diskSettings = useEditorStore.getState().settings;
           let diskSetting = diskSettings.find((r) => r.nodeID === nodeID);
 
-          useEditorStore.setState({
-            settings: diskSettings.map((r) => {
-              if (r.nodeID === nodeID) {
-                return diskSetting;
-              }
-              return r;
-            }),
-          });
+          clearTimeout(eAPI.tt);
+          eAPI.tt = setTimeout(() => {
+            useEditorStore.setState({
+              settings: diskSettings.map((r) => {
+                if (r.nodeID === nodeID) {
+                  return diskSetting;
+                }
+                return r;
+              }),
+            });
+          }, 100);
         }
         if (mode === "runtime") {
           console.log("cant saveBoxData in runtime");

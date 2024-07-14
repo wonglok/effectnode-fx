@@ -164,24 +164,6 @@
           "value": "/flower-petals/Atlas-347-A_Opacity.jpg"
         },
         {
-          "_id": "_zestor0_",
-          "label": "x",
-          "type": "range",
-          "min": 0,
-          "max": 3,
-          "step": 1,
-          "value": 1
-        },
-        {
-          "_id": "_diq5m7n_",
-          "label": "y",
-          "type": "range",
-          "min": 0,
-          "max": 3,
-          "step": 1,
-          "value": 0
-        },
-        {
           "_id": "_28emb4j_",
           "label": "roughness",
           "type": "files",
@@ -227,11 +209,26 @@
           "min": 0,
           "max": 1,
           "step": 0.01,
-          "value": 0.6900000000000001
+          "value": 0.5
+        },
+        {
+          "_id": "44b1301b4756aef62685e76fdadcb36b",
+          "label": "eachAngle",
+          "type": "range",
+          "value": 0.49999999999999994,
+          "min": -1,
+          "max": 1
         }
       ],
       "title": "flower",
-      "metaData": {}
+      "metaData": {
+        "bezierCurve": [
+          0.7725631768953068,
+          0.258375,
+          0.8592057761732852,
+          0.43837499999999996
+        ]
+      }
     }
   ],
   "graph": {
@@ -315,9 +312,9 @@
         "_id": "_ck2nyne_fksh47i",
         "title": "light",
         "position": [
-          -1.9946500086157533,
+          -1.8500705011896106,
           0,
-          0.04241142673582638
+          -0.5828979347682443
         ],
         "inputs": [
           {
@@ -463,9 +460,9 @@
         "_id": "_5wdrytx_",
         "title": "flower",
         "position": [
-          1.4648168150024736,
+          0.3261976163776727,
           0,
-          0.5886994480798945
+          -0.42198171296125064
         ],
         "inputs": [
           {
