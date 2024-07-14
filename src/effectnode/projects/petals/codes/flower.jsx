@@ -8,6 +8,7 @@ import {
   Mesh,
   MeshStandardMaterial,
   Object3D,
+  SRGBColorSpace,
 } from "three";
 import { CatmullRomCurve3, DoubleSide, Vector3 } from "three";
 import { ParametricGeometry } from "three/examples/jsm/geometries/ParametricGeometry";
@@ -18,11 +19,14 @@ import bezier from "bezier-easing";
 
 export function ToolBox({ boxData, saveBoxData, useStore, ui, io }) {
   let files = useStore((r) => r.files);
+
+  let tt0, tt1;
   return (
     <>
       <div className="w-full h-full overflow-scroll">
-        <div className="w-full p-5">
+        <div className="w-full">
           <button
+            className=""
             onClick={() => {
               //
               useStore.getState().api.download();
@@ -57,31 +61,35 @@ export function ToolBox({ boxData, saveBoxData, useStore, ui, io }) {
 
         <div>boxData.bezierCurveU</div>
         <BezierEditor
-          value={
+          defaultValue={
             boxData.bezierCurveU || [
               0.6895306859205776, 0.058374999999999955, 0.851985559566787,
               0.338375,
             ]
           }
           onChange={(value) => {
-            boxData.bezierCurveU = value;
-
-            saveBoxData();
+            clearTimeout(tt0);
+            tt0 = setTimeout(() => {
+              boxData.bezierCurveU = value;
+              saveBoxData();
+            }, 0);
           }}
         />
 
         <div>boxData.bezierCurveV</div>
         <BezierEditor
-          value={
+          defaultValue={
             boxData.bezierCurveV || [
               0.6895306859205776, 0.058374999999999955, 0.851985559566787,
               0.338375,
             ]
           }
           onChange={(value) => {
-            boxData.bezierCurveV = value;
-
-            saveBoxData();
+            clearTimeout(tt0);
+            tt0 = setTimeout(() => {
+              boxData.bezierCurveV = value;
+              saveBoxData();
+            }, 0);
           }}
         />
       </div>
@@ -152,6 +160,9 @@ function FlowerExpress({ boxData, at, ui, useStore, onReady }) {
       let tex2 = {};
       for (let kn in texWrap) {
         let texture = texWrap[kn].clone();
+        if (kn === "map") {
+          texture.colorSpace = SRGBColorSpace;
+        }
         texture.repeat.set(1 / ui.width, 1 / ui.height);
         texture.offset.set(idX / ui.width, idY / ui.height);
         tex2[kn] = texture;

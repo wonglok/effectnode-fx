@@ -250,7 +250,7 @@ export function CodeRun({
                 return r;
               }),
             });
-          }, 100);
+          }, 300);
         }
         if (mode === "runtime") {
           console.log("cant saveBoxData in runtime");
