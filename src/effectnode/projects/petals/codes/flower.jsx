@@ -1,29 +1,38 @@
-import {
-  OrbitControls,
-  PerspectiveCamera,
-  Plane,
-  useTexture,
-} from "@react-three/drei";
+import { Environment, OrbitControls, useTexture } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
 import { Suspense, useMemo } from "react";
 import {
-  BufferGeometry,
   CatmullRomCurve3,
   DoubleSide,
-  Matrix4,
   MeshPhysicalMaterial,
   Vector3,
 } from "three";
-import {
-  MeshPhysicalNodeMaterial,
-  positionLocal,
-  positionWorld,
-  tslFn,
-} from "three/examples/jsm/nodes/Nodes";
 import { ParametricGeometry } from "three/examples/jsm/geometries/ParametricGeometry";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils";
-export function ToolBox({}) {
-  return <>Flower</>;
+import { useStore } from "zustand";
+
+export function ToolBox({ useStore, ui }) {
+  let files = useStore((r) => r.files);
+  return (
+    <>
+      <Canvas>
+        <Environment
+          background
+          files={[files[`/hdr/greenwich_park_02_1k.hdr`]]}
+        ></Environment>
+        <Content useStore={useStore} ui={ui}></Content>
+        <OrbitControls makeDefault object-position={[0, 5, 10]}></OrbitControls>
+      </Canvas>
+    </>
+  );
 }
+export const Content = ({ useStore, ui }) => {
+  return (
+    <Suspense fallback={null}>
+      <FlowerExpress ui={ui} useStore={useStore}></FlowerExpress>
+    </Suspense>
+  );
+};
 
 export function Runtime({ ui, useStore, io }) {
   let Insert3D = useStore((r) => r.Insert3D) || (() => null);
@@ -32,14 +41,14 @@ export function Runtime({ ui, useStore, io }) {
     <>
       <Insert3D>
         <Suspense fallback={null}>
-          <Loader ui={ui} useStore={useStore}></Loader>
+          <FlowerExpress ui={ui} useStore={useStore}></FlowerExpress>
         </Suspense>
       </Insert3D>
     </>
   );
 }
 
-function Loader({ ui, useStore }) {
+function FlowerExpress({ ui, useStore }) {
   let files = useStore((r) => r.files) || {};
   let tex = useTexture({
     aoMap: files[ui.ao],
@@ -51,10 +60,10 @@ function Loader({ ui, useStore }) {
     bumpMap: files[ui.bump],
   });
 
-  //
   var cpX = (radius, angle) => radius * Math.cos((Math.PI * 1 * angle) / 180);
   var cpY = (radius, angle) => radius * Math.sin((Math.PI * 1 * angle) / 180);
-  let curve = useMemo(() => {
+
+  let curveBackbone = useMemo(() => {
     let pts = [
       //
       new Vector3(0, 0, 0),
@@ -63,58 +72,91 @@ function Loader({ ui, useStore }) {
       new Vector3(3, 3, 0),
     ];
 
-    let curve = new CatmullRomCurve3(pts, false, "catmullrom");
+    let curveBackbone = new CatmullRomCurve3(pts, false, "chordal");
 
-    return curve;
+    return curveBackbone;
+  }, []);
+
+  let curveBowl = useMemo(() => {
+    let pts = [
+      //
+      new Vector3(0, 0, 0),
+      new Vector3(0.5, 1, 0),
+      new Vector3(1.5, 2, 0),
+      new Vector3(3, 3, 0),
+      new Vector3(1.5, 2, 0),
+      new Vector3(0.5, 1, 0),
+      new Vector3(0, 0, 0),
+    ];
+
+    let curveBowl = new CatmullRomCurve3(pts, false, "chordal");
+
+    return curveBowl;
   }, []);
 
   let { geo, mats } = useMemo(() => {
-    let getOneGeo = ({ petalID, totalRings, ring }) => {
-      let wrap = Math.PI * (0.3 - (0.15 * ring) / totalRings) * 0.8;
-      let petalsPerRing = 5 + ring;
+    let getOneGeo = ({ eachPetal, totalPetals, eachRing, totalRings }) => {
+      let progRings = eachRing / totalRings;
 
-      let radius = ring * 0.3;
-      let petalAngle =
-        (ring / totalRings) * Math.PI * 2 +
-        0.5 +
-        (petalID / petalsPerRing) * 3.141592 * 2.0;
+      let petalAngle = (eachPetal / totalPetals) * 3.141592 * 2.0;
 
-      let scale = Math.pow(ring / totalRings, 1);
+      let scale = Math.pow(eachRing / totalRings, 1);
 
       let temp = new Vector3();
       let init = new Vector3();
 
-      let ptInter = new Vector3();
+      let backboneU = new Vector3();
+      let backboneV = new Vector3();
+
+      let bowlU = new Vector3();
+      let bowlV = new Vector3();
       let fnc = (u, v, output) => {
+        curveBackbone.getPointAt(u, backboneU);
+        curveBackbone.getPointAt(v, backboneV);
+
+        curveBowl.getPointAt(u, bowlU);
+        curveBowl.getPointAt(v, bowlV);
+
+        //
+
         init.set(u * 2.0 - 1.0, v * 2.0 - 1.0, 0);
 
-        curve.getPointAt(v, ptInter);
+        //
 
         temp.copy(init);
 
-        temp.z =
-          cpY(0.5, (init.x * 0.5 + 0.5) * 180) +
-          cpX(0.5, (init.y * 0.5 + 0.5) * 180);
+        temp.z += cpY(ui.cruvePetal, u * 180);
 
-        temp.z += Math.sin((temp.y * 0.5 + 0.5) * 3.141592 * wrap * 1.4);
+        let wrap = 0.7;
 
-        temp.z += ptInter.y;
-
-        temp.applyAxisAngle(new Vector3(1, 0, 0).normalize(), -0.5 * v);
-
-        // temp.z += radius;
-        temp.applyAxisAngle(new Vector3(0, 1, 0), petalAngle);
+        temp.z += Math.sin(v * Math.PI * wrap);
 
         temp.multiplyScalar(scale);
+
+        temp.applyAxisAngle(new Vector3(1, 0, 0), progRings * 0.1);
+
+        temp.y += progRings * 0.5;
+
+        temp.applyAxisAngle(new Vector3(1, 0, 0), progRings * 0.3);
+
+        temp.z += -0.5 * progRings;
+
+        temp.applyAxisAngle(new Vector3(0, 1, 0), petalAngle);
+
+        temp.y *= 1.5;
+
+        temp.multiplyScalar(progRings);
+
+        temp.y -= progRings * 0.5;
 
         output.copy(temp);
       };
 
-      let param = new ParametricGeometry(fnc, 50, 50);
-
+      let param = new ParametricGeometry(fnc, 25, 25);
       // param.center();
       // param.computeBoundingSphere();
-      // param.translate(0, param.boundingSphere.radius * 0.5, 0);
+      // param.translate(0, 0, radius * 3);
+      // param.rotateY(petalAngle);
 
       return param;
     };
@@ -144,19 +186,23 @@ function Loader({ ui, useStore }) {
     let arr = [];
 
     let totalRings = 7;
-    for (let ring = 0; ring < totalRings; ring++) {
-      let petalsPerRing = 5 + ring;
+    for (let eachRing = 0; eachRing < totalRings; eachRing++) {
+      let totalPetals = 3 + eachRing / 1.5;
 
-      for (let petalID = 0; petalID < petalsPerRing; petalID++) {
+      for (let eachPetal = 0; eachPetal < totalPetals; eachPetal++) {
         arr.push({
+          //
           geo: getOneGeo({
-            petalID,
+            totalPetals,
+            eachPetal,
             totalRings,
-            ring,
+            eachRing,
           }),
+
+          //
           material: getMaterial({
-            x: 0,
-            y: 0,
+            x: (eachRing + 2) % 1,
+            y: (eachPetal + 3) % 1,
           }),
         });
       }
@@ -170,7 +216,7 @@ function Loader({ ui, useStore }) {
       geo: geo,
       mats: arr.map((r) => r.material),
     };
-  }, [curve, tex, ui.height, ui.width]);
+  }, [curveBackbone, curveBowl, tex, ui.height, ui.radius, ui.width]);
   //
   //
 
