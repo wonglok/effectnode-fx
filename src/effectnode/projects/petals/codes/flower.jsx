@@ -17,16 +17,37 @@ export function ToolBox({ boxData, saveBoxData, useStore, ui }) {
   let files = useStore((r) => r.files);
   return (
     <>
-      <BezierEditor
-        defaultValue={[
-          0.6895306859205776, 0.058374999999999955, 0.851985559566787, 0.338375,
-        ]}
-        onChange={(value) => {
-          boxData.bezierCurve = value;
+      <div className="w-full h-full overflow-scroll">
+        <div>boxData.bezierCurveU</div>
+        <BezierEditor
+          defaultValue={
+            boxData.bezierCurveU || [
+              0.6895306859205776, 0.058374999999999955, 0.851985559566787,
+              0.338375,
+            ]
+          }
+          onChange={(value) => {
+            boxData.bezierCurveU = value;
 
-          saveBoxData();
-        }}
-      />
+            saveBoxData();
+          }}
+        />
+
+        <div>boxData.bezierCurveV</div>
+        <BezierEditor
+          defaultValue={
+            boxData.bezierCurveV || [
+              0.6895306859205776, 0.058374999999999955, 0.851985559566787,
+              0.338375,
+            ]
+          }
+          onChange={(value) => {
+            boxData.bezierCurveV = value;
+
+            saveBoxData();
+          }}
+        />
+      </div>
     </>
   );
 }
@@ -107,22 +128,27 @@ function FlowerExpress({ boxData, at, ui, useStore }) {
 
       let init = new Vector3();
 
-      var easing = bezier(...boxData.bezierCurve);
+      let val = [
+        0.6895306859205776, 0.058374999999999955, 0.851985559566787, 0.338375,
+      ];
+
+      var easingU = bezier(...(boxData.bezierCurveU || val));
+      var easingV = bezier(...(boxData.bezierCurveV || val));
 
       let cpX = (radius, angle) => radius * Math.cos((Math.PI * angle) / 180);
       let cpY = (radius, angle) => radius * Math.sin((Math.PI * angle) / 180);
 
-      let fnc = (u, v, output = new Vector3()) => {
-        let vertex = new Object3D();
-        let translate = new Object3D();
-        let rotate = new Object3D();
-        let scale = new Object3D();
+      let vertex = new Object3D();
+      let translate = new Object3D();
+      let rotate = new Object3D();
+      let scale = new Object3D();
 
+      let fnc = (u, v, output = new Vector3()) => {
         init.set(u * 2.0 - 1.0, v * 2.0 - 1.0, 0);
         vertex.position.copy(init);
 
-        vertex.position.z = easing(u) * 2.0 - 1.0;
-        vertex.position.z *= easing(v) * 2.0 - 1.0;
+        vertex.position.z = easingU(u) * 2.0 - 1.0;
+        vertex.position.z *= easingV(v) * 2.0 - 1.0;
 
         translate.rotation.y = Math.PI * -0.5;
         translate.position.z = 1;
@@ -140,7 +166,7 @@ function FlowerExpress({ boxData, at, ui, useStore }) {
         output.applyAxisAngle(new Vector3(0, 1, 0), progRings * Math.PI * 2.0);
       };
 
-      let param = new ParametricGeometry(fnc, 15, 15);
+      let param = new ParametricGeometry(fnc, 20, 20);
 
       param.computeBoundingBox();
 
@@ -153,9 +179,9 @@ function FlowerExpress({ boxData, at, ui, useStore }) {
 
     let arr = [];
 
-    let totalRings = 6;
+    let totalRings = 7;
     for (let eachRing = 0; eachRing < totalRings; eachRing++) {
-      let totalPetals = 5;
+      let totalPetals = 7;
 
       for (let eachPetal = 0; eachPetal < totalPetals; eachPetal++) {
         //
@@ -187,7 +213,7 @@ function FlowerExpress({ boxData, at, ui, useStore }) {
       geo: geo,
       mats: arr.map((r) => r.material),
     };
-  }, [boxData.bezierCurve, texWrap, ui.height, ui.width]);
+  }, [boxData, texWrap, ui.height, ui.width]);
 
   return (
     <>
