@@ -69,9 +69,6 @@ function FlowerExpress({ boxData, at, ui, useStore }) {
     return tex;
   }, []);
 
-  let cpX = (radius, angle) => radius * Math.cos((Math.PI * angle) / 180);
-  let cpY = (radius, angle) => radius * Math.sin((Math.PI * angle) / 180);
-
   // let eachAngle = ui.useSet("eachAngle", 0.2);
 
   // console.log(at, eachAngle);
@@ -111,6 +108,9 @@ function FlowerExpress({ boxData, at, ui, useStore }) {
       let init = new Vector3();
 
       var easing = bezier(...boxData.bezierCurve);
+
+      let cpX = (radius, angle) => radius * Math.cos((Math.PI * angle) / 180);
+      let cpY = (radius, angle) => radius * Math.sin((Math.PI * angle) / 180);
 
       let fnc = (u, v, output = new Vector3()) => {
         let vertex = new Object3D();
