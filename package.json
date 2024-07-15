@@ -28,6 +28,8 @@
   },
   "devDependencies": {
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@langchain/community": "^0.2.18",
+    "@langchain/core": "^0.2.15",
     "@react-three/drei": "^9.107.0",
     "@react-three/fiber": "^8.16.8",
     "@react-three/postprocessing": "^2.16.2",
@@ -43,6 +45,7 @@
     "file-loader": "^6.2.0",
     "glslify-loader": "^2.0.0",
     "killport": "^1.0.2",
+    "langchain": "^0.2.9",
     "lottie-react": "^2.4.0",
     "lowdb": "^7.0.1",
     "lowdb-node": "^3.0.2",
