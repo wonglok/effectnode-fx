@@ -243,17 +243,33 @@ export default function Landing() {
                     </p>
 
                     <p className="mb-4">
-                      <img alt="slide" src={`/img/dash.png`} />
+                      <video
+                        loop
+                        muted
+                        controls={true}
+                        autoPlay
+                        className=" object-cover w-full h-full"
+                        src={`/docs/overall-thumb.mp4`}
+                      ></video>
+                      {/* <img alt="slide" src={`/img/dash.png`} /> */}
                     </p>
                   </div>
 
                   <div className="mx-auto w-full px-4 md:w-4/12">
                     <div className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded-lg bg-gray-700 shadow-lg">
-                      <img
+                      {/* <img
                         alt="..."
                         src="/img/node-editor.png"
                         className="w-full rounded-t-lg align-middle"
-                      />
+                      /> */}
+                      <video
+                        loop
+                        muted
+                        controls={false}
+                        autoPlay
+                        className="w-full rounded-t-lg align-middle"
+                        src={`/docs/nodes.mp4`}
+                      ></video>
                       <blockquote className="relative mb-4 p-8">
                         <svg
                           preserveAspectRatio="none"

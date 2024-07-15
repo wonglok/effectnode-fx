@@ -5,14 +5,52 @@ export function OneCard({ data }) {
   // console.log(data);
   //
 
+  let thumb = (
+    <img
+      alt=""
+      src={"/img/sakura.jpg"}
+      className="w-full h-full object-cover"
+    ></img>
+  );
+
+  let files = loadThumb({ projectName: `${data.title}` });
+
+  if (files["/thumb.png"]) {
+    thumb = (
+      <img
+        alt="thumbnail project"
+        src={files["/thumb.png"]}
+        className="w-full h-full object-cover"
+      ></img>
+    );
+  }
+  if (files["/thumb.mov"]) {
+    thumb = (
+      <video
+        muted
+        autoPlay
+        loop
+        className="w-full h-full object-cover"
+        src={files["/thumb.mov"]}
+      ></video>
+    );
+  }
+  if (files["/thumb.mp4"]) {
+    thumb = (
+      <video
+        muted
+        autoPlay
+        loop
+        className="w-full h-full object-cover"
+        src={files["/thumb.mp4"]}
+      ></video>
+    );
+  }
+
   return (
     <>
       <article className="inline-block cursor-default relative h-[400px] overflow-hidden rounded-lg shadow transition hover:shadow-lg">
-        <img
-          alt=""
-          src="/img/sakura.jpg"
-          className="w-full h-full object-cover"
-        ></img>
+        {thumb}
 
         <div className="absolute top-0  left-0 w-full h-full bg-gradient-to-t from-gray-900/60 to-gray-900/25"></div>
 
@@ -57,4 +95,27 @@ export function OneCard({ data }) {
       </article>
     </>
   );
+}
+
+export function loadThumb({ projectName }) {
+  let output = {};
+
+  let rr = require.context(
+    "src/effectnode/projects",
+    true,
+    /\/assets\/(.*).(png|jpg|hdr|jpeg|glb|fbx|exr|mp4|mov)$/,
+    "sync"
+  );
+
+  let list = rr.keys();
+
+  list.forEach((key) => {
+    if (key.startsWith("./") && key.includes(`/${projectName}/`)) {
+      let filePath = key.split("/assets")[1].toLowerCase();
+
+      output[filePath] = rr(key);
+    }
+  });
+
+  return output;
 }
