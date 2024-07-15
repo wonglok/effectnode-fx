@@ -282,6 +282,7 @@ export function WinGeneric({
   return (
     <>
       <div
+        className="mywindow"
         key={win._id + "win"}
         style={{
           position: "absolute",
