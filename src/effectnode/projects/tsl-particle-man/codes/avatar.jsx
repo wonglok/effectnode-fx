@@ -39,6 +39,7 @@ import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 //src/effectnode/projects/tsl-particle-man/assets/
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import { rand } from "../loklok/rand";
+import { Canvas } from "@react-three/fiber";
 
 export function ToolBox() {
   return <>ToolBox</>;
@@ -525,14 +526,12 @@ let setup = async ({
   let velNode = velocityBuffer.node.toAttribute();
   let posAttr = positionBuffer.node.toAttribute();
 
-  let colorNode = velNode.normalize().mul(0.5).add(0.5).mul(1.5);
+  let colorNode = velNode.normalize().mul(0.5).add(0.5).mul(1.25);
 
   let color3 = uniform(new Color(ui.baseColor || "#ff0000"));
   ui.on("baseColor", (value) => {
     color3.value.set(value);
   });
-
-  // console.log(color3);
 
   let opacity = uniform(1);
   particleMaterial.colorNode = vec4(
