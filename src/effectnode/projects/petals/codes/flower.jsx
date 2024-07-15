@@ -7,6 +7,7 @@ import {
   Matrix4,
   Mesh,
   MeshStandardMaterial,
+  NoColorSpace,
   Object3D,
   SRGBColorSpace,
 } from "three";
@@ -160,9 +161,8 @@ function FlowerExpress({ boxData, at, ui, useStore, onReady }) {
       let tex2 = {};
       for (let kn in texGroup) {
         let texture = texGroup[kn].clone();
-        if (kn === "map") {
-          texture.colorSpace = SRGBColorSpace;
-        }
+        texture.colorSpace = SRGBColorSpace;
+
         texture.repeat.set(1 / ui.width, 1 / ui.height);
         texture.offset.set(idX / ui.width, idY / ui.height);
         tex2[kn] = texture;
@@ -170,9 +170,9 @@ function FlowerExpress({ boxData, at, ui, useStore, onReady }) {
 
       return new MeshStandardMaterial({
         transparent: true,
-        roughness: 0.25,
-        metalness: 1,
-        bumpScale: 1,
+        roughness: 1,
+        metalness: 0,
+        bumpScale: 0,
         alphaTest: 0.5,
 
         ...tex2,
@@ -202,21 +202,24 @@ function FlowerExpress({ boxData, at, ui, useStore, onReady }) {
       let rotate = new Object3D();
       let scale = new Object3D();
 
+      translate.add(vertex);
+      rotate.add(translate);
+      scale.add(rotate);
+
       let fnc = (u, v, output = new Vector3()) => {
         init.set(u * 2.0 - 1.0, v * 2.0 - 1.0, 0);
         vertex.position.copy(init);
 
-        vertex.position.z = easingU(u) * 2.0 - 1.0;
-        vertex.position.z *= easingV(v) * 2.0 - 1.0;
+        vertex.position.z += easingU(u) * 2.0 - 1.0;
+        vertex.position.z += easingV(v) * 2.0 - 1.0;
 
-        translate.rotation.y = Math.PI * -0.5;
-        translate.position.z = 1;
+        // translate.rotation.x = Math.PI * 0.15;
+        // translate.rotation.z = Math.PI * -0.15;
+
+        translate.position.z = -0.5;
+
         // translate.rotation.x = 0.5 * Math.PI;
         // translate.rotation.z = 0.5 * Math.PI;
-
-        translate.add(vertex);
-        rotate.add(translate);
-        scale.add(rotate);
 
         rotate.rotation.y = petalAngle;
 
@@ -238,9 +241,6 @@ function FlowerExpress({ boxData, at, ui, useStore, onReady }) {
       let cloned = param.clone();
 
       cloned.index.array.reverse();
-
-      // cloned.scale(1, 1, 1);
-      //
 
       return mergeGeometries([param, cloned], false);
     };
