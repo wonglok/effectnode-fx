@@ -70,7 +70,9 @@
           "value": -2.0000000000000004
         }
       ],
-      "title": "edge"
+      "title": "edge",
+      "metaData": {},
+      "enableFullScreen": true
     },
     {
       "codeID": "_x027a1w_24c0grb",
@@ -250,9 +252,9 @@
         "_id": "_q77qs09_mwqkfse",
         "title": "mesh",
         "position": [
-          1.6209748803991144,
+          0.9230870967195051,
           0,
-          1.253523983829247
+          1.6385528672692422
         ],
         "inputs": [
           {
@@ -472,9 +474,9 @@
         "_id": "_x801t0d_2qm4x7k",
         "title": "color",
         "position": [
-          0.7200005008108574,
+          0.8651604353761556,
           0,
-          -0.48284184755976817
+          -0.38899231892461106
         ],
         "inputs": [
           {
@@ -560,5 +562,5 @@
       }
     ]
   },
-  "title": "ai-effect-node"
+  "title": "shader-ai-flow"
 }

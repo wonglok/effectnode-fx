@@ -317,7 +317,15 @@ export function Code({ win, useStore }) {
             className="w-full h-full overflow-hidden rounded-b"
           >
             <div className="flex w-full h-full">
-              <div className="h-full" style={{ width: `calc(100% - 300px)` }}>
+              <div
+                className="h-full"
+                style={{
+                  width:
+                    code && !code.enableFullScreen
+                      ? `calc(100% - 300px)`
+                      : "100%",
+                }}
+              >
                 <div className="w-full h-full code-window" id={`${win.nodeID}`}>
                   {/* {node?.title} */}
 
@@ -352,9 +360,11 @@ export function Code({ win, useStore }) {
               </div>
               <div
                 className="h-full border-l border-gray-400 bg-gray-400 overflow-scroll"
-                style={{ width: `calc(300px)` }}
+                style={{
+                  width: !code.enableFullScreen ? `calc(300px)` : "0px",
+                }}
               >
-                {code && (
+                {code && !code.enableFullScreen && (
                   <UserInputs
                     useStore={useStore}
                     graph={graph}

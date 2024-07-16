@@ -12,6 +12,7 @@ import fileUpload from "express-fileupload";
 import cors from "cors";
 import bodyParser from "body-parser";
 import FileController from "./api/controllers/FileController.mjs";
+// import { OllamaController } from "./ollama/OllamaController.mjs";
 
 const port = 3456;
 
@@ -35,6 +36,8 @@ app.use(bodyParser.json({ type: "application/*+json", limit: "100mb" }));
 app.use(bodyParser.text({ type: "text/html", limit: "100mb" }));
 
 new FileController(app, { path: "" });
+
+// new OllamaController({ app });
 
 // app.use(json({ limit: "999GB" }));
 

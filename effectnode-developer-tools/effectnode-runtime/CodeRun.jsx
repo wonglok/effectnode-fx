@@ -1,5 +1,5 @@
 // import md5 from "md5";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { getID } from "./tools/getID";
 import { create } from "zustand";
 import md5 from "md5";
@@ -253,7 +253,9 @@ export function CodeRun({
           }, 300);
         }
         if (mode === "runtime") {
-          console.log("cant saveBoxData in runtime");
+          if (process.env.NODE_ENV === "development") {
+            console.log("cant saveBoxData in runtime");
+          }
         }
       },
     };
@@ -262,12 +264,25 @@ export function CodeRun({
   }, [mode, nodeID]);
 
   //
+  let setToolboxFullScreen = useCallback(
+    (value) => {
+      if (mode === "toolbox") {
+        let diskSettings = useEditorStore.getState().settings;
+        let diskSetting = diskSettings.find((r) => r.nodeID === nodeID);
+
+        diskSetting.enableFullScreen = value;
+        extendAPI.saveBoxData();
+      }
+    },
+    [extendAPI, mode, nodeID, useEditorStore]
+  );
   //
   return (
     <>
       {io && socketMap && (
         <Algorithm
           //
+          setToolboxFullScreen={setToolboxFullScreen}
           files={files}
           nodeID={nodeID}
           onLoop={onLoop}
