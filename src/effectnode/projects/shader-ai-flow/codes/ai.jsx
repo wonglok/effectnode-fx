@@ -7,6 +7,7 @@ import { getTags } from "../ai/tags";
 import { pullModel } from "../ai/model";
 import { askGLSL } from "../ai/chat";
 import { Editor } from "@monaco-editor/react";
+import SplitPane, { Pane } from "split-pane-react";
 
 export function ToolBox({
   useStore,
@@ -28,6 +29,9 @@ export function ToolBox({
 
   let [editor, setEditor] = useState();
   let [monaco, setMonaco] = useState();
+  let [promptEditor, setPromptEditor] = useState();
+
+  //
   useEffect(() => {
     useStore.setState({
       screenAt: "pull-model",
@@ -73,7 +77,7 @@ export function ToolBox({
 
     setLogs([]);
     return pullModel({
-      name: "codellama",
+      name: "llama3",
       onMessage: ({ text }) => {
         //
         try {
@@ -90,7 +94,9 @@ export function ToolBox({
             setLogs((r) => {
               return [
                 ...r,
-                <div key={"_" + Math.random()}>{JSON.stringify(json)}</div>,
+                <div key={"_" + Math.random()} className=" whitespace-pre-wrap">
+                  {JSON.stringify(json, null, "  ")}
+                </div>,
               ];
             });
             setTimeout(() => {
@@ -114,9 +120,9 @@ export function ToolBox({
         setTimeout(() => {
           useStore.setState({
             screenAt: "generator",
-            activeModel: "codellama",
+            activeModel: "llama3",
           });
-          localStorage.setItem("haCodeLlamaCoder", "haCodeLlamaCoder");
+          localStorage.setItem("llama3_cache", "llama3_cache");
         }, 1500);
 
         console.log(r);
@@ -127,22 +133,21 @@ export function ToolBox({
     //
     let canWrite = true;
     //
-    console.log("shaderprompt");
-    //
-
-    let promptElement = document.querySelector("#shaderprompt");
+    let text = promptEditor.getValue();
 
     let fullResponse = "";
     askGLSL({
       modelName: activeModel,
       messages: [
-        {
-          role: "ai",
-          content: "I am a senior front end developer. i love helping others.",
-        },
+        // {
+        //   role: "ai",
+        //   content:
+        //     "I am a senior openl-gl graphics developer. i love helping others.",
+        // },
+        //
         {
           role: "user",
-          content: promptElement.value,
+          content: text,
         },
       ],
       onDone: () => {
@@ -160,21 +165,24 @@ export function ToolBox({
           });
           editor.setValue(fullResponse);
 
-          editor.revealLineInCenter(fullResponse.split("\n").length);
+          editor.revealLineInCenter(fullResponse.split("\n").length + 1);
 
           // genconsole.scrollTop = 99999999999999;
         }
       },
+    }).then(() => {
+      boxData.aiOutput = text;
+      saveBoxData();
     });
-  }, [activeModel, editor, useStore]);
+  }, [activeModel, boxData, editor, promptEditor, saveBoxData, useStore]);
 
   useEffect(() => {
     loadModel().then(({ ollamaOffline }) => {
       if (!ollamaOffline) {
-        if (localStorage.getItem("haCodeLlamaCoder") === "haCodeLlamaCoder") {
+        if (localStorage.getItem("llama3_cache") === "llama3_cache") {
           useStore.setState({
             screenAt: "generator",
-            activeModel: "codellama",
+            activeModel: "llama3",
           });
         } else {
           pullStarCoder().then(() => {
@@ -184,6 +192,16 @@ export function ToolBox({
       }
     });
   }, [loadModel, pullStarCoder, onGenerateAI, useStore]);
+
+  const [sizes, setSizes] = useState([100, "30%", "auto"]);
+
+  // const layoutCSS = {
+  //   height: "100%",
+  //   display: "flex",
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  // };
+  //
 
   return (
     <>
@@ -211,7 +229,7 @@ export function ToolBox({
                 <button
                   onClick={() => {
                     //
-                    // ollama pull codellama
+                    // ollama pull llama3
                     //
                     pullStarCoder();
                   }}
@@ -232,62 +250,64 @@ export function ToolBox({
           )}
           {screenAt === "generator" && activeModel && (
             <div className=" w-full h-full text-xs">
-              <div className="flex" style={{ height: `calc(120px)` }}>
-                <textarea
-                  placeholder={`
-rewrite and improve the following GLSL function code
+              <SplitPane split="horizontal" sizes={sizes} onChange={setSizes}>
+                <Pane minSize={50}>
+                  <div className="flex" style={{ height: `calc(100%)` }}>
+                    <Editor
+                      height={`100%`}
+                      defaultLanguage="markdown"
+                      defaultValue={`
+Improve and Complete the following openGL GLSL functions for three.js
 
-vec4 waterColorWithWavePattern(vec2 uv) {
-  float wave = sin(uv.x + time * 0.003141592) * 0.5 + 0.5; // generate a wave pattern with a frequency of 0.1 and an amplitude of 0.5
-  vec3 waterColor = vec3(wave, wave, wave); // create a color vector with the same value for all components
-  return vec4(waterColor, 1.0); // return the color vector with an alpha value of 1.0
+float perinNoise(in vec2 uv) {}
+float waterWavePulse(in vec2 uv, in float time) {
+    float wave = sin(uv.x * 0.1 * 200.0 + time * 0.003141592) * 0.5 + 0.5; 
+    return wave; 
 }
-`.trim()}
-                  defaultValue={`
-rewrite and improve the following GLSL function code
 
-vec4 waterColorWithWavePattern(vec2 uv) {
-  float wave = sin(uv.x + time * 0.003141592) * 0.5 + 0.5; // generate a wave pattern with a frequency of 0.1 and an amplitude of 0.5
-  vec3 waterColor = vec3(wave, wave, wave); // create a color vector with the same value for all components
-  return vec4(waterColor, 1.0); // return the color vector with an alpha value of 1.0
-}
-`.trim()}
-                  className="p-2 bg-gray-100 flex-grow"
-                  rows={1}
-                  id="shaderprompt"
-                ></textarea>
-                <button onClick={onGenerateAI} className="p-1 bg-gray-200">
-                  AI Shader Generation
-                </button>
-              </div>
+                  `.trim()}
+                      onMount={(editor, monaco) => {
+                        setPromptEditor(editor);
+
+                        editor.updateOptions({
+                          wordWrap: "on",
+                        });
+                      }}
+                      onChange={(text) => {}}
+                    ></Editor>
+
+                    <button onClick={onGenerateAI} className="p-1 bg-gray-200">
+                      AI Shader Generation
+                    </button>
+                  </div>
+                  <div className="h-[2px] bg-gray-400"></div>
+                </Pane>
+                <Pane minSize={50}>
+                  <div className="h-[2px] bg-gray-400"></div>
+                  <Editor
+                    height={`100%`}
+                    defaultLanguage="markdown"
+                    defaultValue={`${boxData.aiOutput || ""}`}
+                    onMount={(editor, monaco) => {
+                      setEditor(editor);
+                      setMonaco(monaco);
+
+                      editor.updateOptions({
+                        wordWrap: "on",
+                      });
+                    }}
+                    onChange={(text) => {
+                      boxData.aiOutput = text;
+                      saveBoxData();
+                    }}
+                  ></Editor>
+                </Pane>
+              </SplitPane>
+
               <div
                 className=" px-2 pb-2  select-text"
-                style={{ height: `calc(100% - 120px)` }}
+                style={{ height: `calc(100% - 50%)` }}
               >
-                <Editor
-                  height={`100%`}
-                  defaultLanguage="markdown"
-                  defaultValue={`${boxData.aiOutput || ""}`}
-                  onMount={(editor, monaco) => {
-                    setEditor(editor);
-                    setMonaco(monaco);
-
-                    editor.updateOptions({
-                      wordWrap: "wordWrapColumn",
-                      wordWrapColumn: 60,
-                    });
-                  }}
-                  onChange={(text) => {
-                    boxData.aiOutput = text;
-
-                    saveBoxData();
-                    // code.code = text;
-                    // useStore.setState({
-                    //   settings: [...settings],
-                    // });
-                  }}
-                ></Editor>
-
                 {/* <pre
                   id="genconsole"
                   className="w-full h-full overflow-scroll whitespace-pre-wrap"
@@ -332,177 +352,12 @@ vec4 waterColorWithWavePattern(vec2 uv) {
               </div>
             </>
           )}
-
-          {/* <Editor
-          height={`100%`}
-          defaultLanguage="javascript"
-          defaultValue={`${code.code}`}
-          onMount={(editor, monaco) => {
-            setEditor(editor);
-            setMonaco(monaco);
-          }}
-          onChange={(text) => {
-            code.code = text;
-
-            useStore.setState({
-              settings: [...settings],
-            });
-          }}
-        ></Editor> */}
-
-          {/*  */}
-          {/*  */}
-          {/*  */}
         </div>
       )}
     </>
   );
 }
 
-export function Runtime({ ui, io, useStore, onLoop }) {
-  let Insert3D = useStore((r) => r.Insert3D) || (() => null);
-
-  let ref = useRef();
-
-  useEffect(() => {
-    let clock = new Clock();
-    return onLoop(() => {
-      let dt = clock.getDelta();
-
-      if (ref.current) {
-        ref.current.rotation.y += dt * ui.speed;
-      }
-    });
-  }, [onLoop, ui]);
-
-  let [color, setColor] = useState("#ffffff");
-
-  useEffect(() => {
-    io.in(0, (color) => {
-      setColor(color);
-    });
-  }, [ui, io]);
-
-  return (
-    <>
-      <Insert3D>
-        <group ref={ref}>
-          <mesh position={[0, 0, 0]}>
-            <boxGeometry></boxGeometry>
-            <meshBasicMaterial
-              color={color}
-              key={"_" + Math.random()}
-              onBeforeCompile={(shader) => {
-                shader.uniforms.time = { value: 0 };
-                setInterval(() => {
-                  shader.uniforms.time = { value: window.performance.now() };
-                });
-
-                shader.vertexShader = shader.vertexShader.replace(
-                  "#include <color_pars_vertex>",
-                  `
-#if defined( USE_COLOR_ALPHA )
-	varying vec4 vColor;
-#elif defined( USE_COLOR ) || defined( USE_INSTANCING_COLOR ) || defined( USE_BATCHING_COLOR )
-	varying vec3 vColor;
-#endif 
-
-varying vec2 myUV;
-
-                  `
-                );
-
-                shader.vertexShader = shader.vertexShader.replace(
-                  "#include <color_vertex>",
-                  `
-#if defined( USE_COLOR_ALPHA )
-
-	vColor = vec4( 1.0 );
-
-#elif defined( USE_COLOR ) || defined( USE_INSTANCING_COLOR ) || defined( USE_BATCHING_COLOR )
-
-	vColor = vec3( 1.0 );
-
-#endif
-
-#ifdef USE_COLOR
-
-	vColor *= color;
-
-#endif
-
-#ifdef USE_INSTANCING_COLOR
-
-	vColor.xyz *= instanceColor.xyz;
-
-#endif
-
-#ifdef USE_BATCHING_COLOR
-
-	vec3 batchingColor = getBatchingColor( getIndirectIndex( gl_DrawID ) );
-
-	vColor.xyz *= batchingColor.xyz;
-
-#endif
-
-myUV = uv;
-                  `
-                );
-
-                shader.fragmentShader = shader.fragmentShader.replace(
-                  "#include <color_pars_fragment>",
-                  `
-#if defined( USE_COLOR_ALPHA )
-
-	varying vec4 vColor;
-
-#elif defined( USE_COLOR )
-
-	varying vec3 vColor;
-
-#endif
-
-varying vec2 myUV;
-uniform float time;
-
-vec4 waterColorWithWavePattern(in vec2 uv) {
-    float wave = sin(uv.x * 0.1 * 200.0 + time * 0.003141592) * 0.5 + 0.5; // generate a wave pattern with a frequency of 0.1 and an amplitude of 0.5
-    vec3 waterColor = vec3(wave, wave, wave); // create a color vector with the same value for all components
-    return vec4(waterColor, 1.0); // return the color vector with an alpha value of 1.0
+export function Runtime() {
+  return null;
 }
-
-                  `
-                );
-
-                shader.fragmentShader = shader.fragmentShader.replace(
-                  "#include <color_fragment>",
-                  `
-            
-#if defined( USE_COLOR_ALPHA )
-
-	diffuseColor *= vColor;
-
-#elif defined( USE_COLOR )
-
-	diffuseColor.rgb *= vColor;
-
-#endif
-
-diffuseColor.rgb =  waterColorWithWavePattern(myUV).rgb;
-
-              `
-                );
-              }}
-            ></meshBasicMaterial>
-          </mesh>
-        </group>
-      </Insert3D>
-    </>
-  );
-}
-
-//
-
-//
-
-//
