@@ -13,6 +13,12 @@ export function ToolBox({
   saveBoxData,
   setToolboxFullScreen,
 }) {
+  useEffect(() => {
+    // init
+
+    setToolboxFullScreen(true);
+  }, [setToolboxFullScreen]);
+
   ///
 
   let screenAt = useStore((r) => r.screenAt);
@@ -22,14 +28,10 @@ export function ToolBox({
   //
 
   let activeModel = useStore((r) => r.activeModel);
+  let genConsole = useStore((r) => r.genConsole);
 
   let models = useStore((r) => r.models);
   let ollamaOffline = useStore((r) => r.ollamaOffline);
-  useEffect(() => {
-    // init
-
-    setToolboxFullScreen(true);
-  }, [setToolboxFullScreen]);
   useEffect(() => {
     useStore.setState({
       screenAt: "pull-model",
@@ -178,13 +180,17 @@ export function ToolBox({
             </div>
           )}
           {screenAt === "generator" && activeModel && (
-            <div className=" w-full h-full">
-              <div className="flex" style={{ height: `calc(30px)` }}>
+            <div className=" w-full h-full text-xs">
+              <div className="flex" style={{ height: `calc(80px)` }}>
                 <textarea
-                  placeholder="generate a fragment shader that is blue gradient glsl code"
-                  defaultValue={
-                    "generate a fragment shader that is blue gradient glsl code"
-                  }
+                  placeholder={`complete the following GLSL code with given input, try to be using smoothstep.
+vec4 blueGradient (vec2 uv) {
+
+}`}
+                  defaultValue={`complete the following GLSL code with given input, try to be using smoothstep.
+vec4 blueGradient (vec2 uv) {
+
+}`}
                   className="p-1 flex-grow"
                   rows={1}
                   id="shaderprompt"
@@ -192,6 +198,7 @@ export function ToolBox({
                 <button
                   onClick={async () => {
                     //
+                    let canWrite = true;
                     //
                     console.log("shaderprompt");
                     //
@@ -207,32 +214,39 @@ export function ToolBox({
                           content: promptElement.value,
                         },
                       ],
+                      onDone: () => {
+                        canWrite = false;
+                      },
                       onMessage: ({ text }) => {
                         fullResponse += text;
 
                         let genconsole = document.querySelector("#genconsole");
 
-                        if (genconsole) {
-                          genconsole.innerText = fullResponse;
+                        if (genconsole && canWrite) {
+                          useStore.setState({
+                            genConsole: <span>{fullResponse}</span>,
+                          });
 
                           genconsole.scrollTop = 99999999999999;
                         }
                       },
                     });
-                    //stream
-
-                    //
                   }}
                   className="p-1 bg-gray-200"
                 >
                   AI Shader Generation
                 </button>
               </div>
-              <div className="" style={{ height: `calc(100% - 30px)` }}>
+              <div
+                className=" px-2 pb-2  select-text"
+                style={{ height: `calc(100% - 80px)` }}
+              >
                 <pre
                   id="genconsole"
                   className="w-full h-full overflow-scroll whitespace-pre-wrap"
-                ></pre>
+                >
+                  {genConsole}
+                </pre>
               </div>
             </div>
           )}

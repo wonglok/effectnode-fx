@@ -54,27 +54,6 @@
       "title": "happy"
     },
     {
-      "codeID": "_i7ryzif_nf5k7uj",
-      "nodeID": "_q77qs09_mwqkfse",
-      "nodeTitle": "node",
-      "spaceID": "new-space",
-      "code": "",
-      "data": [
-        {
-          "_id": "_ejlt0ph_1skvyiu",
-          "label": "speed",
-          "type": "range",
-          "min": 0,
-          "max": 1,
-          "step": 0.01,
-          "value": -2.0000000000000004
-        }
-      ],
-      "title": "edge",
-      "metaData": {},
-      "enableFullScreen": true
-    },
-    {
       "codeID": "_x027a1w_24c0grb",
       "nodeID": "_ck2nyne_fksh47i",
       "nodeTitle": "node",
@@ -169,6 +148,39 @@
         }
       ],
       "title": "color"
+    },
+    {
+      "codeID": "_cq8p29y_",
+      "nodeID": "_wkdac6z_",
+      "nodeTitle": "node",
+      "spaceID": "shader-ai-flow",
+      "code": "",
+      "data": [
+        {
+          "_id": "_m7286me_",
+          "label": "speed",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 0
+        },
+        {
+          "_id": "_52wgxi5_",
+          "label": "baseColor",
+          "type": "color",
+          "value": "#ff0000"
+        },
+        {
+          "_id": "_l8oqsva_",
+          "label": "name",
+          "type": "text",
+          "value": "hi dear"
+        }
+      ],
+      "title": "shaderai",
+      "metaData": {},
+      "enableFullScreen": true
     }
   ],
   "graph": {
@@ -243,80 +255,6 @@
             "_id": "_66fn3o5_364yhdf",
             "type": "output",
             "nodeID": "_ne7rk2f_qwuxwti",
-            "label": ""
-          }
-        ]
-      },
-      {
-        "spaceID": "new-space",
-        "_id": "_q77qs09_mwqkfse",
-        "title": "mesh",
-        "position": [
-          0.9230870967195051,
-          0,
-          1.6385528672692422
-        ],
-        "inputs": [
-          {
-            "_id": "_qiynf9j_6a60fn3",
-            "type": "input",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          },
-          {
-            "_id": "_crnk1qi_lwahuqp",
-            "type": "input",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          },
-          {
-            "_id": "_ao9flf4_di5qrr7",
-            "type": "input",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          },
-          {
-            "_id": "_mantm59_qvmluzb",
-            "type": "input",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          },
-          {
-            "_id": "_ne235zj_rnja6gy",
-            "type": "input",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          }
-        ],
-        "outputs": [
-          {
-            "_id": "_1v3yx4a_farfskq",
-            "type": "output",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          },
-          {
-            "_id": "_4kr32nw_xwn6sqd",
-            "type": "output",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          },
-          {
-            "_id": "_wmflcet_t2fbk4g",
-            "type": "output",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          },
-          {
-            "_id": "_he0gbpe_y1njtud",
-            "type": "output",
-            "nodeID": "_q77qs09_mwqkfse",
-            "label": ""
-          },
-          {
-            "_id": "_gunacnt_vpzk5k2",
-            "type": "output",
-            "nodeID": "_q77qs09_mwqkfse",
             "label": ""
           }
         ]
@@ -474,9 +412,9 @@
         "_id": "_x801t0d_2qm4x7k",
         "title": "color",
         "position": [
-          0.8651604353761556,
+          0.7200005008108574,
           0,
-          -0.38899231892461106
+          -0.48284184755976817
         ],
         "inputs": [
           {
@@ -542,25 +480,83 @@
             "label": ""
           }
         ]
+      },
+      {
+        "spaceID": "shader-ai-flow",
+        "_id": "_wkdac6z_",
+        "title": "shaderai",
+        "position": [
+          1.1547188148882055,
+          0,
+          1.3355516094455981
+        ],
+        "inputs": [
+          {
+            "_id": "_2gf2da8_",
+            "type": "input",
+            "nodeID": "_wkdac6z_",
+            "label": ""
+          },
+          {
+            "_id": "_dz3owz9_",
+            "type": "input",
+            "nodeID": "_wkdac6z_",
+            "label": ""
+          },
+          {
+            "_id": "_jompmcz_",
+            "type": "input",
+            "nodeID": "_wkdac6z_",
+            "label": ""
+          },
+          {
+            "_id": "_gatdhj5_",
+            "type": "input",
+            "nodeID": "_wkdac6z_",
+            "label": ""
+          },
+          {
+            "_id": "_rufjj4q_",
+            "type": "input",
+            "nodeID": "_wkdac6z_",
+            "label": ""
+          }
+        ],
+        "outputs": [
+          {
+            "_id": "_vzqjlep_",
+            "type": "output",
+            "nodeID": "_wkdac6z_",
+            "label": ""
+          },
+          {
+            "_id": "_v6jn915_",
+            "type": "output",
+            "nodeID": "_wkdac6z_",
+            "label": ""
+          },
+          {
+            "_id": "_qh1ref7_",
+            "type": "output",
+            "nodeID": "_wkdac6z_",
+            "label": ""
+          },
+          {
+            "_id": "_fsm9kv6_",
+            "type": "output",
+            "nodeID": "_wkdac6z_",
+            "label": ""
+          },
+          {
+            "_id": "_3v91bcz_",
+            "type": "output",
+            "nodeID": "_wkdac6z_",
+            "label": ""
+          }
+        ]
       }
     ],
-    "edges": [
-      {
-        "id": "_jvkchzy_myjb85m",
-        "input": {
-          "_id": "_qiynf9j_6a60fn3",
-          "type": "input",
-          "nodeID": "_q77qs09_mwqkfse",
-          "label": ""
-        },
-        "output": {
-          "_id": "_fd4l9y1_qsmj20x",
-          "type": "output",
-          "nodeID": "_x801t0d_2qm4x7k",
-          "label": ""
-        }
-      }
-    ]
+    "edges": []
   },
   "title": "shader-ai-flow"
 }

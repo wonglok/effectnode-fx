@@ -11,6 +11,7 @@ export const askGLSL = async ({
   modelName = "",
   messages = [],
   onMessage = () => {},
+  onDone = () => {},
 }) => {
   const model = new ChatOllama({
     baseUrl: process.env.NEXT_PUBLIC_OLLAMA_URL || "http://localhost:11434",
@@ -44,6 +45,7 @@ export const askGLSL = async ({
           .read()
           .then(({ done, value }) => {
             if (done) {
+              onDone();
               controller.close();
               return;
             }
@@ -60,6 +62,7 @@ export const askGLSL = async ({
           .catch((error) => {
             console.error("Error reading response body:", error);
             controller.error(error);
+            onDone();
           });
       }
 
