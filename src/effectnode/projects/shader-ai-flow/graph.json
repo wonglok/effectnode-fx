@@ -147,17 +147,18 @@
           "value": "hi dear"
         }
       ],
-      "title": "color"
+      "title": "color",
+      "metaData": {}
     },
     {
-      "codeID": "_cq8p29y_",
-      "nodeID": "_wkdac6z_",
+      "codeID": "_ygjgayq_",
+      "nodeID": "_napk8j9_",
       "nodeTitle": "node",
       "spaceID": "shader-ai-flow",
       "code": "",
       "data": [
         {
-          "_id": "_m7286me_",
+          "_id": "_z63kv6p_",
           "label": "speed",
           "type": "range",
           "min": 0,
@@ -166,19 +167,19 @@
           "value": 0
         },
         {
-          "_id": "_52wgxi5_",
+          "_id": "_1q9kf20_",
           "label": "baseColor",
           "type": "color",
           "value": "#ff0000"
         },
         {
-          "_id": "_l8oqsva_",
+          "_id": "_2pga102_",
           "label": "name",
           "type": "text",
           "value": "hi dear"
         }
       ],
-      "title": "shaderai",
+      "title": "ai",
       "metaData": {},
       "enableFullScreen": true
     }
@@ -412,9 +413,9 @@
         "_id": "_x801t0d_2qm4x7k",
         "title": "color",
         "position": [
-          0.7200005008108574,
+          0.8651604353761556,
           0,
-          -0.48284184755976817
+          -0.38899231892461106
         ],
         "inputs": [
           {
@@ -483,74 +484,74 @@
       },
       {
         "spaceID": "shader-ai-flow",
-        "_id": "_wkdac6z_",
-        "title": "shaderai",
+        "_id": "_napk8j9_",
+        "title": "ai",
         "position": [
-          1.2071639459929646,
+          0.9325593727286885,
           0,
-          1.3919537204708805
+          1.2123193014067553
         ],
         "inputs": [
           {
-            "_id": "_2gf2da8_",
+            "_id": "_rvgi4hh_",
             "type": "input",
-            "nodeID": "_wkdac6z_",
+            "nodeID": "_napk8j9_",
             "label": ""
           },
           {
-            "_id": "_dz3owz9_",
+            "_id": "_0tofnu5_",
             "type": "input",
-            "nodeID": "_wkdac6z_",
+            "nodeID": "_napk8j9_",
             "label": ""
           },
           {
-            "_id": "_jompmcz_",
+            "_id": "_ghdaaca_",
             "type": "input",
-            "nodeID": "_wkdac6z_",
+            "nodeID": "_napk8j9_",
             "label": ""
           },
           {
-            "_id": "_gatdhj5_",
+            "_id": "_qhv51uj_",
             "type": "input",
-            "nodeID": "_wkdac6z_",
+            "nodeID": "_napk8j9_",
             "label": ""
           },
           {
-            "_id": "_rufjj4q_",
+            "_id": "_yiwek91_",
             "type": "input",
-            "nodeID": "_wkdac6z_",
+            "nodeID": "_napk8j9_",
             "label": ""
           }
         ],
         "outputs": [
           {
-            "_id": "_vzqjlep_",
+            "_id": "_7lmfrvm_",
             "type": "output",
-            "nodeID": "_wkdac6z_",
+            "nodeID": "_napk8j9_",
             "label": ""
           },
           {
-            "_id": "_v6jn915_",
+            "_id": "_c1cncxk_",
             "type": "output",
-            "nodeID": "_wkdac6z_",
+            "nodeID": "_napk8j9_",
             "label": ""
           },
           {
-            "_id": "_qh1ref7_",
+            "_id": "_nfrkido_",
             "type": "output",
-            "nodeID": "_wkdac6z_",
+            "nodeID": "_napk8j9_",
             "label": ""
           },
           {
-            "_id": "_fsm9kv6_",
+            "_id": "_zixr2ko_",
             "type": "output",
-            "nodeID": "_wkdac6z_",
+            "nodeID": "_napk8j9_",
             "label": ""
           },
           {
-            "_id": "_3v91bcz_",
+            "_id": "_tjzvdop_",
             "type": "output",
-            "nodeID": "_wkdac6z_",
+            "nodeID": "_napk8j9_",
             "label": ""
           }
         ]

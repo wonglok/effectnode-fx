@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Clock } from "three";
 import { getTags } from "../ai/tags";
-import Editor from "@monaco-editor/react";
+// import Editor from "@monaco-editor/react";
 import { pullModel } from "../ai/model";
 import { askGLSL } from "../ai/chat";
 
@@ -183,12 +183,12 @@ export function ToolBox({
             <div className=" w-full h-full text-xs">
               <div className="flex" style={{ height: `calc(80px)` }}>
                 <textarea
-                  placeholder={`complete the following GLSL code with given input, try to be using smoothstep.
-vec4 blueGradient (vec2 uv) {
+                  placeholder={`complete the following GLSL code with given input, try to be using ggx to create a blue glass effect, use a sphere SDF function
+vec4 mainImage (vec2 uv, vec3 normal, vec3 viewDirection) {
 
 }`}
-                  defaultValue={`complete the following GLSL code with given input, try to be using smoothstep.
-vec4 blueGradient (vec2 uv) {
+                  defaultValue={`complete the following GLSL code with given input, try to be using ggx to create a blue glass effect, use a sphere SDF function
+vec4 mainImage (vec2 uv, vec3 normal, vec3 viewDirection) {
 
 }`}
                   className="p-1 flex-grow"
