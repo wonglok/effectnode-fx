@@ -19,19 +19,12 @@ export function ToolBox({
     setToolboxFullScreen(true);
   }, [setToolboxFullScreen]);
 
-  ///
-
   let screenAt = useStore((r) => r.screenAt);
-
-  //
-  // console.log(screenAt);
-  //
-
   let activeModel = useStore((r) => r.activeModel);
   let genConsole = useStore((r) => r.genConsole);
-
   let models = useStore((r) => r.models);
   let ollamaOffline = useStore((r) => r.ollamaOffline);
+
   useEffect(() => {
     useStore.setState({
       screenAt: "pull-model",
@@ -183,11 +176,11 @@ export function ToolBox({
             <div className=" w-full h-full text-xs">
               <div className="flex" style={{ height: `calc(80px)` }}>
                 <textarea
-                  placeholder={`complete the following GLSL code with given input, try to be using ggx to create a blue glass effect, use a sphere SDF function
+                  placeholder={`complete the following GLSL code with given input, try to be using ggx to create a blue gradient effect, use a sphere SDF function
 vec4 mainImage (vec2 uv, vec3 normal, vec3 viewDirection) {
 
 }`}
-                  defaultValue={`complete the following GLSL code with given input, try to be using ggx to create a blue glass effect, use a sphere SDF function
+                  defaultValue={`complete the following GLSL code with given input, try to be using ggx to create a blue gradient effect, use a sphere SDF function
 vec4 mainImage (vec2 uv, vec3 normal, vec3 viewDirection) {
 
 }`}
