@@ -143,8 +143,8 @@ float perlinNoise(in vec2 uv) {
 }
 
 float waterWavePulse(in vec2 uv, in float time) {
-    float wave = perlinNoise(uv) + sin(uv.x * 0.1 * 200.0 + time * 0.003141592) * 0.5 + 0.5; 
-    return wave;
+    float wave = perlinNoise(uv) * cos(uv.y * 0.1 * 200.0 + time * 0.003141592) * 0.5 + 0.5; 
+    return (wave * 2.0 - 1.0) * 2.0;
 }
 
 `
