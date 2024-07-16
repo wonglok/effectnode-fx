@@ -6,6 +6,7 @@ import { getTags } from "../ai/tags";
 // import Editor from "@monaco-editor/react";
 import { pullModel } from "../ai/model";
 import { askGLSL } from "../ai/chat";
+import { Editor } from "@monaco-editor/react";
 
 export function ToolBox({
   useStore,
@@ -25,6 +26,8 @@ export function ToolBox({
   let models = useStore((r) => r.models);
   let ollamaOffline = useStore((r) => r.ollamaOffline);
 
+  let [editor, setEditor] = useState();
+  let [monaco, setMonaco] = useState();
   useEffect(() => {
     useStore.setState({
       screenAt: "pull-model",
@@ -65,11 +68,11 @@ export function ToolBox({
   }, [useStore]);
 
   let [logs, setLogs] = useState([]);
-  let pullStarCoder = useCallback(() => {
+  let pullStarCoder = useCallback(async () => {
     //
 
     setLogs([]);
-    pullModel({
+    return pullModel({
       name: "codellama",
       onMessage: ({ text }) => {
         //
@@ -120,6 +123,51 @@ export function ToolBox({
       });
   }, [useStore]);
 
+  let onGenerateAI = useCallback(async () => {
+    //
+    let canWrite = true;
+    //
+    console.log("shaderprompt");
+    //
+
+    let promptElement = document.querySelector("#shaderprompt");
+
+    let fullResponse = "";
+    askGLSL({
+      modelName: activeModel,
+      messages: [
+        {
+          role: "ai",
+          content: "I am a senior front end developer. i love helping others.",
+        },
+        {
+          role: "user",
+          content: promptElement.value,
+        },
+      ],
+      onDone: () => {
+        canWrite = false;
+      },
+      onMessage: ({ text }) => {
+        fullResponse += text;
+
+        // let genconsole = document.querySelector("#genconsole");
+        // genconsole &&
+
+        if (canWrite) {
+          useStore.setState({
+            genConsole: fullResponse,
+          });
+          editor.setValue(fullResponse);
+
+          editor.revealLineInCenter(fullResponse.split("\n").length);
+
+          // genconsole.scrollTop = 99999999999999;
+        }
+      },
+    });
+  }, [activeModel, editor, useStore]);
+
   useEffect(() => {
     loadModel().then(({ ollamaOffline }) => {
       if (!ollamaOffline) {
@@ -129,18 +177,28 @@ export function ToolBox({
             activeModel: "codellama",
           });
         } else {
-          pullStarCoder();
+          pullStarCoder().then(() => {
+            // return onGenerateAI();
+          });
         }
       }
     });
-  }, [loadModel, pullStarCoder, useStore]);
+  }, [loadModel, pullStarCoder, onGenerateAI, useStore]);
 
   return (
     <>
       {ollamaOffline && (
         <>
           <div className="w-full h-full flex items-center justify-center">
-            Ollama is Offline...
+            Ollama is Offline...{" "}
+            <span
+              className="px-2 underline text-blue-500"
+              onClick={() => {
+                loadModel();
+              }}
+            >
+              Reload
+            </span>
           </div>
           {/*  */}
         </>
@@ -174,72 +232,60 @@ export function ToolBox({
           )}
           {screenAt === "generator" && activeModel && (
             <div className=" w-full h-full text-xs">
-              <div className="flex" style={{ height: `calc(80px)` }}>
+              <div className="flex" style={{ height: `calc(120px)` }}>
                 <textarea
-                  placeholder={`complete the following GLSL code with given input, try to be using ggx to create a blue gradient effect, use a sphere SDF function
-vec4 mainImage (vec2 uv, vec3 normal, vec3 viewDirection) {
-
-}`}
-                  defaultValue={`complete the following GLSL code with given input, try to be using ggx to create a blue gradient effect, use a sphere SDF function
-vec4 mainImage (vec2 uv, vec3 normal, vec3 viewDirection) {
-
-}`}
-                  className="p-1 flex-grow"
+                  placeholder={`
+complete the following GLSL function code
+vec4 colorRamp (vec3 color1, vec3 color2, float step) {
+  // smoothstep
+}`.trim()}
+                  defaultValue={`
+complete the following GLSL function code
+vec4 colorRamp (vec3 color1, vec3 color2, float step) {
+  // smoothstep
+}`.trim()}
+                  className="p-2 bg-gray-100 flex-grow"
                   rows={1}
                   id="shaderprompt"
                 ></textarea>
-                <button
-                  onClick={async () => {
-                    //
-                    let canWrite = true;
-                    //
-                    console.log("shaderprompt");
-                    //
-
-                    let promptElement = document.querySelector("#shaderprompt");
-
-                    let fullResponse = "";
-                    askGLSL({
-                      modelName: activeModel,
-                      messages: [
-                        {
-                          role: "user",
-                          content: promptElement.value,
-                        },
-                      ],
-                      onDone: () => {
-                        canWrite = false;
-                      },
-                      onMessage: ({ text }) => {
-                        fullResponse += text;
-
-                        let genconsole = document.querySelector("#genconsole");
-
-                        if (genconsole && canWrite) {
-                          useStore.setState({
-                            genConsole: <span>{fullResponse}</span>,
-                          });
-
-                          genconsole.scrollTop = 99999999999999;
-                        }
-                      },
-                    });
-                  }}
-                  className="p-1 bg-gray-200"
-                >
+                <button onClick={onGenerateAI} className="p-1 bg-gray-200">
                   AI Shader Generation
                 </button>
               </div>
               <div
                 className=" px-2 pb-2  select-text"
-                style={{ height: `calc(100% - 80px)` }}
+                style={{ height: `calc(100% - 120px)` }}
               >
-                <pre
+                <Editor
+                  height={`100%`}
+                  defaultLanguage="markdown"
+                  defaultValue={`${boxData.aiOutput || ""}`}
+                  onMount={(editor, monaco) => {
+                    setEditor(editor);
+                    setMonaco(monaco);
+
+                    editor.updateOptions({
+                      wordWrap: "wordWrapColumn",
+                      wordWrapColumn: 60,
+                    });
+                  }}
+                  onChange={(text) => {
+                    boxData.aiOutput = text;
+
+                    saveBoxData();
+                    // code.code = text;
+                    // useStore.setState({
+                    //   settings: [...settings],
+                    // });
+                  }}
+                ></Editor>
+
+                {/* <pre
                   id="genconsole"
                   className="w-full h-full overflow-scroll whitespace-pre-wrap"
                 >
                   {genConsole}
-                </pre>
+                </pre> */}
               </div>
             </div>
           )}

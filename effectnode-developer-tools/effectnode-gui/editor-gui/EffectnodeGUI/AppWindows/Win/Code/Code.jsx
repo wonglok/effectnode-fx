@@ -166,154 +166,154 @@ export function Code({ win, useStore }) {
         </div>
         <div className="w-full " style={{ height: "calc(100% - 30px)" }}>
           <div
-            onKeyDownCapture={(ev) => {
-              // if (ev.metaKey && ev.key === "s") {
-              //   ev.preventDefault();
-              //   ev.stopPropagation();
+            // onKeyDownCapture={(ev) => {
+            //   // if (ev.metaKey && ev.key === "s") {
+            //   //   ev.preventDefault();
+            //   //   ev.stopPropagation();
 
-              //   let runRun = async () => {
-              //     let indexPos = editor
-              //       .getModel()
-              //       .getOffsetAt(editor.getPosition());
+            //   //   let runRun = async () => {
+            //   //     let indexPos = editor
+            //   //       .getModel()
+            //   //       .getOffsetAt(editor.getPosition());
 
-              //     let beforePosition = editor.getPosition();
+            //   //     let beforePosition = editor.getPosition();
 
-              //     let beforeState = editor.saveViewState();
-              //     // console.log(editor);
-              //     let result = await prettier
-              //       .formatWithCursor(code.code, {
-              //         cursorOffset: indexPos,
-              //         parser: "babel",
-              //         plugins: [
-              //           prettierPluginBabel,
-              //           prettierPluginEstree,
-              //           prettierPluginHtml,
-              //         ],
-              //       })
-              //       .catch((r) => {
-              //         console.error(r);
-              //         return code.code;
-              //       });
+            //   //     let beforeState = editor.saveViewState();
+            //   //     // console.log(editor);
+            //   //     let result = await prettier
+            //   //       .formatWithCursor(code.code, {
+            //   //         cursorOffset: indexPos,
+            //   //         parser: "babel",
+            //   //         plugins: [
+            //   //           prettierPluginBabel,
+            //   //           prettierPluginEstree,
+            //   //           prettierPluginHtml,
+            //   //         ],
+            //   //       })
+            //   //       .catch((r) => {
+            //   //         console.error(r);
+            //   //         return code.code;
+            //   //       });
 
-              //     //
-              //     // editor.setValue(result.formatted);
-              //     //
-              //     editor.setPosition(beforePosition);
-              //     editor.restoreViewState(beforeState);
+            //   //     //
+            //   //     // editor.setValue(result.formatted);
+            //   //     //
+            //   //     editor.setPosition(beforePosition);
+            //   //     editor.restoreViewState(beforeState);
 
-              //   };
-              //   runRun();
-              // }
+            //   //   };
+            //   //   runRun();
+            //   // }
 
-              const computeOffset = (code, pos) => {
-                let line = 1;
-                let col = 1;
-                let offset = 0;
-                while (offset < code.length) {
-                  if (line === pos.lineNumber && col === pos.column)
-                    return offset;
-                  if (code[offset] === "\n") line++, (col = 1);
-                  else col++;
-                  offset++;
-                }
-                return -1;
-              };
+            //   const computeOffset = (code, pos) => {
+            //     let line = 1;
+            //     let col = 1;
+            //     let offset = 0;
+            //     while (offset < code.length) {
+            //       if (line === pos.lineNumber && col === pos.column)
+            //         return offset;
+            //       if (code[offset] === "\n") line++, (col = 1);
+            //       else col++;
+            //       offset++;
+            //     }
+            //     return -1;
+            //   };
 
-              const computePosition = (code, offset) => {
-                let line = 1;
-                let col = 1;
-                let char = 0;
-                while (char < offset) {
-                  if (code[char] === "\n") line++, (col = 1);
-                  else col++;
-                  char++;
-                }
-                return { lineNumber: line, column: col };
-              };
+            //   const computePosition = (code, offset) => {
+            //     let line = 1;
+            //     let col = 1;
+            //     let char = 0;
+            //     while (char < offset) {
+            //       if (code[char] === "\n") line++, (col = 1);
+            //       else col++;
+            //       char++;
+            //     }
+            //     return { lineNumber: line, column: col };
+            //   };
 
-              const alt = (e) => {
-                return navigator.userAgent.includes("Mac")
-                  ? e.metaKey
-                  : e.ctrlKey;
-              };
-              const hotKeys = async (e) => {
-                // Cdm + s formats with prettier
-                if (alt(e) && e.keyCode == 83) {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  const val = editor.getValue();
-                  const pos = editor.getPosition();
+            //   const alt = (e) => {
+            //     return navigator.userAgent.includes("Mac")
+            //       ? e.metaKey
+            //       : e.ctrlKey;
+            //   };
+            //   const hotKeys = async (e) => {
+            //     // Cdm + s formats with prettier
+            //     if (alt(e) && e.keyCode == 83) {
+            //       e.preventDefault();
+            //       e.stopPropagation();
+            //       const val = editor.getValue();
+            //       const pos = editor.getPosition();
 
-                  let prettyVal = await prettier
-                    .formatWithCursor(code.code, {
-                      cursorOffset: computeOffset(val, pos),
-                      parser: "babel",
-                      plugins: [
-                        prettierPluginBabel,
-                        prettierPluginEstree,
-                        prettierPluginHtml,
-                      ],
-                    })
-                    .catch((r) => {
-                      console.error(r);
-                      return {
-                        formatted: code.code,
-                        cursorOffset: computeOffset(val, pos),
-                      };
-                    });
+            //       let prettyVal = await prettier
+            //         .formatWithCursor(code.code, {
+            //           cursorOffset: computeOffset(val, pos),
+            //           parser: "babel",
+            //           plugins: [
+            //             prettierPluginBabel,
+            //             prettierPluginEstree,
+            //             prettierPluginHtml,
+            //           ],
+            //         })
+            //         .catch((r) => {
+            //           console.error(r);
+            //           return {
+            //             formatted: code.code,
+            //             cursorOffset: computeOffset(val, pos),
+            //           };
+            //         });
 
-                  editor.executeEdits("prettier", [
-                    {
-                      identifier: "delete",
-                      range: editor.getModel().getFullModelRange(),
-                      text: "",
-                      forceMoveMarkers: true,
-                    },
-                  ]);
+            //       editor.executeEdits("prettier", [
+            //         {
+            //           identifier: "delete",
+            //           range: editor.getModel().getFullModelRange(),
+            //           text: "",
+            //           forceMoveMarkers: true,
+            //         },
+            //       ]);
 
-                  editor.executeEdits("prettier", [
-                    {
-                      identifier: "insert",
-                      range: new monaco.Range(1, 1, 1, 1),
-                      text: prettyVal.formatted,
-                      forceMoveMarkers: true,
-                    },
-                  ]);
+            //       editor.executeEdits("prettier", [
+            //         {
+            //           identifier: "insert",
+            //           range: new monaco.Range(1, 1, 1, 1),
+            //           text: prettyVal.formatted,
+            //           forceMoveMarkers: true,
+            //         },
+            //       ]);
 
-                  editor.setSelection(new monaco.Range(0, 0, 0, 0));
-                  editor.setPosition(
-                    computePosition(prettyVal.formatted, prettyVal.cursorOffset)
-                  );
+            //       editor.setSelection(new monaco.Range(0, 0, 0, 0));
+            //       editor.setPosition(
+            //         computePosition(prettyVal.formatted, prettyVal.cursorOffset)
+            //       );
 
-                  code.code = prettyVal.formatted;
+            //       code.code = prettyVal.formatted;
 
-                  window.dispatchEvent(
-                    new CustomEvent("editor-save", {
-                      detail: {},
-                    })
-                  );
-                }
-                // Cmd + p opens the command palette
-                if (alt(e) && e.keyCode == 80) {
-                  editor.trigger("anyString", "editor.action.quickCommand");
-                  e.preventDefault();
-                }
-                // Cmd + d prevents browser bookmark dialog
-                if (alt(e) && e.keyCode == 68) {
-                  e.preventDefault();
-                }
+            //       window.dispatchEvent(
+            //         new CustomEvent("editor-save", {
+            //           detail: {},
+            //         })
+            //       );
+            //     }
+            //     // Cmd + p opens the command palette
+            //     if (alt(e) && e.keyCode == 80) {
+            //       editor.trigger("anyString", "editor.action.quickCommand");
+            //       e.preventDefault();
+            //     }
+            //     // Cmd + d prevents browser bookmark dialog
+            //     if (alt(e) && e.keyCode == 68) {
+            //       e.preventDefault();
+            //     }
 
-                useStore.setState({
-                  settings: [...settings],
-                });
+            //     useStore.setState({
+            //       settings: [...settings],
+            //     });
 
-                //
-              };
+            //     //
+            //   };
 
-              hotKeys(ev);
+            //   hotKeys(ev);
 
-              // container.addEventListener("keydown", hotKeys);
-            }}
+            //   // container.addEventListener("keydown", hotKeys);
+            // }}
             className="w-full h-full overflow-hidden rounded-b"
           >
             <div className="flex w-full h-full">

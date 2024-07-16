@@ -6,6 +6,7 @@ import {
   JsonOutputParser,
   StringOutputParser,
 } from "@langchain/core/output_parsers";
+import { getOllama } from "./ollama";
 
 export const askGLSL = async ({
   modelName = "",
@@ -14,7 +15,8 @@ export const askGLSL = async ({
   onDone = () => {},
 }) => {
   const model = new ChatOllama({
-    baseUrl: process.env.NEXT_PUBLIC_OLLAMA_URL || "http://localhost:11434",
+    temperature: 0,
+    baseUrl: getOllama(),
     model: modelName,
   });
 
@@ -49,6 +51,7 @@ export const askGLSL = async ({
               controller.close();
               return;
             }
+
             // Enqueue the chunk of data to the controller
             controller.enqueue(value);
 

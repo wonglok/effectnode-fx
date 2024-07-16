@@ -236,7 +236,7 @@ export function CodeRun({
       tt: 0,
       saveBoxData: () => {
         if (mode === "toolbox") {
-          console.log("Saving in Toolbox Runtime");
+          console.log("[OK] Saving in Toolbox Phase");
           let diskSettings = useEditorStore.getState().settings;
           let diskSetting = diskSettings.find((r) => r.nodeID === nodeID);
 
