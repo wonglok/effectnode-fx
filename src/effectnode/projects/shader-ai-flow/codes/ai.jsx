@@ -235,15 +235,23 @@ export function ToolBox({
               <div className="flex" style={{ height: `calc(120px)` }}>
                 <textarea
                   placeholder={`
-complete the following GLSL function code
-vec4 colorRamp (vec3 color1, vec3 color2, float step) {
-  // smoothstep
-}`.trim()}
+rewrite and improve the following GLSL function code
+
+vec4 waterColorWithWavePattern(vec2 uv) {
+  float wave = sin(uv.x + time * 0.003141592) * 0.5 + 0.5; // generate a wave pattern with a frequency of 0.1 and an amplitude of 0.5
+  vec3 waterColor = vec3(wave, wave, wave); // create a color vector with the same value for all components
+  return vec4(waterColor, 1.0); // return the color vector with an alpha value of 1.0
+}
+`.trim()}
                   defaultValue={`
-complete the following GLSL function code
-vec4 colorRamp (vec3 color1, vec3 color2, float step) {
-  // smoothstep
-}`.trim()}
+rewrite and improve the following GLSL function code
+
+vec4 waterColorWithWavePattern(vec2 uv) {
+  float wave = sin(uv.x + time * 0.003141592) * 0.5 + 0.5; // generate a wave pattern with a frequency of 0.1 and an amplitude of 0.5
+  vec3 waterColor = vec3(wave, wave, wave); // create a color vector with the same value for all components
+  return vec4(waterColor, 1.0); // return the color vector with an alpha value of 1.0
+}
+`.trim()}
                   className="p-2 bg-gray-100 flex-grow"
                   rows={1}
                   id="shaderprompt"
@@ -381,7 +389,111 @@ export function Runtime({ ui, io, useStore, onLoop }) {
         <group ref={ref}>
           <mesh position={[0, 0, 0]}>
             <boxGeometry></boxGeometry>
-            <meshStandardMaterial color={color}></meshStandardMaterial>
+            <meshBasicMaterial
+              color={color}
+              key={"_" + Math.random()}
+              onBeforeCompile={(shader) => {
+                shader.uniforms.time = { value: 0 };
+                setInterval(() => {
+                  shader.uniforms.time = { value: window.performance.now() };
+                });
+
+                shader.vertexShader = shader.vertexShader.replace(
+                  "#include <color_pars_vertex>",
+                  `
+#if defined( USE_COLOR_ALPHA )
+	varying vec4 vColor;
+#elif defined( USE_COLOR ) || defined( USE_INSTANCING_COLOR ) || defined( USE_BATCHING_COLOR )
+	varying vec3 vColor;
+#endif 
+
+varying vec2 myUV;
+
+                  `
+                );
+
+                shader.vertexShader = shader.vertexShader.replace(
+                  "#include <color_vertex>",
+                  `
+#if defined( USE_COLOR_ALPHA )
+
+	vColor = vec4( 1.0 );
+
+#elif defined( USE_COLOR ) || defined( USE_INSTANCING_COLOR ) || defined( USE_BATCHING_COLOR )
+
+	vColor = vec3( 1.0 );
+
+#endif
+
+#ifdef USE_COLOR
+
+	vColor *= color;
+
+#endif
+
+#ifdef USE_INSTANCING_COLOR
+
+	vColor.xyz *= instanceColor.xyz;
+
+#endif
+
+#ifdef USE_BATCHING_COLOR
+
+	vec3 batchingColor = getBatchingColor( getIndirectIndex( gl_DrawID ) );
+
+	vColor.xyz *= batchingColor.xyz;
+
+#endif
+
+myUV = uv;
+                  `
+                );
+
+                shader.fragmentShader = shader.fragmentShader.replace(
+                  "#include <color_pars_fragment>",
+                  `
+#if defined( USE_COLOR_ALPHA )
+
+	varying vec4 vColor;
+
+#elif defined( USE_COLOR )
+
+	varying vec3 vColor;
+
+#endif
+
+varying vec2 myUV;
+uniform float time;
+
+vec4 waterColorWithWavePattern(in vec2 uv) {
+    float wave = sin(uv.x * 0.1 * 200.0 + time * 0.003141592) * 0.5 + 0.5; // generate a wave pattern with a frequency of 0.1 and an amplitude of 0.5
+    vec3 waterColor = vec3(wave, wave, wave); // create a color vector with the same value for all components
+    return vec4(waterColor, 1.0); // return the color vector with an alpha value of 1.0
+}
+
+                  `
+                );
+
+                shader.fragmentShader = shader.fragmentShader.replace(
+                  "#include <color_fragment>",
+                  `
+            
+#if defined( USE_COLOR_ALPHA )
+
+	diffuseColor *= vColor;
+
+#elif defined( USE_COLOR )
+
+	diffuseColor.rgb *= vColor;
+
+#endif
+
+diffuseColor.rgb =  waterColorWithWavePattern(myUV).rgb;
+
+              `
+                );
+              }}
+            ></meshBasicMaterial>
           </mesh>
         </group>
       </Insert3D>
