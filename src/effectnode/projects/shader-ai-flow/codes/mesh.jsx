@@ -43,7 +43,7 @@ export function Runtime({ ui, io, useStore, onLoop }) {
       <Insert3D>
         <group ref={ref}>
           <mesh position={[0, 0, 0]}>
-            <boxGeometry></boxGeometry>
+            <sphereGeometry></sphereGeometry>
             <meshBasicMaterial
               color={color}
               key={"_" + Math.random()}
