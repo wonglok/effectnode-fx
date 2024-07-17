@@ -13,7 +13,7 @@ const BackupCode = `
 #define FLUCTUATION 0.1
 
 vec4 waterwaves(in vec2 uv) {
-    float time = iTime * 0.005;
+    float time = iTime * 0.05;
     vec2 p = mod(uv * TAU * 2.0, TAU) - 250.0;
 
     // Introduce a fluctuation factor for more realistic wave patterns
@@ -183,9 +183,7 @@ export function Runtime({ ui, io, useStore, onLoop, boxData }) {
               onBeforeCompile={(shader, gl) => {
                 shader.uniforms.iTime = { value: 0 };
                 setInterval(() => {
-                  shader.uniforms.iTime = {
-                    value: window.performance.now() / 1000,
-                  };
+                  shader.uniforms.iTime.value = window.performance.now() / 1000;
                 });
                 shader.uniforms.iResolution = { value: new Vector2(512, 512) };
                 setInterval(() => {
