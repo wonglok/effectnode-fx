@@ -181,10 +181,12 @@ export function Runtime({ ui, io, useStore, onLoop, boxData }) {
               color={color}
               key={"_" + Math.random() + boxData.shaderBox}
               onBeforeCompile={(shader, gl) => {
-                shader.uniforms.iTime = { value: 0 };
-                setInterval(() => {
-                  shader.uniforms.iTime.value = window.performance.now() / 1000;
-                });
+                shader.uniforms.iTime = {
+                  get value() {
+                    return window.performance.now() / 1000;
+                  },
+                };
+
                 shader.uniforms.iResolution = { value: new Vector2(512, 512) };
                 setInterval(() => {
                   gl.getSize(shader.uniforms.iResolution.value);
