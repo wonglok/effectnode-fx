@@ -4,7 +4,7 @@
 import { Editor } from "@monaco-editor/react";
 import { useEffect, useRef, useState } from "react";
 import { Clock, Vector2 } from "three";
-import { language, setupGLSL } from "../ai/opengl";
+import { setupGLSL } from "../ai/opengl";
 
 const BackupCode = `
 #define TAU 6.28318530718
@@ -105,7 +105,6 @@ export function ToolBox({ boxData, saveBoxData, setToolboxFullScreen }) {
           style={{ height: "30px" }}
         >
           <div className="text-xs px-2">
-            Mesh Shader{" "}
             <button
               className=" underline"
               onClick={() => {
@@ -114,7 +113,7 @@ export function ToolBox({ boxData, saveBoxData, setToolboxFullScreen }) {
                 }
               }}
             >
-              Reset to backup code?
+              Factory Reset to backup code?
             </button>
           </div>
         </div>
