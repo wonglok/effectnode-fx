@@ -285,1759 +285,1192 @@
         "happy": "3kbsufl-lok",
         "flower": [
           {
-            "_id": "_w12tjb2",
+            "_id": "_wcw1au1",
             "position": [
-              -4,
+              -7.53,
               0,
-              -2.1
+              -3.22
             ],
-            "color": "#c12cb3"
+            "color": "#9bb3d0"
           },
           {
-            "_id": "_2mncxwq",
+            "_id": "_32cueza",
             "position": [
-              -3.98,
-              0,
-              -2.07
-            ],
-            "color": "#e80353"
-          },
-          {
-            "_id": "_erbl5uo",
-            "position": [
-              -3.89,
-              0,
-              -1.95
-            ],
-            "color": "#876171"
-          },
-          {
-            "_id": "_v0x57h9",
-            "position": [
-              -3.75,
-              0,
-              -1.72
-            ],
-            "color": "#95d35d"
-          },
-          {
-            "_id": "_9a0ouo6",
-            "position": [
-              -3.61,
-              0,
-              -1.44
-            ],
-            "color": "#2e6f45"
-          },
-          {
-            "_id": "_twkd6y2",
-            "position": [
-              -3.49,
-              0,
-              -1.11
-            ],
-            "color": "#5540b9"
-          },
-          {
-            "_id": "_fdtlx7y",
-            "position": [
-              -3.4,
-              0,
-              -0.74
-            ],
-            "color": "#76a90a"
-          },
-          {
-            "_id": "_kqnmik0",
-            "position": [
-              -3.36,
-              0,
-              -0.36
-            ],
-            "color": "#a5df99"
-          },
-          {
-            "_id": "_wro24no",
-            "position": [
-              -3.35,
-              0,
-              -0.01
-            ],
-            "color": "#24292e"
-          },
-          {
-            "_id": "_lpy6nzc",
-            "position": [
-              -3.4,
-              0,
-              0.27
-            ],
-            "color": "#4ac9c7"
-          },
-          {
-            "_id": "_o7ixty0",
-            "position": [
-              -3.53,
-              0,
-              0.5
-            ],
-            "color": "#130999"
-          },
-          {
-            "_id": "_dyfvsyn",
-            "position": [
-              -3.73,
-              0,
-              0.68
-            ],
-            "color": "#44f4f2"
-          },
-          {
-            "_id": "_7yo297n",
-            "position": [
-              -3.94,
-              0,
-              0.79
-            ],
-            "color": "#b738a4"
-          },
-          {
-            "_id": "_7yefl00",
-            "position": [
-              -4.14,
-              0,
-              0.87
-            ],
-            "color": "#11b277"
-          },
-          {
-            "_id": "_ds1kjd7",
-            "position": [
-              -4.32,
-              0,
-              0.92
-            ],
-            "color": "#9035e1"
-          },
-          {
-            "_id": "_emygl6r",
-            "position": [
-              -4.43,
-              0,
-              0.94
-            ],
-            "color": "#0eceb7"
-          },
-          {
-            "_id": "_7w0aezy",
-            "position": [
-              -4.5,
-              0,
-              0.96
-            ],
-            "color": "#914f78"
-          },
-          {
-            "_id": "_1yp0gqx",
-            "position": [
-              -4.55,
-              0,
-              0.96
-            ],
-            "color": "#1f2c84"
-          },
-          {
-            "_id": "_u9rzk5o",
-            "position": [
-              -4.56,
-              0,
-              0.95
-            ],
-            "color": "#e140a6"
-          },
-          {
-            "_id": "_w49pili",
-            "position": [
-              -4.56,
-              0,
-              0.94
-            ],
-            "color": "#7479f4"
-          },
-          {
-            "_id": "_cmfi0f8",
-            "position": [
-              -4.57,
-              0,
-              0.92
-            ],
-            "color": "#13ced2"
-          },
-          {
-            "_id": "_81aorhe",
-            "position": [
-              -4.53,
-              0,
-              0.9
-            ],
-            "color": "#32b25b"
-          },
-          {
-            "_id": "_kphdt9i",
-            "position": [
-              -4.44,
-              0,
-              0.87
-            ],
-            "color": "#251b48"
-          },
-          {
-            "_id": "_czijrh1",
-            "position": [
-              -4.22,
-              0,
-              0.83
-            ],
-            "color": "#0450d0"
-          },
-          {
-            "_id": "_krf7vz2",
-            "position": [
-              -3.91,
-              0,
-              0.8
-            ],
-            "color": "#432c1d"
-          },
-          {
-            "_id": "_u6fcgqi",
-            "position": [
-              -3.62,
-              0,
-              0.81
-            ],
-            "color": "#290fbf"
-          },
-          {
-            "_id": "_rcpzn6b",
-            "position": [
-              -3.29,
-              0,
-              0.87
-            ],
-            "color": "#7e62b4"
-          },
-          {
-            "_id": "_6o7o8p7",
-            "position": [
-              -2.97,
-              0,
-              0.94
-            ],
-            "color": "#3b3c48"
-          },
-          {
-            "_id": "_34g4kj5",
-            "position": [
-              -2.73,
-              0,
-              1.04
-            ],
-            "color": "#e2bb54"
-          },
-          {
-            "_id": "_weu8f1c",
-            "position": [
-              -2.54,
-              0,
-              1.12
-            ],
-            "color": "#ad80de"
-          },
-          {
-            "_id": "_2lzr28o",
-            "position": [
-              -2.41,
-              0,
-              1.19
-            ],
-            "color": "#d5fe87"
-          },
-          {
-            "_id": "_d3h6hpw",
-            "position": [
-              -2.33,
-              0,
-              1.25
-            ],
-            "color": "#977339"
-          },
-          {
-            "_id": "_8u0ffrq",
-            "position": [
-              -2.26,
-              0,
-              1.29
-            ],
-            "color": "#0f8d23"
-          },
-          {
-            "_id": "_rh1rpkk",
-            "position": [
-              -2.2,
-              0,
-              1.31
-            ],
-            "color": "#79d7ca"
-          },
-          {
-            "_id": "_aejtojb",
-            "position": [
-              -2.08,
-              0,
-              1.33
-            ],
-            "color": "#120f6e"
-          },
-          {
-            "_id": "_435dy4v",
-            "position": [
-              -1.93,
-              0,
-              1.34
-            ],
-            "color": "#56e3e6"
-          },
-          {
-            "_id": "_0s4o6gi",
-            "position": [
-              -1.82,
-              0,
-              1.34
-            ],
-            "color": "#bf54eb"
-          },
-          {
-            "_id": "_aaxz67c",
-            "position": [
-              -0.73,
-              0,
-              -0.56
-            ],
-            "color": "#d4bf19"
-          },
-          {
-            "_id": "_44eg1qb",
-            "position": [
-              -0.76,
-              0,
-              -0.56
-            ],
-            "color": "#a08d65"
-          },
-          {
-            "_id": "_pwxdouz",
-            "position": [
-              -0.81,
-              0,
-              -0.55
-            ],
-            "color": "#3cd02e"
-          },
-          {
-            "_id": "_mze2uoj",
-            "position": [
-              -0.88,
-              0,
-              -0.52
-            ],
-            "color": "#97af97"
-          },
-          {
-            "_id": "_57tbcia",
-            "position": [
-              -0.97,
-              0,
-              -0.46
-            ],
-            "color": "#dc780e"
-          },
-          {
-            "_id": "_v6fu4pv",
-            "position": [
-              -1.06,
-              0,
-              -0.37
-            ],
-            "color": "#9cae4e"
-          },
-          {
-            "_id": "_vpatlhh",
-            "position": [
-              -1.12,
-              0,
-              -0.25
-            ],
-            "color": "#b03cd0"
-          },
-          {
-            "_id": "_jbchkry",
-            "position": [
-              -1.16,
-              0,
-              -0.12
-            ],
-            "color": "#ec593c"
-          },
-          {
-            "_id": "_jtkftp8",
-            "position": [
-              -1.18,
-              0,
-              0.04
-            ],
-            "color": "#56c6c2"
-          },
-          {
-            "_id": "_6lpdunm",
-            "position": [
-              -1.17,
-              0,
-              0.21
-            ],
-            "color": "#20d6fc"
-          },
-          {
-            "_id": "_z50rplr",
-            "position": [
-              -1.15,
-              0,
-              0.37
-            ],
-            "color": "#8630f8"
-          },
-          {
-            "_id": "_u6wp3hp",
-            "position": [
-              -1.13,
-              0,
-              0.52
-            ],
-            "color": "#65478c"
-          },
-          {
-            "_id": "_bbw70as",
-            "position": [
-              -1.08,
-              0,
-              0.65
-            ],
-            "color": "#27563f"
-          },
-          {
-            "_id": "_9rrpmqf",
-            "position": [
-              -1.01,
-              0,
-              0.76
-            ],
-            "color": "#edb644"
-          },
-          {
-            "_id": "_xylkksr",
-            "position": [
-              -0.93,
-              0,
-              0.86
-            ],
-            "color": "#0df0c4"
-          },
-          {
-            "_id": "_puky47o",
-            "position": [
-              -0.85,
-              0,
-              0.93
-            ],
-            "color": "#aa58fb"
-          },
-          {
-            "_id": "_1mxgk0r",
-            "position": [
-              -0.71,
-              0,
-              1.01
-            ],
-            "color": "#4880f9"
-          },
-          {
-            "_id": "_wn57vjr",
-            "position": [
-              -0.56,
-              0,
-              1.06
-            ],
-            "color": "#dbfc4c"
-          },
-          {
-            "_id": "_d5s9mqd",
-            "position": [
-              -0.41,
-              0,
-              1.1
-            ],
-            "color": "#7d3f77"
-          },
-          {
-            "_id": "_zwe7wlc",
-            "position": [
-              -0.25,
-              0,
-              1.14
-            ],
-            "color": "#b076cb"
-          },
-          {
-            "_id": "_a7wol54",
-            "position": [
-              -0.08,
-              0,
-              1.14
-            ],
-            "color": "#9ab36e"
-          },
-          {
-            "_id": "_sit8xum",
-            "position": [
-              0.07,
-              0,
-              1.14
-            ],
-            "color": "#5ef219"
-          },
-          {
-            "_id": "_ruco8ak",
-            "position": [
-              0.22,
-              0,
-              1.12
-            ],
-            "color": "#7002c3"
-          },
-          {
-            "_id": "_ldxzonz",
-            "position": [
-              0.35,
-              0,
-              1.09
-            ],
-            "color": "#e13c9b"
-          },
-          {
-            "_id": "_dq3y9uk",
-            "position": [
-              0.45,
-              0,
-              1.05
-            ],
-            "color": "#82068d"
-          },
-          {
-            "_id": "_p6iwgzk",
-            "position": [
-              0.53,
-              0,
-              0.99
-            ],
-            "color": "#131441"
-          },
-          {
-            "_id": "_vdyczhq",
-            "position": [
-              0.61,
-              0,
-              0.9
-            ],
-            "color": "#6cae7c"
-          },
-          {
-            "_id": "_cjqgaos",
-            "position": [
-              0.66,
-              0,
-              0.81
-            ],
-            "color": "#6d3b20"
-          },
-          {
-            "_id": "_t6y5zy9",
-            "position": [
-              0.69,
-              0,
-              0.72
-            ],
-            "color": "#95d04b"
-          },
-          {
-            "_id": "_6h2zui0",
-            "position": [
-              0.71,
-              0,
-              0.62
-            ],
-            "color": "#9723b9"
-          },
-          {
-            "_id": "_cd4n1l4",
-            "position": [
-              0.71,
-              0,
-              0.5
-            ],
-            "color": "#087cf9"
-          },
-          {
-            "_id": "_uq5um2l",
-            "position": [
-              0.7,
-              0,
-              0.4
-            ],
-            "color": "#257b9b"
-          },
-          {
-            "_id": "_n5z4bew",
-            "position": [
-              0.68,
-              0,
-              0.29
-            ],
-            "color": "#a0f8db"
-          },
-          {
-            "_id": "_c5td8cn",
-            "position": [
-              0.67,
-              0,
-              0.18
-            ],
-            "color": "#6f457e"
-          },
-          {
-            "_id": "_ahpee5o",
-            "position": [
-              0.61,
-              0,
-              0.07
-            ],
-            "color": "#434f64"
-          },
-          {
-            "_id": "_7x9vfk4",
-            "position": [
-              0.49,
-              0,
-              -0.05
-            ],
-            "color": "#a8918c"
-          },
-          {
-            "_id": "_thconrc",
-            "position": [
-              0.32,
-              0,
-              -0.17
-            ],
-            "color": "#ffc408"
-          },
-          {
-            "_id": "_0n1b3tx",
-            "position": [
-              0.15,
-              0,
-              -0.27
-            ],
-            "color": "#636bb0"
-          },
-          {
-            "_id": "_dpka26m",
-            "position": [
-              0,
-              0,
-              -0.35
-            ],
-            "color": "#2b5432"
-          },
-          {
-            "_id": "_qa2qal3",
-            "position": [
-              -0.15,
-              0,
-              -0.42
-            ],
-            "color": "#a1795b"
-          },
-          {
-            "_id": "_ms8qptk",
-            "position": [
-              -0.26,
-              0,
-              -0.48
-            ],
-            "color": "#8056f4"
-          },
-          {
-            "_id": "_3gpb4lw",
-            "position": [
-              -0.33,
-              0,
-              -0.52
-            ],
-            "color": "#1a1d08"
-          },
-          {
-            "_id": "_4908ocr",
-            "position": [
-              -0.37,
-              0,
-              -0.53
-            ],
-            "color": "#173fde"
-          },
-          {
-            "_id": "_3g6j4sm",
-            "position": [
-              -0.4,
-              0,
-              -0.53
-            ],
-            "color": "#5e6912"
-          },
-          {
-            "_id": "_gazohn6",
-            "position": [
-              1.12,
-              0,
-              -3.64
-            ],
-            "color": "#d19d9c"
-          },
-          {
-            "_id": "_z54b7a7",
-            "position": [
-              1.13,
-              0,
-              -3.54
-            ],
-            "color": "#6c6fda"
-          },
-          {
-            "_id": "_c8n3umh",
-            "position": [
-              1.16,
-              0,
-              -3.35
-            ],
-            "color": "#581d74"
-          },
-          {
-            "_id": "_jlkc1pl",
-            "position": [
-              1.18,
+              -7.51,
               0,
               -3.18
             ],
-            "color": "#6f8193"
+            "color": "#585589"
           },
           {
-            "_id": "_3ccwoj9",
+            "_id": "_eo5jg3e",
             "position": [
-              1.22,
-              0,
-              -2.95
+              -7.45,
+              0.01,
+              -3.04
             ],
-            "color": "#910b9e"
+            "color": "#3eedad"
           },
           {
-            "_id": "_46dkbxm",
+            "_id": "_0jbd3mw",
             "position": [
-              1.26,
+              -7.45,
               0,
-              -2.67
+              -3.04
             ],
-            "color": "#a2d067"
+            "color": "#080658"
           },
           {
-            "_id": "_71tabek",
+            "_id": "_3t25i85",
             "position": [
-              1.32,
+              -7.33,
               0,
-              -2.39
+              -2.78
             ],
-            "color": "#9d61af"
+            "color": "#adb1af"
           },
           {
-            "_id": "_dnb4x6x",
+            "_id": "_xtfo7qu",
             "position": [
-              1.36,
+              -7.35,
+              -0.04,
+              -2.8
+            ],
+            "color": "#51c325"
+          },
+          {
+            "_id": "_9fro85o",
+            "position": [
+              -7.16,
               0,
-              -2.11
+              -2.41
             ],
-            "color": "#acb79b"
+            "color": "#ff41a4"
           },
           {
-            "_id": "_kof7tfu",
+            "_id": "_f5ek79n",
             "position": [
-              1.39,
+              -6.98,
               0,
-              -1.81
+              -2.02
             ],
-            "color": "#7cd3ae"
+            "color": "#c90063"
           },
           {
-            "_id": "_z824kp1",
+            "_id": "_51st1ke",
             "position": [
-              1.43,
+              -6.77,
               0,
-              -1.48
+              -1.5
             ],
-            "color": "#a96909"
+            "color": "#d0d7f5"
           },
           {
-            "_id": "_t9lirxz",
+            "_id": "_opviffk",
             "position": [
-              1.45,
+              -6.56,
               0,
-              -1.18
+              -0.97
             ],
-            "color": "#45fa80"
+            "color": "#68741d"
           },
           {
-            "_id": "_e04hhhk",
+            "_id": "_jr2iumb",
             "position": [
-              1.48,
+              -6.36,
               0,
-              -0.84
+              -0.48
             ],
-            "color": "#88e910"
+            "color": "#9904ca"
           },
           {
-            "_id": "_10u3tun",
+            "_id": "_g7k9hne",
             "position": [
-              1.55,
+              -6.14,
               0,
-              -0.51
+              0.1
             ],
-            "color": "#795473"
+            "color": "#c921a9"
           },
           {
-            "_id": "_mpqv3ie",
+            "_id": "_81lx8cz",
             "position": [
-              1.6,
-              0,
-              -0.31
-            ],
-            "color": "#f62883"
-          },
-          {
-            "_id": "_e6zfcyi",
-            "position": [
-              1.62,
-              0,
-              -0.16
-            ],
-            "color": "#573a45"
-          },
-          {
-            "_id": "_zc9cdh6",
-            "position": [
-              1.64,
-              0,
-              0.02
-            ],
-            "color": "#0cdd25"
-          },
-          {
-            "_id": "_npi329h",
-            "position": [
-              1.65,
-              0,
-              0.18
-            ],
-            "color": "#b6502d"
-          },
-          {
-            "_id": "_1x3y18u",
-            "position": [
-              1.65,
-              0,
-              0.33
-            ],
-            "color": "#0b6fa1"
-          },
-          {
-            "_id": "_i1mkheb",
-            "position": [
-              1.64,
-              0,
-              0.46
-            ],
-            "color": "#b12027"
-          },
-          {
-            "_id": "_jirwt9y",
-            "position": [
-              1.64,
+              -5.99,
               0,
               0.54
             ],
-            "color": "#195104"
+            "color": "#945d7c"
           },
           {
-            "_id": "_6c2pqe7",
+            "_id": "_ppxwaog",
             "position": [
-              1.66,
+              -5.82,
               0,
-              0.59
+              0.97
             ],
-            "color": "#21dc0c"
+            "color": "#abb280"
           },
           {
-            "_id": "_toged77",
+            "_id": "_w5ob0aq",
             "position": [
-              1.69,
+              -5.65,
               0,
-              0.62
+              1.39
             ],
-            "color": "#820fee"
+            "color": "#815025"
           },
           {
-            "_id": "_w5aidzd",
+            "_id": "_c6zf45e",
             "position": [
-              1.74,
+              -5.5,
               0,
-              0.64
+              1.72
             ],
-            "color": "#67e583"
+            "color": "#87f5d2"
           },
           {
-            "_id": "_cakha4g",
+            "_id": "_rjwrin1",
             "position": [
-              1.79,
+              -5.37,
               0,
-              0.64
+              2.04
             ],
-            "color": "#7fc446"
+            "color": "#7732e1"
           },
           {
-            "_id": "_6iimltp",
+            "_id": "_sfquqjz",
             "position": [
-              1.83,
+              -5.24,
               0,
-              0.67
+              2.33
             ],
-            "color": "#fb3992"
+            "color": "#cec008"
           },
           {
-            "_id": "_bewkqg4",
+            "_id": "_2y3d3bn",
             "position": [
-              1.85,
+              -5.15,
               0,
-              0.72
+              2.55
             ],
-            "color": "#734201"
+            "color": "#b5f6f0"
           },
           {
-            "_id": "_zn9rdux",
+            "_id": "_9n101fi",
             "position": [
-              2.87,
-              0,
-              -1.57
-            ],
-            "color": "#7eb02e"
-          },
-          {
-            "_id": "_mumgx2s",
-            "position": [
-              2.8,
-              0,
-              -1.55
-            ],
-            "color": "#fac440"
-          },
-          {
-            "_id": "_l08jdgx",
-            "position": [
-              2.63,
-              0,
-              -1.52
-            ],
-            "color": "#8f7fd5"
-          },
-          {
-            "_id": "_bbv21jd",
-            "position": [
-              2.44,
-              0,
-              -1.49
-            ],
-            "color": "#efe133"
-          },
-          {
-            "_id": "_468ty0u",
-            "position": [
-              2.25,
-              0,
-              -1.43
-            ],
-            "color": "#624ada"
-          },
-          {
-            "_id": "_bnc3sh6",
-            "position": [
-              2.03,
-              0,
-              -1.35
-            ],
-            "color": "#a545e6"
-          },
-          {
-            "_id": "_5662hqy",
-            "position": [
-              1.82,
-              0,
-              -1.25
-            ],
-            "color": "#fa7b09"
-          },
-          {
-            "_id": "_j0kg4en",
-            "position": [
-              1.63,
-              0,
-              -1.15
-            ],
-            "color": "#2b4be8"
-          },
-          {
-            "_id": "_u1o379e",
-            "position": [
-              1.46,
-              0,
-              -1.04
-            ],
-            "color": "#9cf0c4"
-          },
-          {
-            "_id": "_cu0e5cm",
-            "position": [
-              1.33,
-              0,
-              -0.95
-            ],
-            "color": "#cd1401"
-          },
-          {
-            "_id": "_vf9zvlo",
-            "position": [
-              1.23,
-              0,
-              -0.87
-            ],
-            "color": "#c4be0c"
-          },
-          {
-            "_id": "_4k6pfxb",
-            "position": [
-              1.13,
-              0,
-              -0.79
-            ],
-            "color": "#d4d985"
-          },
-          {
-            "_id": "_dwagk14",
-            "position": [
-              1.11,
-              0,
-              -0.77
-            ],
-            "color": "#d34e9b"
-          },
-          {
-            "_id": "_j2cr3t0",
-            "position": [
-              1.1,
-              0,
-              -0.75
-            ],
-            "color": "#e57018"
-          },
-          {
-            "_id": "_lzwt5p2",
-            "position": [
-              1.1,
-              0,
-              -0.73
-            ],
-            "color": "#66aac5"
-          },
-          {
-            "_id": "_3dkzp5f",
-            "position": [
-              1.14,
-              0,
-              -0.72
-            ],
-            "color": "#dc304c"
-          },
-          {
-            "_id": "_pwbvwry",
-            "position": [
-              1.21,
-              0,
-              -0.72
-            ],
-            "color": "#202a3c"
-          },
-          {
-            "_id": "_zw26q0e",
-            "position": [
-              1.29,
-              0,
-              -0.71
-            ],
-            "color": "#299d05"
-          },
-          {
-            "_id": "_lue5jy5",
-            "position": [
-              1.41,
-              0,
-              -0.7
-            ],
-            "color": "#6b1021"
-          },
-          {
-            "_id": "_vzq8xi1",
-            "position": [
-              1.54,
-              0,
-              -0.67
-            ],
-            "color": "#d5ef27"
-          },
-          {
-            "_id": "_qi7qb6m",
-            "position": [
-              1.69,
-              0,
-              -0.61
-            ],
-            "color": "#152be4"
-          },
-          {
-            "_id": "_nrhwb0a",
-            "position": [
-              1.93,
-              0,
-              -0.5
-            ],
-            "color": "#8b6129"
-          },
-          {
-            "_id": "_jn637xx",
-            "position": [
-              2.2,
-              0,
-              -0.38
-            ],
-            "color": "#e5085c"
-          },
-          {
-            "_id": "_nshhi71",
-            "position": [
-              2.4,
-              0,
-              -0.27
-            ],
-            "color": "#5b72ab"
-          },
-          {
-            "_id": "_98z0nm6",
-            "position": [
-              2.62,
-              0,
-              -0.17
-            ],
-            "color": "#37b494"
-          },
-          {
-            "_id": "_xjtff4z",
-            "position": [
-              2.8,
-              0,
-              -0.06
-            ],
-            "color": "#34f68b"
-          },
-          {
-            "_id": "_tve6y13",
-            "position": [
-              2.99,
-              0,
-              0.07
-            ],
-            "color": "#ca6b0b"
-          },
-          {
-            "_id": "_fdq5hk8",
-            "position": [
-              3.16,
-              0,
-              0.18
-            ],
-            "color": "#324cf8"
-          },
-          {
-            "_id": "_y03x91x",
-            "position": [
-              3.28,
-              0,
-              0.25
-            ],
-            "color": "#1232d9"
-          },
-          {
-            "_id": "_srcxnfx",
-            "position": [
-              3.38,
-              0,
-              0.31
-            ],
-            "color": "#ca09c3"
-          },
-          {
-            "_id": "_7bfsbc9",
-            "position": [
-              3.44,
-              0,
-              0.34
-            ],
-            "color": "#186def"
-          },
-          {
-            "_id": "_c2x5mq8",
-            "position": [
-              3.49,
-              0,
-              0.35
-            ],
-            "color": "#fc2efe"
-          },
-          {
-            "_id": "_lmcirr6",
-            "position": [
-              3.53,
-              0,
-              0.35
-            ],
-            "color": "#45df45"
-          },
-          {
-            "_id": "_g8fs23n",
-            "position": [
-              -2.6,
-              0,
-              3.97
-            ],
-            "color": "#5cc35a"
-          },
-          {
-            "_id": "_q7jb39j",
-            "position": [
-              -4.27,
-              0,
-              2.15
-            ],
-            "color": "#4692c7"
-          },
-          {
-            "_id": "_anaj8lp",
-            "position": [
-              -4.23,
-              0,
-              2.14
-            ],
-            "color": "#4b5532"
-          },
-          {
-            "_id": "_pmzdhqh",
-            "position": [
-              -3.43,
-              0,
-              2.3
-            ],
-            "color": "#48a56f"
-          },
-          {
-            "_id": "_fswu3tv",
-            "position": [
-              -3.28,
-              0,
-              2.35
-            ],
-            "color": "#7fc014"
-          },
-          {
-            "_id": "_dwm7j5x",
-            "position": [
-              -3.15,
-              0,
-              2.41
-            ],
-            "color": "#11f49b"
-          },
-          {
-            "_id": "_ztl3xon",
-            "position": [
-              -3.01,
-              0,
-              2.47
-            ],
-            "color": "#e755df"
-          },
-          {
-            "_id": "_m7z99bb",
-            "position": [
-              -2.88,
-              0,
-              2.52
-            ],
-            "color": "#74b7ef"
-          },
-          {
-            "_id": "_ettf75n",
-            "position": [
-              -2.75,
-              0,
-              2.58
-            ],
-            "color": "#4c15ee"
-          },
-          {
-            "_id": "_va8n1wv",
-            "position": [
-              -2.63,
-              0,
-              2.61
-            ],
-            "color": "#7efead"
-          },
-          {
-            "_id": "_h16whmq",
-            "position": [
-              -2.51,
-              0,
-              2.64
-            ],
-            "color": "#65abc2"
-          },
-          {
-            "_id": "_g4ugxbm",
-            "position": [
-              -2.39,
-              0,
-              2.67
-            ],
-            "color": "#925a8e"
-          },
-          {
-            "_id": "_a7trlee",
-            "position": [
-              -2.29,
+              -5.1,
               0,
               2.69
             ],
-            "color": "#f53c8f"
+            "color": "#06f49d"
           },
           {
-            "_id": "_m5bgw02",
+            "_id": "_stbtsy0",
             "position": [
-              -2.18,
+              -5.06,
+              0,
+              2.81
+            ],
+            "color": "#628692"
+          },
+          {
+            "_id": "_w9cou9c",
+            "position": [
+              -5.05,
+              0,
+              2.9
+            ],
+            "color": "#6c5319"
+          },
+          {
+            "_id": "_wty5rhh",
+            "position": [
+              -5.05,
+              0,
+              2.96
+            ],
+            "color": "#f2a2b3"
+          },
+          {
+            "_id": "_9ojy5yr",
+            "position": [
+              -5.12,
+              0,
+              3.03
+            ],
+            "color": "#d80cd2"
+          },
+          {
+            "_id": "_2aihbla",
+            "position": [
+              -5.23,
+              0,
+              3.11
+            ],
+            "color": "#30ddff"
+          },
+          {
+            "_id": "_ihafln2",
+            "position": [
+              -5.33,
+              0,
+              3.18
+            ],
+            "color": "#a08d59"
+          },
+          {
+            "_id": "_ugobmz5",
+            "position": [
+              -5.42,
+              0,
+              3.24
+            ],
+            "color": "#c9be3e"
+          },
+          {
+            "_id": "_215orf4",
+            "position": [
+              -5.5,
+              0,
+              3.28
+            ],
+            "color": "#e40cb1"
+          },
+          {
+            "_id": "_yiqrs06",
+            "position": [
+              -5.56,
+              0,
+              3.3
+            ],
+            "color": "#4c5e72"
+          },
+          {
+            "_id": "_pmt8igi",
+            "position": [
+              -5.6,
+              0,
+              3.28
+            ],
+            "color": "#9c9d1c"
+          },
+          {
+            "_id": "_9kfcqt0",
+            "position": [
+              -5.53,
+              0,
+              3.17
+            ],
+            "color": "#5aaee4"
+          },
+          {
+            "_id": "_jetnlua",
+            "position": [
+              -5.37,
+              0,
+              3.02
+            ],
+            "color": "#ec5be3"
+          },
+          {
+            "_id": "_mywxoft",
+            "position": [
+              -5.22,
+              0,
+              2.91
+            ],
+            "color": "#a2de41"
+          },
+          {
+            "_id": "_ua83zbi",
+            "position": [
+              -5,
+              0,
+              2.8
+            ],
+            "color": "#3fbc14"
+          },
+          {
+            "_id": "_5g20ji6",
+            "position": [
+              -4.71,
               0,
               2.71
             ],
-            "color": "#a8d848"
+            "color": "#c886f2"
           },
           {
-            "_id": "_2zzww00",
+            "_id": "_ci3kgra",
             "position": [
-              -2.01,
+              -4.29,
               0,
-              2.72
+              2.75
             ],
-            "color": "#4a770f"
+            "color": "#2e2ebd"
           },
           {
-            "_id": "_sygep9n",
+            "_id": "_v970nsq",
             "position": [
-              -1.86,
+              -3.89,
               0,
-              2.72
+              2.87
             ],
-            "color": "#c7a81f"
+            "color": "#4a0519"
           },
           {
-            "_id": "_o5863lu",
+            "_id": "_56x6ytl",
             "position": [
-              -1.73,
+              -3.67,
               0,
-              2.73
+              2.99
             ],
-            "color": "#889179"
+            "color": "#db59f2"
           },
           {
-            "_id": "_xf4gsvc",
+            "_id": "_980b96k",
             "position": [
-              -1.58,
+              -3.47,
               0,
-              2.73
+              3.12
             ],
-            "color": "#8f505f"
+            "color": "#edf628"
           },
           {
-            "_id": "_wg3kjp1",
+            "_id": "_pjrh4y1",
             "position": [
-              -1.41,
+              -0.88,
               0,
-              2.73
+              -0.01
             ],
-            "color": "#b16f5e"
+            "color": "#cb8331"
           },
           {
-            "_id": "_9kskera",
+            "_id": "_pa6wi4e",
             "position": [
-              -1.24,
-              0,
-              2.73
-            ],
-            "color": "#62c7c4"
-          },
-          {
-            "_id": "_6fnqtye",
-            "position": [
-              -1.1,
-              0,
-              2.71
-            ],
-            "color": "#98a329"
-          },
-          {
-            "_id": "_yra5opn",
-            "position": [
-              -0.93,
-              0,
-              2.7
-            ],
-            "color": "#6c4903"
-          },
-          {
-            "_id": "_t739vj5",
-            "position": [
-              -0.68,
-              0,
-              2.68
-            ],
-            "color": "#096875"
-          },
-          {
-            "_id": "_oc76g70",
-            "position": [
-              -0.4,
-              0,
-              2.65
-            ],
-            "color": "#def406"
-          },
-          {
-            "_id": "_mqjfnat",
-            "position": [
-              -0.1,
-              0,
-              2.57
-            ],
-            "color": "#7cf627"
-          },
-          {
-            "_id": "_lp6oxqk",
-            "position": [
-              0.21,
-              0,
-              2.49
-            ],
-            "color": "#26ae6d"
-          },
-          {
-            "_id": "_teb38ta",
-            "position": [
-              0.47,
-              0,
-              2.43
-            ],
-            "color": "#3baf31"
-          },
-          {
-            "_id": "_6qbrkj3",
-            "position": [
-              0.73,
-              0,
-              2.36
-            ],
-            "color": "#0a666e"
-          },
-          {
-            "_id": "_ix2s2sb",
-            "position": [
-              1.05,
-              0,
-              2.27
-            ],
-            "color": "#c2711d"
-          },
-          {
-            "_id": "_a7xff5y",
-            "position": [
-              1.36,
-              0,
-              2.2
-            ],
-            "color": "#5c92c3"
-          },
-          {
-            "_id": "_ir19ty7",
-            "position": [
-              1.62,
-              0,
-              2.14
-            ],
-            "color": "#d0b3cd"
-          },
-          {
-            "_id": "_vwxndg2",
-            "position": [
-              1.89,
-              0,
-              2.07
-            ],
-            "color": "#94e1ec"
-          },
-          {
-            "_id": "_3l15aod",
-            "position": [
-              2.16,
-              0,
-              1.99
-            ],
-            "color": "#dee8c9"
-          },
-          {
-            "_id": "_27yhmt0",
-            "position": [
-              2.4,
-              0,
-              1.89
-            ],
-            "color": "#846d6a"
-          },
-          {
-            "_id": "_erse80p",
-            "position": [
-              2.68,
-              0,
-              1.78
-            ],
-            "color": "#c6f767"
-          },
-          {
-            "_id": "_ih0nb6g",
-            "position": [
-              2.99,
-              0,
-              1.69
-            ],
-            "color": "#7204cd"
-          },
-          {
-            "_id": "_cq0itr6",
-            "position": [
-              3.26,
-              0,
-              1.59
-            ],
-            "color": "#46f9f6"
-          },
-          {
-            "_id": "_v87dmu3",
-            "position": [
-              3.45,
-              0,
-              1.5
-            ],
-            "color": "#40043d"
-          },
-          {
-            "_id": "_h6zysbs",
-            "position": [
-              3.66,
-              0,
-              1.38
-            ],
-            "color": "#ebb16a"
-          },
-          {
-            "_id": "_24pw9lx",
-            "position": [
-              3.85,
-              0,
-              1.23
-            ],
-            "color": "#7da634"
-          },
-          {
-            "_id": "_qmw3lno",
-            "position": [
-              4.01,
-              0,
-              1.09
-            ],
-            "color": "#b430a8"
-          },
-          {
-            "_id": "_vnko4no",
-            "position": [
-              4.14,
-              0,
-              0.96
-            ],
-            "color": "#c5fb0c"
-          },
-          {
-            "_id": "_r34cc8o",
-            "position": [
-              4.28,
-              0,
-              0.81
-            ],
-            "color": "#49833c"
-          },
-          {
-            "_id": "_vugdotx",
-            "position": [
-              4.41,
-              0,
-              0.65
-            ],
-            "color": "#2fc23a"
-          },
-          {
-            "_id": "_w4232ps",
-            "position": [
-              4.49,
-              0,
-              0.51
-            ],
-            "color": "#72a096"
-          },
-          {
-            "_id": "_lpt4sw7",
-            "position": [
-              4.59,
-              0,
-              0.32
-            ],
-            "color": "#afdfb1"
-          },
-          {
-            "_id": "_bt1ks0x",
-            "position": [
-              4.66,
-              0,
-              0.13
-            ],
-            "color": "#1855d7"
-          },
-          {
-            "_id": "_itn9w9u",
-            "position": [
-              4.67,
+              -0.97,
               0,
               -0.04
             ],
-            "color": "#7b21f9"
+            "color": "#9c5dcb"
           },
           {
-            "_id": "_n82ql5x",
+            "_id": "_j8qoqah",
             "position": [
-              4.65,
+              -1.09,
+              0,
+              -0.09
+            ],
+            "color": "#f9cdad"
+          },
+          {
+            "_id": "_1d4axrx",
+            "position": [
+              -1.21,
+              0,
+              -0.13
+            ],
+            "color": "#0b45c5"
+          },
+          {
+            "_id": "_fdntl91",
+            "position": [
+              -1.33,
               0,
               -0.18
             ],
-            "color": "#455df6"
+            "color": "#54805e"
           },
           {
-            "_id": "_k1tkskr",
+            "_id": "_hz5i0l5",
             "position": [
-              4.61,
+              -1.53,
               0,
-              -0.35
+              -0.23
             ],
-            "color": "#4bae9e"
+            "color": "#ca6f52"
           },
           {
-            "_id": "_y4m9y7o",
+            "_id": "_aw0m7t7",
             "position": [
-              4.57,
+              -1.78,
               0,
-              -0.51
+              -0.25
             ],
-            "color": "#114d11"
+            "color": "#997345"
           },
           {
-            "_id": "_qqhzejx",
+            "_id": "_0lhzl7q",
             "position": [
-              4.53,
+              -2.01,
               0,
-              -0.62
+              -0.23
             ],
-            "color": "#ad345f"
+            "color": "#807c99"
           },
           {
-            "_id": "_23jng89",
+            "_id": "_70c3dzh",
             "position": [
-              4.5,
+              -2.25,
               0,
-              -0.7
+              -0.21
             ],
-            "color": "#7b3b1f"
+            "color": "#f18967"
           },
           {
-            "_id": "_bv4sdmp",
+            "_id": "_pyrgv3w",
             "position": [
-              4.49,
+              -2.48,
+              0,
+              -0.16
+            ],
+            "color": "#15dcfc"
+          },
+          {
+            "_id": "_kuqi7ti",
+            "position": [
+              -2.7,
+              0,
+              -0.1
+            ],
+            "color": "#c64189"
+          },
+          {
+            "_id": "_5two4h0",
+            "position": [
+              -2.87,
+              0,
+              -0.01
+            ],
+            "color": "#892600"
+          },
+          {
+            "_id": "_nju8ptv",
+            "position": [
+              -2.98,
+              0,
+              0.1
+            ],
+            "color": "#22ca63"
+          },
+          {
+            "_id": "_lofqm11",
+            "position": [
+              -3.07,
+              0,
+              0.23
+            ],
+            "color": "#119fd3"
+          },
+          {
+            "_id": "_cbmtfzk",
+            "position": [
+              -3.15,
+              0,
+              0.38
+            ],
+            "color": "#bbcc41"
+          },
+          {
+            "_id": "_5rgolwz",
+            "position": [
+              -3.2,
+              0,
+              0.53
+            ],
+            "color": "#2f23a9"
+          },
+          {
+            "_id": "_g7928w2",
+            "position": [
+              -3.21,
+              0,
+              0.65
+            ],
+            "color": "#e12c56"
+          },
+          {
+            "_id": "_udcs1j7",
+            "position": [
+              -3.19,
+              0,
+              0.76
+            ],
+            "color": "#6652fc"
+          },
+          {
+            "_id": "_tn34gvf",
+            "position": [
+              -3.15,
+              0,
+              0.91
+            ],
+            "color": "#00733f"
+          },
+          {
+            "_id": "_nl0ab6e",
+            "position": [
+              -3.08,
+              0,
+              1.07
+            ],
+            "color": "#c01c20"
+          },
+          {
+            "_id": "_yzpe2ks",
+            "position": [
+              -2.98,
+              0,
+              1.22
+            ],
+            "color": "#c4e21d"
+          },
+          {
+            "_id": "_ct94wp8",
+            "position": [
+              -2.88,
+              0,
+              1.36
+            ],
+            "color": "#13f493"
+          },
+          {
+            "_id": "_k0c1adn",
+            "position": [
+              -2.77,
+              0,
+              1.52
+            ],
+            "color": "#eea687"
+          },
+          {
+            "_id": "_rhdjbrh",
+            "position": [
+              -2.64,
+              0,
+              1.65
+            ],
+            "color": "#eafe7a"
+          },
+          {
+            "_id": "_pqjpvv0",
+            "position": [
+              -2.46,
+              0,
+              1.79
+            ],
+            "color": "#cd9734"
+          },
+          {
+            "_id": "_9cs94qq",
+            "position": [
+              -1.86,
+              0,
+              1.94
+            ],
+            "color": "#d34237"
+          },
+          {
+            "_id": "_dtjhuzo",
+            "position": [
+              -1.64,
+              0,
+              1.95
+            ],
+            "color": "#330d9e"
+          },
+          {
+            "_id": "_o7prlvr",
+            "position": [
+              -1.41,
+              0,
+              1.92
+            ],
+            "color": "#9b33b5"
+          },
+          {
+            "_id": "_4ecu3t1",
+            "position": [
+              -1.18,
+              0,
+              1.89
+            ],
+            "color": "#8c264d"
+          },
+          {
+            "_id": "_v4601gi",
+            "position": [
+              -0.98,
+              0,
+              1.85
+            ],
+            "color": "#ea20d4"
+          },
+          {
+            "_id": "_1l0zelg",
+            "position": [
+              -0.81,
+              0,
+              1.8
+            ],
+            "color": "#3e2a0f"
+          },
+          {
+            "_id": "_sls9v51",
+            "position": [
+              -0.71,
+              0,
+              1.74
+            ],
+            "color": "#8c08fc"
+          },
+          {
+            "_id": "_1cqn3tp",
+            "position": [
+              -0.64,
+              0,
+              1.64
+            ],
+            "color": "#0fb793"
+          },
+          {
+            "_id": "_lg343rm",
+            "position": [
+              -0.59,
+              0,
+              1.53
+            ],
+            "color": "#515fd9"
+          },
+          {
+            "_id": "_rkfuosz",
+            "position": [
+              -0.58,
+              0,
+              1.39
+            ],
+            "color": "#9a4c17"
+          },
+          {
+            "_id": "_rv01fmr",
+            "position": [
+              -0.59,
+              0,
+              1.23
+            ],
+            "color": "#1c26f2"
+          },
+          {
+            "_id": "_47l8501",
+            "position": [
+              -0.62,
+              0,
+              1.07
+            ],
+            "color": "#d70aa2"
+          },
+          {
+            "_id": "_px59huo",
+            "position": [
+              -0.66,
+              0,
+              0.91
+            ],
+            "color": "#41c996"
+          },
+          {
+            "_id": "_k8ojtsn",
+            "position": [
+              -0.71,
+              0,
+              0.76
+            ],
+            "color": "#88b544"
+          },
+          {
+            "_id": "_obkm6lv",
+            "position": [
+              -0.78,
+              0,
+              0.62
+            ],
+            "color": "#a342aa"
+          },
+          {
+            "_id": "_hw9j10k",
+            "position": [
+              -0.85,
+              0,
+              0.51
+            ],
+            "color": "#3a0acb"
+          },
+          {
+            "_id": "_fwgstxx",
+            "position": [
+              -0.92,
+              0,
+              0.42
+            ],
+            "color": "#4b5809"
+          },
+          {
+            "_id": "_gkmi7ui",
+            "position": [
+              -0.66,
+              0,
+              -5.89
+            ],
+            "color": "#8c6b20"
+          },
+          {
+            "_id": "_4vt7f8r",
+            "position": [
+              -0.62,
+              0,
+              -5.64
+            ],
+            "color": "#4fb8c9"
+          },
+          {
+            "_id": "_roc23qg",
+            "position": [
+              -0.55,
+              0,
+              -5.13
+            ],
+            "color": "#b6a135"
+          },
+          {
+            "_id": "_uw5repg",
+            "position": [
+              -0.49,
+              0,
+              -4.65
+            ],
+            "color": "#c0cc62"
+          },
+          {
+            "_id": "_0chbgoq",
+            "position": [
+              -0.2,
+              0,
+              -2.83
+            ],
+            "color": "#b36ce6"
+          },
+          {
+            "_id": "_9for4bm",
+            "position": [
+              -0.08,
+              0,
+              -2.16
+            ],
+            "color": "#e9c665"
+          },
+          {
+            "_id": "_jlxkmlt",
+            "position": [
+              0.06,
+              0,
+              -1.44
+            ],
+            "color": "#346b47"
+          },
+          {
+            "_id": "_vgxqq00",
+            "position": [
+              0.2,
+              0,
+              -0.55
+            ],
+            "color": "#726458"
+          },
+          {
+            "_id": "_i8fz6db",
+            "position": [
+              0.35,
+              0,
+              0.4
+            ],
+            "color": "#4f053f"
+          },
+          {
+            "_id": "_vi9mtsl",
+            "position": [
+              0.52,
+              0,
+              1.42
+            ],
+            "color": "#847637"
+          },
+          {
+            "_id": "_hm3o3rg",
+            "position": [
+              0.65,
+              0,
+              2.21
+            ],
+            "color": "#b39abf"
+          },
+          {
+            "_id": "_v1a7za4",
+            "position": [
+              0.74,
+              0,
+              2.68
+            ],
+            "color": "#2f5246"
+          },
+          {
+            "_id": "_wzd9127",
+            "position": [
+              0.82,
+              0,
+              3.04
+            ],
+            "color": "#726464"
+          },
+          {
+            "_id": "_nshl6xj",
+            "position": [
+              0.91,
+              0,
+              3.36
+            ],
+            "color": "#8829da"
+          },
+          {
+            "_id": "_lilmssp",
+            "position": [
+              0.96,
+              0,
+              3.55
+            ],
+            "color": "#bfcc2c"
+          },
+          {
+            "_id": "_awtyhx5",
+            "position": [
+              0.98,
+              0,
+              3.63
+            ],
+            "color": "#0d632f"
+          },
+          {
+            "_id": "_mzbspf8",
+            "position": [
+              1,
+              0,
+              3.69
+            ],
+            "color": "#90b9cd"
+          },
+          {
+            "_id": "_mgs5x6m",
+            "position": [
+              2.3,
+              0,
+              -1.81
+            ],
+            "color": "#11c735"
+          },
+          {
+            "_id": "_wew5meh",
+            "position": [
+              2.15,
+              0,
+              -1.72
+            ],
+            "color": "#caaab4"
+          },
+          {
+            "_id": "_kftu4oe",
+            "position": [
+              1.88,
+              0,
+              -1.52
+            ],
+            "color": "#8ff3c9"
+          },
+          {
+            "_id": "_95sv5lb",
+            "position": [
+              1.61,
+              0,
+              -1.28
+            ],
+            "color": "#c3fc8d"
+          },
+          {
+            "_id": "_0u35a9n",
+            "position": [
+              1.28,
+              0,
+              -0.99
+            ],
+            "color": "#a935a8"
+          },
+          {
+            "_id": "_yi9oqa4",
+            "position": [
+              1,
               0,
               -0.74
             ],
-            "color": "#6d60ce"
+            "color": "#e23ebc"
           },
           {
-            "_id": "_fv7yfeb",
+            "_id": "_uz0w7zy",
             "position": [
-              4.48,
+              0.63,
               0,
-              -0.76
+              -0.48
             ],
-            "color": "#7ad74e"
+            "color": "#807558"
+          },
+          {
+            "_id": "_43i9gsj",
+            "position": [
+              0.26,
+              0,
+              -0.23
+            ],
+            "color": "#376beb"
+          },
+          {
+            "_id": "_7pmnn2t",
+            "position": [
+              0.02,
+              0,
+              -0.04
+            ],
+            "color": "#4fa862"
+          },
+          {
+            "_id": "_k1agq2d",
+            "position": [
+              -0.22,
+              0,
+              0.15
+            ],
+            "color": "#1469ff"
+          },
+          {
+            "_id": "_1m8quke",
+            "position": [
+              -0.34,
+              0,
+              0.25
+            ],
+            "color": "#d4da46"
+          },
+          {
+            "_id": "_szcji73",
+            "position": [
+              -0.43,
+              0,
+              0.33
+            ],
+            "color": "#af5612"
+          },
+          {
+            "_id": "_nczonmv",
+            "position": [
+              -0.49,
+              0,
+              0.37
+            ],
+            "color": "#54fed2"
+          },
+          {
+            "_id": "_qbx525x",
+            "position": [
+              -0.54,
+              0,
+              0.39
+            ],
+            "color": "#71fdf8"
+          },
+          {
+            "_id": "_guqgtvg",
+            "position": [
+              -0.56,
+              0,
+              0.4
+            ],
+            "color": "#11f082"
+          },
+          {
+            "_id": "_myge7h0",
+            "position": [
+              -0.57,
+              0,
+              0.41
+            ],
+            "color": "#ed2223"
+          },
+          {
+            "_id": "_8uiagkf",
+            "position": [
+              -0.55,
+              0,
+              0.41
+            ],
+            "color": "#6c9d95"
+          },
+          {
+            "_id": "_qgxbayc",
+            "position": [
+              -0.49,
+              0,
+              0.41
+            ],
+            "color": "#588d42"
+          },
+          {
+            "_id": "_zfcu8zf",
+            "position": [
+              -0.35,
+              0,
+              0.41
+            ],
+            "color": "#9b81f5"
+          },
+          {
+            "_id": "_xvdjb57",
+            "position": [
+              -0.15,
+              0,
+              0.43
+            ],
+            "color": "#15dcb8"
+          },
+          {
+            "_id": "_cyj7w20",
+            "position": [
+              0.61,
+              0,
+              0.6
+            ],
+            "color": "#7d597f"
+          },
+          {
+            "_id": "_05lm0eu",
+            "position": [
+              0.88,
+              0,
+              0.66
+            ],
+            "color": "#367696"
+          },
+          {
+            "_id": "_cy8ut6y",
+            "position": [
+              1.28,
+              0,
+              0.68
+            ],
+            "color": "#11ecbd"
+          },
+          {
+            "_id": "_zrzdmd5",
+            "position": [
+              1.64,
+              0,
+              0.71
+            ],
+            "color": "#029598"
+          },
+          {
+            "_id": "_q05l7v1",
+            "position": [
+              1.92,
+              0,
+              0.75
+            ],
+            "color": "#0924cd"
+          },
+          {
+            "_id": "_63qubup",
+            "position": [
+              2.24,
+              0,
+              0.84
+            ],
+            "color": "#72645c"
+          },
+          {
+            "_id": "_kiee646",
+            "position": [
+              2.54,
+              0,
+              0.96
+            ],
+            "color": "#5b6010"
+          },
+          {
+            "_id": "_u1ffz9t",
+            "position": [
+              2.97,
+              0,
+              1.07
+            ],
+            "color": "#87466f"
+          },
+          {
+            "_id": "_xevaf0y",
+            "position": [
+              3.43,
+              0,
+              1.16
+            ],
+            "color": "#f83066"
+          },
+          {
+            "_id": "_qdde25s",
+            "position": [
+              3.72,
+              0,
+              1.22
+            ],
+            "color": "#9b4d9d"
+          },
+          {
+            "_id": "_j90cq1o",
+            "position": [
+              3.91,
+              0,
+              1.26
+            ],
+            "color": "#470c06"
+          },
+          {
+            "_id": "_3a2vdbc",
+            "position": [
+              4.05,
+              0,
+              1.28
+            ],
+            "color": "#34c1b0"
+          },
+          {
+            "_id": "_vg7r6s9",
+            "position": [
+              4.16,
+              0,
+              1.3
+            ],
+            "color": "#66272e"
+          },
+          {
+            "_id": "_ehi4vce",
+            "position": [
+              4.24,
+              0,
+              1.29
+            ],
+            "color": "#1781d6"
           }
         ]
       }
