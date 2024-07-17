@@ -57,10 +57,13 @@ export function ToolBox({ useStore, boxData, saveBoxData, files }) {
             });
           }}
         >
-          Write
+          Draw
         </label>
       </div>
       {/*  */}
+      {/*  */}
+      {/*  */}
+
       <div className="w-full" style={{ height: `calc(100%)` }}>
         <Canvas>
           <OrbitControls
