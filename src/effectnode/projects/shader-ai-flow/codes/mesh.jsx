@@ -2,7 +2,7 @@
 // import { useFrame } from "@react-three/fiber";
 // useCallback,
 import { Editor } from "@monaco-editor/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Clock, Vector2 } from "three";
 import { setupGLSL } from "../ai/opengl";
 
@@ -13,7 +13,7 @@ const BackupCode = `
 #define FLUCTUATION 0.1
 
 vec4 waterwaves(in vec2 uv) {
-    float time = iTime * 0.05;
+    float time = iTime * 0.03;
     vec2 p = mod(uv * TAU * 2.0, TAU) - 250.0;
 
     // Introduce a fluctuation factor for more realistic wave patterns
@@ -33,6 +33,7 @@ vec4 waterwaves(in vec2 uv) {
     c = 1.17 - pow(c, 1.4);
 
     float colour = sin(pow(abs(c), 8.0));
+
     colour = clamp(colour, 0.0, 1.0);
 
     return vec4(clamp(vec3(colour), 0.0, 1.0), 1.0);
@@ -49,7 +50,6 @@ void mainImage(out vec4 mainColor, in vec2 uv) {
         water.a
     );
 }
-
 
 `;
 
@@ -171,6 +171,7 @@ export function Runtime({ ui, io, useStore, onLoop, boxData }) {
     });
   }, [ui, io]);
 
+  let clock = useMemo(() => new Clock(), []);
   return (
     <>
       <Insert3D>
@@ -183,7 +184,7 @@ export function Runtime({ ui, io, useStore, onLoop, boxData }) {
               onBeforeCompile={(shader, gl) => {
                 shader.uniforms.iTime = {
                   get value() {
-                    return window.performance.now() / 1000;
+                    return clock.getElapsedTime();
                   },
                 };
 
