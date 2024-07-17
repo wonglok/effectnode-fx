@@ -10,7 +10,7 @@ import SplitPane, { Pane } from "split-pane-react";
 import { setupGLSL } from "../ai/opengl";
 import { CodeThatWorks } from "./mesh";
 
-const DefaultInstruction = `improve the following glsl code with same input and output for each function, without rename variables.`;
+const DefaultInstruction = `Rewrite the following GLSL code. keep same function input and keep same function output, do not rename variables.`;
 const DefaultCodeToBeImproved = `${CodeThatWorks}`;
 
 export function ToolBox({
