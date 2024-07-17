@@ -623,7 +623,7 @@ function loadAssets({ projectName }) {
   let rr = require.context(
     "src/effectnode/projects",
     true,
-    /\/assets\/(.*).(png|jpg|hdr|jpeg|glb|fbx|exr|mp4)$/,
+    /\/assets\/(.*).(png|jpg|hdr|jpeg|glb|gltf|fbx|exr|mp4)$/,
     "sync"
   );
 

@@ -15,10 +15,10 @@ import {
   OrbitControls,
 } from "@react-three/drei";
 import { Canvas, useThree } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Color } from "three";
 import { CENTER } from "three-mesh-bvh";
-
+import { useGLTF, Merged } from "@react-three/drei";
 // useEditorStore //
 
 export function ToolBox({ useStore, boxData, saveBoxData, files }) {
@@ -92,7 +92,13 @@ function Content({ boxData, saveBoxData, files, useStore }) {
         useStore={useStore}
       ></Editor>
 
-      <Grass flower={boxData.flower}></Grass>
+      <Suspense fallback={null}>
+        <Grass
+          files={files}
+          useStore={useStore}
+          flower={boxData.flower}
+        ></Grass>
+      </Suspense>
 
       <Environment
         files={[files[`/hdr/greenwich_park_02_1k.hdr`]]}
@@ -152,27 +158,69 @@ function Editor({ files, boxData, saveBoxData, useStore }) {
   );
 }
 
-function Grass({ flower = [] }) {
-  //
-  console.log(flower);
+function Grass({ files, flower = [] }) {
+  const tree1 = useGLTF(files["/tree/tree-clean-1.glb"]);
+  const tree2 = useGLTF(files["/tree/tree-clean-2.glb"]);
+  const meshes = useMemo(
+    () => ({
+      WoodT1: tree1.nodes.Group_152,
+      LeafT1: tree1.nodes.Group_154,
+      WoodT2: tree2.nodes.Group_23,
+      LeafT2: tree2.nodes.Group_25,
+    }),
+    [tree1, tree2]
+  );
 
   return (
-    <Instances frustumCulled={false} range={flower.length} limit={5000}>
-      <boxGeometry></boxGeometry>
-      <meshStandardMaterial></meshStandardMaterial>
+    <Merged meshes={meshes}>
+      {(meshes) => (
+        <>
+          {flower.map((r, i) => {
+            return (
+              <group position={[0, 0.1, 0]} key={r._id}>
+                {i % 2 === 0 < 0.5 ? (
+                  <group scale={0.5} position={r.position}>
+                    <meshes.WoodT1
+                      position={[-0.645, 0, 0.589]}
+                      scale={0.766}
+                    />
+                    <meshes.LeafT1 position={[0, 1.725, 0]} />
+                  </group>
+                ) : (
+                  <group scale={0.5} position={r.position}>
+                    <meshes.WoodT2
+                      position={[-0.04, 0, 0.599]}
+                      scale={[0.79, 0.6, 0.79]}
+                    />
+                    <meshes.LeafT2
+                      position={[0.625, 1.327, 0.001]}
+                      scale={0.573}
+                    />
+                  </group>
+                )}
+              </group>
+            );
+          })}
+        </>
+      )}
+    </Merged>
 
-      {flower.map((r) => {
-        return (
-          <group position={[0, 0.1, 0]} key={r._id}>
-            <Instance
-              position={r.position}
-              color={r.color}
-              scale={0.1}
-            ></Instance>
-          </group>
-        );
-      })}
-    </Instances>
+    // <Instances frustumCulled={false} range={flower.length} limit={5000}>
+    //   <boxGeometry></boxGeometry>
+    //   <meshStandardMaterial></meshStandardMaterial>
+
+    // {flower.map((r) => {
+    //   return (
+    //     <group position={[0, 0.1, 0]} key={r._id}>
+    //       <Instance
+    //         position={r.position}
+    //         color={r.color}
+    //         scale={0.1}
+    //       ></Instance>
+    //     </group>
+    //   );
+    // })}
+    // </Instances>
   );
 }
 
@@ -188,8 +236,13 @@ export function Runtime({ ui, useStore, io, files, boxData }) {
     <>
       <Insert3D>
         {/*  */}
-
-        <Grass flower={boxData.flower}></Grass>
+        <Suspense fallback={null}>
+          <Grass
+            files={files}
+            useStore={useStore}
+            flower={boxData.flower}
+          ></Grass>
+        </Suspense>
         {/*  */}
       </Insert3D>
     </>
