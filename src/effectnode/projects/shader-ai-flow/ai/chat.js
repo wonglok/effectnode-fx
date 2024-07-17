@@ -15,7 +15,7 @@ export const askGLSL = async ({
   onDone = () => {},
 }) => {
   const model = new ChatOllama({
-    temperature: 0,
+    temperature: 100,
     baseUrl: getOllama(),
     model: modelName,
   });

@@ -1,13 +1,16 @@
 // import { Box, PerspectiveCamera } from "@react-three/drei";
 // import { useFrame } from "@react-three/fiber";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Clock } from "three";
 import { getTags } from "../ai/tags";
 // import Editor from "@monaco-editor/react";
 import { pullModel } from "../ai/model";
 import { askGLSL } from "../ai/chat";
 import { Editor } from "@monaco-editor/react";
 import SplitPane, { Pane } from "split-pane-react";
+import { setupGLSL } from "../ai/opengl";
+
+const DefaultInstruction = `improve and refine the following glsl code and make sure it has same input and output. minimum explanation in text. only show code. add explanation in code comments.  `;
+const DefaultCodeToBeImproved = ``;
 
 export function ToolBox({
   useStore,
@@ -31,6 +34,7 @@ export function ToolBox({
   let [monaco, setMonaco] = useState();
   let [promptEditor, setPromptEditor] = useState();
 
+  let contextEditor = useRef();
   //
   useEffect(() => {
     useStore.setState({
@@ -134,17 +138,17 @@ export function ToolBox({
     let canWrite = true;
     //
     let text = promptEditor.getValue();
+    let context = contextEditor.current.value;
 
     let fullResponse = "";
     askGLSL({
       modelName: activeModel,
       messages: [
-        // {
-        //   role: "ai",
-        //   content:
-        //     "I am a senior openl-gl graphics developer. i love helping others.",
-        // },
-        //
+        {
+          role: "ai",
+          content: context,
+        },
+
         {
           role: "user",
           content: text,
@@ -195,14 +199,6 @@ export function ToolBox({
 
   const [sizes, setSizes] = useState([100, "30%", "auto"]);
 
-  // const layoutCSS = {
-  //   height: "100%",
-  //   display: "flex",
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  // };
-  //
-
   return (
     <>
       {ollamaOffline && (
@@ -249,58 +245,114 @@ export function ToolBox({
             </div>
           )}
           {screenAt === "generator" && activeModel && (
-            <div className=" w-full h-full text-xs">
+            <div
+              onKeyDownCapture={(ev) => {
+                let run = async () => {
+                  //
+                  console.log("run");
+
+                  //
+                };
+                if (ev.metaKey && ev.key === "s") {
+                  ev.preventDefault();
+                  run();
+                }
+                if (ev.ctrlKey && ev.key === "s") {
+                  ev.preventDefault();
+                  run();
+                }
+              }}
+              className=" w-full h-full "
+            >
               <SplitPane split="horizontal" sizes={sizes} onChange={setSizes}>
                 <Pane minSize={50}>
-                  <div className="flex" style={{ height: `calc(100%)` }}>
-                    <Editor
-                      height={`100%`}
-                      defaultLanguage="markdown"
-                      defaultValue={`
-Improve and Complete the following openGL GLSL functions for three.js
+                  <div
+                    className="flex flex-col text-xs"
+                    style={{ height: `calc(100%)` }}
+                  >
+                    <div
+                      className="flex border-b border-gray-400"
+                      style={{ height: `calc(25%)` }}
+                    >
+                      <div className="px-2 py-1 flex items-center text-white bg-gray-800 ">
+                        Instruction
+                      </div>
+                      <textarea
+                        ref={contextEditor}
+                        className="p-1 h-full w-full"
+                        rows={1}
+                        defaultValue={
+                          boxData.instructionText ||
+                          `${DefaultInstruction}`.trim()
+                        }
+                        onChange={(ev) => {
+                          boxData.instructionText = ev.target.value;
+                          saveBoxData();
+                        }}
+                      ></textarea>
 
-float perinNoise(in vec2 uv) {}
-float waterWavePulse(in vec2 uv, in float time) {
-    float wave = sin(uv.x * 0.1 * 200.0 + time * 0.003141592) * 0.5 + 0.5; 
-    return wave; 
-}
+                      <button
+                        onClick={onGenerateAI}
+                        className="p-1 bg-green-500 text-white"
+                      >
+                        Generate Code
+                      </button>
+                    </div>
 
-                  `.trim()}
-                      onMount={(editor, monaco) => {
-                        setPromptEditor(editor);
+                    <div className="flex w-full" style={{ height: "75%" }}>
+                      <Editor
+                        height={`100%`}
+                        defaultLanguage="glsl"
+                        defaultValue={
+                          boxData.codeText ||
+                          `${DefaultCodeToBeImproved}
+`.trim()
+                        }
+                        onMount={(editor, monaco) => {
+                          setPromptEditor(editor);
 
-                        editor.updateOptions({
-                          wordWrap: "on",
-                        });
-                      }}
-                      onChange={(text) => {}}
-                    ></Editor>
-
-                    <button onClick={onGenerateAI} className="p-1 bg-gray-200">
-                      AI Shader Generation
-                    </button>
+                          setupGLSL({ editor, monaco });
+                          editor.updateOptions({
+                            wordWrap: "on",
+                          });
+                        }}
+                        onChange={(text) => {
+                          boxData.codeText = text;
+                          saveBoxData();
+                        }}
+                      ></Editor>
+                    </div>
                   </div>
                   <div className="h-[2px] bg-gray-400"></div>
                 </Pane>
                 <Pane minSize={50}>
                   <div className="h-[2px] bg-gray-400"></div>
-                  <Editor
-                    height={`100%`}
-                    defaultLanguage="markdown"
-                    defaultValue={`${boxData.aiOutput || ""}`}
-                    onMount={(editor, monaco) => {
-                      setEditor(editor);
-                      setMonaco(monaco);
 
-                      editor.updateOptions({
-                        wordWrap: "on",
-                      });
-                    }}
-                    onChange={(text) => {
-                      boxData.aiOutput = text;
-                      saveBoxData();
-                    }}
-                  ></Editor>
+                  <div className="flex flex-col w-full h-full text-xs">
+                    <div className="text-xs p-1 px-2 bg-blue-700 text-white flex items-center justify-center text-center">
+                      👇🏼 Generated Output 👇🏼
+                    </div>
+                    <Editor
+                      height={`100%`}
+                      defaultLanguage="glsl"
+                      defaultValue={`${boxData.aiOutput || ""}`}
+                      onMount={(editor, monaco) => {
+                        //
+                        setEditor(editor);
+                        //
+                        setMonaco(monaco);
+                        setupGLSL({ editor, monaco });
+
+                        editor.updateOptions({
+                          wordWrap: "on",
+                        });
+                      }}
+                      onChange={(text) => {
+                        boxData.aiOutput = text;
+                        saveBoxData();
+                      }}
+                    ></Editor>
+                  </div>
                 </Pane>
               </SplitPane>
 

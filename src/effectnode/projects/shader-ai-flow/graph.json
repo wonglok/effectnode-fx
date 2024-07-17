@@ -181,7 +181,9 @@
       ],
       "title": "ai",
       "metaData": {
-        "aiOutput": "Here are the improved and completed GLSL functions for three.js:\n\n```glsl\nfloat perlinNoise(in vec2 uv) {\n    // Perlin noise implementation based on https://github.com/ashima/webgl-noise\n    vec2 i = floor(uv);\n    vec2 f = fract(uv);\n\n    float u = dot(i, vec2(1.0));\n    float v = dot(i, vec2(0.0, 1.0));\n\n    float noise = mix(\n        mix(rand(vec2(u, 0.0)), rand(vec2(u, 1.0)), f.x),\n        mix(rand(vec2(v, 0.0)), rand(vec2(v, 1.0)), f.x), \n        f.y);\n\n    return noise;\n}\n\nfloat waterWavePulse(in vec2 uv, in float time) {\n    // Add perlin noise to wave\n    float wave = sin(uv.x * 0.1 * 200.0 + time * 0.003141592) * 0.5 + 0.5; \n    return wave;\n}\n\nfloat rand(vec2 n) {\n    return fract(sin(dot(n, vec2(12.9898, 4.14159))) * 43758.5453);\n}\n```\n\nThe `perlinNoise` function is an implementation of Perlin noise, a type of gradient noise developed by Ken Perlin in the early 1980s. It's commonly used to generate natural-looking textures and patterns.\n\nThe `waterWavePulse` function has been left mostly unchanged, but I've added some comments for clarity. The pulse effect is achieved by adding a sine wave with a frequency that depends on the x-coordinate of the UV space and the time. This creates a wavy motion that can be used to simulate water or other types of waves.\n\nThe `rand` function is a simple implementation of a random number generator, which is used in the Perlin noise calculation."
+        "aiOutput": "Here is the refined code with minimal explanation and same input/output:\n\n```glsl\n#define TAU 6.28318530718\n#define MAX_ITER 15\n#define TILING 1.0\n\nvec4 waterwaves(in vec2 uv) {\n  // time-based displacement for waves\n  float time = iTime * .5 + 23.0;\n\n  vec2 p = mod(uv * TAU, TAU); // normalized position on canvas\n\n  vec2 i = vec2(p);\n  float c = 1.0;\n  float inten = .005;\n\n  for (int n = 0; n < MAX_ITER; n++) {\n    float t = time * (1.0 - (3.5 / float(n + 1)));\n    // iterate through waves and compute curvature\n    i = p + vec2(cos(t - i.x) + sin(t + i.y), sin(t - i.y) + cos(t + i.x));\n    c += 1.0 / length(vec2(p.x / (sin(i.x + t) / inten), p.y / (cos(i.y + t) / inten)));\n  }\n  // normalize and map to color value\n  c /= float(MAX_ITER);\n  c = 1.17 - pow(c, 1.4);\n\n  vec3 colour = vec3(pow(abs(c), 8.0)); // map curvature to color\n\n  if (SHOW_TILING) {\n    // Flash tile borders...\n    vec2 pixel = 2.0 / iResolution.xy; // calculate pixel size\n    uv *= 2.0;\n    \n    float f = floor(mod(iTime * .5, 2.0)); // Flash value.\n    vec2 first = step(pixel, uv) * f; // Rule out first screen pixels and flash.\n    uv = step(fract(uv), pixel); // Add one line of pixels per tile.\n\n    colour = mix(colour, vec3(1.0, 1.0, 0.0), (uv.x + uv.y) * first.x * first.y);\n  }\n\n  return vec4(clamp(colour.rgb, 0.0, 1.0), 1.0);\n}\n\nvoid mainImage(out vec4 mainColor, in vec2 uv) {\n  vec4 water = waterwaves(uv); // compute and texture water\n\n  // gamma correction for brightness\n  mainColor = vec4(pow(water.rgb * .85 + 0.15, 1.4), 1.0);\n}\n```\nPlease let me know if you would like any further explanations.",
+        "instructionText": "improve and refine the following glsl code and make sure it has same input and output. minimum explanation in text. only show code. add explanation in code comments.  ",
+        "codeText": "#define TAU 6.28318530718\n#define MAX_ITER 15\n\nvec4 waterwaves(in vec2 uv) {\n  float time = iTime * .5 + 23.0;\n\n  #ifdef SHOW_TILING\n  vec2 p = mod(uv * TAU * 2.0, TAU) - 250.0;\n  #else\n  vec2 p = mod(uv * TAU, TAU) - 250.0;\n  #endif\n\n  vec2 i = vec2(p);\n  float c = 1.0;\n  float inten = .005;\n\n  for (int n = 0; n < MAX_ITER; n++) {\n    float t = time * (1.0 - (3.5 / float(n + 1)));\n    i = p + vec2(cos(t - i.x) + sin(t + i.y), sin(t - i.y) + cos(t + i.x));\n    c += 1.0 / length(vec2(p.x / (sin(i.x + t) / inten), p.y / (cos(i.y + t) / inten)));\n  }\n  c /= float(MAX_ITER);\n  c = 1.17 - pow(c, 1.4);\n\n  vec3 colour = vec3(pow(abs(c), 8.0));\n  colour = clamp(colour + vec3(0.0, 0.35, 0.5), 0.0, 1.0);\n\n  #ifdef SHOW_TILING\n  // Flash tile borders...\n  vec2 pixel = 2.0 / iResolution.xy;\n  uv *= 2.0;\n\n  float f = floor(mod(iTime * .5, 2.0)); // Flash value.\n  vec2 first = step(pixel, uv) * f; // Rule out first screen pixels and flash.\n  uv = step(fract(uv), pixel); // Add one line of pixels per tile.\n\n  colour = mix(colour, vec3(1.0, 1.0, 0.0), (uv.x + uv.y) * first.x * first.y);\n  #endif\n\n  return vec4(colour, 1.0);\n}\n\nvoid mainImage(out vec4 mainColor, in vec2 uv) {\n  vec4 water = waterwaves(uv);\n\n  mainColor = vec4(\n    vec3(pow(water.r, 4.0), pow(water.g, 4.0), pow(water.b, 4.0)) * 1.1,\n    1.0\n  );\n}"
       },
       "enableFullScreen": true
     },
@@ -215,7 +217,10 @@
         }
       ],
       "title": "mesh",
-      "metaData": {}
+      "metaData": {
+        "shaderBox": "\n#define TAU 6.28318530718\n#define MAX_ITER 15\n\nvec4 waterwaves(in vec2 uv) {\n  // Set a fixed time value, this value can be updated for animations or transitions\n  float time = iTime * .5 + 23.0;\n\n  #ifdef SHOW_TILING\n  // Tiling function to make the waves appear tiled\n  vec2 p = mod(uv * TAU * 2.0, TAU) - 250.0;\n  #else\n  vec2 p = mod(uv * TAU, TAU) - 250.0;\n  #endif\n\n  vec2 i = vec2(p); // Initialize the vector with the tile position\n  float c = 1.0; // Initial intensity of the wave\n  float inten = .005; // Amplitude of the wave's texture influence\n\n  for (int n = 0; n < MAX_ITER; n++) {\n    // Time dependent wavy displacement based on time and position\n    float t = time * (1.0 - (3.5 / float(n + 1)));\n    i = p + vec2(cos(t - i.x) + sin(t + i.y), sin(t - i.y) + cos(t + i.x));\n    // Calculate the new texture coordinates based on the wave function\n    c += 1.0 / length(vec2(p.x / (sin(i.x + t) / inten), p.y / (cos(i.y + t) / inten)));\n  }\n  // Normalize the intensity values by the total iterations performed\n  c /= float(MAX_ITER);\n  c = 1.17 - pow(c, 1.4);\n\n  vec3 colour = vec3(pow(abs(c), 3.5));\n  colour = clamp(colour + vec3(0.0, 0.0, 0.0), 0.0, 1.0);\n  \n  // Tiling and border flashing (only shown when SHOW_TILING is defined)\n  #ifdef SHOW_TILING\n  // Convert the pixel coordinates to UV coordinates based on resolution.\n  vec2 pixel = 2.0 / iResolution.xy;\n  uv *= 2.0;\n\n  float f = floor(mod(iTime * .5, 2.0)); \n  vec2 first = step(pixel, uv) * f; \n  // Create the border effect by adding pixels for every tile and flashing every other frame\n  uv = step(fract(uv), pixel); \n  colour = mix(colour, vec3(1.0, 1.0, 0.0), (uv.x + uv.y) * first.x * first.y);\n  \n  #endif\n\n  return vec4(colour, 1.0);\n}\n\nvoid mainImage(out vec4 mainColor, in vec2 uv) {\n  vec4 water = waterwaves(uv);\n\n  mainColor = vec4(\n    // Calculate the color by exponentiating the RGB intensity\n    vec3(pow(water.r, 4.0), pow(water.g, 4.0), pow(water.b, 4.0)) * 1.1,\n    1.0\n  );\n}"
+      },
+      "enableFullScreen": true
     }
   ],
   "graph": {
@@ -521,9 +526,9 @@
         "_id": "_napk8j9_",
         "title": "ai",
         "position": [
-          1.063374818585205,
+          1.2081445651644531,
           0,
-          0.1988067237297661
+          0.6000950077657684
         ],
         "inputs": [
           {
@@ -595,9 +600,9 @@
         "_id": "_bzyp0zk_",
         "title": "mesh",
         "position": [
-          -1.220675053798272,
+          -1.6937209326595901,
           0,
-          0.1103951901947986
+          0.7432995574974994
         ],
         "inputs": [
           {
