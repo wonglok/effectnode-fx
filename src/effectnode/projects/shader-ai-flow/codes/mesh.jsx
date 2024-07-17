@@ -7,63 +7,47 @@ import { Clock, Vector2 } from "three";
 import { setupGLSL } from "../ai/opengl";
 
 const BackupCode = `
+
 #define TAU 6.28318530718
 #define MAX_ITER 15
+#define FLUCTUATION 0.1
 
 vec4 waterwaves(in vec2 uv) {
-  // Set a fixed time value, this value can be updated for animations or transitions
-  float time = iTime * .5 + 23.0;
+    float time = iTime * 0.005;
+    vec2 p = mod(uv * TAU * 2.0, TAU) - 250.0;
 
-  #ifdef SHOW_TILING
-  // Tiling function to make the waves appear tiled
-  vec2 p = mod(uv * TAU * 2.0, TAU) - 250.0;
-  #else
-  vec2 p = mod(uv * TAU, TAU) - 250.0;
-  #endif
+    // Introduce a fluctuation factor for more realistic wave patterns
+    float fluc = sin(time / FLUCTUATION);
+    time *= 1.0 + sin(time / FLUCTUATION);
 
-  vec2 i = vec2(p); // Initialize the vector with the tile position
-  float c = 1.0; // Initial intensity of the wave
-  float inten = .005; // Amplitude of the wave's texture influence
+    vec2 i = vec2(p), o;
+    float c = 0.0, inten = 0.01; // Wave intensity factor
 
-  for (int n = 0; n < MAX_ITER; n++) {
-    // Time dependent wavy displacement based on time and position
-    float t = time * (1.0 - (3.5 / float(n + 1)));
-    i = p + vec2(cos(t - i.x) + sin(t + i.y), sin(t - i.y) + cos(t + i.x));
-    // Calculate the new texture coordinates based on the wave function
-    c += 1.0 / length(vec2(p.x / (sin(i.x + t) / inten), p.y / (cos(i.y + t) / inten)));
-  }
-  // Normalize the intensity values by the total iterations performed
-  c /= float(MAX_ITER);
-  c = 1.17 - pow(c, 1.4);
+    for (int n = 0; n < MAX_ITER; n++) {
+        time -= float(n) * 0.5;
+        i = p + vec2(cos(time - i.x) + sin(time + i.y), sin(time - i.y) + cos(time + i.x));
+        c += 1.0 / length(vec2(p.x / (sin(i.x + time) / inten), p.y / (cos(i.y + time) / inten)));
+    }
+    // Average cumulative length over all iterations
+    c /= float(MAX_ITER);
+    c = 1.17 - pow(c, 1.4);
 
-  vec3 colour = vec3(pow(abs(c), 3.5));
-  colour = clamp(colour + vec3(0.0, 0.0, 0.0), 0.0, 1.0);
-  
-  // Tiling and border flashing (only shown when SHOW_TILING is defined)
-  #ifdef SHOW_TILING
-  // Convert the pixel coordinates to UV coordinates based on resolution.
-  vec2 pixel = 2.0 / iResolution.xy;
-  uv *= 2.0;
+    float colour = sin(pow(abs(c), 8.0));
+    colour = clamp(colour, 0.0, 1.0);
 
-  float f = floor(mod(iTime * .5, 2.0)); 
-  vec2 first = step(pixel, uv) * f; 
-  // Create the border effect by adding pixels for every tile and flashing every other frame
-  uv = step(fract(uv), pixel); 
-  colour = mix(colour, vec3(1.0, 1.0, 0.0), (uv.x + uv.y) * first.x * first.y);
-  
-  #endif
-
-  return vec4(colour, 1.0);
+    return vec4(clamp(vec3(colour), 0.0, 1.0), 1.0);
 }
 
 void mainImage(out vec4 mainColor, in vec2 uv) {
-  vec4 water = waterwaves(uv);
+    vec4 water = waterwaves(uv);
 
-  mainColor = vec4(
-    // Calculate the color by exponentiating the RGB intensity
-    vec3(pow(water.r, 4.0), pow(water.g, 4.0), pow(water.b, 4.0)) * 1.1,
-    1.0
-  );
+    vec3 color = vec3(0.0, 1.0, 1.0);
+    mainColor = vec4(
+        vec3(pow(water.x, 4.0),
+        pow(water.y, 4.0),
+        pow(water.z, 4.0)) * (0.2 + color),
+        water.a
+    );
 }
 `;
 

@@ -8,9 +8,10 @@ import { askGLSL } from "../ai/chat";
 import { Editor } from "@monaco-editor/react";
 import SplitPane, { Pane } from "split-pane-react";
 import { setupGLSL } from "../ai/opengl";
+import { CodeThatWorks } from "./mesh";
 
-const DefaultInstruction = `improve and refine the following glsl code and make sure it has same input and output. minimum explanation in text. only show code. add explanation in code comments.  `;
-const DefaultCodeToBeImproved = ``;
+const DefaultInstruction = `improve the following glsl code with same input and output for each function, without rename variables.`;
+const DefaultCodeToBeImproved = `${CodeThatWorks}`;
 
 export function ToolBox({
   useStore,
@@ -334,7 +335,7 @@ export function ToolBox({
                     </div>
                     <Editor
                       height={`100%`}
-                      defaultLanguage="glsl"
+                      defaultLanguage="markdown"
                       defaultValue={`${boxData.aiOutput || ""}`}
                       onMount={(editor, monaco) => {
                         //
