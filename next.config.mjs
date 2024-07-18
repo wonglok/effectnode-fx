@@ -60,7 +60,7 @@ const nextConfig = {
     // })
 
     config.module.rules.push({
-      test: /\.(glb|gltf|hdr|exr|fbx|ttf|png|jpg|jpeg|gif|webp|avif|ico|bmp|svg|mov)$/,
+      test: /\.(glb|gltf|hdr|exr|fbx|ttf|png|jpg|jpeg|gif|webp|avif|ico|bmp|svg|mov|mp4|webm)$/,
       exclude: /node_modules/,
       use: [
         {

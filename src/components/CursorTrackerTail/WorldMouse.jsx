@@ -241,7 +241,7 @@ function ShowInfo({ useStore }) {
         outlineColor={"#ffffff"}
         outlineWidth={0.05}
       >
-        {bannerText.toUpperCase()}
+        {(bannerText || "").toUpperCase()}
       </Text>
 
       <Gltf scale={0.15} position={[0, 0.075, 0]} src={cursorGLBURL}></Gltf>

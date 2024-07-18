@@ -46,6 +46,17 @@ export function OneCard({ data }) {
       ></video>
     );
   }
+  if (files["/thumb.wemb"]) {
+    thumb = (
+      <video
+        muted
+        autoPlay
+        loop
+        className="w-full h-full object-cover"
+        src={files["/thumb.wemb"]}
+      ></video>
+    );
+  }
 
   return (
     <>
@@ -103,7 +114,7 @@ export function loadThumb({ projectName }) {
   let rr = require.context(
     "src/effectnode/projects",
     true,
-    /\/assets\/(.*).(png|jpg|hdr|jpeg|glb|gltf|fbx|exr|mp4|mov)$/,
+    /\/assets\/(.*).(png|jpg|hdr|jpeg|glb|gltf|fbx|exr|mp4|webm|mov)$/,
     "sync"
   );
 
