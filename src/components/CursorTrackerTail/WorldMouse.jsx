@@ -56,7 +56,7 @@ export function WorldMouse({ src, useStore }) {
         let cloned = new BufferAttribute(new Float32Array(data), 1);
         geo.setAttribute("meshMap", cloned);
 
-        infoMap.set(idx, it);
+        infoMap.set(idx, it); // it = mesh
 
         // console.log(cloned.array[0], it.name);
 
