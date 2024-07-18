@@ -1,4 +1,5 @@
 import { Canvas, useThree } from "@react-three/fiber";
+import { createXRStore, XR } from "@react-three/xr";
 import { useEffect } from "react";
 // import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer";
 import tunnel from "tunnel-rat";
@@ -11,6 +12,10 @@ export function ToolBox({}) {
   );
 }
 
+let xrStore = createXRStore({
+  //
+  //
+});
 let t3d = tunnel();
 let t2d = tunnel();
 export function Runtime({ ui, useStore, io }) {
@@ -31,11 +36,24 @@ export function Runtime({ ui, useStore, io }) {
   return (
     <>
       <Canvas gl={{ antialias: true }}>
+        <XR store={xrStore}>
+          <State3D useStore={useStore}></State3D>
+          <OutH3D useStore={useStore}></OutH3D>
+        </XR>
         {/* <color attach={"background"} args={["#ffffff"]}></color> */}
-        <State3D useStore={useStore}></State3D>
-        <OutH3D useStore={useStore}></OutH3D>
       </Canvas>
       <OutHTML useStore={useStore}></OutHTML>
+      <div className=" absolute bottom-3 left-[35%] w-[30%] text-center">
+        <div
+          onClick={() => {
+            //
+            xrStore.enterVR();
+          }}
+          className="bg-gray-600 text-white border rounded-2xl inline-block p-3 px-6"
+        >
+          Enter Immersive World
+        </div>
+      </div>
     </>
   );
 }

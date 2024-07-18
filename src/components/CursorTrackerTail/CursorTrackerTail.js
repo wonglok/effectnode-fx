@@ -66,6 +66,7 @@ export class CursorTrackerTail extends Object3D {
         if (mini.now?.camera) {
           looker.lookAt(mini.now.camera.position);
         }
+
         orbit.getWorldPosition(worldPos);
 
         lerpWorldPos.lerp(worldPos, 0.1);
@@ -82,10 +83,10 @@ export class CursorTrackerTail extends Object3D {
         },
         update: ({ origin, orbit }) => {
           //
-          origin.rotation.z += 0.1;
+          origin.rotation.z += 0.05;
 
           orbit.position.x =
-            0.35 + 0.35 * Math.sin((window.performance.now() / 1000) * 1);
+            0.8 + 0.8 * Math.sin((window.performance.now() / 1000) * 1);
           //
         },
       });
@@ -317,7 +318,7 @@ class LokLokWiggleDisplay {
 
     let { geometry, subdivisions, count } = new NoodleGeo({
       count: this.numberOfTrail,
-      numSides: 4,
+      numSides: 6,
       subdivisions: this.sim.WIDTH * 1,
       openEnded: true,
     });
@@ -422,16 +423,17 @@ class LokLokWiggleDisplay {
     //
 
     let latestColor = new Color().copy(this.color);
-    window.addEventListener("set-tail-state", ({ detail: state }) => {
-      if (state === "hovering") {
-        latestColor.set("#ffff00");
+    window.addEventListener("hover", ({ detail: state }) => {
+      console.log(state);
+      if (state === "hover") {
+        latestColor.set("#00ffff");
       } else {
         latestColor.set("#ffffff");
       }
     });
 
     this.node.onLoop(() => {
-      this.color.lerp(latestColor, 0.03);
+      this.color.lerp(latestColor, 0.1);
     });
 
     let matLine0 = new ShaderMaterial({
@@ -549,15 +551,20 @@ class LokLokWiggleDisplay {
             float t = tubeInfo + 0.5;
   
             vT = t;
-  
-            vec2 volume = vec2(0.01, 0.01);
+            
+            float thickness = (sin(time * 2.0 + 2.0 * t * 3.1415192) * 0.5 + 0.5) * 0.065 + 0.03;
+
+            vec2 volume = vec2(thickness, thickness);
+
+            volume *= clamp(pow((1.0 - t) * t, 0.35), 0.0, 1.0);
+
             createTube(t, volume, transformed, objectNormal);
   
             vec3 transformedNormal = normalMatrix * objectNormal;
             vNormal = normalize(transformedNormal);
   
             // vUv = uv.yx;
-  
+
             vec4 mvPosition = modelViewMatrix * vec4(transformed, 1.0);
             gl_Position = projectionMatrix * mvPosition;
             vViewPosition = -mvPosition.xyz;

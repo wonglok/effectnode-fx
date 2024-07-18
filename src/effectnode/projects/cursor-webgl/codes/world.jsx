@@ -33,7 +33,10 @@ export function Runtime({ ui, io, useStore, onLoop }) {
 
         <Suspense fallback={null}>
           {files["/places/church-2.glb"] && (
-            <WorldMouse src={files["/places/church-2.glb"]}></WorldMouse>
+            <WorldMouse
+              useStore={useStore}
+              src={files["/places/church-2.glb"]}
+            ></WorldMouse>
           )}
         </Suspense>
       </Insert3D>
