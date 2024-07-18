@@ -123,7 +123,7 @@ export default function Landing() {
                 </Link> */}
                 <a
                   className="cursor-pointer"
-                  href={`https://github.com/wonglok/effectnode-fx/archive/refs/tags/r0001.zip`}
+                  href={`https://github.com/wonglok/effectnode-fx/archive/refs/tags/r0002.zip`}
                   download={"effectnode-fx.zip"}
                   target="_blank"
                 >

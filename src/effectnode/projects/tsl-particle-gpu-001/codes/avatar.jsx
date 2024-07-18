@@ -317,11 +317,13 @@ let setup = async ({
   let StorageInstancedBufferAttribute = await import(
     "three/addons/renderers/common/StorageInstancedBufferAttribute.js"
   ).then((r) => r.default);
+
+
   //   import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
   //   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   //   import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-  console.log(123);
+  // console.log(123);
   const boundingBoxSize = new Vector3();
   skinnedMesh.geometry.boundingBox.getSize(boundingBoxSize);
 

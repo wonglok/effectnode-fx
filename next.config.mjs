@@ -87,6 +87,7 @@ const nextConfig = {
 
     config.experiments = config.experiments || {};
     config.experiments.topLevelAwait = true;
+    // config.experiments.outputModule = true;
 
     config.output.environment = config.output.environment || {};
     config.output.environment.asyncFunction = true;

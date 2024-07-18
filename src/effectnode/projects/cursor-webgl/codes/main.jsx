@@ -34,15 +34,18 @@ export function Runtime({ ui, useStore, io }) {
   }, [useStore]);
 
   return (
-    <>
-      <Canvas gl={{ antialias: true }}>
+    <>  
+      <Canvas  gl={{ antialias: true }}>
         <XR store={xrStore}>
           <State3D useStore={useStore}></State3D>
           <OutH3D useStore={useStore}></OutH3D>
         </XR>
+        {/*  */}
         {/* <color attach={"background"} args={["#ffffff"]}></color> */}
+        {/*  */}
       </Canvas>
       <OutHTML useStore={useStore}></OutHTML>
+      {/*  */}
       <div className=" absolute bottom-3 left-[35%] w-[30%] text-center">
         <div
           onClick={() => {

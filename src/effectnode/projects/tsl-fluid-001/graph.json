@@ -1,0 +1,258 @@
+{
+  "settings": [
+    {
+      "codeID": "_6wwhxoe_fp2fg97",
+      "nodeID": "_quzfyzi_iybz833",
+      "nodeTitle": "node",
+      "spaceID": "new-space",
+      "code": "",
+      "data": [
+        {
+          "_id": "_340ozy1_bvl61x2",
+          "label": "speed",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 0.48000000000000004
+        },
+        {
+          "_id": "_wqx0zng_5cvbuet",
+          "label": "baseColor",
+          "type": "color",
+          "value": "#003eff"
+        },
+        {
+          "_id": "_v22exa7_h0arilg",
+          "label": "name",
+          "type": "text",
+          "value": "hi dear"
+        },
+        {
+          "_id": "_uxvekoz_vlcqhii",
+          "label": "happyColor",
+          "type": "color",
+          "value": "#c10e0e"
+        }
+      ],
+      "title": "happy"
+    },
+    {
+      "codeID": "_rptzbq4_",
+      "nodeID": "_5qydg67_",
+      "nodeTitle": "node",
+      "spaceID": "tsl-particle-man",
+      "code": "",
+      "data": [
+        {
+          "_id": "_f8jrmr4_",
+          "label": "speed",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 0
+        },
+        {
+          "_id": "_13gblu1_",
+          "label": "baseColor",
+          "type": "color",
+          "value": "#ff0000"
+        },
+        {
+          "_id": "_96p583a_",
+          "label": "name",
+          "type": "text",
+          "value": "hi dear"
+        }
+      ],
+      "title": "main",
+      "metaData": {}
+    },
+    {
+      "codeID": "_35ut2sw_",
+      "nodeID": "_25pabcw_",
+      "nodeTitle": "node",
+      "spaceID": "tsl-fluid-001",
+      "code": "",
+      "data": [
+        {
+          "_id": "_do90k8i_",
+          "label": "speed",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 0
+        },
+        {
+          "_id": "_rqiyppu_",
+          "label": "baseColor",
+          "type": "color",
+          "value": "#ff0000"
+        },
+        {
+          "_id": "_jky7hdj_",
+          "label": "name",
+          "type": "text",
+          "value": "hi dear"
+        }
+      ],
+      "title": "app"
+    }
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "spaceID": "tsl-particle-man",
+        "_id": "_5qydg67_",
+        "title": "main",
+        "position": [
+          -1.3447820142312867,
+          0,
+          -0.46494208633422907
+        ],
+        "inputs": [
+          {
+            "_id": "_o83n0k6_",
+            "type": "input",
+            "nodeID": "_5qydg67_",
+            "label": ""
+          },
+          {
+            "_id": "_mnyhjdl_",
+            "type": "input",
+            "nodeID": "_5qydg67_",
+            "label": ""
+          },
+          {
+            "_id": "_sixt9fw_",
+            "type": "input",
+            "nodeID": "_5qydg67_",
+            "label": ""
+          },
+          {
+            "_id": "_9aphhgc_",
+            "type": "input",
+            "nodeID": "_5qydg67_",
+            "label": ""
+          },
+          {
+            "_id": "_qag1vwc_",
+            "type": "input",
+            "nodeID": "_5qydg67_",
+            "label": ""
+          }
+        ],
+        "outputs": [
+          {
+            "_id": "_b8lb59v_",
+            "type": "output",
+            "nodeID": "_5qydg67_",
+            "label": ""
+          },
+          {
+            "_id": "_6wqkxvv_",
+            "type": "output",
+            "nodeID": "_5qydg67_",
+            "label": ""
+          },
+          {
+            "_id": "_8omg81a_",
+            "type": "output",
+            "nodeID": "_5qydg67_",
+            "label": ""
+          },
+          {
+            "_id": "_qp8o0eq_",
+            "type": "output",
+            "nodeID": "_5qydg67_",
+            "label": ""
+          },
+          {
+            "_id": "_o4uvo21_",
+            "type": "output",
+            "nodeID": "_5qydg67_",
+            "label": ""
+          }
+        ]
+      },
+      {
+        "spaceID": "tsl-fluid-001",
+        "_id": "_25pabcw_",
+        "title": "app",
+        "position": [
+          1.1635286907368476,
+          0,
+          -0.4073222516105164
+        ],
+        "inputs": [
+          {
+            "_id": "_4tdeiyy_",
+            "type": "input",
+            "nodeID": "_25pabcw_",
+            "label": ""
+          },
+          {
+            "_id": "_grnvnuh_",
+            "type": "input",
+            "nodeID": "_25pabcw_",
+            "label": ""
+          },
+          {
+            "_id": "_arrntyc_",
+            "type": "input",
+            "nodeID": "_25pabcw_",
+            "label": ""
+          },
+          {
+            "_id": "_v1hb17w_",
+            "type": "input",
+            "nodeID": "_25pabcw_",
+            "label": ""
+          },
+          {
+            "_id": "_sqee30i_",
+            "type": "input",
+            "nodeID": "_25pabcw_",
+            "label": ""
+          }
+        ],
+        "outputs": [
+          {
+            "_id": "_y6c776c_",
+            "type": "output",
+            "nodeID": "_25pabcw_",
+            "label": ""
+          },
+          {
+            "_id": "_t80bc7d_",
+            "type": "output",
+            "nodeID": "_25pabcw_",
+            "label": ""
+          },
+          {
+            "_id": "_0127ss0_",
+            "type": "output",
+            "nodeID": "_25pabcw_",
+            "label": ""
+          },
+          {
+            "_id": "_0j2z94d_",
+            "type": "output",
+            "nodeID": "_25pabcw_",
+            "label": ""
+          },
+          {
+            "_id": "_cbmax0m_",
+            "type": "output",
+            "nodeID": "_25pabcw_",
+            "label": ""
+          }
+        ]
+      }
+    ],
+    "edges": []
+  },
+  "title": "tsl-fluid-001"
+}
