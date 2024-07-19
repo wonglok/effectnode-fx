@@ -40,6 +40,7 @@ import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import { rand } from "../loklok/rand";
 import { Canvas } from "@react-three/fiber";
+import { pow } from "three/examples/jsm/nodes/Nodes.js";
 
 export function ToolBox() {
   return <>ToolBox</>;
@@ -91,7 +92,7 @@ function AppRun({ useStore, useGPU, io, ui }) {
       .loadAsync(files["/rpm/lok-orig.glb"])
       .then(async (glb) => {
         let motion = await fbx
-          .loadAsync(files["/rpm/moiton/warmup.fbx"])
+          .loadAsync(files["/rpm/moiton/flair.fbx"])
           .then((r) => r.animations[0]);
 
         mixer.clipAction(motion, glb.scene).play();
@@ -318,7 +319,6 @@ let setup = async ({
     "three/addons/renderers/common/StorageInstancedBufferAttribute.js"
   ).then((r) => r.default);
 
-
   //   import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
   //   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   //   import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -536,16 +536,17 @@ let setup = async ({
   });
 
   let opacity = uniform(1);
-  particleMaterial.colorNode = vec4(
-    colorNode.r, //.mul(color3.x), //.mul(textureNode.a), //.mul(3.33),
-    colorNode.g, //.mul(color3.y), //.mul(textureNode.a), //.mul(3.33),
-    colorNode.b, //.mul(color3.z), //.mul(textureNode.a), //.mul(2.33),
-    opacity //textureNode.a.mul(1 / 3.33)
-  );
 
   ui.on("opacity", (value) => {
     opacity.value = value;
   });
+  particleMaterial.colorNode = vec4(
+    //
+    colorNode.r, //.mul(color3.x), //.mul(textureNode.a), //.mul(3.33),
+    colorNode.g, //.mul(color3.y), //.mul(textureNode.a), //.mul(3.33),
+    colorNode.b, //.mul(color3.z), //.mul(textureNode.a), //.mul(2.33),
+    pow(velNode.length().mul(1.0), 1.0) //textureNode.a.mul(1 / 3.33)
+  );
 
   particleMaterial.positionNode = posAttr;
 
