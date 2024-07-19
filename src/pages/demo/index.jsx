@@ -8,7 +8,7 @@ export default function Demo() {
     <>
       {/*  */}
 
-      <div className=" w-full h-12 bg-gray-900 bg-opacity-80 text-white flex items-center pl-3 justify-between">
+      <div className="  fixed top-0 left-0 z-[10000]  w-full h-12 bg-gray-900 bg-opacity-100 text-white flex items-center pl-3 justify-between">
         <Link href={"/"} className="inline-flex items-center mr-3">
           <svg
             style={{ height: "30px" }}
@@ -27,8 +27,9 @@ export default function Demo() {
           </svg>
         </Link>
         <span className="inline-flex ml-3">Home</span>
-        <div></div>
+        <div className="mx-6"></div>
       </div>
+      <div className="h-12"></div>
 
       <div className=" m-5">
         <div className="p-4 w-full rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600">
