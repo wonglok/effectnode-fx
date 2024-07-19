@@ -116,11 +116,11 @@ export default function Landing() {
           <div className="relative mx-auto">
             <div className="select-none">
               <div>
-                {/* <Link href={`/docs/quick-start`}>
+                <Link href={`/demo`}>
                   <button className=" bg-blue-500 text-white inline-block p-3 px-8 border rounded-lg mx-2">
                     <>Quick Start</>
                   </button>
-                </Link> */}
+                </Link>
                 <a
                   className="cursor-pointer"
                   href={`https://github.com/wonglok/effectnode-fx/archive/refs/tags/r0002.zip`}
