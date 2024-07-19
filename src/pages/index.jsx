@@ -118,7 +118,7 @@ export default function Landing() {
               <div>
                 <Link href={`/demo`}>
                   <button className=" bg-blue-500 text-white inline-block p-3 px-8 border rounded-lg mx-2">
-                    <>Demo</>
+                    <>Live Demo</>
                   </button>
                 </Link>
                 <a
