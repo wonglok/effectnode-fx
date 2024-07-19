@@ -29,14 +29,13 @@ export default function Demo() {
         </Link>
       </div>
 
-      <div
-        style={{ minHeight: `calc(100vh - 120px)`, overflowY: "scroll" }}
-        className="p-4 m-5 w-full rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600"
-      >
-        <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6  gap-4 w-full h-full">
-          {workspaces.map((work) => {
-            return <OneThumb key={work._id} data={work}></OneThumb>;
-          })}
+      <div className=" m-5">
+        <div className="p-4 w-full rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600">
+          <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6  gap-4 w-full h-full">
+            {workspaces.map((work) => {
+              return <OneThumb key={work._id} data={work}></OneThumb>;
+            })}
+          </div>
         </div>
       </div>
 
