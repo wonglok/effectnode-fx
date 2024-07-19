@@ -1,72 +1,64 @@
-import { abs, If, sign } from "three/examples/jsm/nodes/Nodes";
+import {
+  abs,
+  add,
+  float,
+  If,
+  max,
+  min,
+  sign,
+  vec3,
+} from "three/examples/jsm/nodes/Nodes";
+import { distanceTo } from "./distanceTo";
 
 export let resolveCollisions = ({
   boundSizeMax,
   boundSizeMin,
+  /** @type {vec3} */
   position,
   velocity,
+  collisionDamping = 1,
   particleSize,
+  delta,
 }) => {
-  If(
-    position.x.greaterThan(boundSizeMax.x),
-    () => {
-      position.x.assign(
-        boundSizeMax.x.add(particleSize.mul(0.5)).mul(sign(position.x))
-      );
-      velocity.x.mulAssign(-1);
-    },
-    () => {}
-  );
-  If(
-    position.x.lessThan(boundSizeMin.x),
-    () => {
-      position.x.assign(
-        boundSizeMin.x.add(particleSize.mul(-0.5)).mul(sign(position.x))
-      );
-      velocity.x.mulAssign(-1);
-    },
-    () => {}
-  );
+  //
 
-  If(
-    position.y.greaterThan(boundSizeMax.y),
-    () => {
-      position.y.assign(
-        boundSizeMax.y.add(particleSize.mul(0.5)).mul(sign(position.y))
-      );
-      velocity.y.mulAssign(-1);
-    },
-    () => {}
-  );
-  If(
-    position.y.lessThanEqual(boundSizeMin.y),
-    () => {
-      position.y.assign(
-        boundSizeMin.y.add(particleSize.mul(-0.5)).mul(sign(position.y))
-      );
-      velocity.y.mulAssign(-1);
-    },
-    () => {}
-  );
+  let nowPosition = vec3(position);
 
-  If(
-    position.z.greaterThan(boundSizeMax.z),
-    () => {
-      position.z.assign(
-        boundSizeMax.z.add(particleSize.mul(0.5)).mul(sign(position.z))
-      );
-      velocity.z.mulAssign(-1);
-    },
-    () => {}
-  );
-  If(
-    position.z.lessThan(boundSizeMin.z),
-    () => {
-      position.z.assign(
-        boundSizeMin.z.add(particleSize.mul(-0.5)).mul(sign(position.z))
-      );
-      velocity.z.mulAssign(-1);
-    },
-    () => {}
-  );
+  let nOne = float(-5);
+  let pOne = float(5);
+
+  If(nowPosition.x.greaterThanEqual(boundSizeMax.x), () => {
+    // velocity.x.mulAssign(-0.15);
+    velocity.x.addAssign(nOne.mul(delta));
+    position.x.assign(boundSizeMax.x);
+  });
+  If(nowPosition.x.lessThanEqual(boundSizeMin.x), () => {
+    // velocity.x.mulAssign(-0.15);
+    velocity.x.addAssign(pOne.mul(delta));
+    position.x.assign(boundSizeMin.x);
+  });
+
+  If(nowPosition.y.greaterThanEqual(boundSizeMax.y), () => {
+    // velocity.y.mulAssign(-0.15);
+    velocity.y.addAssign(nOne.mul(delta));
+    position.y.assign(boundSizeMax.y);
+  });
+  If(nowPosition.y.lessThanEqual(boundSizeMin.y), () => {
+    // velocity.y.mulAssign(-0.15);
+    velocity.y.addAssign(pOne.mul(delta));
+    position.y.assign(boundSizeMin.y);
+  });
+
+  If(nowPosition.z.greaterThanEqual(boundSizeMax.z), () => {
+    // velocity.z.mulAssign(-0.15);
+    velocity.z.addAssign(nOne.mul(delta));
+    position.z.assign(boundSizeMax.z);
+  });
+  If(nowPosition.z.lessThanEqual(boundSizeMin.z), () => {
+    // velocity.z.mulAssign(-0.15);
+    velocity.z.addAssign(pOne.mul(delta));
+    position.z.assign(boundSizeMin.z);
+  });
+
+  //
 };
