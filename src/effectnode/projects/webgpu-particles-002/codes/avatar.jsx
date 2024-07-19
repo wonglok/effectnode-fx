@@ -110,6 +110,7 @@ function AppRun({ domElement, useStore, io, ui }) {
   //
   // AppRun
   //
+
   let mounter = useMemo(() => {
     return new Group();
   }, []);
@@ -171,6 +172,7 @@ function AppRun({ domElement, useStore, io, ui }) {
 
           if (
             it.isSkinnedMesh &&
+            !it.name.includes("Teeth") &&
             it.name !== "EyeLeft" &&
             it.name !== "EyeRight" &&
             it.name !== "WolfTeeth"
@@ -211,6 +213,13 @@ function AppRun({ domElement, useStore, io, ui }) {
     };
   }, [domElement, files, gl, io, mixer, mounter, ui]);
 
+  useFrame(({ gl, camera, scene }) => {
+    //
+    //
+    gl.renderAsync(scene, camera);
+    //
+    //
+  }, 100);
   return <>{show}</>;
 }
 
@@ -257,7 +266,6 @@ let setup = async ({
   //   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   //   import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-  console.log(123);
   const boundingBoxSize = new Vector3();
   skinnedMesh.geometry.boundingBox.getSize(boundingBoxSize);
 
@@ -407,17 +415,16 @@ let setup = async ({
     // const skinNormal = processedNormalBuffer.node.element(instanceIndex);
 
     const dist = mouseUni.sub(position).length().mul(1);
-    const normalValue = mouseUni.sub(position).normalize().mul(-0.015);
+    const normalValue = mouseUni.sub(position).normalize().mul(0.0);
 
     // spinner
-    // velocity.addAssign(vec3(0.0, gravity.mul(life.y), 0.0));
 
     // atan2
     velocity.addAssign(
       skinPosition
         .sub(position)
         .normalize()
-        .mul(0.003 * 0.5)
+        .mul(0.003 * 0.5 * 2.5)
     );
 
     let addVel = velocity.add(normalValue);
@@ -435,13 +442,13 @@ let setup = async ({
     // })
 
     const life = lifeBuffer.node.element(instanceIndex);
-    life.addAssign(rand(position.xy).mul(-0.02));
+    life.addAssign(rand(position.xy).mul(-0.03));
 
     If(
       life.y.lessThan(0.01),
       () => {
         life.xyz.assign(vec3(1.0, 1.0, 1.0));
-        velocity.assign(skinPosition.sub(position).normalize().mul(0.001));
+        velocity.assign(skinPosition.sub(position).normalize().mul(-0.001));
         position.assign(skinPosition.xyz);
       },
       () => {
@@ -469,12 +476,12 @@ let setup = async ({
     color3.value.set(value);
   });
 
-  let opacity = uniform(1);
+  let opacity = uniform(1.0);
   particleMaterial.colorNode = vec4(
     colorNode.r, //.mul(color3.x), //.mul(textureNode.a), //.mul(3.33),
     colorNode.g, //.mul(color3.y), //.mul(textureNode.a), //.mul(3.33),
     colorNode.b, //.mul(color3.z), //.mul(textureNode.a), //.mul(2.33),
-    opacity //textureNode.a.mul(1 / 3.33)
+    opacity.mul(velNode.length()).add(0.005) //textureNode.a.mul(1 / 3.33)
   );
 
   ui.on("opacity", (value) => {
@@ -483,9 +490,9 @@ let setup = async ({
 
   particleMaterial.positionNode = posAttr;
 
-  particleMaterial.scaleNode = size.mul(velNode.length());
+  particleMaterial.scaleNode = size.mul(velNode.length().mul(3.0));
   particleMaterial.opacity = 1.0; //(float(0.14).add(lifeBuffer.node.toAttribute().length().mul(-1).mul(size)))
-  particleMaterial.depthTest = true;
+  particleMaterial.depthTest = false;
   particleMaterial.depthWrite = false;
   particleMaterial.transparent = true;
 
@@ -511,7 +518,7 @@ let setup = async ({
   stats.dom.style.position = "absolute";
   domElement.appendChild(stats.dom);
 
-  renderer.compute(computeInit);
+  renderer.computeAsync(computeInit);
 
   let computeHit = tslFn(() => {
     // const birth = birthPositionBuffer.node.element(instanceIndex);
