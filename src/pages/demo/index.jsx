@@ -1,9 +1,15 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Demo() {
-  let workspaces = loadThumb({});
+  let [workspaces, setWorkspace] = useState([]);
 
-  console.log(workspaces);
+  useEffect(() => {
+    let workspaces = loadThumb({});
+    setWorkspace(workspaces);
+  }, []);
+
+  // console.log(workspaces);
   return (
     <>
       {/*  */}
