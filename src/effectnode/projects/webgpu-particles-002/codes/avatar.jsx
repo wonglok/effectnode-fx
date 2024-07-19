@@ -156,11 +156,8 @@ function AppRun({ domElement, useStore, io, ui }) {
       .loadAsync(files["/rpm/lok-orig.glb"])
       .then(async (glb) => {
         //
-        //
-        //
-        //
         let motion = await fbx
-          .loadAsync(files["/rpm/moiton/warmup.fbx"])
+          .loadAsync(files["/rpm/moiton/thriller4.fbx"])
           .then((r) => r.animations[0]);
 
         mixer.clipAction(motion, glb.scene).play();
@@ -438,7 +435,7 @@ let setup = async ({
     // })
 
     const life = lifeBuffer.node.element(instanceIndex);
-    life.addAssign(rand(position.xy).mul(-0.01));
+    life.addAssign(rand(position.xy).mul(-0.02));
 
     If(
       life.y.lessThan(0.01),
