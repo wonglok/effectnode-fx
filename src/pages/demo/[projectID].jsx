@@ -9,8 +9,11 @@ export default function Page() {
   return (
     <>
       {/*  */}
+      {/*  */}
       {projectID && <EffectNode projectName={projectID}></EffectNode>}
-      <div className=" fixed top-0 left-0 w-full h-12 bg-gray-900 bg-opacity-80 text-white flex items-center pl-3">
+      {/*  */}
+      {/*  */}
+      <div className=" fixed top-0 left-0 w-full h-12 bg-gray-900 bg-opacity-80 text-white flex items-center justify-between pl-3">
         <Link href={"/demo"} className="inline-flex items-center mr-3">
           <svg
             style={{ height: "30px" }}
@@ -27,8 +30,24 @@ export default function Page() {
               fill-rule="nonzero"
             />
           </svg>
-          <span className="inline-flex ml-3">Back</span>
         </Link>
+        <span className="inline-flex ml-3">{projectID}</span>
+        <div>
+          <Link href={"/demo"} className="inline-flex items-center mr-3">
+            <svg
+              width="24"
+              height="24"
+              xmlns="http://www.w3.org/2000/svg"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+            >
+              <path
+                fill="white"
+                d="M22 11.414v12.586h-20v-12.586l-1.293 1.293-.707-.707 12-12 12 12-.707.707-1.293-1.293zm-6 11.586h5v-12.586l-9-9-9 9v12.586h5v-9h8v9zm-1-7.889h-6v7.778h6v-7.778z"
+              />
+            </svg>
+          </Link>
+        </div>
       </div>
     </>
   );

@@ -55,11 +55,11 @@ export function Runtime({ domElement, useStore, io, ui }) {
       >
         <PerspectiveCamera
           makeDefault
-          position={[30, 30, 30]}
+          position={[80, 80, 80]}
         ></PerspectiveCamera>
 
         <OrbitControls
-          object-position={[30, 30, 30]}
+          object-position={[80, 80, 80]}
           target={[0, 15, 0]}
           makeDefault
         ></OrbitControls>
