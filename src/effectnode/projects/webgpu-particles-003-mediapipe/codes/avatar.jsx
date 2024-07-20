@@ -267,7 +267,7 @@ function AppRun({ domElement, useStore, io, ui }) {
         // });
 
         let motion = await fbx
-          .loadAsync(files["/rpm/moiton/wave-hiphop.fbx"])
+          .loadAsync(files["/rpm/moiton/kungfu.fbx"])
           .then((r) => r.animations[0]);
 
         mixer.clipAction(motion, glb.scene).play();
