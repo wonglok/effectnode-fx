@@ -4,6 +4,8 @@ import { Canvas } from "@react-three/fiber";
 import { FastFlameCompo } from "src/components/FastFlame/FastFlameCompo";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import {
+  faBookOpen,
+  faBrain,
   faCubes,
   faEarthAsia,
   faFastBackward,
@@ -105,9 +107,9 @@ export default function Landing() {
                 <div className="pointer-events-none">
                   <h1 className=" pointer-events-none text-5xl font-semibold text-white">{`Effect Node FX`}</h1>
                   <p className=" pointer-events-none mt-4 text-xl font-bold text-gray-200">
-                    {`Framework to help you develop WebGL & WebGPU Faster`}
+                    {`Framework & Developer Tools for WebGL & WebGPU`}
                   </p>
-                  <p className=" pointer-events-none mt-4 text-lg text-gray-200 mb-5">{`DevTools to Save Time, Templates to Save Money, Code Examples to Do More`}</p>
+                  <p className=" pointer-events-none mt-4 text-lg text-gray-200 mb-5">{`DevTools to Save Time, Solution Code Template to Save Money`}</p>
                 </div>
               </div>
             </div>
@@ -172,7 +174,7 @@ export default function Landing() {
                         <FontAwesomeIcon icon={faFastForward}></FontAwesomeIcon>
                       </div>
                       <h6 className="text-xl font-semibold">
-                        Faster FX Development
+                        DevTools to Save Time
                       </h6>
                       <p className="mb-4 mt-2 text-gray-500">
                         VFX Node Graph allows us to reduce the time & repeated
@@ -205,10 +207,10 @@ export default function Landing() {
                   <div className="relative mb-8 flex w-full min-w-0 flex-col break-words rounded-lg bg-white shadow-lg">
                     <div className="flex-auto px-4 py-5">
                       <div className="mb-5 inline-flex size-12 items-center justify-center rounded-full bg-emerald-400 p-3 text-center text-white shadow-lg">
-                        <FontAwesomeIcon icon={faSchool}></FontAwesomeIcon>
+                        <FontAwesomeIcon icon={faBookOpen}></FontAwesomeIcon>
                       </div>
                       <h6 className="text-xl font-semibold">
-                        AI Graphics Engineering
+                        Graphics Engineering with AI
                       </h6>
                       <p className="mb-4 mt-2 text-gray-500">
                         {`We support Ollama & AI to assist engineering such as improving shader code.`}
