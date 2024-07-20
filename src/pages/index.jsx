@@ -105,9 +105,9 @@ export default function Landing() {
                 <div className="pointer-events-none">
                   <h1 className=" pointer-events-none text-5xl font-semibold text-white">{`Effect Node FX`}</h1>
                   <p className=" pointer-events-none mt-4 text-xl font-bold text-gray-200">
-                    {`Framework that help you develop 3D Web Faster`}
+                    {`Framework to help you develop WebGL & WebGPU Faster`}
                   </p>
-                  <p className=" pointer-events-none mt-4 text-lg text-gray-200 mb-5">{`DevTools to Save Time, Templates to Save Money`}</p>
+                  <p className=" pointer-events-none mt-4 text-lg text-gray-200 mb-5">{`DevTools to Save Time, Templates to Save Money, Code Examples to Do More`}</p>
                 </div>
               </div>
             </div>
@@ -118,12 +118,12 @@ export default function Landing() {
               <div>
                 <Link href={`/demo`}>
                   <button className=" bg-blue-500 text-white inline-block p-3 px-8 border rounded-lg mx-2">
-                    <>Live Demo</>
+                    <>Examples</>
                   </button>
                 </Link>
                 <a
                   className="cursor-pointer"
-                  href={`https://github.com/wonglok/effectnode-fx/archive/refs/tags/r0002.zip`}
+                  href={`https://github.com/wonglok/effectnode-fx/archive/refs/tags/r0003.zip`}
                   download={"effectnode-fx.zip"}
                   target="_blank"
                 >
@@ -208,10 +208,10 @@ export default function Landing() {
                         <FontAwesomeIcon icon={faSchool}></FontAwesomeIcon>
                       </div>
                       <h6 className="text-xl font-semibold">
-                        Low Learning Curve
+                        AI Graphics Engineering
                       </h6>
                       <p className="mb-4 mt-2 text-gray-500">
-                        {`If you already know react-three-fiber, nextjs, three.js and zustand... You're good to go!!!`}
+                        {`We support Ollama & AI to assist engineering such as improving shader code.`}
                       </p>
                     </div>
                   </div>
