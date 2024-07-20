@@ -267,7 +267,7 @@ function AppRun({ domElement, useStore, io, ui }) {
         // });
 
         let motion = await fbx
-          .loadAsync(files["/rpm/moiton/wave2.fbx"])
+          .loadAsync(files["/rpm/moiton/wave-hiphop.fbx"])
           .then((r) => r.animations[0]);
 
         mixer.clipAction(motion, glb.scene).play();
@@ -380,7 +380,7 @@ let setup = async ({
   const boundingBoxSize = new Vector3();
   skinnedMesh.geometry.boundingBox.getSize(boundingBoxSize);
 
-  const particleCount = 512 * 256;
+  const particleCount = 1024 * 512;
 
   const size = uniform(1);
   ui.on("size", (num) => {
@@ -601,7 +601,7 @@ let setup = async ({
 
   particleMaterial.positionNode = posAttr;
 
-  particleMaterial.scaleNode = size.mul(velNode.length().mul(3.0));
+  particleMaterial.scaleNode = size.mul(velNode.length().mul(1.0));
   particleMaterial.opacity = 1.0; //(float(0.14).add(lifeBuffer.node.toAttribute().length().mul(-1).mul(size)))
   particleMaterial.depthTest = false;
   particleMaterial.depthWrite = false;
