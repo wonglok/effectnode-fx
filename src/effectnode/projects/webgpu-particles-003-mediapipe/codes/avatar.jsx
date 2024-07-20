@@ -266,46 +266,48 @@ function AppRun({ domElement, useStore, io, ui }) {
         //   runningMode: "VIDEO",
         // });
 
-        // let motion = await fbx
-        //   .loadAsync(files["/rpm/moiton/thriller4.fbx"])
-        //   .then((r) => r.animations[0]);
+        let motion = await fbx
+          .loadAsync(files["/rpm/moiton/wave2.fbx"])
+          .then((r) => r.animations[0]);
 
-        // mixer.clipAction(motion, glb.scene).play();
+        mixer.clipAction(motion, glb.scene).play();
 
         mounter.add(glb.scene);
 
-        // glb.scene.traverse((it) => {
-        //   if (it.geometry) {
-        //     it.geometry = it.geometry.toNonIndexed();
-        //   }
+        //
+        glb.scene.traverse((it) => {
+          if (it.geometry) {
+            it.geometry = it.geometry.toNonIndexed();
+          }
 
-        //   if (
-        //     it.isSkinnedMesh &&
-        //     !it.name.includes("Teeth") &&
-        //     it.name !== "EyeLeft" &&
-        //     it.name !== "EyeRight" &&
-        //     it.name !== "WolfTeeth"
-        //   ) {
-        //     let skinnedMesh = it;
-        //     skinnedMesh.updateMatrixWorld(true);
-        //     skinnedMesh.geometry.deleteAttribute("tangent");
-        //     skinnedMesh.geometry.computeVertexNormals();
-        //     skinnedMesh.geometry.computeBoundingSphere();
-        //     skinnedMesh.geometry.computeBoundingBox();
+          if (
+            it.isSkinnedMesh &&
+            !it.name.includes("Skin") &&
+            !it.name.includes("Teeth") &&
+            it.name !== "EyeLeft" &&
+            it.name !== "EyeRight" &&
+            it.name !== "WolfTeeth"
+          ) {
+            let skinnedMesh = it;
+            skinnedMesh.updateMatrixWorld(true);
+            skinnedMesh.geometry.deleteAttribute("tangent");
+            skinnedMesh.geometry.computeVertexNormals();
+            skinnedMesh.geometry.computeBoundingSphere();
+            skinnedMesh.geometry.computeBoundingBox();
 
-        //     setup({
-        //       skinnedMesh: skinnedMesh,
-        //       mounter: mounter,
-        //       domElement: domElement,
-        //       renderer: gl,
-        //       onLoop: onLoop,
-        //       io: io,
-        //       ui: ui,
-        //     }).catch((r) => {
-        //       console.log(r);
-        //     });
-        //   }
-        // });
+            setup({
+              skinnedMesh: skinnedMesh,
+              mounter: mounter,
+              domElement: domElement,
+              renderer: gl,
+              onLoop: onLoop,
+              io: io,
+              ui: ui,
+            }).catch((r) => {
+              console.log(r);
+            });
+          }
+        });
       })
       //
       //
@@ -379,7 +381,7 @@ let setup = async ({
   const boundingBoxSize = new Vector3();
   skinnedMesh.geometry.boundingBox.getSize(boundingBoxSize);
 
-  const particleCount = 256 * 512;
+  const particleCount = 256 * 256;
 
   const size = uniform(1);
   ui.on("size", (num) => {
