@@ -246,6 +246,7 @@ export default function Landing() {
 
                     <p className="mb-4">
                       <video
+                        playsInline
                         loop
                         muted
                         controls={true}
@@ -265,6 +266,7 @@ export default function Landing() {
                         className="w-full rounded-t-lg align-middle"
                       /> */}
                       <video
+                        playsInline
                         loop
                         muted
                         controls={false}
