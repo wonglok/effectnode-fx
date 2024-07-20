@@ -146,7 +146,7 @@ export function AppRun({ useStore, io }) {
 
       const gravity = float(-0.4);
 
-      const pressureFactor = float(3.5);
+      const pressureFactor = float(2);
 
       let delta = uniform();
       let clock = new Clock();
