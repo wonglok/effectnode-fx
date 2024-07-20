@@ -2,10 +2,9 @@
 
 
 
-https://github.com/user-attachments/assets/a0aacd2b-9fe2-4e65-b84b-0b5258549833
+https://github.com/user-attachments/assets/8e415953-cb16-40de-aea2-f0d8b5a1d628
 
 
-https://github.com/wonglok/effectnode-fx/assets/4082826/5b800bf2-f485-4805-8b77-7dfa0007cbe6
 
 ## Thank you dear for all the support <3
 
