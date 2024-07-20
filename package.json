@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@mediapipe/camera_utils": "^0.3.1675466862",
+    "@mediapipe/tasks-vision": "^0.10.0",
     "@monaco-editor/react": "^4.6.0",
     "@popperjs/core": "^2.11.8",
     "@react-three/xr": "^6.0.0",

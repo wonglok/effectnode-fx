@@ -114,7 +114,7 @@ export function loadThumb({ projectName }) {
   let rr = require.context(
     "src/effectnode/projects",
     true,
-    /\/assets\/(.*).(png|jpg|hdr|jpeg|glb|gltf|fbx|exr|mp4|webm|mov)$/,
+    /\/assets\/(.*).(png|jpg|hdr|jpeg|glb|gltf|fbx|exr|mp4|task|wasm|webm|mov)$/,
     "sync"
   );
 
