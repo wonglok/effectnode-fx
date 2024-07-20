@@ -442,7 +442,7 @@ let setup = async ({
     // })
 
     const life = lifeBuffer.node.element(instanceIndex);
-    life.addAssign(rand(position.xy).mul(-0.03));
+    life.addAssign(rand(position.xy).mul(-0.02));
 
     If(
       life.y.lessThan(0.01),
