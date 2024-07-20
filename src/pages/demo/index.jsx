@@ -109,6 +109,7 @@ function OneThumb({ data }) {
   if (files["/thumb.mov"]) {
     thumb = (
       <video
+        playsInline
         muted
         autoPlay
         loop
@@ -120,6 +121,7 @@ function OneThumb({ data }) {
   if (files["/thumb.mp4"]) {
     thumb = (
       <video
+        playsInline
         muted
         autoPlay
         loop
@@ -131,6 +133,7 @@ function OneThumb({ data }) {
   if (files["/thumb.wemb"]) {
     thumb = (
       <video
+        playsInline
         muted
         autoPlay
         loop
