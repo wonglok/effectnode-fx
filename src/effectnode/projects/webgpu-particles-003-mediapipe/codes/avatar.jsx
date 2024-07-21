@@ -88,6 +88,17 @@ export function Runtime({ domElement, useStore, io, ui }) {
         <OrbitControls target={[0, 1.75, 0]} makeDefault></OrbitControls>
       </WebGPUCanvas>
 
+      <div
+        className=" absolute top-0 bg-white p-2"
+        style={{
+          left: `calc(50% - 60% / 2)`,
+          width: "60%",
+          textAlign: "center",
+        }}
+      >
+        Please Allow Camera and Open Your Mouth to Trigger Animation
+      </div>
+
       {/*  */}
     </>
   );
@@ -165,6 +176,32 @@ function makeRotationAPI({ glb, onLoop }) {
     }
   });
 
+  let getFace = (keyName) => {
+    //
+    if (!faceBlendshapesCache) {
+      return 0;
+    } else {
+      let result = faceBlendshapesCache.categories.find(
+        (cat) => cat.categoryName === keyName
+      );
+      if (!result) {
+        console.log(
+          faceBlendshapesCache.categories.map(
+            (r) => `${r.categoryName}--${r.score}`
+          )
+        );
+        return 0;
+      }
+
+      return Number(result?.score || 0);
+    }
+
+    //
+    //
+    // faceBlendshapesCache
+    //
+  };
+
   let onProcess = async ({ faceBlendshapes }) => {
     //
     // console.log(faceBlendshapes);
@@ -173,6 +210,7 @@ function makeRotationAPI({ glb, onLoop }) {
     //
   };
   return {
+    getFace,
     onProcess,
   };
 }
@@ -237,7 +275,7 @@ function AppRun({ domElement, useStore, io, ui }) {
         let faceAPI = await postProcessAPI({
           files,
         });
-        let rotaionAPI = await makeRotationAPI({
+        let webcamAPI = await makeRotationAPI({
           onLoop,
           glb,
         });
@@ -263,7 +301,7 @@ function AppRun({ domElement, useStore, io, ui }) {
             let faceBlendshapes = res.faceBlendshapes[0];
             if (faceBlendshapes) {
               canRun = false;
-              rotaionAPI.onProcess({
+              webcamAPI.onProcess({
                 faceBlendshapes,
               });
             }
@@ -306,7 +344,9 @@ function AppRun({ domElement, useStore, io, ui }) {
 
         let wHead = new Vector3();
         onLoop(() => {
+          //
           // controls.target
+          //
 
           glb.scene.getObjectByName("Head").getWorldPosition(wHead);
           controls.target.lerp(wHead, 0.1);
@@ -332,6 +372,7 @@ function AppRun({ domElement, useStore, io, ui }) {
             skinnedMesh.geometry.computeBoundingBox();
 
             setup({
+              webcamAPI: webcamAPI,
               skinnedMesh: skinnedMesh,
               mounter: mounter,
               domElement: domElement,
@@ -372,6 +413,7 @@ function AppRun({ domElement, useStore, io, ui }) {
 }
 
 let setup = async ({
+  webcamAPI,
   skinnedMesh,
   mounter,
   domElement,
@@ -625,6 +667,12 @@ let setup = async ({
   });
 
   let opacity = uniform(1.0); // .add(0.025)
+  onLoop(() => {
+    let jawOpen = webcamAPI.getFace("jawOpen") * 2.0;
+    opacity.value = MathUtils.lerp(opacity.value, 1 + jawOpen * 5, 0.1);
+    skinnedMesh.material.opacity = 1.0 - jawOpen;
+    skinnedMesh.material.transparent = true;
+  });
   let fader = opacity.mul(velNode.length()).mul(4);
   particleMaterial.colorNode = vec4(
     colorNode.r, //.mul(color3.x), //.mul(textureNode.a), //.mul(3.33),
@@ -633,9 +681,9 @@ let setup = async ({
     fader //textureNode.a.mul(1 / 3.33)
   );
 
-  ui.on("opacity", (value) => {
-    opacity.value = value;
-  });
+  // ui.on("opacity", (value) => {
+  //   opacity.value = value;
+  // });
 
   particleMaterial.positionNode = posAttr;
 
