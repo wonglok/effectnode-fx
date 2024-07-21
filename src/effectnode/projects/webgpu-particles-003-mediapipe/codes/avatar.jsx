@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import {
+  AdditiveBlending,
   AnimationMixer,
   BoxGeometry,
   CircleGeometry,
@@ -12,6 +13,7 @@ import {
   MathUtils,
   Mesh,
   MeshBasicMaterial,
+  NoBlending,
   PlaneGeometry,
   Quaternion,
   Raycaster,
@@ -623,11 +625,12 @@ let setup = async ({
   });
 
   let opacity = uniform(1.0);
+  let fader = opacity.mul(velNode.length()).add(0.025);
   particleMaterial.colorNode = vec4(
     colorNode.r, //.mul(color3.x), //.mul(textureNode.a), //.mul(3.33),
     colorNode.g, //.mul(color3.y), //.mul(textureNode.a), //.mul(3.33),
     colorNode.b, //.mul(color3.z), //.mul(textureNode.a), //.mul(2.33),
-    opacity.mul(velNode.length()).add(0.015) //textureNode.a.mul(1 / 3.33)
+    fader //textureNode.a.mul(1 / 3.33)
   );
 
   ui.on("opacity", (value) => {
@@ -636,7 +639,7 @@ let setup = async ({
 
   particleMaterial.positionNode = posAttr;
 
-  particleMaterial.scaleNode = size.mul(velNode.length().mul(1.0));
+  particleMaterial.scaleNode = fader;
   particleMaterial.opacity = 1.0; //(float(0.14).add(lifeBuffer.node.toAttribute().length().mul(-1).mul(size)))
   particleMaterial.depthTest = true;
   particleMaterial.depthWrite = false;

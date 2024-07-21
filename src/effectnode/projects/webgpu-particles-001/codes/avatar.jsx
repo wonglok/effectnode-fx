@@ -121,6 +121,14 @@ function AppRun({ useStore, useGPU, io, ui }) {
             skinnedMesh.geometry.computeBoundingSphere();
             skinnedMesh.geometry.computeBoundingBox();
 
+            // skinnedMesh.material = new MeshBasicMaterial({
+            //   opacity: 0,
+            //   depthWrite: false,
+            //   depthTest: false,
+            //   blending: AdditiveBlending,
+            //   transparent: true,
+            // });
+
             setup({
               skinnedMesh: skinnedMesh,
               mounter: mounter,
