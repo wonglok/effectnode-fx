@@ -1,6 +1,6 @@
 import { Environment, OrbitControls, useTexture } from "@react-three/drei";
 import { Canvas, useThree } from "@react-three/fiber";
-import { Suspense, useEffect, useMemo } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import {
   BackSide,
   FrontSide,
@@ -100,7 +100,8 @@ export function ToolBox({ boxData, saveBoxData, useStore, ui, io }) {
 
 export function Runtime({ boxData, ui, useStore, io }) {
   let Insert3D = useStore((r) => r.Insert3D) || (() => null);
-
+  let InsertHTML = useStore((r) => r.InsertHTML) || (() => null);
+  let [api, setAPI] = useState();
   return (
     <>
       <Insert3D>
@@ -109,8 +110,20 @@ export function Runtime({ boxData, ui, useStore, io }) {
           ui={ui}
           useStore={useStore}
           io={io}
+          onReady={setAPI}
         ></Content>
       </Insert3D>
+      <InsertHTML>
+        <button
+          className=" absolute bottom-3 right-3 p-3 bg-gray-100"
+          onClick={() => {
+            //
+            api.download();
+          }}
+        >
+          Download
+        </button>
+      </InsertHTML>
     </>
   );
 }
@@ -307,12 +320,12 @@ function FlowerExpress({ boxData, at, ui, useStore, onReady }) {
           scene.getObjectByName("flower"),
           (resulltBuff) => {
             let b = new Blob([resulltBuff], {
-              type: "vnd.usd+zip",
+              type: "model/vnd.usdz+zip",
             });
             let url = URL.createObjectURL(b);
             let an = document.createElement("a");
             an.href = url;
-            an.download = "AR-Flower.usdz";
+            an.download = "flower.usdz";
             an.click();
           },
           (err) => {
