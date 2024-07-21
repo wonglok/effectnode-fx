@@ -263,7 +263,6 @@ function AppRun({ domElement, useStore, io, ui }) {
               rotaionAPI.onProcess({
                 faceBlendshapes,
               });
-              // console.log(faceBlendshapes);
             }
           },
           width: 640,
