@@ -247,6 +247,7 @@ function AppRun({ domElement, useStore, io, ui }) {
 
         let canRun = true;
         const camera = new Camera(video, {
+          facingMode: "user",
           onFrame: async () => {
             if (!canRun) {
               return;
