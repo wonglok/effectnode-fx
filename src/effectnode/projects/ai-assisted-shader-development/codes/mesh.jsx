@@ -7,20 +7,20 @@ import { Clock, Vector2 } from "three";
 import { setupGLSL } from "../ai/opengl";
 
 const BackupCode = `
-
 #define TAU 6.28318530718
 #define MAX_ITER 15
 #define FLUCTUATION 0.1
 
 vec4 waterwaves(in vec2 uv) {
-    float time = iTime * 0.03;
+    // 
+    float time = sin(iTime * 0.025) * 3.0;
     vec2 p = mod(uv * TAU * 2.0, TAU) - 250.0;
 
     // Introduce a fluctuation factor for more realistic wave patterns
     float fluc = sin(time / FLUCTUATION);
     time *= 1.0 + sin(time / FLUCTUATION);
 
-    vec2 i = vec2(p), o;
+    vec2 i = p, o;
     float c = 0.0, inten = 0.01; // Wave intensity factor
 
     for (int n = 0; n < MAX_ITER; n++) {
@@ -33,7 +33,6 @@ vec4 waterwaves(in vec2 uv) {
     c = 1.17 - pow(c, 1.4);
 
     float colour = sin(pow(abs(c), 8.0));
-
     colour = clamp(colour, 0.0, 1.0);
 
     return vec4(clamp(vec3(colour), 0.0, 1.0), 1.0);
@@ -42,14 +41,15 @@ vec4 waterwaves(in vec2 uv) {
 void mainImage(out vec4 mainColor, in vec2 uv) {
     vec4 water = waterwaves(uv);
 
-    vec3 color = vec3(0.0, 1.0, 1.0);
+    vec3 color = vec3(1.0, 0.0, 1.0); // no changes
     mainColor = vec4(
-        vec3(pow(water.x, 4.0),
+        pow(water.x, 4.0), // no changes
         pow(water.y, 4.0),
-        pow(water.z, 4.0)) * (0.2 + color),
-        water.a
-    );
+        pow(water.z, 4.0), 
+        water.a // no changes
+    ) * vec4(color, 1.0);
 }
+
 
 `;
 
