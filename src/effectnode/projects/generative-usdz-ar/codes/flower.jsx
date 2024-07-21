@@ -121,7 +121,7 @@ export function Runtime({ boxData, ui, useStore, io }) {
             api.download();
           }}
         >
-          Download
+          View in Apple AR
         </button>
       </InsertHTML>
     </>
@@ -315,9 +315,11 @@ function FlowerExpress({ boxData, at, ui, useStore, onReady }) {
         //
 
         let exp = new USDZExporter();
-
+        let flower = new Object3D();
+        flower.add(scene.getObjectByName("flower"));
+        flower.scale.setScalar(0.1);
         exp.parse(
-          scene.getObjectByName("flower"),
+          flower,
           (resulltBuff) => {
             let b = new Blob([resulltBuff], {
               type: "model/vnd.usdz+zip",
