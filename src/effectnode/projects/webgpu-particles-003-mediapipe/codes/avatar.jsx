@@ -9,6 +9,7 @@ import {
   Color,
   GridHelper,
   Group,
+  MathUtils,
   Mesh,
   MeshBasicMaterial,
   PlaneGeometry,
@@ -130,31 +131,43 @@ function WebGPUCanvas({ children }) {
 function makeRotationAPI({ glb, onLoop }) {
   //
 
-  onLoop(() => {});
+  let faceBlendshapesCache = false;
+  onLoop(() => {
+    let faceBlendshapes = faceBlendshapesCache;
+    if (faceBlendshapes) {
+      glb.scene.traverse((it) => {
+        if (it.morphTargetDictionary) {
+          // console.log(faceBlendshapes.categories);
+          Object.entries(it.morphTargetDictionary).map(
+            ([keyName, keyIndex]) => {
+              let result = faceBlendshapes.categories.find(
+                (cat) => cat.categoryName === keyName
+              );
+
+              if (result) {
+                it.morphTargetInfluences[keyIndex] = MathUtils.lerp(
+                  it.morphTargetInfluences[keyIndex],
+                  result.score,
+                  0.5
+                );
+              }
+              // it.morphTargetInfluences[val] =
+              // console.log(key, val);
+            }
+          );
+          // faceBlendshapes.categories.forEach()
+          // console.log(it.morphTargetDictionary, faceBlendshapes.categories);
+        }
+        // console.log(it.morphTargetDictionary);
+      });
+    }
+  });
 
   let onProcess = async ({ faceBlendshapes }) => {
     //
     // console.log(faceBlendshapes);
 
-    glb.scene.traverse((it) => {
-      if (it.morphTargetDictionary) {
-        // console.log(faceBlendshapes.categories);
-        Object.entries(it.morphTargetDictionary).map(([keyName, keyIndex]) => {
-          let result = faceBlendshapes.categories.find(
-            (cat) => cat.categoryName === keyName
-          );
-
-          if (result) {
-            it.morphTargetInfluences[keyIndex] = result.score;
-          }
-          // it.morphTargetInfluences[val] =
-          // console.log(key, val);
-        });
-        // faceBlendshapes.categories.forEach()
-        // console.log(it.morphTargetDictionary, faceBlendshapes.categories);
-      }
-      // console.log(it.morphTargetDictionary);
-    });
+    faceBlendshapesCache = faceBlendshapes;
     //
   };
   return {
@@ -246,6 +259,7 @@ function AppRun({ domElement, useStore, io, ui }) {
 
             let faceBlendshapes = res.faceBlendshapes[0];
             if (faceBlendshapes) {
+              canRun = false;
               rotaionAPI.onProcess({
                 faceBlendshapes,
               });
@@ -254,6 +268,10 @@ function AppRun({ domElement, useStore, io, ui }) {
           },
           width: 640,
           height: 320,
+        });
+
+        onLoop(() => {
+          canRun = true;
         });
 
         // await faceAPI.applyOptions({
