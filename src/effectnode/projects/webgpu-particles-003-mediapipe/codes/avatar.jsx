@@ -397,7 +397,7 @@ let setup = async ({
   const boundingBoxSize = new Vector3();
   skinnedMesh.geometry.boundingBox.getSize(boundingBoxSize);
 
-  const particleCount = 512 * 1024;
+  const particleCount = 512 * 256;
 
   const size = uniform(1);
   ui.on("size", (num) => {
@@ -570,13 +570,13 @@ let setup = async ({
     // })
 
     const life = lifeBuffer.node.element(instanceIndex);
-    life.addAssign(rand(position.xy).mul(-0.015));
+    life.addAssign(rand(position.xy).mul(-0.02));
 
     If(
       life.y.lessThan(0.01),
       () => {
         life.xyz.assign(vec3(1.0, 1.0, 1.0));
-        velocity.assign(skinPosition.sub(position).normalize().mul(-0.002));
+        velocity.assign(skinPosition.sub(position).normalize().mul(-0.009));
         position.assign(skinPosition.xyz);
       },
       () => {
