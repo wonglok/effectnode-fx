@@ -72,6 +72,7 @@ export function Runtime({ domElement, useStore, io, ui }) {
   return (
     <>
       {/*  */}
+
       <WebGPUCanvas>
         <AppRun
           domElement={domElement}
@@ -623,8 +624,8 @@ let setup = async ({
     color3.value.set(value);
   });
 
-  let opacity = uniform(1.0);
-  let fader = opacity.mul(velNode.length()).add(0.025);
+  let opacity = uniform(1.0); // .add(0.025)
+  let fader = opacity.mul(velNode.length()).mul(4);
   particleMaterial.colorNode = vec4(
     colorNode.r, //.mul(color3.x), //.mul(textureNode.a), //.mul(3.33),
     colorNode.g, //.mul(color3.y), //.mul(textureNode.a), //.mul(3.33),
@@ -638,13 +639,13 @@ let setup = async ({
 
   particleMaterial.positionNode = posAttr;
 
-  particleMaterial.scaleNode = fader;
+  particleMaterial.scaleNode = fader.mul(1 / 4);
   particleMaterial.opacity = 1.0; //(float(0.14).add(lifeBuffer.node.toAttribute().length().mul(-1).mul(size)))
   particleMaterial.depthTest = true;
   particleMaterial.depthWrite = false;
   particleMaterial.transparent = true;
 
-  const particles = new Mesh(new CircleGeometry(0.05, 3), particleMaterial);
+  const particles = new Mesh(new CircleGeometry(0.05, 8), particleMaterial);
   particles.isInstancedMesh = true;
   particles.count = particleCount;
   particles.frustumCulled = false;
