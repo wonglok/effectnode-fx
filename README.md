@@ -1,18 +1,20 @@
 # Effect Node FX
 
+## Try Out
+
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/wonglok/effectnode-fx)
+
 ## Live Demo
 
 [Link to DEMO](https://www.effectnode.com/demo)
 
 https://github.com/user-attachments/assets/8e415953-cb16-40de-aea2-f0d8b5a1d628
 
-
-
 ## Thank you dear for all the support <3
 
 Effect Node is a Node System that can help people develop ThreeJS WebGL and WebGPU Application.
 
-1. Better APIs for Sending and receiving data 
+1. Better APIs for Sending and receiving data
 
 2. Better Developer Experience, File name conventions, JSON and Signaling and
 
