@@ -82,7 +82,7 @@ export function Runtime({ domElement, useStore, io, ui }) {
 
         <PerspectiveCamera
           makeDefault
-          position={[-1, 1.5, 2]}
+          position={[0, 1.75, 1.5]}
         ></PerspectiveCamera>
         <OrbitControls target={[0, 1.5, 0]} makeDefault></OrbitControls>
       </WebGPUCanvas>
@@ -296,7 +296,7 @@ function AppRun({ domElement, useStore, io, ui }) {
         // });
 
         let motion = await fbx
-          .loadAsync(files["/rpm/moiton/wave-hiphop.fbx"])
+          .loadAsync(files["/rpm/moiton/wave2.fbx"])
           .then((r) => r.animations[0]);
 
         mixer.clipAction(motion, glb.scene).play();
