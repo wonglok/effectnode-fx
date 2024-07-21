@@ -89,7 +89,7 @@ export function Runtime({ domElement, useStore, io, ui }) {
       </WebGPUCanvas>
 
       <div
-        className=" absolute top-0 bg-white p-2"
+        className=" absolute top-12 bg-white p-2 rounded-xl"
         style={{
           left: `calc(50% - 60% / 2)`,
           width: "60%",
@@ -668,9 +668,9 @@ let setup = async ({
 
   let opacity = uniform(1.0); // .add(0.025)
   onLoop(() => {
-    let jawOpen = webcamAPI.getFace("jawOpen") * 2.0;
+    let jawOpen = webcamAPI.getFace("jawOpen");
     opacity.value = MathUtils.lerp(opacity.value, 1 + jawOpen * 5, 0.1);
-    skinnedMesh.material.opacity = 1.0 - jawOpen;
+    skinnedMesh.material.opacity = 1.0 - jawOpen * 1.5;
     skinnedMesh.material.transparent = true;
   });
   let fader = opacity.mul(velNode.length()).mul(4);
