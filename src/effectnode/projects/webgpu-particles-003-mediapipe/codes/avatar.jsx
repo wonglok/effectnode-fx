@@ -80,9 +80,9 @@ export function Runtime({ domElement, useStore, io, ui }) {
 
         <PerspectiveCamera
           makeDefault
-          position={[0, 0, 10]}
+          position={[0, 1.75, 3.5]}
         ></PerspectiveCamera>
-        <OrbitControls makeDefault></OrbitControls>
+        <OrbitControls target={[0, 1.75, 0]} makeDefault></OrbitControls>
       </WebGPUCanvas>
 
       {/*  */}
@@ -607,7 +607,7 @@ let setup = async ({
 
   particleMaterial.positionNode = posAttr;
 
-  particleMaterial.scaleNode = size.mul(velNode.length().mul(0.5));
+  particleMaterial.scaleNode = size.mul(velNode.length().mul(1.5));
   particleMaterial.opacity = 1.0; //(float(0.14).add(lifeBuffer.node.toAttribute().length().mul(-1).mul(size)))
   particleMaterial.depthTest = true;
   particleMaterial.depthWrite = false;
@@ -628,8 +628,8 @@ let setup = async ({
   const plane = new Mesh(geometry, new MeshBasicMaterial({ visible: false }));
   mounter.add(plane);
 
-  const raycaster = new Raycaster();
-  const pointer = new Vector2();
+  // const raycaster = new Raycaster();
+  // const pointer = new Vector2();
 
   let stats = new Stats();
   stats.dom.style.position = "absolute";
