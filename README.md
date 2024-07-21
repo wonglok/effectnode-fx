@@ -1,9 +1,5 @@
 # Effect Node FX
 
-## Try Out
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/wonglok/effectnode-fx)
-
 ## Live Demo
 
 [Link to DEMO](https://www.effectnode.com/demo)
