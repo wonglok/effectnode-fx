@@ -13,6 +13,7 @@ import { CodeThatWorks } from "./mesh";
 const DefaultInstruction = `Rewrite the following GLSL code. keep same function input and keep same function output, do not rename variables.`;
 const DefaultCodeToBeImproved = `${CodeThatWorks}`;
 
+//
 export function ToolBox({
   useStore,
   boxData,

@@ -80,9 +80,9 @@ export function Runtime({ domElement, useStore, io, ui }) {
 
         <PerspectiveCamera
           makeDefault
-          position={[0, 1.75, 3.5]}
+          position={[0, 1.5, 7.5]}
         ></PerspectiveCamera>
-        <OrbitControls target={[0, 1.75, 0]} makeDefault></OrbitControls>
+        <OrbitControls target={[0, 1.5, 0]} makeDefault></OrbitControls>
       </WebGPUCanvas>
 
       {/*  */}
@@ -194,8 +194,12 @@ function AppRun({ domElement, useStore, io, ui }) {
 
   let files = useStore((r) => r.files);
   let gl = useThree((r) => r.gl);
+  let controls = useThree((r) => r.controls);
 
   useEffect(() => {
+    if (!controls) {
+      return;
+    }
     let draco = new DRACOLoader();
     draco.setDecoderPath(`/draco/`);
 
@@ -273,13 +277,20 @@ function AppRun({ domElement, useStore, io, ui }) {
         // });
 
         let motion = await fbx
-          .loadAsync(files["/rpm/moiton/wave-hiphop.fbx"])
+          .loadAsync(files["/rpm/moiton/singing.fbx"])
           .then((r) => r.animations[0]);
 
         mixer.clipAction(motion, glb.scene).play();
 
         mounter.add(glb.scene);
 
+        let wHead = new Vector3();
+        onLoop(() => {
+          // controls.target
+
+          glb.scene.getObjectByName("Head").getWorldPosition(wHead);
+          controls.target.lerp(wHead, 0.1);
+        });
         //
         glb.scene.traverse((it) => {
           if (it.geometry) {
@@ -328,7 +339,7 @@ function AppRun({ domElement, useStore, io, ui }) {
       mounter.clear();
       mounter.removeFromParent();
     };
-  }, [domElement, files, gl, io, mixer, mounter, ui]);
+  }, [controls, domElement, files, gl, io, mixer, mounter, ui]);
 
   useFrame(({ gl, camera, scene }) => {
     //
@@ -386,7 +397,7 @@ let setup = async ({
   const boundingBoxSize = new Vector3();
   skinnedMesh.geometry.boundingBox.getSize(boundingBoxSize);
 
-  const particleCount = 256 * 512;
+  const particleCount = 512 * 1024;
 
   const size = uniform(1);
   ui.on("size", (num) => {
@@ -607,7 +618,7 @@ let setup = async ({
 
   particleMaterial.positionNode = posAttr;
 
-  particleMaterial.scaleNode = size.mul(velNode.length().mul(1.5));
+  particleMaterial.scaleNode = size.mul(velNode.length().mul(0.75));
   particleMaterial.opacity = 1.0; //(float(0.14).add(lifeBuffer.node.toAttribute().length().mul(-1).mul(size)))
   particleMaterial.depthTest = true;
   particleMaterial.depthWrite = false;
