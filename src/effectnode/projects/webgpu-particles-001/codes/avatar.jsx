@@ -335,7 +335,7 @@ let setup = async ({
   const boundingBoxSize = new Vector3();
   skinnedMesh.geometry.boundingBox.getSize(boundingBoxSize);
 
-  const particleCount = 256 * 512;
+  const particleCount = 256 * 256;
 
   const size = uniform(1);
   ui.on("size", (num) => {
@@ -362,10 +362,7 @@ let setup = async ({
   const birthNormalBuffer = createBuffer({ itemSize: 3, type: "vec3" });
 
   const bindMatrixNode = uniform(skinnedMesh.bindMatrix, "mat4");
-  // const bindMatrixInverseNode = uniform(
-  //   skinnedMesh.bindMatrixInverse,
-  //   "mat4"
-  // );
+  const bindMatrixInverseNode = uniform(skinnedMesh.bindMatrixInverse, "mat4");
   const boneMatricesNode = {
     node: buffer(
       skinnedMesh.skeleton.boneMatrices,
@@ -480,22 +477,21 @@ let setup = async ({
     const skinPosition = processedPositionBuffer.node.element(instanceIndex);
     // const skinNormal = processedNormalBuffer.node.element(instanceIndex);
 
-    const dist = mouseUni.sub(position).length().mul(1);
-    const normalValue = mouseUni.sub(position).normalize().mul(-0.015);
+    // const dist = mouseUni.sub(position).length().mul(1);
+    // const normalValue = mouseUni.sub(position).normalize().mul(0.0);
 
     // spinner
-    // velocity.addAssign(vec3(0.0, gravity.mul(life.y), 0.0));
 
     // atan2
     velocity.addAssign(
+      //
       skinPosition
         .sub(position)
         .normalize()
-        .mul(0.003 * 0.5)
+        .mul(0.1 / 60 / 5)
     );
 
-    let addVel = velocity.add(normalValue);
-
+    let addVel = velocity;
     position.addAssign(addVel);
 
     // velocity.mulAssign(friction);
@@ -515,8 +511,9 @@ let setup = async ({
       life.y.lessThan(0.01),
       () => {
         life.xyz.assign(vec3(1.0, 1.0, 1.0));
-        velocity.assign(skinPosition.sub(position).normalize().mul(0.001));
+        velocity.assign(skinPosition.sub(position).normalize().mul(-0.001));
         position.assign(skinPosition.xyz);
+        skinPosition.assign(vec3(0.0));
       },
       () => {
         //
@@ -534,7 +531,7 @@ let setup = async ({
 
   // const finalColor = mix(color('orange'), color('blue'), range(0, 1));
   let velNode = velocityBuffer.node.toAttribute();
-  let posAttr = positionBuffer.node.toAttribute();
+  let posNode = positionBuffer.node.toAttribute();
 
   let colorNode = velNode.normalize().mul(0.5).add(0.5).mul(1.25);
 
@@ -553,18 +550,21 @@ let setup = async ({
     colorNode.r, //.mul(color3.x), //.mul(textureNode.a), //.mul(3.33),
     colorNode.g, //.mul(color3.y), //.mul(textureNode.a), //.mul(3.33),
     colorNode.b, //.mul(color3.z), //.mul(textureNode.a), //.mul(2.33),
-    pow(velNode.length().mul(1.0), 1.0) //textureNode.a.mul(1 / 3.33)
+    0.5 //textureNode.a.mul(1 / 3.33)
   );
 
-  particleMaterial.positionNode = posAttr;
+  particleMaterial.positionNode = posNode;
 
-  particleMaterial.scaleNode = size.mul(velNode.length());
-  particleMaterial.opacity = 1.0; //(float(0.14).add(lifeBuffer.node.toAttribute().length().mul(-1).mul(size)))
+  particleMaterial.scaleNode = 0.5;
+  particleMaterial.opacity = 0.5; //(float(0.14).add(lifeBuffer.node.toAttribute().length().mul(-1).mul(size)))
   particleMaterial.depthTest = true;
   particleMaterial.depthWrite = false;
   particleMaterial.transparent = true;
 
-  const particles = new Mesh(new CircleGeometry(0.05, 3), particleMaterial);
+  const particles = new Mesh(
+    new BoxGeometry(0.05, 0.05, 0.05),
+    particleMaterial
+  );
   particles.isInstancedMesh = true;
   particles.count = particleCount;
   particles.frustumCulled = false;
@@ -588,19 +588,8 @@ let setup = async ({
 
   renderer.compute(computeInit);
 
-  let computeHit = tslFn(() => {
-    // const birth = birthPositionBuffer.node.element(instanceIndex);
+  let computeSkeleton = tslFn(() => {
     const position = processedPositionBuffer.node.element(instanceIndex);
-    // const velocity = velocityBuffer.node.element(instanceIndex);
-    // const color = colorBuffer.node.element(instanceIndex);
-    // const dist = position.distance(clickPosition);
-    // const direction = position.sub(clickPosition).normalize();
-    // const distArea = float(6).sub(dist).max(0);
-
-    // const power = distArea.mul(.01);
-    // const relativePower = power.mul(instanceIndex.hash().mul(.5).add(.5));
-
-    // velocity.addAssign(direction.mul(relativePower));
 
     const birth = birthPositionBuffer.node.element(instanceIndex);
 
@@ -622,13 +611,16 @@ let setup = async ({
     position.assign(skinned);
 
     // const skinPosition = bindMatrixInverseNode.mul(skinned).xyz;
-    //   .xyz.mul((1 / 100 / 10) * 2.5);
+
+    // position.assign(skinPosition);
+
+    // .xyz.mul((1 / 100 / 10) * 2.5);
 
     // velocity.assign(skinPosition.sub(position).normalize().mul(0.1));
   })().compute(particleCount);
 
   onLoop(() => {
-    renderer.computeAsync(computeParticles);
-    renderer.computeAsync(computeHit);
+    renderer.compute(computeSkeleton);
+    renderer.compute(computeParticles);
   });
 };
