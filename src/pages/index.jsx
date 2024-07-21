@@ -125,8 +125,7 @@ export default function Landing() {
                 </Link>
                 <a
                   className="cursor-pointer"
-                  href={`https://github.com/wonglok/effectnode-fx/archive/refs/tags/r0003.zip`}
-                  download={"effectnode-fx.zip"}
+                  href={`https://github.com/wonglok/effectnode-fx/releases/latest`}
                   target="_blank"
                 >
                   <button className="text-green-700 bg-green-300 inline-block p-3 px-8 border rounded-lg mx-2">
