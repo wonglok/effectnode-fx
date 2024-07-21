@@ -228,8 +228,12 @@ function AppRun({ domElement, useStore, io, ui }) {
         video.muted = true;
         video.autoplay = true;
 
+        let canRun = true;
         const camera = new Camera(video, {
           onFrame: async () => {
+            if (!canRun) {
+              return;
+            }
             let res = faceAPI.detectForVideo(
               video,
               window.performance.now(),
@@ -244,13 +248,13 @@ function AppRun({ domElement, useStore, io, ui }) {
               // console.log(faceBlendshapes);
             }
           },
-          width: 768,
-          height: 768,
+          width: 640,
+          height: 320,
         });
 
-        await faceAPI.applyOptions({
-          runningMode: "VIDEO",
-        });
+        // await faceAPI.applyOptions({
+        //   runningMode: "VIDEO",
+        // });
         await faceAPI.setOptions({
           runningMode: "VIDEO",
         });
@@ -260,7 +264,9 @@ function AppRun({ domElement, useStore, io, ui }) {
           video.pause();
           camera.stop();
           faceAPI.close();
+          canRun = false;
         };
+        //
 
         // await faceAPI.setOptions({
         //   runningMode: "VIDEO",
@@ -380,7 +386,7 @@ let setup = async ({
   const boundingBoxSize = new Vector3();
   skinnedMesh.geometry.boundingBox.getSize(boundingBoxSize);
 
-  const particleCount = 1024 * 512;
+  const particleCount = 256 * 512;
 
   const size = uniform(1);
   ui.on("size", (num) => {
@@ -601,9 +607,9 @@ let setup = async ({
 
   particleMaterial.positionNode = posAttr;
 
-  particleMaterial.scaleNode = size.mul(velNode.length().mul(1.0));
+  particleMaterial.scaleNode = size.mul(velNode.length().mul(0.5));
   particleMaterial.opacity = 1.0; //(float(0.14).add(lifeBuffer.node.toAttribute().length().mul(-1).mul(size)))
-  particleMaterial.depthTest = false;
+  particleMaterial.depthTest = true;
   particleMaterial.depthWrite = false;
   particleMaterial.transparent = true;
 
