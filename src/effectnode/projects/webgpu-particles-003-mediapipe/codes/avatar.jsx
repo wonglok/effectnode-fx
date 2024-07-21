@@ -148,7 +148,7 @@ function makeRotationAPI({ glb, onLoop }) {
                 it.morphTargetInfluences[keyIndex] = MathUtils.lerp(
                   it.morphTargetInfluences[keyIndex],
                   result.score,
-                  0.5
+                  0.1
                 );
               }
               // it.morphTargetInfluences[val] =
