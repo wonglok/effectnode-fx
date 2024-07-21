@@ -82,9 +82,9 @@ export function Runtime({ domElement, useStore, io, ui }) {
 
         <PerspectiveCamera
           makeDefault
-          position={[0, 1.75, 1.5]}
+          position={[0, 1.65, 1]}
         ></PerspectiveCamera>
-        <OrbitControls target={[0, 1.5, 0]} makeDefault></OrbitControls>
+        <OrbitControls target={[0, 1.75, 0]} makeDefault></OrbitControls>
       </WebGPUCanvas>
 
       {/*  */}
