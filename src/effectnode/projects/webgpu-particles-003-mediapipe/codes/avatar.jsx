@@ -668,7 +668,7 @@ let setup = async ({
 
   let opacity = uniform(1.0); // .add(0.025)
   onLoop(() => {
-    let jawOpen = webcamAPI.getFace("jawOpen");
+    let jawOpen = webcamAPI.getFace("jawOpen") * 1.5;
     opacity.value = MathUtils.lerp(opacity.value, 1 + jawOpen * 5, 0.1);
     skinnedMesh.material.opacity = 1.0 - jawOpen * 1.5;
     skinnedMesh.material.transparent = true;
@@ -693,7 +693,7 @@ let setup = async ({
   particleMaterial.depthWrite = false;
   particleMaterial.transparent = true;
 
-  const particles = new Mesh(new CircleGeometry(0.05, 8), particleMaterial);
+  const particles = new Mesh(new CircleGeometry(0.05, 13), particleMaterial);
   particles.isInstancedMesh = true;
   particles.count = particleCount;
   particles.frustumCulled = false;
