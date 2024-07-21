@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import {
+  AdditiveBlending,
   AnimationMixer,
   BoxGeometry,
   CircleGeometry,
@@ -9,9 +10,12 @@ import {
   Color,
   GridHelper,
   Group,
+  MathUtils,
   Mesh,
   MeshBasicMaterial,
+  NoBlending,
   PlaneGeometry,
+  Quaternion,
   Raycaster,
   Scene,
   Vector2,
@@ -19,6 +23,8 @@ import {
 } from "three";
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { create } from "zustand";
+import { Camera } from "@mediapipe/camera_utils";
+
 /** @license <MIT></MIT>
  * 
  * Copyright (c) 2024 WONG LOK
@@ -39,6 +45,24 @@ import Stats from "three/examples/jsm/libs/stats.module.js";
 import { rand } from "../loklok/rand";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { FaceLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
+
+async function postProcessAPI({ files }) {
+  const vision = await FilesetResolver.forVisionTasks(
+    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
+  );
+  const poseLandmarker = await FaceLandmarker.createFromOptions(vision, {
+    baseOptions: {
+      modelAssetPath: files["/task/face_landmarker.task"],
+    },
+    numFaces: 1,
+    outputFaceBlendshapes: true,
+    outputFacialTransformationMatrixes: false,
+    runningMode: "IMAGE",
+  });
+
+  return poseLandmarker;
+}
 
 export function ToolBox() {
   return <>ToolBox</>;
@@ -59,9 +83,9 @@ export function Runtime({ domElement, useStore, io, ui }) {
 
         <PerspectiveCamera
           makeDefault
-          position={[0, 0, 10]}
+          position={[0, 1.5, 7.5]}
         ></PerspectiveCamera>
-        <OrbitControls makeDefault></OrbitControls>
+        <OrbitControls target={[0, 1.5, 0]} makeDefault></OrbitControls>
       </WebGPUCanvas>
 
       {/*  */}
@@ -106,6 +130,53 @@ function WebGPUCanvas({ children }) {
   );
 }
 
+function makeRotationAPI({ glb, onLoop }) {
+  //
+
+  let faceBlendshapesCache = false;
+  onLoop(() => {
+    let faceBlendshapes = faceBlendshapesCache;
+    if (faceBlendshapes) {
+      glb.scene.traverse((it) => {
+        if (it.morphTargetDictionary) {
+          // console.log(faceBlendshapes.categories);
+          Object.entries(it.morphTargetDictionary).map(
+            ([keyName, keyIndex]) => {
+              let result = faceBlendshapes.categories.find(
+                (cat) => cat.categoryName === keyName
+              );
+
+              if (result) {
+                it.morphTargetInfluences[keyIndex] = MathUtils.lerp(
+                  it.morphTargetInfluences[keyIndex],
+                  result.score,
+                  0.1
+                );
+              }
+              // it.morphTargetInfluences[val] =
+              // console.log(key, val);
+            }
+          );
+          // faceBlendshapes.categories.forEach()
+          // console.log(it.morphTargetDictionary, faceBlendshapes.categories);
+        }
+        // console.log(it.morphTargetDictionary);
+      });
+    }
+  });
+
+  let onProcess = async ({ faceBlendshapes }) => {
+    //
+    // console.log(faceBlendshapes);
+
+    faceBlendshapesCache = faceBlendshapes;
+    //
+  };
+  return {
+    onProcess,
+  };
+}
+
 function AppRun({ domElement, useStore, io, ui }) {
   //
   // AppRun
@@ -138,8 +209,12 @@ function AppRun({ domElement, useStore, io, ui }) {
 
   let files = useStore((r) => r.files);
   let gl = useThree((r) => r.gl);
+  let controls = useThree((r) => r.controls);
 
   useEffect(() => {
+    if (!controls) {
+      return;
+    }
     let draco = new DRACOLoader();
     draco.setDecoderPath(`/draco/`);
 
@@ -153,10 +228,75 @@ function AppRun({ domElement, useStore, io, ui }) {
       works.current.push(t);
     };
 
+    let stop = () => {};
     gltf
-      .loadAsync(files["/rpm/lok-orig.glb"])
+      .loadAsync(files["/rpm/lok-ready.glb"])
       .then(async (glb) => {
         //
+
+        // let faceAPI = await postProcessAPI({
+        //   files,
+        // });
+        // let rotaionAPI = await makeRotationAPI({
+        //   onLoop,
+        //   glb,
+        // });
+
+        // let video = document.createElement("video");
+        // video.playsInline = true;
+        // video.muted = true;
+        // video.autoplay = true;
+
+        // let canRun = true;
+        // const camera = new Camera(video, {
+        //   facingMode: "user",
+        //   onFrame: async () => {
+        //     if (!canRun) {
+        //       return;
+        //     }
+        //     let res = faceAPI.detectForVideo(
+        //       video,
+        //       window.performance.now(),
+        //       {}
+        //     );
+
+        //     let faceBlendshapes = res.faceBlendshapes[0];
+        //     if (faceBlendshapes) {
+        //       canRun = false;
+        //       rotaionAPI.onProcess({
+        //         faceBlendshapes,
+        //       });
+        //     }
+        //   },
+        //   width: 640,
+        //   height: 320,
+        // });
+
+        // onLoop(() => {
+        //   canRun = true;
+        // });
+
+        // // await faceAPI.applyOptions({
+        // //   runningMode: "VIDEO",
+        // // });
+        // await faceAPI.setOptions({
+        //   runningMode: "VIDEO",
+        // });
+
+        // await camera.start();
+        // stop = () => {
+        //   video.pause();
+        //   camera.stop();
+        //   faceAPI.close();
+        //   canRun = false;
+        // };
+
+        //////
+
+        // await faceAPI.setOptions({
+        //   runningMode: "VIDEO",
+        // });
+
         let motion = await fbx
           .loadAsync(files["/rpm/moiton/thriller4.fbx"])
           .then((r) => r.animations[0]);
@@ -165,6 +305,14 @@ function AppRun({ domElement, useStore, io, ui }) {
 
         mounter.add(glb.scene);
 
+        let wHead = new Vector3();
+        onLoop(() => {
+          // controls.target
+
+          glb.scene.getObjectByName("Head").getWorldPosition(wHead);
+          controls.target.lerp(wHead, 0.1);
+        });
+        //
         glb.scene.traverse((it) => {
           if (it.geometry) {
             it.geometry = it.geometry.toNonIndexed();
@@ -185,6 +333,7 @@ function AppRun({ domElement, useStore, io, ui }) {
             skinnedMesh.geometry.computeBoundingBox();
 
             setup({
+              //
               skinnedMesh: skinnedMesh,
               mounter: mounter,
               domElement: domElement,
@@ -208,10 +357,11 @@ function AppRun({ domElement, useStore, io, ui }) {
     //
 
     return () => {
+      stop();
       mounter.clear();
       mounter.removeFromParent();
     };
-  }, [domElement, files, gl, io, mixer, mounter, ui]);
+  }, [controls, domElement, files, gl, io, mixer, mounter, ui]);
 
   useFrame(({ gl, camera, scene }) => {
     //
@@ -269,7 +419,7 @@ let setup = async ({
   const boundingBoxSize = new Vector3();
   skinnedMesh.geometry.boundingBox.getSize(boundingBoxSize);
 
-  const particleCount = 256 * 512;
+  const particleCount = 512 * 512;
 
   const size = uniform(1);
   ui.on("size", (num) => {
@@ -448,7 +598,7 @@ let setup = async ({
       life.y.lessThan(0.01),
       () => {
         life.xyz.assign(vec3(1.0, 1.0, 1.0));
-        velocity.assign(skinPosition.sub(position).normalize().mul(-0.001));
+        velocity.assign(skinPosition.sub(position).normalize().mul(-0.009));
         position.assign(skinPosition.xyz);
       },
       () => {
@@ -477,11 +627,12 @@ let setup = async ({
   });
 
   let opacity = uniform(1.0);
+  let fader = opacity.mul(velNode.length()).add(0.025);
   particleMaterial.colorNode = vec4(
     colorNode.r, //.mul(color3.x), //.mul(textureNode.a), //.mul(3.33),
     colorNode.g, //.mul(color3.y), //.mul(textureNode.a), //.mul(3.33),
     colorNode.b, //.mul(color3.z), //.mul(textureNode.a), //.mul(2.33),
-    opacity.mul(velNode.length()).add(0.005) //textureNode.a.mul(1 / 3.33)
+    fader //textureNode.a.mul(1 / 3.33)
   );
 
   ui.on("opacity", (value) => {
@@ -490,9 +641,9 @@ let setup = async ({
 
   particleMaterial.positionNode = posAttr;
 
-  particleMaterial.scaleNode = size.mul(velNode.length().mul(3.0));
+  particleMaterial.scaleNode = fader;
   particleMaterial.opacity = 1.0; //(float(0.14).add(lifeBuffer.node.toAttribute().length().mul(-1).mul(size)))
-  particleMaterial.depthTest = false;
+  particleMaterial.depthTest = true;
   particleMaterial.depthWrite = false;
   particleMaterial.transparent = true;
 
@@ -511,8 +662,8 @@ let setup = async ({
   const plane = new Mesh(geometry, new MeshBasicMaterial({ visible: false }));
   mounter.add(plane);
 
-  const raycaster = new Raycaster();
-  const pointer = new Vector2();
+  // const raycaster = new Raycaster();
+  // const pointer = new Vector2();
 
   let stats = new Stats();
   stats.dom.style.position = "absolute";
