@@ -69,7 +69,7 @@ export function AppRun({ useStore, io }) {
     return uniform(vec3(0, 0, 0));
   }, []);
 
-  const dimension = 15;
+  const dimension = 50;
   const boundSizeMin = vec3(0, 0, 0);
   const boundSizeMax = vec3(dimension * 2, dimension * 6, dimension * 2);
 
@@ -113,7 +113,7 @@ export function AppRun({ useStore, io }) {
       };
 
       //
-      let side = 15;
+      let side = Math.floor(Math.sqrt(512));
       let COUNT = side * side * side;
 
       // let h = 16;
@@ -154,7 +154,7 @@ export function AppRun({ useStore, io }) {
 
       // const smoothingRadius = float(particleSize.mul(10));
 
-      const mass = float(0.5);
+      const mass = float(1);
 
       const gravity = float(-0.4);
 
@@ -195,14 +195,14 @@ export function AppRun({ useStore, io }) {
               if (i < full) {
                 positionBuffer.attr.setXYZ(
                   i,
-                  x + dimension / 2,
-                  y + dimension,
-                  z + dimension / 2
+                  (x - side / 2) * 0.5 + boundSizeMax.value.x / 2,
+                  y - side / 2 + boundSizeMax.value.x / 2,
+                  (z - side / 2) * 0.5 + boundSizeMax.value.z / 2
                 );
                 positionBuffer.attr.needsUpdate = true;
 
                 //
-                velocityBuffer.attr.setXYZ(i, 0.0, 0.2, 0.0);
+                velocityBuffer.attr.setXYZ(i, 0.0, 0.0, 0.0);
                 velocityBuffer.attr.needsUpdate = true;
 
                 i++;
@@ -348,15 +348,17 @@ export function AppRun({ useStore, io }) {
 
         velocity.addAssign(vec3(0.0, gravity.mul(mass).mul(delta), 0.0));
 
-        let radius = 15.0;
+        let radius = 20.0;
         let diff = position.sub(uiPointer.sub(uiOffset)).negate();
         let sdf = diff.length().sub(radius);
 
         If(sdf.lessThanEqual(float(1)), () => {
-          let normalDiff = diff.normalize().mul(sdf).mul(0.03);
+          let normalDiff = diff.normalize().mul(sdf).mul(0.01);
           velocity.addAssign(normalDiff);
         });
 
+        //
+        //
         //
         {
           for (let z = -2; z <= 2; z++) {
@@ -440,7 +442,7 @@ export function AppRun({ useStore, io }) {
         //
         //
         particleMaterial.colorNode = mix(vec3(0, 0, 1), vec3(0, 1, 1), size);
-        particleMaterial.scaleNode = size.mul(3);
+        particleMaterial.scaleNode = size.mul(5);
 
         //
 
@@ -451,7 +453,7 @@ export function AppRun({ useStore, io }) {
         particleMaterial.opacity = 1;
 
         const particles = new Mesh(
-          new SphereGeometry(particleSize.value, 32, 32),
+          new CircleGeometry(particleSize.value / 2, 32),
           particleMaterial
         );
         particles.isInstancedMesh = true;
@@ -481,6 +483,7 @@ export function AppRun({ useStore, io }) {
     boundSizeMax,
     boundSizeMin,
     uiOffset,
+    uiPointer,
   ]);
 
   //
@@ -510,12 +513,22 @@ export function AppRun({ useStore, io }) {
       {/*  */}
       {show}
 
-      <Sphere scale={1} ref={refBox}>
-        <meshStandardMaterial color={"#ff0000"}></meshStandardMaterial>
+      <Sphere scale={10} ref={refBox}>
+        <meshNormalMaterial></meshNormalMaterial>
       </Sphere>
       <Plane
         ref={ref}
         scale={500}
+        visible={false}
+        onPointerMove={(ev) => {
+          // ev.point;
+          // uiPointer.value.copy(ev.point);
+        }}
+      ></Plane>
+
+      <Plane
+        scale={500}
+        rotation={[Math.PI * -0.5, 0, 0]}
         visible={false}
         onPointerMove={(ev) => {
           // ev.point;
