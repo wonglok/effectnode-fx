@@ -273,49 +273,49 @@ export function AppRun({ useStore, io }) {
         }
 
         // hand
-        {
-          {
-            for (let z = -2; z <= 2; z++) {
-              for (let y = -2; y <= 2; y++) {
-                for (let x = -2; x <= 2; x++) {
-                  let point = vec3(
-                    //
-                    floor(uiPointer.sub(uiOffset).x.add(x)),
-                    floor(uiPointer.sub(uiOffset).y.add(y)),
-                    floor(uiPointer.sub(uiOffset).z.add(z))
-                  );
+        // {
+        //   {
+        //     for (let z = -2; z <= 2; z++) {
+        //       for (let y = -2; y <= 2; y++) {
+        //         for (let x = -2; x <= 2; x++) {
+        //           let point = vec3(
+        //             //
+        //             floor(uiPointer.sub(uiOffset).x.add(x)),
+        //             floor(uiPointer.sub(uiOffset).y.add(y)),
+        //             floor(uiPointer.sub(uiOffset).z.add(z))
+        //           );
 
-                  If(
-                    bool(true).and(
-                      point.x
-                        .lessThan(boundSizeMax.x)
-                        .and(point.x.greaterThan(boundSizeMin.x)),
-                      point.y
-                        .lessThan(boundSizeMax.y)
-                        .and(point.y.greaterThan(boundSizeMin.y)),
-                      point.z
-                        .lessThan(boundSizeMax.z)
-                        .and(point.z.greaterThan(boundSizeMin.z))
-                    ),
-                    () => {
-                      let index = getIndexWithPosition({
-                        position: point,
-                      });
+        //           If(
+        //             bool(true).and(
+        //               point.x
+        //                 .lessThan(boundSizeMax.x)
+        //                 .and(point.x.greaterThan(boundSizeMin.x)),
+        //               point.y
+        //                 .lessThan(boundSizeMax.y)
+        //                 .and(point.y.greaterThan(boundSizeMin.y)),
+        //               point.z
+        //                 .lessThan(boundSizeMax.z)
+        //                 .and(point.z.greaterThan(boundSizeMin.z))
+        //             ),
+        //             () => {
+        //               let index = getIndexWithPosition({
+        //                 position: point,
+        //               });
 
-                      let spaceCount = spaceSlotCounter.node.element(index);
+        //               let spaceCount = spaceSlotCounter.node.element(index);
 
-                      spaceCount.addAssign(20);
-                    }
-                  );
-                }
-              }
-            }
-          }
+        //               spaceCount.addAssign(20);
+        //             }
+        //           );
+        //         }
+        //       }
+        //     }
+        //   }
 
-          // let index = getIndexWithPosition({ position: position });
-          // let space = spaceSlotCounter.node.element(index);
-          // space.addAssign(1);
-        }
+        //   // let index = getIndexWithPosition({ position: position });
+        //   // let space = spaceSlotCounter.node.element(index);
+        //   // space.addAssign(1);
+        // }
       });
 
       let calcSlotCounterComp = calcSlotCounter().compute(COUNT);
@@ -333,6 +333,13 @@ export function AppRun({ useStore, io }) {
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+      /*
+      float sdSphere( vec3 p, float s )
+      {
+        return length(p)-s;
+      }
+        
+      */
       let calcIdle = tslFn(() => {
         //
         let position = positionBuffer.node.element(instanceIndex);
@@ -340,6 +347,15 @@ export function AppRun({ useStore, io }) {
         // let pressureForce = pressureForceBuffer.node.element(instanceIndex);
 
         velocity.addAssign(vec3(0.0, gravity.mul(mass).mul(delta), 0.0));
+
+        let radius = 15.0;
+        let diff = position.sub(uiPointer.sub(uiOffset)).negate();
+        let sdf = diff.length().sub(radius);
+
+        If(sdf.lessThanEqual(float(1)), () => {
+          let normalDiff = diff.normalize().mul(sdf).mul(0.03);
+          velocity.addAssign(normalDiff);
+        });
 
         //
         {
@@ -456,7 +472,16 @@ export function AppRun({ useStore, io }) {
     return () => {
       mounter.clear();
     };
-  }, [scene, onLoop, renderer, mounter, files]);
+  }, [
+    scene,
+    onLoop,
+    renderer,
+    mounter,
+    files,
+    boundSizeMax,
+    boundSizeMin,
+    uiOffset,
+  ]);
 
   //
   //
