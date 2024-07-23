@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Add3D, useGPU } from "./main";
 import { useFrame, useThree } from "@react-three/fiber";
 import {
@@ -57,11 +57,16 @@ import StorageInstancedBufferAttribute from "three/examples/jsm/renderers/common
 import { calculateDensity } from "../loklok/calculateDensity";
 import { distanceTo } from "../loklok/distanceTo";
 import { smoothinKernel } from "../loklok/smoothKernel";
+import { Plane } from "@react-three/drei";
 
 export function AppRun({ useStore, io }) {
   let files = useStore((r) => r.files);
   let renderer = useThree((r) => r.gl);
   let works = useMemo(() => [], []);
+
+  let uiPointer = useMemo(() => {
+    return uniform(vec3(0, 0, 0));
+  }, []);
   useFrame((st, dt) => {
     works.forEach((t) => t(st, dt));
   }, 1);
@@ -138,6 +143,8 @@ export function AppRun({ useStore, io }) {
 
       const boundSizeMin = vec3(0, 0, 0);
       const boundSizeMax = vec3(dimension * 2, dimension * 6, dimension * 2);
+
+      const uiOffset = vec3(boundSizeMax.x.div(-2), 0, boundSizeMax.z.div(-2));
 
       const particleSize = float(0.5);
 
@@ -260,6 +267,34 @@ export function AppRun({ useStore, io }) {
           let space = spaceSlotCounter.node.element(index);
           space.addAssign(1);
         }
+
+        // hand
+        {
+          {
+            for (let z = -3; z <= 3; z++) {
+              for (let y = -3; y <= 3; y++) {
+                for (let x = -3; x <= 3; x++) {
+                  let index = getIndexWithPosition({
+                    position: vec3(
+                      //
+                      floor(uiPointer.x.add(uiOffset.x).add(x)),
+                      floor(uiPointer.y.add(uiOffset.y).add(y)),
+                      floor(uiPointer.z.add(uiOffset.z).add(z))
+                    ),
+                  });
+
+                  let spaceCount = spaceSlotCounter.node.element(index);
+
+                  spaceCount.addAssign(1);
+                }
+              }
+            }
+          }
+
+          // let index = getIndexWithPosition({ position: position });
+          // let space = spaceSlotCounter.node.element(index);
+          // space.addAssign(1);
+        }
       });
 
       let calcSlotCounterComp = calcSlotCounter().compute(COUNT);
@@ -361,9 +396,7 @@ export function AppRun({ useStore, io }) {
         let posAttr = positionBuffer.node.toAttribute();
 
         // display different
-        particleMaterial.positionNode = posAttr.add(
-          vec3(boundSizeMax.x.div(-2), 0, boundSizeMax.z.div(-2))
-        );
+        particleMaterial.positionNode = posAttr.add(uiOffset);
 
         const velocity = velocityBuffer.node.toAttribute();
         const size = velocity.length();
@@ -411,10 +444,28 @@ export function AppRun({ useStore, io }) {
   }, 100);
   //
 
+  let ref = useRef();
+
+  useFrame(({ camera }) => {
+    if (ref) {
+      //
+      ref.current.lookAt(camera.position);
+    }
+  });
   return (
     <>
       {/*  */}
       {show}
+      <Plane
+        ref={ref}
+        scale={150}
+        visible={false}
+        onPointerMove={(ev) => {
+          // ev.point;
+          uiPointer.value.copy(ev.point);
+          console.log(uiPointer.value);
+        }}
+      ></Plane>
       {/*  */}
     </>
   );
