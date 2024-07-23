@@ -442,7 +442,7 @@ export function AppRun({ useStore, io }) {
         //
         //
         particleMaterial.colorNode = mix(vec3(0, 0, 1), vec3(0, 1, 1), size);
-        particleMaterial.scaleNode = size.mul(5);
+        particleMaterial.scaleNode = 4;
 
         //
 
