@@ -41,7 +41,7 @@ import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+// import Stats from "three/examples/jsm/libs/stats.module.js";
 import { rand } from "../loklok/rand";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
@@ -68,18 +68,13 @@ export function ToolBox() {
   return <>ToolBox</>;
 }
 
-export function Runtime({ domElement, useStore, io, ui }) {
+export function Runtime({ useStore, io, ui }) {
   return (
     <>
       {/*  */}
 
       <WebGPUCanvas>
-        <AppRun
-          domElement={domElement}
-          useStore={useStore}
-          ui={ui}
-          io={io}
-        ></AppRun>
+        <AppRun useStore={useStore} ui={ui} io={io}></AppRun>
 
         <PerspectiveCamera
           makeDefault
@@ -215,7 +210,7 @@ function makeRotationAPI({ glb, onLoop }) {
   };
 }
 
-function AppRun({ domElement, useStore, io, ui }) {
+function AppRun({ useStore, io, ui }) {
   //
   // AppRun
   //
@@ -375,7 +370,6 @@ function AppRun({ domElement, useStore, io, ui }) {
               webcamAPI: webcamAPI,
               skinnedMesh: skinnedMesh,
               mounter: mounter,
-              domElement: domElement,
               renderer: gl,
               onLoop: onLoop,
               io: io,
@@ -400,7 +394,7 @@ function AppRun({ domElement, useStore, io, ui }) {
       mounter.clear();
       mounter.removeFromParent();
     };
-  }, [controls, domElement, files, gl, io, mixer, mounter, ui]);
+  }, [controls, files, gl, io, mixer, mounter, ui]);
 
   useFrame(({ gl, camera, scene }) => {
     //
@@ -416,7 +410,6 @@ let setup = async ({
   webcamAPI,
   skinnedMesh,
   mounter,
-  domElement,
   renderer,
   onLoop,
   io,
@@ -452,6 +445,7 @@ let setup = async ({
   let StorageInstancedBufferAttribute = await import(
     "three/addons/renderers/common/StorageInstancedBufferAttribute.js"
   ).then((r) => r.default);
+
   //   import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
   //   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   //   import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -711,9 +705,8 @@ let setup = async ({
   // const raycaster = new Raycaster();
   // const pointer = new Vector2();
 
-  let stats = new Stats();
-  stats.dom.style.position = "absolute";
-  domElement.appendChild(stats.dom);
+  // let stats = new Stats();
+  // stats.dom.style.position = "absolute";
 
   renderer.computeAsync(computeInit);
 

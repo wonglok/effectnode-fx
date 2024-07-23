@@ -41,14 +41,13 @@ export let useGPU = create(() => {
   return {};
 });
 
-export function Runtime({ domElement, useStore, io, ui }) {
+export function Runtime({ useStore, io, ui }) {
   return (
     <>
       {/*  */}
 
       <WebGPUCanvasLoader
         //
-        domElement={domElement}
         useStore={useStore}
         io={io}
         ui={ui}
@@ -78,7 +77,7 @@ export function Runtime({ domElement, useStore, io, ui }) {
   );
 }
 
-function WebGPUCanvasLoader({ domElement, useStore, io, ui, children }) {
+function WebGPUCanvasLoader({ useStore, io, ui, children }) {
   useEffect(() => {
     async function RunWebGPU() {
       let WebGPURenderer = await import(

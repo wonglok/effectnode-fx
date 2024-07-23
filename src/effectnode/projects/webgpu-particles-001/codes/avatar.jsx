@@ -68,18 +68,13 @@ export function ToolBox() {
   return <>ToolBox</>;
 }
 
-export function Runtime({ domElement, useStore, io, ui }) {
+export function Runtime({ useStore, io, ui }) {
   return (
     <>
       {/*  */}
 
       <WebGPUCanvas>
-        <AppRun
-          domElement={domElement}
-          useStore={useStore}
-          ui={ui}
-          io={io}
-        ></AppRun>
+        <AppRun useStore={useStore} ui={ui} io={io}></AppRun>
 
         <PerspectiveCamera
           makeDefault
@@ -177,7 +172,7 @@ function makeRotationAPI({ glb, onLoop }) {
   };
 }
 
-function AppRun({ domElement, useStore, io, ui }) {
+function AppRun({ useStore, io, ui }) {
   //
   // AppRun
   //
@@ -336,7 +331,6 @@ function AppRun({ domElement, useStore, io, ui }) {
               //
               skinnedMesh: skinnedMesh,
               mounter: mounter,
-              domElement: domElement,
               renderer: gl,
               onLoop: onLoop,
               io: io,
@@ -361,7 +355,7 @@ function AppRun({ domElement, useStore, io, ui }) {
       mounter.clear();
       mounter.removeFromParent();
     };
-  }, [controls, domElement, files, gl, io, mixer, mounter, ui]);
+  }, [controls, files, gl, io, mixer, mounter, ui]);
 
   useFrame(({ gl, camera, scene }) => {
     //
@@ -373,15 +367,7 @@ function AppRun({ domElement, useStore, io, ui }) {
   return <>{show}</>;
 }
 
-let setup = async ({
-  skinnedMesh,
-  mounter,
-  domElement,
-  renderer,
-  onLoop,
-  io,
-  ui,
-}) => {
+let setup = async ({ skinnedMesh, mounter, renderer, onLoop, io, ui }) => {
   let {
     uv,
     vec4,
@@ -665,9 +651,8 @@ let setup = async ({
   // const raycaster = new Raycaster();
   // const pointer = new Vector2();
 
-  let stats = new Stats();
-  stats.dom.style.position = "absolute";
-  domElement.appendChild(stats.dom);
+  // let stats = new Stats();
+  // stats.dom.style.position = "absolute";
 
   renderer.computeAsync(computeInit);
 

@@ -208,9 +208,10 @@ export function EffectNode({
   return (
     <>
       {socketMap && useRuntime && (
-        <div id={randID} className="w-full h-full overflow-hidden relative">
+        // <div id={randID} className="w-full h-full overflow-hidden relative">
+        <>
           {mode === "runtime" &&
-            api.domElement &&
+            // api.domElement &&
             nodes
               .filter((node) => {
                 return codes.some((code) => node.title === code.codeName);
@@ -225,7 +226,7 @@ export function EffectNode({
                     onLoop={onLoop}
                     nodeID={node._id}
                     socketMap={socketMap}
-                    domElement={api.domElement}
+                    // domElement={api.domElement}
                     useStore={useRuntime}
                     Algorithm={codeImple?.mod?.Runtime}
                     useEditorStore={useEditorStore}
@@ -240,13 +241,13 @@ export function EffectNode({
               onLoop={onLoop}
               nodeID={nodeID}
               socketMap={socketMap}
-              domElement={api.domElement}
+              // domElement={api.domElement}
               useStore={useRuntime}
               Algorithm={codeImple?.mod?.ToolBox}
               useEditorStore={useEditorStore}
             ></CodeRun>
           )}
-        </div>
+        </>
       )}
 
       <Emit projectName={projectName}></Emit>
