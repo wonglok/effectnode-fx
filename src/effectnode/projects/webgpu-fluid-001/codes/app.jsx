@@ -242,6 +242,9 @@ export function AppRun({ useStore, io }) {
         return index;
       };
 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
       let calcSlotCounter = tslFn(() => {
         let position = positionBuffer.node.element(instanceIndex);
         If(instanceIndex.equal(uint(0)), () => {
@@ -251,6 +254,7 @@ export function AppRun({ useStore, io }) {
           space.assign(0);
         });
 
+        // particle
         {
           let index = getIndexWithPosition({ position: position });
           let space = spaceSlotCounter.node.element(index);
