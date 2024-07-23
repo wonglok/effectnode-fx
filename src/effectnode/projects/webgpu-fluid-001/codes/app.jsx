@@ -291,6 +291,7 @@ export function AppRun({ useStore, io }) {
                     floor(position.z.add(z)).add(0.5)
                   ),
                 });
+
                 let spaceCount = spaceSlotCounter.node.element(index);
 
                 let center = vec3(
