@@ -97,8 +97,8 @@ export function AppRun({ useStore, io }) {
       };
 
       //
-
-      let COUNT = 1000;
+      let side = 10;
+      let COUNT = side * side * side;
 
       // let h = 16;
 
@@ -170,7 +170,6 @@ export function AppRun({ useStore, io }) {
 
       {
         //
-        let side = 10;
         let i = 0;
         let full = COUNT;
 
@@ -270,21 +269,21 @@ export function AppRun({ useStore, io }) {
         //
         let position = positionBuffer.node.element(instanceIndex);
         let velocity = velocityBuffer.node.element(instanceIndex);
-        let pressureForce = pressureForceBuffer.node.element(instanceIndex);
+        // let pressureForce = pressureForceBuffer.node.element(instanceIndex);
 
         velocity.addAssign(vec3(0.0, gravity.mul(mass).mul(delta), 0.0));
 
         //
         {
-          for (let z = -1; z <= 1; z++) {
-            for (let y = -1; y <= 1; y++) {
-              for (let x = -1; x <= 1; x++) {
+          for (let z = -2; z <= 2; z++) {
+            for (let y = -2; y <= 2; y++) {
+              for (let x = -2; x <= 2; x++) {
                 let index = getIndexWithPosition({
                   position: vec3(
                     //
-                    floor(position.x.add(x)),
-                    floor(position.y.add(y)),
-                    floor(position.z.add(z))
+                    floor(position.x.add(x)).add(0.5),
+                    floor(position.y.add(y)).add(0.5),
+                    floor(position.z.add(z)).add(0.5)
                   ),
                 });
                 let spaceCount = spaceSlotCounter.node.element(index);
@@ -297,10 +296,13 @@ export function AppRun({ useStore, io }) {
 
                 let diff = position
                   .sub(center)
+                  .normalize()
                   .mul(spaceCount)
+
                   .mul(delta)
-                  .mul(1 / 9)
-                  .mul(3);
+                  .mul(1 / 3)
+                  .mul(1 / 3)
+                  .mul(1 / 3);
 
                 velocity.addAssign(diff);
               }
@@ -310,7 +312,7 @@ export function AppRun({ useStore, io }) {
 
         //
 
-        velocity.addAssign(pressureForce);
+        // velocity.addAssign(pressureForce);
 
         position.addAssign(velocity);
 
