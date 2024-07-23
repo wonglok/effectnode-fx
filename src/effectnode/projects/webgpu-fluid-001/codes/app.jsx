@@ -144,11 +144,11 @@ export function AppRun({ useStore, io }) {
         count: COUNT,
       });
 
-      const pressureForceBuffer = createBuffer({
-        itemSize: 3,
-        type: "vec3",
-        count: COUNT,
-      });
+      // const pressureForceBuffer = createBuffer({
+      //   itemSize: 3,
+      //   type: "vec3",
+      //   count: COUNT,
+      // });
 
       const particleSize = float(0.5);
 
@@ -156,9 +156,9 @@ export function AppRun({ useStore, io }) {
 
       const mass = float(1);
 
-      const gravity = float(-0.4);
+      const gravity = float(-0.56);
 
-      const pressureFactor = float(2);
+      // const pressureFactor = float(2);
 
       const SLOT_COUNT = dimension * 2 * (dimension * 6) * (dimension * 2);
       const spaceSlotCounter = createBuffer({
@@ -271,51 +271,6 @@ export function AppRun({ useStore, io }) {
           let space = spaceSlotCounter.node.element(index);
           space.addAssign(1);
         }
-
-        // hand
-        // {
-        //   {
-        //     for (let z = -2; z <= 2; z++) {
-        //       for (let y = -2; y <= 2; y++) {
-        //         for (let x = -2; x <= 2; x++) {
-        //           let point = vec3(
-        //             //
-        //             floor(uiPointer.sub(uiOffset).x.add(x)),
-        //             floor(uiPointer.sub(uiOffset).y.add(y)),
-        //             floor(uiPointer.sub(uiOffset).z.add(z))
-        //           );
-
-        //           If(
-        //             bool(true).and(
-        //               point.x
-        //                 .lessThan(boundSizeMax.x)
-        //                 .and(point.x.greaterThan(boundSizeMin.x)),
-        //               point.y
-        //                 .lessThan(boundSizeMax.y)
-        //                 .and(point.y.greaterThan(boundSizeMin.y)),
-        //               point.z
-        //                 .lessThan(boundSizeMax.z)
-        //                 .and(point.z.greaterThan(boundSizeMin.z))
-        //             ),
-        //             () => {
-        //               let index = getIndexWithPosition({
-        //                 position: point,
-        //               });
-
-        //               let spaceCount = spaceSlotCounter.node.element(index);
-
-        //               spaceCount.addAssign(20);
-        //             }
-        //           );
-        //         }
-        //       }
-        //     }
-        //   }
-
-        //   // let index = getIndexWithPosition({ position: position });
-        //   // let space = spaceSlotCounter.node.element(index);
-        //   // space.addAssign(1);
-        // }
       });
 
       let calcSlotCounterComp = calcSlotCounter().compute(COUNT);
@@ -348,17 +303,20 @@ export function AppRun({ useStore, io }) {
 
         velocity.addAssign(vec3(0.0, gravity.mul(mass).mul(delta), 0.0));
 
-        let radius = 20.0;
-        let diff = position.sub(uiPointer.sub(uiOffset)).negate();
-        let sdf = diff.length().sub(radius);
+        /// hand
+        {
+          let radius = 20.0;
+          let diff = position.sub(uiPointer.sub(uiOffset)).negate();
+          let sdf = diff.length().sub(radius);
 
-        If(sdf.lessThanEqual(float(1)), () => {
-          let normalDiff = diff.normalize().mul(sdf).mul(0.01);
-          velocity.addAssign(normalDiff);
-        });
+          If(sdf.lessThanEqual(float(1)), () => {
+            let normalDiff = diff.normalize().mul(sdf).mul(0.015);
+            velocity.addAssign(normalDiff);
+          });
+        }
 
         //
-        //
+        // presure
         //
         {
           for (let z = -2; z <= 2; z++) {
