@@ -228,6 +228,9 @@ export function AppRun({ useStore, io }) {
         let maxX = uint(boundSizeMax.x);
         let maxY = uint(boundSizeMax.y);
         let maxZ = uint(boundSizeMax.z);
+
+        position.assign(max(min(position, boundSizeMax), boundSizeMin));
+
         let x = uint(position.x);
         let y = uint(position.y);
         let z = uint(position.z);
@@ -306,8 +309,9 @@ export function AppRun({ useStore, io }) {
                   .mul(spaceCount)
 
                   .mul(delta)
-                  .mul(1 / 3)
-                  .mul(1 / 3);
+                  .mul(1 / 2)
+                  .mul(1 / 2)
+                  .mul(1 / 2);
 
                 velocity.addAssign(diff);
               }
