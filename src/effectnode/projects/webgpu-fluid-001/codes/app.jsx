@@ -441,7 +441,11 @@ export function AppRun({ useStore, io }) {
         const size = velocity.length();
         //
         //
-        particleMaterial.colorNode = mix(vec3(0, 0, 1), vec3(0, 1, 1), size);
+        particleMaterial.colorNode = mix(
+          vec3(0, 0, 0.5),
+          vec3(0, 1, 0.5),
+          size
+        );
         particleMaterial.scaleNode = 4;
 
         //
