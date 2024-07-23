@@ -311,7 +311,8 @@ export function AppRun({ useStore, io }) {
                   .mul(delta)
                   .mul(1 / 2)
                   .mul(1 / 2)
-                  .mul(1 / 2);
+                  .mul(1 / 2)
+                  .mul(mass);
 
                 velocity.addAssign(diff);
               }
@@ -354,14 +355,18 @@ export function AppRun({ useStore, io }) {
       {
         const particleMaterial = new SpriteNodeMaterial();
         let posAttr = positionBuffer.node.toAttribute();
-        particleMaterial.positionNode = posAttr;
+
+        // display different
+        particleMaterial.positionNode = posAttr.add(
+          vec3(boundSizeMax.x.div(-2), 0, boundSizeMax.z.div(-2))
+        );
 
         const velocity = velocityBuffer.node.toAttribute();
-        const size = velocity.length().mul(2).add(0.5);
+        const size = velocity.length();
         //
         //
-        particleMaterial.colorNode = mix(vec3(0, 1, 0), vec3(0, 0.5, 1), size);
-        particleMaterial.scaleNode = size.add(0.0);
+        particleMaterial.colorNode = mix(vec3(0, 0, 1), vec3(0, 1, 1), size);
+        particleMaterial.scaleNode = size.mul(3);
 
         //
 
@@ -372,12 +377,7 @@ export function AppRun({ useStore, io }) {
         particleMaterial.opacity = 1;
 
         const particles = new Mesh(
-          new RingGeometry(
-            particleSize.value,
-            particleSize.value * 1.15,
-            32,
-            32
-          ),
+          new SphereGeometry(particleSize.value, 32, 32),
           particleMaterial
         );
         particles.isInstancedMesh = true;
