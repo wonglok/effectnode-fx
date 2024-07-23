@@ -97,7 +97,7 @@ export function AppRun({ useStore, io }) {
       };
 
       //
-      let side = 10;
+      let side = 15;
       let COUNT = side * side * side;
 
       // let h = 16;
@@ -137,19 +137,19 @@ export function AppRun({ useStore, io }) {
       const dimension = 15;
 
       const boundSizeMin = vec3(0, 0, 0);
-      const boundSizeMax = vec3(dimension, dimension * 3, dimension);
+      const boundSizeMax = vec3(dimension * 2, dimension * 6, dimension * 2);
 
       const particleSize = float(0.5);
 
       // const smoothingRadius = float(particleSize.mul(10));
 
-      const mass = float(1);
+      const mass = float(0.5);
 
       const gravity = float(-0.4);
 
       const pressureFactor = float(2);
 
-      const SLOT_COUNT = dimension * (dimension * 3) * dimension;
+      const SLOT_COUNT = dimension * 2 * (dimension * 6) * (dimension * 2);
       const spaceSlotCounter = createBuffer({
         itemSize: 1,
         type: "float",
@@ -182,7 +182,12 @@ export function AppRun({ useStore, io }) {
 
               //
               if (i < full) {
-                positionBuffer.attr.setXYZ(i, x, y, z);
+                positionBuffer.attr.setXYZ(
+                  i,
+                  x + dimension / 2,
+                  y + dimension,
+                  z + dimension / 2
+                );
                 positionBuffer.attr.needsUpdate = true;
 
                 //
@@ -300,7 +305,6 @@ export function AppRun({ useStore, io }) {
                   .mul(spaceCount)
 
                   .mul(delta)
-                  .mul(1 / 3)
                   .mul(1 / 3)
                   .mul(1 / 3);
 
