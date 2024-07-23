@@ -51,6 +51,7 @@ import {
   mat4,
   normalLocal,
   MeshPhysicalNodeMaterial,
+  floor,
 } from "three/examples/jsm/nodes/Nodes";
 import StorageInstancedBufferAttribute from "three/examples/jsm/renderers/common/StorageInstancedBufferAttribute";
 import { calculateDensity } from "../loklok/calculateDensity";
@@ -135,18 +136,27 @@ export function AppRun({ useStore, io }) {
 
       const dimension = 15;
 
-      const boundSizeMax = vec3(dimension, dimension * 4, dimension);
-      const boundSizeMin = vec3(-dimension, 0, -dimension);
+      const boundSizeMin = vec3(0, 0, 0);
+      const boundSizeMax = vec3(dimension, dimension * 3, dimension);
 
       const particleSize = float(0.5);
 
-      const smoothingRadius = float(particleSize.mul(10));
+      // const smoothingRadius = float(particleSize.mul(10));
 
       const mass = float(1);
 
       const gravity = float(-0.4);
 
       const pressureFactor = float(2);
+
+      const SLOT_COUNT = dimension * (dimension * 3) * dimension;
+      const spaceSlotCounter = createBuffer({
+        itemSize: 1,
+        type: "float",
+        count: SLOT_COUNT,
+      });
+
+      // each center = floor each coord but add 0.5
 
       let delta = uniform();
       let clock = new Clock();
@@ -160,29 +170,24 @@ export function AppRun({ useStore, io }) {
 
       {
         //
-        let oneThird = 10;
+        let side = 10;
         let i = 0;
         let full = COUNT;
 
-        for (let z = 0.5; z <= oneThird; z++) {
+        for (let z = 0; z < side; z++) {
           //
-          for (let y = 0.5; y <= oneThird; y++) {
+          for (let y = 0; y < side; y++) {
             //
-            for (let x = 0.5; x <= oneThird; x++) {
+            for (let x = 0; x < side; x++) {
               //
 
               //
               if (i < full) {
-                positionBuffer.attr.setXYZ(
-                  i,
-                  2.5 * (x - oneThird / 2),
-                  2.5 * (y - oneThird / 2) + oneThird * 2,
-                  2.5 * (z - oneThird / 2)
-                );
+                positionBuffer.attr.setXYZ(i, x, y, z);
                 positionBuffer.attr.needsUpdate = true;
 
                 //
-                velocityBuffer.attr.setXYZ(i, 0.0, 0.0, 0.0);
+                velocityBuffer.attr.setXYZ(i, 0.0, 0.2, 0.0);
                 velocityBuffer.attr.needsUpdate = true;
 
                 i++;
@@ -196,65 +201,70 @@ export function AppRun({ useStore, io }) {
           //
         }
       }
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      let getXYZFromIndex = ({ index }) => {
+        let idx = uint(index);
+        let maxX = uint(boundSizeMax.x);
+        let maxY = uint(boundSizeMax.y);
+        let maxZ = uint(boundSizeMax.z);
 
-      let calcReset = tslFn(() => {
-        //
+        let x = idx.div(maxY).div(maxZ); // / maxY / maxZ;
+        let y = idx.div(maxZ).remainder(maxY); // / maxZ
+        let z = idx.remainder(maxZ); //
 
-        // const indexII = instanceIndex.remainder(COUNT);
-        // const indexJJ = instanceIndex.div(COUNT);
+        return {
+          x,
+          y,
+          z,
+        };
+      };
 
-        // const density = densityBuffer.node.element(instanceIndex);
-        const pressureForce = pressureForceBuffer.node.element(instanceIndex);
-        pressureForce.mulAssign(0.5);
+      let getIndexWithPosition = ({ position }) => {
+        let maxX = uint(boundSizeMax.x);
+        let maxY = uint(boundSizeMax.y);
+        let maxZ = uint(boundSizeMax.z);
+        let x = uint(position.x);
+        let y = uint(position.y);
+        let z = uint(position.z);
 
-        // pressureForce.mulAssign(0.15);
-        // pressureForce.mulAssign(0);
-        // density.mulAssign(0);
+        // index = z + y * maxZ + x * maxY * maxZ
 
-        //
-      });
-      let calcResetComputeNode = calcReset().compute(COUNT);
+        let index = z.add(y.mul(maxZ)).add(x.mul(maxY).mul(maxZ));
 
-      let calcRelated = tslFn(() => {
-        //
-        const indexII = instanceIndex.remainder(COUNT);
-        const indexJJ = instanceIndex.div(COUNT);
-        const index00 = instanceIndex.mul(0);
+        return index;
+      };
 
-        const pressureForceII = pressureForceBuffer.node.element(indexII);
-        const positionII = positionBuffer.node.element(indexII);
-        const positionJJ = positionBuffer.node.element(indexJJ);
-
-        const dist = distanceTo(positionII, positionJJ);
-
-        const diffDir = vec3(positionII).sub(positionJJ);
-
-        // const direction = vec3(diffDir).normalize();
-
-        const influence = smoothinKernel({
-          smoothingRadius: smoothingRadius,
-          dist,
+      let calcSlotCounter = tslFn(() => {
+        let position = positionBuffer.node.element(instanceIndex);
+        If(instanceIndex.equal(uint(0)), () => {
+          //
+          let index = getIndexWithPosition({ position: position });
+          let space = spaceSlotCounter.node.element(index);
+          space.assign(0);
         });
-        //
 
-        const force = diffDir.mul(influence).mul(pressureFactor).mul(mass);
-        pressureForceII.addAssign(force);
-
-        If(
-          dist.lessThanEqual(smoothingRadius),
-          () => {},
-          () => {}
-        );
-
-        //
+        {
+          let index = getIndexWithPosition({ position: position });
+          let space = spaceSlotCounter.node.element(index);
+          space.addAssign(1);
+        }
       });
 
-      let calcRelatedComputeNode = calcRelated().compute(COUNT * COUNT);
+      let calcSlotCounterComp = calcSlotCounter().compute(COUNT);
 
-      calcRelatedComputeNode.onObjectUpdate(() => {
-        renderer.compute(calcResetComputeNode);
-      });
-      //
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+      let calcResetAllSpaceSlot = tslFn(() => {
+        let slot = spaceSlotCounter.node.element(instanceIndex);
+        slot.assign(0);
+      }, []);
+
+      let calcResetSpaceComp = calcResetAllSpaceSlot().compute(SLOT_COUNT);
+
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
       let calcIdle = tslFn(() => {
         //
@@ -264,11 +274,45 @@ export function AppRun({ useStore, io }) {
 
         velocity.addAssign(vec3(0.0, gravity.mul(mass).mul(delta), 0.0));
 
+        //
+        {
+          for (let z = -1; z <= 1; z++) {
+            for (let y = -1; y <= 1; y++) {
+              for (let x = -1; x <= 1; x++) {
+                let index = getIndexWithPosition({
+                  position: vec3(
+                    //
+                    floor(position.x.add(x)),
+                    floor(position.y.add(y)),
+                    floor(position.z.add(z))
+                  ),
+                });
+                let spaceCount = spaceSlotCounter.node.element(index);
+
+                let center = vec3(
+                  floor(position.x.add(x)).add(0.5),
+                  floor(position.y.add(y)).add(0.5),
+                  floor(position.z.add(z)).add(0.5)
+                );
+
+                let diff = position
+                  .sub(center)
+                  .mul(spaceCount)
+                  .mul(delta)
+                  .mul(1 / 9)
+                  .mul(3);
+
+                velocity.addAssign(diff);
+              }
+            }
+          }
+        }
+
+        //
+
         velocity.addAssign(pressureForce);
 
         position.addAssign(velocity);
-
-        //
 
         resolveCollisions({
           collisionDamping: 1,
@@ -279,31 +323,32 @@ export function AppRun({ useStore, io }) {
           particleSize,
           delta,
         });
-
-        //
-
-        //
       });
 
-      let calcIdleComputeNode = calcIdle().compute(COUNT);
+      let calcIdleComp = calcIdle().compute(COUNT);
+
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
       onLoop(() => {
-        renderer.compute(calcRelatedComputeNode);
-        renderer.compute(calcIdleComputeNode);
+        renderer.compute(calcIdleComp);
+        renderer.compute(calcResetSpaceComp);
+        renderer.compute(calcSlotCounterComp);
       });
+
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
       // render //
       {
-        // const particleMaterial = new SpriteNodeMaterial();
         const particleMaterial = new SpriteNodeMaterial();
         let posAttr = positionBuffer.node.toAttribute();
         particleMaterial.positionNode = posAttr;
 
         const velocity = velocityBuffer.node.toAttribute();
-        const size = velocity.length().mul(5);
+        const size = velocity.length().mul(2).add(0.5);
         //
         //
-        let tex = new TextureLoader().load(files[`/sprite1.png`]);
         particleMaterial.colorNode = mix(vec3(0, 1, 0), vec3(0, 0.5, 1), size);
         particleMaterial.scaleNode = size.add(0.0);
 

@@ -414,22 +414,50 @@ let setup = async ({ skinnedMesh, mounter, renderer, onLoop, io, ui }) => {
     }
   });
 
-  const createBuffer = ({ itemSize = 3, type = "vec3" }) => {
-    let attr = new StorageInstancedBufferAttribute(particleCount, itemSize);
-    let node = storage(attr, type, particleCount);
+  const createBuffer = ({
+    count = particleCount,
+    itemSize = 3,
+    type = "vec3",
+  }) => {
+    let attr = new StorageInstancedBufferAttribute(count, itemSize);
+    let node = storage(attr, type, count);
     return {
       node,
       attr,
     };
   };
 
-  const positionBuffer = createBuffer({ itemSize: 3, type: "vec3" });
-  const velocityBuffer = createBuffer({ itemSize: 3, type: "vec3" });
-  const colorBuffer = createBuffer({ itemSize: 3, type: "vec3" });
-  const lifeBuffer = createBuffer({ itemSize: 3, type: "vec3" });
+  const positionBuffer = createBuffer({
+    count: particleCount,
+    itemSize: 3,
+    type: "vec3",
+  });
+  const velocityBuffer = createBuffer({
+    count: particleCount,
+    itemSize: 3,
+    type: "vec3",
+  });
+  const colorBuffer = createBuffer({
+    count: particleCount,
+    itemSize: 3,
+    type: "vec3",
+  });
+  const lifeBuffer = createBuffer({
+    count: particleCount,
+    itemSize: 3,
+    type: "vec3",
+  });
 
-  const birthPositionBuffer = createBuffer({ itemSize: 3, type: "vec3" });
-  const birthNormalBuffer = createBuffer({ itemSize: 3, type: "vec3" });
+  const birthPositionBuffer = createBuffer({
+    count: particleCount,
+    itemSize: 3,
+    type: "vec3",
+  });
+  const birthNormalBuffer = createBuffer({
+    count: particleCount,
+    itemSize: 3,
+    type: "vec3",
+  });
 
   const bindMatrixNode = uniform(skinnedMesh.bindMatrix, "mat4");
   // const bindMatrixInverseNode = uniform(
