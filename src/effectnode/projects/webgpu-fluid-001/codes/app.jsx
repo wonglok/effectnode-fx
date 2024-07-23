@@ -52,12 +52,13 @@ import {
   normalLocal,
   MeshPhysicalNodeMaterial,
   floor,
+  bool,
 } from "three/examples/jsm/nodes/Nodes";
 import StorageInstancedBufferAttribute from "three/examples/jsm/renderers/common/StorageInstancedBufferAttribute";
-import { calculateDensity } from "../loklok/calculateDensity";
-import { distanceTo } from "../loklok/distanceTo";
-import { smoothinKernel } from "../loklok/smoothKernel";
-import { Plane } from "@react-three/drei";
+// import { calculateDensity } from "../loklok/calculateDensity";
+// import { distanceTo } from "../loklok/distanceTo";
+// import { smoothinKernel } from "../loklok/smoothKernel";
+import { Plane, Sphere } from "@react-three/drei";
 
 export function AppRun({ useStore, io }) {
   let files = useStore((r) => r.files);
@@ -67,6 +68,15 @@ export function AppRun({ useStore, io }) {
   let uiPointer = useMemo(() => {
     return uniform(vec3(0, 0, 0));
   }, []);
+
+  const dimension = 15;
+  const boundSizeMin = vec3(0, 0, 0);
+  const boundSizeMax = vec3(dimension * 2, dimension * 6, dimension * 2);
+
+  let uiOffset = useMemo(() => {
+    return vec3(boundSizeMax.x.div(-2), 0, boundSizeMax.z.div(-2));
+  }, [boundSizeMax.x, boundSizeMax.z]);
+
   useFrame((st, dt) => {
     works.forEach((t) => t(st, dt));
   }, 1);
@@ -77,6 +87,7 @@ export function AppRun({ useStore, io }) {
     },
     [works]
   );
+
   //
 
   let { show, mounter } = useMemo(() => {
@@ -138,13 +149,6 @@ export function AppRun({ useStore, io }) {
         type: "vec3",
         count: COUNT,
       });
-
-      const dimension = 15;
-
-      const boundSizeMin = vec3(0, 0, 0);
-      const boundSizeMax = vec3(dimension * 2, dimension * 6, dimension * 2);
-
-      const uiOffset = vec3(boundSizeMax.x.div(-2), 0, boundSizeMax.z.div(-2));
 
       const particleSize = float(0.5);
 
@@ -236,7 +240,7 @@ export function AppRun({ useStore, io }) {
         let maxY = uint(boundSizeMax.y);
         let maxZ = uint(boundSizeMax.z);
 
-        position.assign(max(min(position, boundSizeMax), boundSizeMin));
+        // position.assign(max(min(position, boundSizeMax), boundSizeMin));
 
         let x = uint(position.x);
         let y = uint(position.y);
@@ -271,21 +275,38 @@ export function AppRun({ useStore, io }) {
         // hand
         {
           {
-            for (let z = -3; z <= 3; z++) {
-              for (let y = -3; y <= 3; y++) {
-                for (let x = -3; x <= 3; x++) {
-                  let index = getIndexWithPosition({
-                    position: vec3(
-                      //
-                      floor(uiPointer.x.add(uiOffset.x).add(x)),
-                      floor(uiPointer.y.add(uiOffset.y).add(y)),
-                      floor(uiPointer.z.add(uiOffset.z).add(z))
+            for (let z = -2; z <= 2; z++) {
+              for (let y = -2; y <= 2; y++) {
+                for (let x = -2; x <= 2; x++) {
+                  let point = vec3(
+                    //
+                    floor(uiPointer.sub(uiOffset).x.add(x)),
+                    floor(uiPointer.sub(uiOffset).y.add(y)),
+                    floor(uiPointer.sub(uiOffset).z.add(z))
+                  );
+
+                  If(
+                    bool(true).and(
+                      point.x
+                        .lessThan(boundSizeMax.x)
+                        .and(point.x.greaterThan(boundSizeMin.x)),
+                      point.y
+                        .lessThan(boundSizeMax.y)
+                        .and(point.y.greaterThan(boundSizeMin.y)),
+                      point.z
+                        .lessThan(boundSizeMax.z)
+                        .and(point.z.greaterThan(boundSizeMin.z))
                     ),
-                  });
+                    () => {
+                      let index = getIndexWithPosition({
+                        position: point,
+                      });
 
-                  let spaceCount = spaceSlotCounter.node.element(index);
+                      let spaceCount = spaceSlotCounter.node.element(index);
 
-                  spaceCount.addAssign(1);
+                      spaceCount.addAssign(20);
+                    }
+                  );
                 }
               }
             }
@@ -328,9 +349,9 @@ export function AppRun({ useStore, io }) {
                 let index = getIndexWithPosition({
                   position: vec3(
                     //
-                    floor(position.x.add(x)).add(0.5),
-                    floor(position.y.add(y)).add(0.5),
-                    floor(position.z.add(z)).add(0.5)
+                    position.x.add(x),
+                    position.y.add(y),
+                    position.z.add(z)
                   ),
                 });
 
@@ -445,27 +466,38 @@ export function AppRun({ useStore, io }) {
   //
 
   let ref = useRef();
+  let refBox = useRef();
 
   useFrame(({ camera }) => {
     if (ref) {
-      //
-      ref.current.lookAt(camera.position);
+      ref.current.lookAt(
+        camera.position.x,
+        ref.current.position.y,
+        camera.position.z
+      );
+    }
+    if (refBox) {
+      refBox.current.position.copy(uiPointer.value);
     }
   });
   return (
     <>
       {/*  */}
       {show}
+
+      <Sphere scale={1} ref={refBox}>
+        <meshStandardMaterial color={"#ff0000"}></meshStandardMaterial>
+      </Sphere>
       <Plane
         ref={ref}
-        scale={150}
+        scale={500}
         visible={false}
         onPointerMove={(ev) => {
           // ev.point;
           uiPointer.value.copy(ev.point);
-          console.log(uiPointer.value);
         }}
       ></Plane>
+
       {/*  */}
     </>
   );
