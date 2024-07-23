@@ -362,7 +362,7 @@ export function AppRun({ useStore, io }) {
         //
 
         particleMaterial.depthTest = true;
-        particleMaterial.depthWrite = true;
+        particleMaterial.depthWrite = false;
         particleMaterial.transparent = true;
         particleMaterial.alphaTest = 0.8;
         particleMaterial.opacity = 1;
