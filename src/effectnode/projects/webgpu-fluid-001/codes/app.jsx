@@ -404,15 +404,15 @@ export function AppRun({ useStore, io }) {
           vec3(0.5, 0.8, 0.8),
           size
         );
-        particleMaterial.scaleNode = 4;
+        particleMaterial.scaleNode = float(float(1.0).sub(size)).mul(4);
 
         //
 
         particleMaterial.depthTest = true;
         particleMaterial.depthWrite = false;
         particleMaterial.transparent = true;
-        particleMaterial.alphaTest = 0.8;
-        particleMaterial.opacity = 1;
+        // particleMaterial.alphaTest = 0.8;
+        particleMaterial.opacityNode = float(0.8).add(size.mul(0.8));
 
         const particles = new Mesh(
           new CircleGeometry(particleSize.value / 2, 32),
