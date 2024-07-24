@@ -66,6 +66,8 @@ import {
   floor,
   bool,
   clamp,
+  uvec3,
+  ivec3,
 } from "three/examples/jsm/nodes/Nodes";
 import StorageInstancedBufferAttribute from "three/examples/jsm/renderers/common/StorageInstancedBufferAttribute";
 // import { calculateDensity } from "../loklok/calculateDensity";
@@ -111,7 +113,7 @@ export function AppRun({ useStore, io }) {
     () => vec3(dimension * 2, dimension * 6, dimension * 2),
     []
   );
-  let ballRadius = useMemo(() => float(30), []);
+  let ballRadius = useMemo(() => float(35), []);
 
   let uiOffset = useMemo(() => {
     return vec3(boundSizeMax.x.div(-2), 0, boundSizeMax.z.div(-2));
@@ -190,9 +192,9 @@ export function AppRun({ useStore, io }) {
 
       onLoop(() => {
         delta.value = clock.getDelta();
-        if (delta.value >= 1 / 30) {
-          delta.value = 1 / 30;
-        }
+        // if (delta.value >= 1 / 30) {
+        //   delta.value = 1 / 30;
+        // }
       });
 
       {
@@ -251,22 +253,22 @@ export function AppRun({ useStore, io }) {
         };
       };
 
-      let getIndexWithPosition = ({ position }) => {
+      let getIndexWithPosition = ({ ix, iy, iz }) => {
         let maxX = uint(boundSizeMax.x);
         let maxY = uint(boundSizeMax.y);
         let maxZ = uint(boundSizeMax.z);
 
         // position.assign(max(min(position, boundSizeMax), boundSizeMin));
 
-        let x = uint(position.x);
-        let y = uint(position.y);
-        let z = uint(position.z);
+        let x = uint(ix);
+        let y = uint(iy);
+        let z = uint(iz);
 
         // index = z + y * maxZ + x * maxY * maxZ
 
         let index = z.add(y.mul(maxZ)).add(x.mul(maxY).mul(maxZ));
 
-        return index;
+        return uint(index);
       };
 
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -274,16 +276,14 @@ export function AppRun({ useStore, io }) {
 
       let calcSlotCounter = tslFn(() => {
         let position = positionBuffer.node.element(instanceIndex);
-        If(instanceIndex.equal(uint(0)), () => {
-          //
-          let index = getIndexWithPosition({ position: position });
-          let space = spaceSlotCounter.node.element(index);
-          space.assign(0);
-        });
 
         // particle
         {
-          let index = getIndexWithPosition({ position: position });
+          let index = getIndexWithPosition({
+            ix: position.x,
+            iy: position.y,
+            iz: position.z,
+          });
           let space = spaceSlotCounter.node.element(index);
           space.addAssign(1);
         }
@@ -317,9 +317,28 @@ export function AppRun({ useStore, io }) {
         let velocity = velocityBuffer.node.element(instanceIndex);
         // let pressureForce = pressureForceBuffer.node.element(instanceIndex);
 
-        velocity.addAssign(
-          vec3(0.0, gravity.mul(mass).mul(delta).mul(position.y.mul(0.1)), 0.0)
-        );
+        if (useStore.getState().hasWebGPU) {
+          console.log("webgpu");
+          velocity.addAssign(
+            vec3(
+              0.0,
+              gravity.mul(mass).mul(delta).mul(position.y.mul(0.1)),
+              0.0
+            )
+          );
+        }
+
+        if (!useStore.getState().hasWebGPU) {
+          console.log("webgl");
+
+          velocity.addAssign(
+            vec3(
+              0.0,
+              gravity.mul(mass).mul(delta).mul(position.y.mul(0.1)),
+              0.0
+            )
+          );
+        }
 
         /// hand
         {
@@ -394,12 +413,9 @@ export function AppRun({ useStore, io }) {
             for (let y = -2; y <= 2; y++) {
               for (let x = -2; x <= 2; x++) {
                 let index = getIndexWithPosition({
-                  position: vec3(
-                    //
-                    position.x.add(x),
-                    position.y.add(y),
-                    position.z.add(z)
-                  ),
+                  ix: position.x.add(x),
+                  iy: position.y.add(y),
+                  iz: position.z.add(z),
                 });
 
                 let spaceCount = spaceSlotCounter.node.element(index);
@@ -446,9 +462,9 @@ export function AppRun({ useStore, io }) {
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
       onLoop(() => {
-        renderer.compute(calcIdleComp);
         renderer.compute(calcResetSpaceComp);
         renderer.compute(calcSlotCounterComp);
+        renderer.compute(calcIdleComp);
       });
 
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -475,7 +491,7 @@ export function AppRun({ useStore, io }) {
         //
 
         particleMaterial.depthTest = true;
-        particleMaterial.depthWrite = false;
+        particleMaterial.depthWrite = true;
         particleMaterial.transparent = true;
         // particleMaterial.alphaTest = 0.8;
         // particleMaterial.opacityNode = float(0.8).add(size.mul(0.8));
@@ -514,12 +530,18 @@ export function AppRun({ useStore, io }) {
     uiPointer,
     side,
     ballRadius,
+    useStore,
+    bonePointer1,
+    bonePointer2,
+    bonePointer3,
+    bonePointer4,
+    bonePointer5,
   ]);
 
   //
   //
   useFrame(({ gl, scene, camera }) => {
-    gl.renderAsync(scene, camera);
+    gl.render(scene, camera);
   }, 100);
   //
 
@@ -546,6 +568,7 @@ export function AppRun({ useStore, io }) {
       <Sphere scale={ballRadius.value / 5} ref={refBox}>
         <meshNormalMaterial></meshNormalMaterial>
       </Sphere>
+
       <Plane
         ref={ref}
         scale={500}
