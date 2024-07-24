@@ -90,6 +90,7 @@ function WebGPUCanvasLoader({ useStore, io, ui, children }) {
       ).then((r) => r.default);
 
       useGPU.setState({
+        ready: false,
         Nodes,
         StorageInstancedBufferAttribute,
         WebGPURenderer,
@@ -100,6 +101,7 @@ function WebGPUCanvasLoader({ useStore, io, ui, children }) {
 
   let WebGPURenderer = useGPU((r) => r.WebGPURenderer);
   let Nodes = useGPU((r) => r.Nodes);
+  let ready = useGPU((r) => r.ready);
   let StorageInstancedBufferAttribute = useGPU(
     (r) => r.StorageInstancedBufferAttribute
   );
@@ -109,10 +111,15 @@ function WebGPUCanvasLoader({ useStore, io, ui, children }) {
       {WebGPURenderer && StorageInstancedBufferAttribute && Nodes && (
         <Canvas
           gl={(canvas) => {
-            return new WebGPURenderer({ canvas });
+            let gl = new WebGPURenderer({ canvas });
+
+            gl.init().then(() => {
+              useGPU.setState({ ready: true });
+            });
+            return gl;
           }}
         >
-          {children}
+          {ready && children}
         </Canvas>
       )}
     </>

@@ -88,7 +88,6 @@ export function AppRun({ useStore, io }) {
   let uiPointer0 = useMemo(() => {
     return uniform(vec3(0, 0, 0));
   }, []);
-
   let uiPointer1 = useMemo(() => {
     return uniform(vec3(0, 0, 0));
   }, []);
@@ -105,6 +104,12 @@ export function AppRun({ useStore, io }) {
     return uniform(vec3(0, 0, 0));
   }, []);
 
+  let uiPointer5 = useMemo(() => {
+    return uniform(vec3(0, 0, 0));
+  }, []);
+
+  //
+
   const side = Math.floor(Math.pow(128 * 128, 1 / 3));
   const dimension = 50;
   const boundSizeMin = useMemo(() => vec3(0, 0, 0), []);
@@ -112,19 +117,22 @@ export function AppRun({ useStore, io }) {
     () => vec3(dimension * 2, dimension * 2, dimension * 4),
     []
   );
+
+  let birthOffset = useMemo(() => {
+    return vec3(0, 0, dimension * 1);
+  }, [dimension]);
+
   const boundSize = new Vector3()
     .copy(boundSizeMax.value)
     .sub(new Vector3().copy(boundSizeMin.value));
 
-  console.log(boundSize);
-
   let ballRadius = useMemo(() => float(35), []);
 
-  let uiOffset = useMemo(() => {
+  let centerOffset = useMemo(() => {
     return vec3(boundSizeMax.x.mul(-0.5), 0, boundSizeMax.z.mul(-0.5)).add(
-      vec3(0, 0, boundSizeMax.z.mul(0.25))
+      vec3(birthOffset.x, 0.0, birthOffset.z)
     );
-  }, [boundSizeMax.x, boundSizeMax.z]);
+  }, [birthOffset, boundSizeMax.x, boundSizeMax.z]);
 
   useFrame((st, dt) => {
     works.forEach((t) => t(st, dt));
@@ -179,7 +187,7 @@ export function AppRun({ useStore, io }) {
 
       const mass = float(1);
 
-      const gravity = float(-0.56);
+      const gravity = float(-0.35);
 
       const SLOT_COUNT = boundSize.x * boundSize.y * boundSize.z;
 
@@ -215,12 +223,16 @@ export function AppRun({ useStore, io }) {
 
               //
               if (i < full) {
-                positionBuffer.attr.setXYZ(
-                  i,
-                  (x - side / 2) * 0.5 + boundSizeMax.value.x / 2,
-                  y - side / 2 + boundSizeMax.value.x / 2,
-                  (z - side / 2) * 0.5 + boundSizeMax.value.z / 2
-                );
+                let xx = (x - side / 2) * 0.5 + boundSizeMax.value.x / 2;
+
+                let yy = y - side / 2 + dimension * 2;
+
+                let zz =
+                  (z - side / 2) * 0.5 +
+                  boundSizeMax.value.z / 2 -
+                  dimension * 0.75;
+
+                positionBuffer.attr.setXYZ(i, xx, yy, zz);
                 positionBuffer.attr.needsUpdate = true;
 
                 //
@@ -262,7 +274,7 @@ export function AppRun({ useStore, io }) {
         let maxY = uint(boundSizeMax.y);
         let maxZ = uint(boundSizeMax.z);
 
-        // position.assign(max(min(position, boundSizeMax), boundSizeMin));
+        position.assign(max(min(position, boundSizeMax), boundSizeMin));
 
         let x = uint(position.x);
         let y = uint(position.y);
@@ -316,65 +328,79 @@ export function AppRun({ useStore, io }) {
         let position = positionBuffer.node.element(instanceIndex);
         let velocity = velocityBuffer.node.element(instanceIndex);
 
-        velocity.addAssign(
-          vec3(
-            0.0,
-            gravity.mul(mass).mul(delta).mul(position.y.mul(0.075)),
-            0.0
-          )
-        );
+        /// gravity
+        {
+          velocity.addAssign(
+            vec3(
+              0.0,
+              gravity.mul(mass).mul(delta).mul(position.y.mul(0.01)),
+              0.0
+            )
+          );
+        }
 
         /// mouse
         {
-          let diff = position.sub(uiPointer0.sub(uiOffset)).negate();
+          let diff = position.sub(uiPointer0.sub(centerOffset)).negate();
           let sdf = diff.length().sub(ballRadius);
 
           If(sdf.lessThanEqual(float(1)), () => {
-            let normalDiff = diff.normalize().mul(sdf).mul(0.0075);
+            let normalDiff = diff.normalize().mul(sdf).mul(0.01);
             velocity.addAssign(normalDiff);
           });
         }
 
         /// left hand
         {
-          let diff = position.sub(uiPointer1.sub(uiOffset)).negate();
+          let diff = position.sub(uiPointer1.sub(centerOffset)).negate();
           let sdf = diff.length().sub(ballRadius);
 
           If(sdf.lessThanEqual(float(1)), () => {
-            let normalDiff = diff.normalize().mul(sdf).mul(0.0075);
+            let normalDiff = diff.normalize().mul(sdf).mul(0.01);
             velocity.addAssign(normalDiff);
           });
         }
 
         /// right hand
         {
-          let diff = position.sub(uiPointer2.sub(uiOffset)).negate();
+          let diff = position.sub(uiPointer2.sub(centerOffset)).negate();
           let sdf = diff.length().sub(ballRadius);
 
           If(sdf.lessThanEqual(float(1)), () => {
-            let normalDiff = diff.normalize().mul(sdf).mul(0.0075);
+            let normalDiff = diff.normalize().mul(sdf).mul(0.01);
             velocity.addAssign(normalDiff);
           });
         }
 
         /// left foot
         {
-          let diff = position.sub(uiPointer3.sub(uiOffset)).negate();
+          let diff = position.sub(uiPointer3.sub(centerOffset)).negate();
           let sdf = diff.length().sub(ballRadius);
 
           If(sdf.lessThanEqual(float(1)), () => {
-            let normalDiff = diff.normalize().mul(sdf).mul(0.0075);
+            let normalDiff = diff.normalize().mul(sdf).mul(0.01);
             velocity.addAssign(normalDiff);
           });
         }
 
         /// right foot
         {
-          let diff = position.sub(uiPointer4.sub(uiOffset)).negate();
+          let diff = position.sub(uiPointer4.sub(centerOffset)).negate();
           let sdf = diff.length().sub(ballRadius);
 
           If(sdf.lessThanEqual(float(1)), () => {
-            let normalDiff = diff.normalize().mul(sdf).mul(0.0075);
+            let normalDiff = diff.normalize().mul(sdf).mul(0.01);
+            velocity.addAssign(normalDiff);
+          });
+        }
+
+        /// head
+        {
+          let diff = position.sub(uiPointer5.sub(centerOffset)).negate();
+          let sdf = diff.length().sub(ballRadius);
+
+          If(sdf.lessThanEqual(float(1)), () => {
+            let normalDiff = diff.normalize().mul(sdf).mul(0.01);
             velocity.addAssign(normalDiff);
           });
         }
@@ -383,49 +409,46 @@ export function AppRun({ useStore, io }) {
         // presure
         //
         {
-          for (let z = -2; z <= 2; z++) {
-            for (let y = -2; y <= 2; y++) {
-              for (let x = -2; x <= 2; x++) {
+          for (let z = -2; z <= 2; z += 1) {
+            for (let y = -2; y <= 2; y += 1) {
+              for (let x = -2; x <= 2; x += 1) {
                 let index = getIndexWithPosition({
                   position: vec3(
                     //
-                    position.x.add(x),
-                    position.y.add(y),
-                    position.z.add(z)
+                    position.x.add(x * 2),
+                    position.y.add(y * 2),
+                    position.z.add(z * 2)
                   ),
                 });
 
                 let spaceCount = spaceSlotCounter.node.element(index);
 
                 let center = vec3(
-                  floor(position.x.add(x)).add(0.5),
-                  floor(position.y.add(y)).add(0.5),
-                  floor(position.z.add(z)).add(0.5)
+                  floor(position.x.add(x * 2)).add(0.5),
+                  floor(position.y.add(y * 2)).add(0.5),
+                  floor(position.z.add(z * 2)).add(0.5)
                 );
 
                 let smoothed = smoothinKernel({
-                  smoothingRadius: 5,
+                  smoothingRadius: 7,
                   dist: position.sub(center).length(),
                 });
 
-                let diff = position
-                  .sub(center)
-                  .normalize()
+                let pressureDir = position.sub(center);
+                let pressure = vec3(pressureDir)
                   .mul(spaceCount)
                   .mul(mass)
-                  .mul(smoothed);
+                  .mul(smoothed)
+                  .mul(delta)
+                  .mul(100);
 
-                // diff.position.y.mul(0.05);
-
-                velocity.addAssign(diff);
+                velocity.addAssign(pressure);
               }
             }
           }
         }
 
         //
-
-        // velocity.addAssign(pressureForce);
 
         position.addAssign(velocity);
 
@@ -462,7 +485,7 @@ export function AppRun({ useStore, io }) {
         let posAttr = positionBuffer.node.toAttribute();
 
         // display different
-        particleMaterial.positionNode = posAttr.add(uiOffset);
+        particleMaterial.positionNode = posAttr.add(centerOffset);
 
         const velocity = velocityBuffer.node.toAttribute();
         const size = clamp(velocity.length(), 0.0, 1.0);
@@ -483,7 +506,7 @@ export function AppRun({ useStore, io }) {
         // particleMaterial.opacityNode = float(0.8).add(size.mul(0.8));
 
         const particles = new Mesh(
-          new CircleGeometry(particleSize.value / 2, 32),
+          new CircleGeometry(particleSize.value / 2, 15),
           particleMaterial
         );
         particles.isInstancedMesh = true;
@@ -512,7 +535,7 @@ export function AppRun({ useStore, io }) {
     files,
     boundSizeMax,
     boundSizeMin,
-    uiOffset,
+    centerOffset,
     uiPointer1,
     side,
     ballRadius,
@@ -523,6 +546,10 @@ export function AppRun({ useStore, io }) {
     boundSize.x,
     boundSize.y,
     boundSize.z,
+    birthOffset.value.x,
+    birthOffset.value.y,
+    birthOffset.value.z,
+    uiPointer5,
   ]);
 
   //
@@ -581,6 +608,7 @@ export function AppRun({ useStore, io }) {
         uiPointer2={uiPointer2}
         uiPointer3={uiPointer3}
         uiPointer4={uiPointer4}
+        uiPointer5={uiPointer5}
         useStore={useStore}
       ></Avatar>
 
@@ -591,7 +619,14 @@ export function AppRun({ useStore, io }) {
   );
 }
 
-function Avatar({ useStore, uiPointer1, uiPointer2, uiPointer3, uiPointer4 }) {
+function Avatar({
+  useStore,
+  uiPointer1,
+  uiPointer2,
+  uiPointer3,
+  uiPointer4,
+  uiPointer5,
+}) {
   let files = useStore((r) => r.files);
   let glb = useGLTF(files[`/rpm/lok-ready.glb`]);
   let motion = useFBX(files[`/rpm/moiton/thriller4.fbx`]);
@@ -622,6 +657,13 @@ function Avatar({ useStore, uiPointer1, uiPointer2, uiPointer3, uiPointer4 }) {
             it.getWorldPosition(uiPointer4.value);
           }
         }
+        if (it.isBone) {
+          if (it.name === "Head") {
+            it.getWorldPosition(uiPointer5.value);
+          }
+        }
+
+        //
       });
     }
   });
