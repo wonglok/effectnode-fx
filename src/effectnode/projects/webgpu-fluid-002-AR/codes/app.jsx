@@ -20,11 +20,12 @@ OV²SLAM and ORB-SLAM2 are both released under the GPLv3 license. Please see 3rd
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Add3D, AddHTML, useGPU } from "./main";
-import { useFrame, useThree } from "@react-three/fiber";
+import { createPortal, useFrame, useThree } from "@react-three/fiber";
 import {
   CanvasTexture,
   CircleGeometry,
   Clock,
+  DoubleSide,
   Euler,
   GridHelper,
   InstancedBufferGeometry,
@@ -39,6 +40,7 @@ import {
 } from "three";
 import { Mesh } from "three";
 import { resolveCollisions } from "../loklok/resolveCollisions";
+import phone from "../lottie/phone.json";
 
 import {
   uv,
@@ -84,9 +86,10 @@ import StorageInstancedBufferAttribute from "three/examples/jsm/renderers/common
 // import { calculateDensity } from "../loklok/calculateDensity";
 // import { distanceTo } from "../loklok/distanceTo";
 // import { smoothinKernel } from "../loklok/smoothKernel";
-import { Plane, Sphere } from "@react-three/drei";
+import { Box, PerspectiveCamera, Plane, Sphere } from "@react-three/drei";
 import { Camera, onFrame, resize2cover } from "public/alvaAR/utils";
 import { Quaternion } from "three";
+import Lottie from "lottie-react";
 
 export function AppRun({ useStore, io }) {
   let files = useStore((r) => r.files);
@@ -104,7 +107,7 @@ export function AppRun({ useStore, io }) {
     () => vec3(dimension * 2, dimension * 6, dimension * 2),
     []
   );
-  let ballRadius = useMemo(() => float(30), []);
+  let ballRadius = useMemo(() => float(30).mul(1.5), []);
 
   let uiOffset = useMemo(() => {
     return vec3(boundSizeMax.x.div(-2), 0, boundSizeMax.z.div(-2));
@@ -325,7 +328,7 @@ export function AppRun({ useStore, io }) {
           let sdf = diff.length().sub(ballRadius);
 
           If(sdf.lessThanEqual(float(1)), () => {
-            let normalDiff = diff.normalize().mul(sdf).mul(0.015);
+            let normalDiff = diff.normalize().mul(sdf).mul(0.015).mul(15);
             velocity.addAssign(normalDiff);
           });
         }
@@ -471,7 +474,9 @@ export function AppRun({ useStore, io }) {
   let refBox = useRef();
 
   let lookV3 = useMemo(() => new Vector3(), []);
-  useFrame(({ camera }) => {
+
+  let worldPos = useMemo(() => new Vector3(), []);
+  useFrame(({ camera, scene }) => {
     if (ref.current && camera) {
       lookV3.set(camera.position.x, ref.current.position.y, camera.position.z);
       ref.current.lookAt(lookV3);
@@ -480,18 +485,34 @@ export function AppRun({ useStore, io }) {
       //
       //
 
+      let virtualHand = scene.getObjectByName("virtualHand");
+      if (virtualHand) {
+        virtualHand.getWorldPosition(worldPos);
+        uiPointer.value.lerp(worldPos.multiplyScalar(10), 0.1);
+      }
+
       // camera.getWorldPosition(uiPointer.value);
       refBox.current.position.copy(uiPointer.value);
     }
   });
+
+  //
   return (
     <>
       {/*  */}
       {show}
 
-      <Sphere scale={ballRadius.value / 1.5} ref={refBox}>
+      <Sphere
+        scale={ballRadius.value / 1.5}
+        frustumCulled={false}
+        visible={false}
+        ref={refBox}
+      >
         <meshNormalMaterial></meshNormalMaterial>
       </Sphere>
+
+      {/*  */}
+
       <Plane
         ref={ref}
         scale={500}
@@ -506,11 +527,11 @@ export function AppRun({ useStore, io }) {
         scale={500}
         rotation={[Math.PI * -0.5, 0, 0]}
         visible={false}
-        onPointerMove={(ev) => {
-          // ev.point;
-          uiPointer.value.copy(ev.point.multiplyScalar(10));
-          uiPointer.value.y += ballRadius.value / 1.5 / 2;
-        }}
+        // onPointerMove={(ev) => {
+        //   // ev.point;
+        //   uiPointer.value.copy(ev.point.multiplyScalar(10));
+        //   uiPointer.value.y += ballRadius.value / 1.5 / 2;
+        // }}
       ></Plane>
 
       {/*  */}
@@ -518,7 +539,8 @@ export function AppRun({ useStore, io }) {
   );
 }
 
-function AR({ children }) {
+function AR({ children, useStore }) {
+  const cameraInitOffset = useMemo(() => new Vector3(0, 5, 12.5), []);
   let randID = useMemo(() => {
     return `_${~~(Math.random() * 1000000000000)}`;
   }, []);
@@ -622,8 +644,9 @@ function AR({ children }) {
         cameraPosition.y *= -1;
 
         //
-        cameraPosition.y += 0;
-        cameraPosition.z += 5;
+        cameraPosition.x += cameraInitOffset.x;
+        cameraPosition.y += cameraInitOffset.y;
+        cameraPosition.z += cameraInitOffset.z;
 
         //
 
@@ -660,31 +683,33 @@ function AR({ children }) {
         const pose = alva.findCameraPose(frame);
         //
 
-        console.log("pose", pose);
+        // //
+        // console.log("pose", pose);
 
         if (lastPose == null && pose) {
           window.dispatchEvent(new CustomEvent("posefound", {}));
+          useStore.setState({
+            hasPose: true,
+          });
+        }
+        if (lastPose !== null && pose === null) {
+          useStore.setState({
+            hasPose: false,
+          });
         }
         lastPose = pose;
 
         if (pose) {
-          //
           applyPose(pose, camera.quaternion, camera.position);
-          // view.updateCameraPose(pose);
-          //
         } else {
-          //
-          // view.lostCamera();
-          //
-
-          camera.position.set(0, 5, 5);
-          camera.lookAt(0, 1, 0);
+          camera.position.set(0, cameraInitOffset.y, cameraInitOffset.z);
+          camera.lookAt(0, cameraInitOffset.y, 0);
 
           const dots = alva.getFramePoints();
 
           for (const p of dots) {
             ctx.fillStyle = "white";
-            ctx.fillRect(p.x, p.y, 3, 3);
+            ctx.fillRect(p.x, p.y, 2, 2);
           }
         }
 
@@ -721,10 +746,15 @@ function AR({ children }) {
     camera,
     camera.position,
     camera.quaternion,
+    cameraInitOffset.x,
+    cameraInitOffset.y,
+    cameraInitOffset.z,
     gl.domElement.height,
     gl.domElement.width,
     scene,
+    useStore,
   ]);
+  let hasPose = useStore((r) => r.hasPose);
   //
 
   //
@@ -732,7 +762,34 @@ function AR({ children }) {
     <>
       {children}
 
+      <primitive object={camera}></primitive>
+
+      <PerspectiveCamera
+        makeDefault
+        position={cameraInitOffset.toArray()}
+      ></PerspectiveCamera>
+
+      {hasPose && (
+        <>
+          {createPortal(
+            <Sphere
+              name={"virtualHand"}
+              position={[0, 0, -12.5]}
+              scale={[0.5, 0.5, 0.5]}
+            >
+              <meshNormalMaterial side={DoubleSide}></meshNormalMaterial>
+            </Sphere>,
+            camera
+          )}
+        </>
+      )}
+
       <AddHTML>
+        {!hasPose && (
+          <div className=" w-full h-full absolute top-0 left-0 p-5 flex items-center justify-center">
+            <Lottie animationData={phone}></Lottie>
+          </div>
+        )}
         <button
           onClick={() => {
             //
@@ -753,7 +810,7 @@ export function Runtime({ io, useStore }) {
   return (
     <>
       <Add3D>
-        <AR>
+        <AR useStore={useStore}>
           <group scale={0.1}>
             <AppRun io={io} useStore={useStore}></AppRun>
           </group>
