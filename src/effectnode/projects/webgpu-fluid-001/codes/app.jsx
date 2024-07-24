@@ -467,7 +467,7 @@ export function AppRun({ useStore, io }) {
       {/*  */}
       {show}
 
-      <Sphere scale={ballRadius.value / 1.5} ref={refBox}>
+      <Sphere scale={ballRadius.value / 5} ref={refBox}>
         <meshNormalMaterial></meshNormalMaterial>
       </Sphere>
       <Plane

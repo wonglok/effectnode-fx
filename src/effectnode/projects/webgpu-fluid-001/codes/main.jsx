@@ -54,12 +54,12 @@ export function Runtime({ useStore, io, ui }) {
       >
         <PerspectiveCamera
           makeDefault
-          position={[0, 180, 180]}
+          position={[0, 50, 100]}
         ></PerspectiveCamera>
 
         <OrbitControls
-          object-position={[0, 180, 180]}
-          target={[0, 50, 0]}
+          object-position={[0, 50, 100]}
+          target={[0, 0, 0]}
           makeDefault
           enableRotate={!("ontouchstart" in window)}
         ></OrbitControls>
