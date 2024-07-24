@@ -92,7 +92,7 @@ function WebGPUCanvasLoader({ useStore, io, ui, children }) {
       let hasWebGPU = WebGPU.isAvailable();
 
       useStore.setState({
-        useStore,
+        hasWebGPU,
       });
       useGPU.setState({
         hasWebGPU,
