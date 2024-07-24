@@ -605,7 +605,7 @@ let setup = async ({ skinnedMesh, mounter, renderer, onLoop, io, ui }) => {
   let velNode = velocityBuffer.node.toAttribute();
   let posAttr = positionBuffer.node.toAttribute();
 
-  let colorNode = velNode.normalize().mul(0.5).add(0.5).mul(1.25);
+  let colorNode = velNode.normalize().mul(0.5).add(0.5).mul(1.35);
 
   let color3 = uniform(new Color(ui.baseColor || "#ff0000"));
   ui.on("baseColor", (value) => {
@@ -613,7 +613,7 @@ let setup = async ({ skinnedMesh, mounter, renderer, onLoop, io, ui }) => {
   });
 
   let opacity = uniform(1.0);
-  let fader = opacity.mul(velNode.length()).add(0.025);
+  let fader = opacity.mul(velNode.length()).add(0.035);
   particleMaterial.colorNode = vec4(
     colorNode.r, //.mul(color3.x), //.mul(textureNode.a), //.mul(3.33),
     colorNode.g, //.mul(color3.y), //.mul(textureNode.a), //.mul(3.33),

@@ -95,7 +95,8 @@ export default function Landing() {
 
             <span className="absolute inset-0 size-full">
               <div className="absolute left-0 top-0 size-full opacity-60">
-                <EffectNode projectName={"spikes-webgl"}></EffectNode>
+                {/* <EffectNode projectName={"spikes-webgl"}></EffectNode> */}
+                <EffectNode projectName={"webgpu-particles-002"}></EffectNode>
               </div>
             </span>
 
