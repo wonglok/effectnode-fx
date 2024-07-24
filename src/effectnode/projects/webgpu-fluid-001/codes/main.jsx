@@ -34,7 +34,7 @@ export const Add3D = ({ children }) => {
 };
 
 export const AddHTML = ({ children }) => {
-  return <t3d.In>{children}</t3d.In>;
+  return <t2d.In>{children}</t2d.In>;
 };
 
 export let useGPU = create(() => {
