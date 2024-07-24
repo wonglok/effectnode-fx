@@ -180,7 +180,7 @@ export function AppRun({ useStore, io }) {
         }
       });
 
-      {
+      let initData = () => {
         //
         let i = 0;
         let full = COUNT;
@@ -216,7 +216,12 @@ export function AppRun({ useStore, io }) {
 
           //
         }
-      }
+      };
+
+      initData();
+      window.addEventListener("posefound", () => {
+        initData();
+      });
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       let getXYZFromIndex = ({ index }) => {
@@ -467,7 +472,7 @@ export function AppRun({ useStore, io }) {
       //
       //
 
-      camera.getWorldPosition(uiPointer.value);
+      // camera.getWorldPosition(uiPointer.value);
       refBox.current.position.copy(uiPointer.value);
     }
   });
@@ -495,7 +500,7 @@ export function AppRun({ useStore, io }) {
         visible={false}
         onPointerMove={(ev) => {
           // ev.point;
-          uiPointer.value.copy(ev.point);
+          uiPointer.value.copy(ev.point.multiplyScalar(10));
           uiPointer.value.y += ballRadius.value / 1.5 / 2;
         }}
       ></Plane>
@@ -608,10 +613,15 @@ function AR({ children }) {
         cameraPosition.y *= -1;
 
         //
+        cameraPosition.y += 0;
+        cameraPosition.z += 5;
+
+        //
 
         //cameraPosition
       };
 
+      let lastPose = null;
       canRun.current = () => {
         //
         let startVideo = performance.now();
@@ -643,6 +653,11 @@ function AR({ children }) {
 
         console.log("pose", pose);
 
+        if (lastPose == null && pose) {
+          window.dispatchEvent(new CustomEvent("posefound", {}));
+        }
+        lastPose = pose;
+
         if (pose) {
           //
           applyPose(pose, camera.quaternion, camera.position);
@@ -652,6 +667,9 @@ function AR({ children }) {
           //
           // view.lostCamera();
           //
+
+          camera.position.set(0, 5, 5);
+          camera.lookAt(0, 1, 0);
 
           const dots = alva.getFramePoints();
 
@@ -714,8 +732,7 @@ function AR({ children }) {
           id={randID}
           className=" absolute top-2 right-2 p-2 z-10 bg-white "
         >
-          {" "}
-          Reset{" "}
+          Reset
         </button>
       </AddHTML>
     </>
