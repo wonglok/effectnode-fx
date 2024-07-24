@@ -17,6 +17,7 @@ import {
   CanvasTexture,
   CircleGeometry,
   Clock,
+  Euler,
   GridHelper,
   InstancedBufferGeometry,
   Matrix4,
@@ -463,6 +464,10 @@ export function AppRun({ useStore, io }) {
       ref.current.lookAt(lookV3);
     }
     if (refBox) {
+      //
+      //
+
+      camera.getWorldPosition(uiPointer.value);
       refBox.current.position.copy(uiPointer.value);
     }
   });
@@ -508,9 +513,10 @@ function AR({ children }) {
   let gl = useThree((r) => r.gl);
   let scene = useThree((r) => r.scene);
   //
-  let canRun = useRef(0);
+  let resetFnc = useRef(() => {});
+  let canRun = useRef(() => {});
   useFrame(() => {
-    canRun.current = true;
+    canRun.current();
   });
   let camera = useThree((r) => r.camera);
   useEffect(() => {
@@ -521,9 +527,9 @@ function AR({ children }) {
     const config = {
       video: {
         facingMode: "environment",
-        aspectRatio: 16 / 9,
-        width: { ideal: window.innerWidth },
-        height: { ideal: window.innerHeight },
+        aspectRatio: gl.domElement.width / gl.domElement.height,
+        width: { ideal: gl.domElement.width },
+        height: { ideal: gl.domElement.height },
       },
       audio: false,
     };
@@ -535,13 +541,13 @@ function AR({ children }) {
       const size = resize2cover(
         $video.videoWidth,
         $video.videoHeight,
-        gl.domElement.width,
-        gl.domElement.height
+        gl.domElement.width / window.devicePixelRatio,
+        gl.domElement.height / window.devicePixelRatio
       );
       const $canvas = document.createElement("canvas");
 
-      $canvas.width = gl.domElement.width;
-      $canvas.height = gl.domElement.height;
+      $canvas.width = gl.domElement.width / window.devicePixelRatio;
+      $canvas.height = gl.domElement.height / window.devicePixelRatio;
 
       $video.style.width = size.width + "px";
       $video.style.height = size.height + "px";
@@ -560,106 +566,120 @@ function AR({ children }) {
 
       scene.background = canvasTexture;
 
+      resetFnc.current = () => {
+        alva.reset();
+      };
+
       // alva.reset
       // const view = new ARCamView($view, $canvas.width, $canvas.height);
 
-      let m4 = new Matrix4();
-      let qq = new Quaternion();
-      let arr = new Vector3();
+      let o3 = new Object3D();
 
-      let applyPose = (pose, rotationQuaternion, translationVector) => {
-        m4.fromArray(pose);
+      let euler = new Euler();
+
+      let applyPose = (pose, cameraQuaternion0, cameraPosition0) => {
+        o3.matrix.fromArray(pose);
+        o3.matrixAutoUpdate = false;
 
         /** @type {Quaternion} */
-        let rotationQuaternion2 = rotationQuaternion;
+        let cameraQuaternion = cameraQuaternion0;
+        /* *  -r.x, r.y, r.z, r.w  */
+        cameraQuaternion.setFromRotationMatrix(o3.matrix);
 
-        rotationQuaternion2.identity().setFromRotationMatrix(m4);
+        euler.setFromQuaternion(cameraQuaternion);
+        //offset
+
+        cameraQuaternion.setFromEuler(euler);
+
+        cameraQuaternion.set(
+          cameraQuaternion.x * -1,
+          cameraQuaternion.y,
+          cameraQuaternion.z,
+          cameraQuaternion.w
+        );
 
         /** @type {Vector3} */
-        let translationVector2 = translationVector;
+        let cameraPosition = cameraPosition0;
 
-        translationVector2.setFromMatrixPosition(m4);
+        cameraPosition.setFromMatrixPosition(o3.matrix);
 
-        translationVector2.y *= -1;
+        cameraPosition.z *= -1;
 
-        translationVector2.y += 2;
+        cameraPosition.y *= -1;
 
-        // qq.setFromRotationMatrix(m4);
-        // arr.fromArray(pose[12], pose[13], pose[14]);
+        //
 
-        // const m = m4;
-        // const r = qq;
-        // const t = arr;
-
-        // rotationQuaternion.set(r.x, r.y, r.z, r.w);
-        // translationVector.set(t.x, t.y, t.z);
+        //cameraPosition
       };
 
-      onFrame(() => {
+      canRun.current = () => {
         //
-        if (canRun.current) {
-          canRun.current = false;
+        let startVideo = performance.now();
+        //
+        //
+        ctx.drawImage(
+          $video,
+          0,
+          0,
+          $video.videoWidth,
+          $video.videoHeight,
+          size.x,
+          size.y,
+          size.width,
+          size.height
+        );
+
+        const frame = ctx.getImageData(0, 0, $canvas.width, $canvas.height);
+
+        let endVideo = performance.now();
+
+        let diffTimeVideo = endVideo - startVideo;
+
+        let startAR = performance.now();
+
+        //
+        const pose = alva.findCameraPose(frame);
+        //
+
+        console.log("pose", pose);
+
+        if (pose) {
           //
-          let startVideo = performance.now();
+          applyPose(pose, camera.quaternion, camera.position);
+          // view.updateCameraPose(pose);
           //
+        } else {
           //
-          ctx.drawImage(
-            $video,
-            0,
-            0,
-            $video.videoWidth,
-            $video.videoHeight,
-            size.x,
-            size.y,
-            size.width,
-            size.height
-          );
-
-          const frame = ctx.getImageData(0, 0, $canvas.width, $canvas.height);
-
-          let endVideo = performance.now();
-
-          let diffTimeVideo = endVideo - startVideo;
-
-          let startAR = performance.now();
-
-          //
-          const pose = alva.findCameraPose(frame);
+          // view.lostCamera();
           //
 
-          console.log("pose", pose);
+          const dots = alva.getFramePoints();
 
-          if (pose) {
-            //
-            applyPose(pose, camera.quaternion, camera.position);
-            // view.updateCameraPose(pose);
-            //
-          } else {
-            //
-            // view.lostCamera();
-            //
-
-            const dots = alva.getFramePoints();
-
-            for (const p of dots) {
-              ctx.fillStyle = "white";
-              ctx.fillRect(p.x, p.y, 3, 3);
-            }
+          for (const p of dots) {
+            ctx.fillStyle = "white";
+            ctx.fillRect(p.x, p.y, 3, 3);
           }
-
-          canvasTexture.needsUpdate = true;
-
-          let endAR = performance.now();
-          let diffAR = endAR - startAR;
-
-          console.log(
-            "AR tracking",
-            ~~diffAR,
-            "video to canvas",
-            ~~diffTimeVideo
-          );
         }
-      });
+
+        canvasTexture.needsUpdate = true;
+
+        let endAR = performance.now();
+        let diffAR = endAR - startAR;
+
+        console.log(
+          "AR tracking",
+          ~~diffAR,
+          "video to canvas",
+          ~~diffTimeVideo
+        );
+      };
+
+      // onFrame(() => {
+      //   //
+      //   if (canRun.current) {
+
+      //   }
+      // }, 90);
 
       //
     };
@@ -671,10 +691,11 @@ function AR({ children }) {
     //
     //
   }, [
+    camera,
     camera.position,
     camera.quaternion,
-    gl.domElement.clientHeight,
-    gl.domElement.clientWidth,
+    gl.domElement.height,
+    gl.domElement.width,
     scene,
   ]);
   //
@@ -685,7 +706,17 @@ function AR({ children }) {
       {children}
 
       <AddHTML>
-        <div id={randID}></div>
+        <button
+          onClick={() => {
+            //
+            resetFnc.current();
+          }}
+          id={randID}
+          className=" absolute top-2 right-2 p-2 z-10 bg-white "
+        >
+          {" "}
+          Reset{" "}
+        </button>
       </AddHTML>
     </>
   );
@@ -697,7 +728,9 @@ export function Runtime({ io, useStore }) {
     <>
       <Add3D>
         <AR>
-          <AppRun io={io} useStore={useStore}></AppRun>
+          <group scale={0.1}>
+            <AppRun io={io} useStore={useStore}></AppRun>
+          </group>
         </AR>
       </Add3D>
     </>
