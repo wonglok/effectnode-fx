@@ -1,8 +1,3 @@
-"use strict";
-
-import { useEffect } from "react";
-
-import { create } from "zustand";
 /** @license <MIT></MIT>
  * 
  * Copyright (c) 2024 WONG LOK
@@ -15,6 +10,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
  */
 
+"use strict";
+
+import { useEffect } from "react";
+
+import { create } from "zustand";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import tunnel from "tunnel-rat";
@@ -61,6 +61,7 @@ export function Runtime({ useStore, io, ui }) {
           object-position={[0, 100, 100]}
           target={[0, 15, 0]}
           makeDefault
+          enableRotate={!("ontouchstart" in window)}
         ></OrbitControls>
 
         <t3d.Out></t3d.Out>
