@@ -573,6 +573,7 @@ function AR({ children }) {
 
       resetFnc.current = () => {
         alva.reset();
+        // window.dispatchEvent(new CustomEvent("posefound", {}));
       };
 
       // alva.reset
