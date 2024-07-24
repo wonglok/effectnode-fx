@@ -606,7 +606,7 @@ function Avatar({
 }) {
   let files = useStore((r) => r.files);
   let glb = useGLTF(files[`/rpm/lok-ready.glb`]);
-  let motion = useFBX(files[`/rpm/moiton/thriller4.fbx`]);
+  let motion = useFBX(files[`/rpm/moiton/swingdance.fbx`]);
   let anim = useAnimations(motion.animations, glb.scene);
 
   useFrame(() => {
