@@ -65,9 +65,7 @@ export function Runtime({ useStore, io, ui }) {
         ></OrbitControls>
 
         <t3d.Out></t3d.Out>
-        {/*  */}
-        {/*  */}
-        {/*  */}
+
         {/*  */}
       </WebGPUCanvasLoader>
 

@@ -494,7 +494,7 @@ export function AppRun({ useStore, io }) {
         onPointerMove={(ev) => {
           // ev.point;
           uiPointer.value.copy(ev.point);
-          uiPointer.value.y += ballRadius.value / 1.5 / 2;
+          // uiPointer.value.y += ballRadius.value / 5;
         }}
       ></Plane>
 
