@@ -132,22 +132,6 @@ export function AppRun({ useStore, io }) {
       //
       let COUNT = side * side * side;
 
-      // let h = 16;
-
-      // let VISCOUSITY = 900 * 5;
-      // let PARTICLE_MASS = 500 * 0.13;
-      // let STIFFNESS = 400 * 5;
-      // let GRAVITY_CONST = 120000 * 9.82;
-      // let dt = 0.0004;
-
-      // // UI
-      // const START_OFFSET_X = 100;
-      // const START_OFFSET_Y = 256;
-      // const OFFSET_Z = 750;
-      // const SQUARE_SIZE = 512;
-      // const LINEWIDTH = 10;
-      // const PARTICLE_RADIUS = h / 2;
-
       const positionBuffer = createBuffer({
         itemSize: 3,
         type: "vec3",
@@ -160,21 +144,11 @@ export function AppRun({ useStore, io }) {
         count: COUNT,
       });
 
-      // const pressureForceBuffer = createBuffer({
-      //   itemSize: 3,
-      //   type: "vec3",
-      //   count: COUNT,
-      // });
-
       const particleSize = float(0.5);
-
-      // const smoothingRadius = float(particleSize.mul(10));
 
       const mass = float(1);
 
       const gravity = float(-0.56);
-
-      // const pressureFactor = float(2);
 
       const SLOT_COUNT = dimension * 2 * (dimension * 6) * (dimension * 2);
       const spaceSlotCounter = createBuffer({
