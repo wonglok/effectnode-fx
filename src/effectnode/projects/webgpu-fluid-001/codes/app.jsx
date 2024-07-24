@@ -437,6 +437,7 @@ export function AppRun({ useStore, io }) {
     uiOffset,
     uiPointer,
     side,
+    ballRadius,
   ]);
 
   //
