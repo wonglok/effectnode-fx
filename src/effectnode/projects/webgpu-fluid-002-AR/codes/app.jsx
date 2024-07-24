@@ -10,6 +10,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
  */
 
+//https://github.com/alanross/AlvaAR?tab=readme-ov-file
+/*
+License
+AlvaAR is released under the GPLv3 license.
+
+OV²SLAM and ORB-SLAM2 are both released under the GPLv3 license. Please see 3rd party dependency licenses in libs/.
+*/
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Add3D, AddHTML, useGPU } from "./main";
 import { useFrame, useThree } from "@react-three/fiber";
