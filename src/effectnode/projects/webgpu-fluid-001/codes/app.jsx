@@ -69,6 +69,7 @@ export function AppRun({ useStore, io }) {
     return uniform(vec3(0, 0, 0));
   }, []);
 
+  const side = Math.floor(Math.sqrt(512));
   const dimension = 50;
   const boundSizeMin = vec3(0, 0, 0);
   const boundSizeMax = vec3(dimension * 2, dimension * 6, dimension * 2);
@@ -113,7 +114,6 @@ export function AppRun({ useStore, io }) {
       };
 
       //
-      let side = Math.floor(Math.sqrt(512));
       let COUNT = side * side * side;
 
       // let h = 16;
@@ -310,7 +310,7 @@ export function AppRun({ useStore, io }) {
           let sdf = diff.length().sub(radius);
 
           If(sdf.lessThanEqual(float(1)), () => {
-            let normalDiff = diff.normalize().mul(sdf).mul(0.015);
+            let normalDiff = diff.normalize().mul(sdf).mul(0.008);
             velocity.addAssign(normalDiff);
           });
         }
