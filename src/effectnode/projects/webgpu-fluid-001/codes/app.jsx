@@ -305,7 +305,7 @@ export function AppRun({ useStore, io }) {
           let sdf = diff.length().sub(ballRadius);
 
           If(sdf.lessThanEqual(float(1)), () => {
-            let normalDiff = diff.normalize().mul(sdf).mul(0.015);
+            let normalDiff = diff.normalize().mul(sdf).mul(0.05);
             velocity.addAssign(normalDiff);
           });
         }

@@ -764,10 +764,11 @@ function AR({ children, useStore }) {
 
       <primitive object={camera}></primitive>
 
-      <PerspectiveCamera
-        makeDefault
-        position={cameraInitOffset.toArray()}
-      ></PerspectiveCamera>
+      <PerspectiveCamera makeDefault position={cameraInitOffset.toArray()}>
+        {/*  */}
+
+        {/*  */}
+      </PerspectiveCamera>
 
       {hasPose && (
         <>
