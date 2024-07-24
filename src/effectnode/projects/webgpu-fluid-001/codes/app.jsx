@@ -501,7 +501,7 @@ export function AppRun({ useStore, io }) {
         onPointerMove={(ev) => {
           // ev.point;
           uiPointer.value.copy(ev.point);
-          uiPointer.value.y += 15;
+          uiPointer.value.y += 5;
         }}
       ></Plane>
 
