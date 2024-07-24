@@ -89,7 +89,7 @@ export function AppRun({ useStore, io }) {
     return uniform(vec3(0, 0, 0));
   }, []);
 
-  const side = Math.floor(Math.pow(64 * 64, 1 / 3));
+  const side = Math.floor(Math.pow(64 * 128, 1 / 3));
   const dimension = 50;
   const boundSizeMin = useMemo(() => vec3(0, 0, 0), []);
   const boundSizeMax = useMemo(
