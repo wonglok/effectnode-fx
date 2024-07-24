@@ -109,14 +109,21 @@ export function AppRun({ useStore, io }) {
   const dimension = 50;
   const boundSizeMin = useMemo(() => vec3(0, 0, 0), []);
   const boundSizeMax = useMemo(
-    () => vec3(dimension * 2, dimension * 6, dimension * 2),
+    () => vec3(dimension * 2, dimension * 2, dimension * 4),
     []
   );
+  const boundSize = new Vector3()
+    .copy(boundSizeMax.value)
+    .sub(new Vector3().copy(boundSizeMin.value));
+
+  console.log(boundSize);
 
   let ballRadius = useMemo(() => float(35), []);
 
   let uiOffset = useMemo(() => {
-    return vec3(boundSizeMax.x.div(-2), 0, boundSizeMax.z.div(-2));
+    return vec3(boundSizeMax.x.mul(-0.5), 0, boundSizeMax.z.mul(-0.5)).add(
+      vec3(0, 0, boundSizeMax.z.mul(0.25))
+    );
   }, [boundSizeMax.x, boundSizeMax.z]);
 
   useFrame((st, dt) => {
@@ -174,9 +181,7 @@ export function AppRun({ useStore, io }) {
 
       const gravity = float(-0.56);
 
-      const SLOT_COUNT = dimension * 2 * (dimension * 6) * (dimension * 2);
-
-      //
+      const SLOT_COUNT = boundSize.x * boundSize.y * boundSize.z;
 
       const spaceSlotCounter = createBuffer({
         itemSize: 1,
@@ -515,6 +520,9 @@ export function AppRun({ useStore, io }) {
     uiPointer2,
     uiPointer3,
     uiPointer4,
+    boundSize.x,
+    boundSize.y,
+    boundSize.z,
   ]);
 
   //
@@ -586,7 +594,7 @@ export function AppRun({ useStore, io }) {
 function Avatar({ useStore, uiPointer1, uiPointer2, uiPointer3, uiPointer4 }) {
   let files = useStore((r) => r.files);
   let glb = useGLTF(files[`/rpm/lok-ready.glb`]);
-  let motion = useFBX(files[`/rpm/moiton/breakdance.fbx`]);
+  let motion = useFBX(files[`/rpm/moiton/thriller4.fbx`]);
   let anim = useAnimations(motion.animations, glb.scene);
 
   useFrame(() => {
