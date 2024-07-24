@@ -71,7 +71,13 @@ import StorageInstancedBufferAttribute from "three/examples/jsm/renderers/common
 // import { calculateDensity } from "../loklok/calculateDensity";
 // import { distanceTo } from "../loklok/distanceTo";
 // import { smoothinKernel } from "../loklok/smoothKernel";
-import { Plane, Sphere } from "@react-three/drei";
+import {
+  Plane,
+  Sphere,
+  useAnimations,
+  useFBX,
+  useGLTF,
+} from "@react-three/drei";
 import { smoothinKernel } from "../loklok/smoothKernel";
 
 export function AppRun({ useStore, io }) {
@@ -79,7 +85,23 @@ export function AppRun({ useStore, io }) {
   let renderer = useThree((r) => r.gl);
   let works = useMemo(() => [], []);
 
-  let uiPointer = useMemo(() => {
+  let uiPointer0 = useMemo(() => {
+    return uniform(vec3(0, 0, 0));
+  }, []);
+
+  let uiPointer1 = useMemo(() => {
+    return uniform(vec3(0, 0, 0));
+  }, []);
+
+  let uiPointer2 = useMemo(() => {
+    return uniform(vec3(0, 0, 0));
+  }, []);
+
+  let uiPointer3 = useMemo(() => {
+    return uniform(vec3(0, 0, 0));
+  }, []);
+
+  let uiPointer4 = useMemo(() => {
     return uniform(vec3(0, 0, 0));
   }, []);
 
@@ -297,9 +319,53 @@ export function AppRun({ useStore, io }) {
           )
         );
 
-        /// hand
+        /// mouse
         {
-          let diff = position.sub(uiPointer.sub(uiOffset)).negate();
+          let diff = position.sub(uiPointer0.sub(uiOffset)).negate();
+          let sdf = diff.length().sub(ballRadius);
+
+          If(sdf.lessThanEqual(float(1)), () => {
+            let normalDiff = diff.normalize().mul(sdf).mul(0.0075);
+            velocity.addAssign(normalDiff);
+          });
+        }
+
+        /// left hand
+        {
+          let diff = position.sub(uiPointer1.sub(uiOffset)).negate();
+          let sdf = diff.length().sub(ballRadius);
+
+          If(sdf.lessThanEqual(float(1)), () => {
+            let normalDiff = diff.normalize().mul(sdf).mul(0.0075);
+            velocity.addAssign(normalDiff);
+          });
+        }
+
+        /// right hand
+        {
+          let diff = position.sub(uiPointer2.sub(uiOffset)).negate();
+          let sdf = diff.length().sub(ballRadius);
+
+          If(sdf.lessThanEqual(float(1)), () => {
+            let normalDiff = diff.normalize().mul(sdf).mul(0.0075);
+            velocity.addAssign(normalDiff);
+          });
+        }
+
+        /// left foot
+        {
+          let diff = position.sub(uiPointer3.sub(uiOffset)).negate();
+          let sdf = diff.length().sub(ballRadius);
+
+          If(sdf.lessThanEqual(float(1)), () => {
+            let normalDiff = diff.normalize().mul(sdf).mul(0.0075);
+            velocity.addAssign(normalDiff);
+          });
+        }
+
+        /// right foot
+        {
+          let diff = position.sub(uiPointer4.sub(uiOffset)).negate();
           let sdf = diff.length().sub(ballRadius);
 
           If(sdf.lessThanEqual(float(1)), () => {
@@ -442,9 +508,13 @@ export function AppRun({ useStore, io }) {
     boundSizeMax,
     boundSizeMin,
     uiOffset,
-    uiPointer,
+    uiPointer1,
     side,
     ballRadius,
+    uiPointer0,
+    uiPointer2,
+    uiPointer3,
+    uiPointer4,
   ]);
 
   //
@@ -466,7 +536,7 @@ export function AppRun({ useStore, io }) {
       );
     }
     if (refBox) {
-      refBox.current.position.copy(uiPointer.value);
+      refBox.current.position.copy(uiPointer0.value);
     }
   });
   return (
@@ -483,7 +553,7 @@ export function AppRun({ useStore, io }) {
         visible={false}
         onPointerMove={(ev) => {
           // ev.point;
-          // uiPointer.value.copy(ev.point);
+          // uiPointer1.value.copy(ev.point);
         }}
       ></Plane>
 
@@ -493,12 +563,68 @@ export function AppRun({ useStore, io }) {
         visible={false}
         onPointerMove={(ev) => {
           // ev.point;
-          uiPointer.value.copy(ev.point);
-          // uiPointer.value.y += ballRadius.value / 5;
+          uiPointer0.value.copy(ev.point);
+          // uiPointer1.value.y += ballRadius.value / 5;
         }}
       ></Plane>
 
+      <Avatar
+        uiPointer1={uiPointer1}
+        uiPointer2={uiPointer2}
+        uiPointer3={uiPointer3}
+        uiPointer4={uiPointer4}
+        useStore={useStore}
+      ></Avatar>
+
       {/*  */}
+      {/*  */}
+      {/*  */}
+    </>
+  );
+}
+
+function Avatar({ useStore, uiPointer1, uiPointer2, uiPointer3, uiPointer4 }) {
+  let files = useStore((r) => r.files);
+  let glb = useGLTF(files[`/rpm/lok-ready.glb`]);
+  let motion = useFBX(files[`/rpm/moiton/breakdance.fbx`]);
+  let anim = useAnimations(motion.animations, glb.scene);
+
+  useFrame(() => {
+    if (glb.scene) {
+      glb.scene.traverse((it) => {
+        //
+        if (it.isBone) {
+          if (it.name === "LeftHand") {
+            it.getWorldPosition(uiPointer1.value);
+          }
+        }
+        if (it.isBone) {
+          if (it.name === "RightHand") {
+            it.getWorldPosition(uiPointer2.value);
+          }
+        }
+
+        if (it.isBone) {
+          if (it.name === "RightToe_End") {
+            it.getWorldPosition(uiPointer3.value);
+          }
+        }
+        if (it.isBone) {
+          if (it.name === "RightToe_End") {
+            it.getWorldPosition(uiPointer4.value);
+          }
+        }
+      });
+    }
+  });
+  useEffect(() => {
+    let action = anim.actions[anim.names[0]];
+    action.play();
+    glb.scene.scale.setScalar(30);
+  }, [anim, glb.scene]);
+  return (
+    <>
+      <primitive object={glb.scene}></primitive>
     </>
   );
 }
