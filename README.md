@@ -4,7 +4,10 @@
 
 [Link to DEMO](https://www.effectnode.com/demo)
 
-https://github.com/user-attachments/assets/8e415953-cb16-40de-aea2-f0d8b5a1d628
+
+
+https://github.com/user-attachments/assets/030a7ce9-7561-42dc-b79c-913b8e038fc2
+
 
 ## Thank you dear for all the support <3
 
