@@ -53,6 +53,7 @@ import {
   MeshPhysicalNodeMaterial,
   floor,
   bool,
+  clamp,
 } from "three/examples/jsm/nodes/Nodes";
 import StorageInstancedBufferAttribute from "three/examples/jsm/renderers/common/StorageInstancedBufferAttribute";
 // import { calculateDensity } from "../loklok/calculateDensity";
@@ -71,8 +72,11 @@ export function AppRun({ useStore, io }) {
 
   const side = Math.floor(Math.sqrt(512));
   const dimension = 50;
-  const boundSizeMin = vec3(0, 0, 0);
-  const boundSizeMax = vec3(dimension * 2, dimension * 6, dimension * 2);
+  const boundSizeMin = useMemo(() => vec3(0, 0, 0), []);
+  const boundSizeMax = useMemo(
+    () => vec3(dimension * 2, dimension * 6, dimension * 2),
+    []
+  );
 
   let uiOffset = useMemo(() => {
     return vec3(boundSizeMax.x.div(-2), 0, boundSizeMax.z.div(-2));
@@ -301,16 +305,18 @@ export function AppRun({ useStore, io }) {
         let velocity = velocityBuffer.node.element(instanceIndex);
         // let pressureForce = pressureForceBuffer.node.element(instanceIndex);
 
-        velocity.addAssign(vec3(0.0, gravity.mul(mass).mul(delta), 0.0));
+        velocity.addAssign(
+          vec3(0.0, gravity.mul(mass).mul(delta).mul(position.y.mul(0.08)), 0.0)
+        );
 
         /// hand
         {
-          let radius = 20.0;
+          let radius = 30.0;
           let diff = position.sub(uiPointer.sub(uiOffset)).negate();
           let sdf = diff.length().sub(radius);
 
           If(sdf.lessThanEqual(float(1)), () => {
-            let normalDiff = diff.normalize().mul(sdf).mul(0.008);
+            let normalDiff = diff.normalize().mul(sdf).mul(0.015);
             velocity.addAssign(normalDiff);
           });
         }
@@ -396,15 +402,14 @@ export function AppRun({ useStore, io }) {
         particleMaterial.positionNode = posAttr.add(uiOffset);
 
         const velocity = velocityBuffer.node.toAttribute();
-        const size = velocity.length();
+        const size = clamp(velocity.length(), 0.0, 1.0);
         //
         //
-        particleMaterial.colorNode = mix(
-          vec3(0, 0, 1),
-          vec3(0.5, 0.8, 0.8),
-          size
+        particleMaterial.colorNode = vec4(
+          mix(vec3(0, 0, 1), vec3(0.3, 0.7, 1), float(size).mul(0.8)),
+          float(1.0).sub(size.mul(0.9)).add(0.1)
         );
-        particleMaterial.scaleNode = float(float(1.0).sub(size)).mul(4);
+        particleMaterial.scaleNode = float(float(1.0).sub(size)).mul(3).add(2);
 
         //
 
@@ -412,7 +417,7 @@ export function AppRun({ useStore, io }) {
         particleMaterial.depthWrite = false;
         particleMaterial.transparent = true;
         // particleMaterial.alphaTest = 0.8;
-        particleMaterial.opacityNode = float(0.8).add(size.mul(0.8));
+        // particleMaterial.opacityNode = float(0.8).add(size.mul(0.8));
 
         const particles = new Mesh(
           new CircleGeometry(particleSize.value / 2, 32),
@@ -446,6 +451,7 @@ export function AppRun({ useStore, io }) {
     boundSizeMin,
     uiOffset,
     uiPointer,
+    side,
   ]);
 
   //
@@ -475,7 +481,7 @@ export function AppRun({ useStore, io }) {
       {/*  */}
       {show}
 
-      <Sphere scale={10} ref={refBox}>
+      <Sphere scale={15} ref={refBox}>
         <meshNormalMaterial></meshNormalMaterial>
       </Sphere>
       <Plane
@@ -495,7 +501,7 @@ export function AppRun({ useStore, io }) {
         onPointerMove={(ev) => {
           // ev.point;
           uiPointer.value.copy(ev.point);
-          uiPointer.value.y += 5;
+          uiPointer.value.y += 15;
         }}
       ></Plane>
 
