@@ -151,6 +151,9 @@ export function AppRun({ useStore, io }) {
       const gravity = float(-0.56);
 
       const SLOT_COUNT = dimension * 2 * (dimension * 6) * (dimension * 2);
+
+      //
+
       const spaceSlotCounter = createBuffer({
         itemSize: 1,
         type: "float",
