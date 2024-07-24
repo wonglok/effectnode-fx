@@ -83,14 +83,15 @@ export function AppRun({ useStore, io }) {
     return uniform(vec3(0, 0, 0));
   }, []);
 
-  const side = Math.floor(Math.pow(128 * 256, 1 / 3));
+  const side = Math.floor(Math.pow(128 * 128, 1 / 3));
   const dimension = 50;
   const boundSizeMin = useMemo(() => vec3(0, 0, 0), []);
   const boundSizeMax = useMemo(
     () => vec3(dimension * 2, dimension * 6, dimension * 2),
     []
   );
-  let ballRadius = useMemo(() => float(30), []);
+
+  let ballRadius = useMemo(() => float(35), []);
 
   let uiOffset = useMemo(() => {
     return vec3(boundSizeMax.x.div(-2), 0, boundSizeMax.z.div(-2));
@@ -98,7 +99,7 @@ export function AppRun({ useStore, io }) {
 
   useFrame((st, dt) => {
     works.forEach((t) => t(st, dt));
-  }, 1);
+  });
 
   let onLoop = useCallback(
     (v) => {
@@ -108,7 +109,6 @@ export function AppRun({ useStore, io }) {
   );
 
   //
-
   let { show, mounter } = useMemo(() => {
     let mounter = new Object3D();
     return {
@@ -264,6 +264,7 @@ export function AppRun({ useStore, io }) {
         {
           let index = getIndexWithPosition({ position: position });
           let space = spaceSlotCounter.node.element(index);
+
           space.addAssign(1);
         }
       });
@@ -283,20 +284,17 @@ export function AppRun({ useStore, io }) {
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      /*
-      float sdSphere( vec3 p, float s )
-      {
-        return length(p)-s;
-      }
-        
-      */
       let calcIdle = tslFn(() => {
         //
         let position = positionBuffer.node.element(instanceIndex);
         let velocity = velocityBuffer.node.element(instanceIndex);
 
         velocity.addAssign(
-          vec3(0.0, gravity.mul(mass).mul(delta).mul(position.y.mul(0.1)), 0.0)
+          vec3(
+            0.0,
+            gravity.mul(mass).mul(delta).mul(position.y.mul(0.075)),
+            0.0
+          )
         );
 
         /// hand
@@ -305,7 +303,7 @@ export function AppRun({ useStore, io }) {
           let sdf = diff.length().sub(ballRadius);
 
           If(sdf.lessThanEqual(float(1)), () => {
-            let normalDiff = diff.normalize().mul(sdf).mul(0.05);
+            let normalDiff = diff.normalize().mul(sdf).mul(0.0075);
             velocity.addAssign(normalDiff);
           });
         }
@@ -344,9 +342,9 @@ export function AppRun({ useStore, io }) {
                   .normalize()
                   .mul(spaceCount)
                   .mul(mass)
-                  .mul(smoothed)
-                  .mul(delta)
-                  .mul(15);
+                  .mul(smoothed);
+
+                // diff.position.y.mul(0.05);
 
                 velocity.addAssign(diff);
               }
@@ -408,7 +406,7 @@ export function AppRun({ useStore, io }) {
         //
 
         particleMaterial.depthTest = true;
-        particleMaterial.depthWrite = false;
+        particleMaterial.depthWrite = true;
         particleMaterial.transparent = true;
         // particleMaterial.alphaTest = 0.8;
         // particleMaterial.opacityNode = float(0.8).add(size.mul(0.8));
