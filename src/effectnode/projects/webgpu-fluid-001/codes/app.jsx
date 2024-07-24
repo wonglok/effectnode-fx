@@ -306,7 +306,7 @@ export function AppRun({ useStore, io }) {
         // let pressureForce = pressureForceBuffer.node.element(instanceIndex);
 
         velocity.addAssign(
-          vec3(0.0, gravity.mul(mass).mul(delta).mul(position.y.mul(0.08)), 0.0)
+          vec3(0.0, gravity.mul(mass).mul(delta).mul(position.y.mul(0.1)), 0.0)
         );
 
         /// hand
@@ -349,13 +349,9 @@ export function AppRun({ useStore, io }) {
                   .sub(center)
                   .normalize()
                   .mul(spaceCount)
-
+                  .mul(mass)
                   .mul(delta)
-                  .mul(1 / 2)
-                  .mul(1 / 2)
-                  .mul(1 / 2)
-                  .mul(mass);
-
+                  .mul(pow(1 / 2, 3));
                 velocity.addAssign(diff);
               }
             }
