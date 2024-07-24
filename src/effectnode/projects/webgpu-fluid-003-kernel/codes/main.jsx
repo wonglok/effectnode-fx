@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 "use strict";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
 import { create } from "zustand";
 import { Canvas } from "@react-three/fiber";
@@ -85,30 +85,34 @@ function WebGPUCanvasLoader({ useStore, io, ui, children }) {
 
       let Nodes = await import("three/examples/jsm/nodes/Nodes.js");
 
-      let StorageInstancedBufferAttribute = await import(
-        "three/addons/renderers/common/StorageInstancedBufferAttribute.js"
+      let WebGPU = await import(
+        "three/examples/jsm/capabilities/WebGPU.js"
       ).then((r) => r.default);
 
+      let hasWebGPU = WebGPU.isAvailable();
+
+      useStore.setState({
+        useStore,
+      });
       useGPU.setState({
+        hasWebGPU,
         ready: false,
         Nodes,
-        StorageInstancedBufferAttribute,
+        WebGPU,
         WebGPURenderer,
       });
     }
     RunWebGPU();
-  }, []);
+  }, [useStore]);
 
   let WebGPURenderer = useGPU((r) => r.WebGPURenderer);
   let Nodes = useGPU((r) => r.Nodes);
   let ready = useGPU((r) => r.ready);
-  let StorageInstancedBufferAttribute = useGPU(
-    (r) => r.StorageInstancedBufferAttribute
-  );
+  let WebGPU = useGPU((r) => r.WebGPU);
 
   return (
     <>
-      {WebGPURenderer && StorageInstancedBufferAttribute && Nodes && (
+      {WebGPURenderer && WebGPU && Nodes && (
         <Canvas
           gl={(canvas) => {
             let gl = new WebGPURenderer({ canvas });
@@ -119,7 +123,11 @@ function WebGPUCanvasLoader({ useStore, io, ui, children }) {
             return gl;
           }}
         >
-          {ready && children}
+          <Suspense fallback={null}>
+            {/*  */}
+
+            {ready && children}
+          </Suspense>
         </Canvas>
       )}
     </>

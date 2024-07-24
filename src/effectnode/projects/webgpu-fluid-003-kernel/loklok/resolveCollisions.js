@@ -17,7 +17,6 @@ export let resolveCollisions = ({
   position,
   velocity,
   collisionDamping = 1,
-  particleSize,
   delta,
 }) => {
   //
@@ -27,36 +26,36 @@ export let resolveCollisions = ({
   // let nOne = float(-5);
   // let pOne = float(5);
 
-  If(nowPosition.x.greaterThanEqual(boundSizeMax.x), () => {
+  If(nowPosition.x.greaterThan(boundSizeMax.x), () => {
     position.x.assign(boundSizeMax.x);
-    // velocity.x.mulAssign(float(delta).mul(0.5));
+    velocity.x.mulAssign(float(delta).mul(0.5));
     velocity.x.addAssign(float(-1).mul(delta).mul(5));
   });
-  If(nowPosition.x.lessThanEqual(boundSizeMin.x), () => {
+  If(nowPosition.x.lessThan(boundSizeMin.x), () => {
     position.x.assign(boundSizeMin.x);
-    // velocity.x.mulAssign(float(delta).mul(0.5));
+    velocity.x.mulAssign(float(delta).mul(0.5));
     velocity.x.addAssign(float(1).mul(delta).mul(5));
   });
 
-  If(nowPosition.y.greaterThanEqual(boundSizeMax.y), () => {
+  If(nowPosition.y.greaterThan(boundSizeMax.y), () => {
     position.y.assign(boundSizeMax.y);
-    // velocity.y.mulAssign(float(delta).mul(0.5));
+    velocity.y.mulAssign(float(delta).mul(0.5));
     velocity.y.addAssign(float(-1).mul(delta).mul(5));
   });
-  If(nowPosition.y.lessThanEqual(boundSizeMin.y), () => {
+  If(nowPosition.y.lessThan(boundSizeMin.y), () => {
     position.y.assign(boundSizeMin.y);
-    // velocity.y.mulAssign(float(delta).mul(0.5));
+    velocity.y.mulAssign(float(delta).mul(0.5));
     velocity.y.addAssign(float(1).mul(delta).mul(5));
   });
 
-  If(nowPosition.z.greaterThanEqual(boundSizeMax.z), () => {
+  If(nowPosition.z.greaterThan(boundSizeMax.z), () => {
     position.z.assign(boundSizeMax.z);
-    // velocity.z.mulAssign(float(delta).mul(0.5));
+    velocity.z.mulAssign(float(delta).mul(0.5));
     velocity.z.addAssign(float(-1).mul(delta).mul(5));
   });
-  If(nowPosition.z.lessThanEqual(boundSizeMin.z), () => {
+  If(nowPosition.z.lessThan(boundSizeMin.z), () => {
     position.z.assign(boundSizeMin.z);
-    // velocity.z.mulAssign(float(delta).mul(0.5));
+    velocity.z.mulAssign(float(delta).mul(0.5));
     velocity.z.addAssign(float(1).mul(delta).mul(5));
   });
 
