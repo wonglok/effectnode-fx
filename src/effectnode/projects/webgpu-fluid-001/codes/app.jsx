@@ -363,7 +363,7 @@ export function AppRun({ useStore, io }) {
                   .mul(spaceCount)
                   .mul(mass)
                   .mul(delta)
-                  .mul(pow(1 / 2, 3));
+                  .mul(pow(1 / 2, 1.5));
                 velocity.addAssign(diff);
               }
             }
