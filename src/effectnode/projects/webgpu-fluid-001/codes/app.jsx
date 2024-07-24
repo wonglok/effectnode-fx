@@ -89,6 +89,7 @@ export function AppRun({ useStore, io }) {
     () => vec3(dimension * 2, dimension * 6, dimension * 2),
     []
   );
+  let ballRadius = useMemo(() => float(30), []);
 
   let uiOffset = useMemo(() => {
     return vec3(boundSizeMax.x.div(-2), 0, boundSizeMax.z.div(-2));
@@ -300,9 +301,8 @@ export function AppRun({ useStore, io }) {
 
         /// hand
         {
-          let radius = 30.0;
           let diff = position.sub(uiPointer.sub(uiOffset)).negate();
-          let sdf = diff.length().sub(radius);
+          let sdf = diff.length().sub(ballRadius);
 
           If(sdf.lessThanEqual(float(1)), () => {
             let normalDiff = diff.normalize().mul(sdf).mul(0.015);
@@ -466,7 +466,7 @@ export function AppRun({ useStore, io }) {
       {/*  */}
       {show}
 
-      <Sphere scale={15} ref={refBox}>
+      <Sphere scale={ballRadius.value / 1.5} ref={refBox}>
         <meshNormalMaterial></meshNormalMaterial>
       </Sphere>
       <Plane
@@ -486,7 +486,7 @@ export function AppRun({ useStore, io }) {
         onPointerMove={(ev) => {
           // ev.point;
           uiPointer.value.copy(ev.point);
-          uiPointer.value.y += 5;
+          uiPointer.value.y += ballRadius.value / 1.5 / 2;
         }}
       ></Plane>
 
