@@ -413,9 +413,9 @@ export function AppRun({ useStore, io }) {
             for (let y = -2; y <= 2; y++) {
               for (let x = -2; x <= 2; x++) {
                 let index = getIndexWithPosition({
-                  ix: position.x.add(x),
-                  iy: position.y.add(y),
-                  iz: position.z.add(z),
+                  ix: position.x.add(x).add(0.5),
+                  iy: position.y.add(y).add(0.5),
+                  iz: position.z.add(z).add(0.5),
                 });
 
                 let spaceCount = spaceSlotCounter.node.element(index);
