@@ -262,9 +262,9 @@ export function AppRun({ useStore, io }) {
 
         // position.assign(max(min(position, boundSizeMax), boundSizeMin));
 
-        let x = uint(clamp(ix, 0.0, maxX));
-        let y = uint(clamp(iy, 0.0, maxY));
-        let z = uint(clamp(iz, 0.0, maxZ));
+        let x = clamp(uint(ix), 0.0, maxX);
+        let y = clamp(uint(iy), 0.0, maxY);
+        let z = clamp(uint(iz), 0.0, maxZ);
 
         // index = z + y * maxZ + x * maxY * maxZ
 
@@ -281,11 +281,14 @@ export function AppRun({ useStore, io }) {
 
         // particle
         {
+          //
           let index = getIndexWithPosition({
             ix: position.x,
             iy: position.y,
             iz: position.z,
           });
+
+          //
           let space = spaceSlotCounter.node.element(index);
           space.addAssign(1);
         }
@@ -307,12 +310,14 @@ export function AppRun({ useStore, io }) {
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
       /*
+
       float sdSphere( vec3 p, float s )
       {
         return length(p)-s;
       }
-        
+
       */
+
       let calcIdle = tslFn(() => {
         //
         let position = positionBuffer.node.element(instanceIndex);
@@ -412,11 +417,11 @@ export function AppRun({ useStore, io }) {
         //
         // presure
         //
+
         {
           for (let z = -1; z <= 1; z++) {
             for (let y = -1; y <= 1; y++) {
               for (let x = -1; x <= 1; x++) {
-                //
                 //
                 let index = getIndexWithPosition({
                   ix: position.x.add(x),
@@ -432,7 +437,7 @@ export function AppRun({ useStore, io }) {
                   floor(position.z.add(z)).add(0.5)
                 );
 
-                let smooth = smoothinKernel({
+                let smoothValue = smoothinKernel({
                   smoothingRadius: 5,
                   dist: position.sub(center).length(),
                 }).mul(200);
@@ -442,9 +447,9 @@ export function AppRun({ useStore, io }) {
                   .normalize()
                   .mul(spaceCount)
                   .mul(mass)
-                  .mul(smooth)
-                  .mul(delta);
-                // .mul(pow(1 / 2, 1.5));
+                  .mul(smoothValue)
+                  .mul(delta)
+                  .mul(pow(1 / 2, 0.5));
                 velocity.addAssign(diff);
               }
             }
