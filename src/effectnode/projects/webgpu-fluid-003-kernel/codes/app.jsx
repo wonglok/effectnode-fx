@@ -80,6 +80,7 @@ import {
   useFBX,
   useGLTF,
 } from "@react-three/drei";
+import { smoothinKernel } from "../loklok/smoothKernel";
 
 export function AppRun({ useStore, io }) {
   let files = useStore((r) => r.files);
@@ -113,6 +114,7 @@ export function AppRun({ useStore, io }) {
     () => vec3(dimension * 2, dimension * 6, dimension * 2),
     []
   );
+
   let ballRadius = useMemo(() => float(35), []);
 
   let uiOffset = useMemo(() => {
@@ -238,9 +240,9 @@ export function AppRun({ useStore, io }) {
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       let getXYZFromIndex = ({ index }) => {
         let idx = uint(index);
-        let maxX = uint(boundSizeMax.x);
-        let maxY = uint(boundSizeMax.y);
-        let maxZ = uint(boundSizeMax.z);
+        let maxX = uint(boundSizeMax.value.x);
+        let maxY = uint(boundSizeMax.value.y);
+        let maxZ = uint(boundSizeMax.value.z);
 
         let x = idx.div(maxY).div(maxZ); // / maxY / maxZ;
         let y = idx.div(maxZ).remainder(maxY); // / maxZ
@@ -254,15 +256,15 @@ export function AppRun({ useStore, io }) {
       };
 
       let getIndexWithPosition = ({ ix, iy, iz }) => {
-        let maxX = uint(boundSizeMax.x);
-        let maxY = uint(boundSizeMax.y);
-        let maxZ = uint(boundSizeMax.z);
+        let maxX = uint(boundSizeMax.value.x);
+        let maxY = uint(boundSizeMax.value.y);
+        let maxZ = uint(boundSizeMax.value.z);
 
         // position.assign(max(min(position, boundSizeMax), boundSizeMin));
 
-        let x = uint(ix);
-        let y = uint(iy);
-        let z = uint(iz);
+        let x = uint(clamp(ix, 0.0, maxX));
+        let y = uint(clamp(iy, 0.0, maxY));
+        let z = uint(clamp(iz, 0.0, maxZ));
 
         // index = z + y * maxZ + x * maxY * maxZ
 
@@ -316,29 +318,6 @@ export function AppRun({ useStore, io }) {
         let position = positionBuffer.node.element(instanceIndex);
         let velocity = velocityBuffer.node.element(instanceIndex);
         // let pressureForce = pressureForceBuffer.node.element(instanceIndex);
-
-        if (useStore.getState().hasWebGPU) {
-          console.log("webgpu");
-          velocity.addAssign(
-            vec3(
-              0.0,
-              gravity.mul(mass).mul(delta).mul(position.y.mul(0.1)),
-              0.0
-            )
-          );
-        }
-
-        if (!useStore.getState().hasWebGPU) {
-          console.log("webgl");
-
-          velocity.addAssign(
-            vec3(
-              0.0,
-              gravity.mul(mass).mul(delta).mul(position.y.mul(0.1)),
-              0.0
-            )
-          );
-        }
 
         /// hand
         {
@@ -405,17 +384,44 @@ export function AppRun({ useStore, io }) {
           });
         }
 
+        // depth
+
+        if (useStore.getState().hasWebGPU) {
+          console.log("webgpu");
+          velocity.addAssign(
+            vec3(
+              0.0,
+              gravity.mul(mass).mul(delta).mul(position.y.mul(0.1)),
+              0.0
+            )
+          );
+        }
+
+        if (!useStore.getState().hasWebGPU) {
+          console.log("webgl");
+
+          velocity.addAssign(
+            vec3(
+              0.0,
+              gravity.mul(mass).mul(delta).mul(position.y.mul(0.1)),
+              0.0
+            )
+          );
+        }
+
         //
         // presure
         //
         {
-          for (let z = -2; z <= 2; z++) {
-            for (let y = -2; y <= 2; y++) {
-              for (let x = -2; x <= 2; x++) {
+          for (let z = -1; z <= 1; z++) {
+            for (let y = -1; y <= 1; y++) {
+              for (let x = -1; x <= 1; x++) {
+                //
+                //
                 let index = getIndexWithPosition({
-                  ix: position.x.add(x).add(0.5),
-                  iy: position.y.add(y).add(0.5),
-                  iz: position.z.add(z).add(0.5),
+                  ix: position.x.add(x),
+                  iy: position.y.add(y),
+                  iz: position.z.add(z),
                 });
 
                 let spaceCount = spaceSlotCounter.node.element(index);
@@ -426,13 +432,19 @@ export function AppRun({ useStore, io }) {
                   floor(position.z.add(z)).add(0.5)
                 );
 
+                let smooth = smoothinKernel({
+                  smoothingRadius: 5,
+                  dist: position.sub(center).length(),
+                }).mul(200);
+
                 let diff = position
                   .sub(center)
                   .normalize()
                   .mul(spaceCount)
                   .mul(mass)
-                  .mul(delta)
-                  .mul(pow(1 / 2, 1.5));
+                  .mul(smooth)
+                  .mul(delta);
+                // .mul(pow(1 / 2, 1.5));
                 velocity.addAssign(diff);
               }
             }
