@@ -42,7 +42,7 @@ function Content3D() {
   let pz = 256;
 
   let offsetGrid = useMemo(() => {
-    return new Vector3(dx * -0.5, 0, dz * -0.5);
+    return new Vector3(dx * -0.5, 0, dz * -0.5 - 7);
   }, [dx, dz]);
 
   let [{ mounter, show }] = useMemo(() => {
@@ -598,7 +598,7 @@ function Content3D() {
       //
       let ibg = new InstancedBufferGeometry();
       ibg.copy(new BoxGeometry(1, 1, 1));
-      ibg.scale(0.025, 0.025, 0.025);
+      ibg.scale(0.015, 0.015, 0.015);
       //
       ibg.instanceCount = COUNT_PARTICLE;
 
@@ -615,12 +615,13 @@ function Content3D() {
       );
       ibg.needsUpdate = true;
 
-      let mat = new MeshPhysicalMaterial({
-        color: new Color("#008888"),
+      let mat = new MeshStandardMaterial({
+        color: new Color("#000000"),
+        emissive: new Color("#ffffff"),
         metalness: 0.3,
         roughness: 0.3,
         transparent: true,
-        opacity: 0.5,
+        opacity: 1,
         side: DoubleSide,
         transparent: true,
         depthWrite: true,
@@ -926,8 +927,10 @@ void main() {
   return (
     <>
       {/*  */}
+
       <group position={offsetGrid.toArray()}>{show}</group>
 
+      {/* <XROrigin position={[0, 10, 50]} /> */}
       {/*  */}
     </>
   );

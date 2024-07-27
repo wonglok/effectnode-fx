@@ -1,5 +1,6 @@
+import { Sky } from "@react-three/drei";
 import { Canvas, useThree } from "@react-three/fiber";
-import { createXRStore, XR } from "@react-three/xr";
+import { createXRStore, XR, XROrigin } from "@react-three/xr";
 import { useEffect } from "react";
 // import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer";
 import tunnel from "tunnel-rat";
@@ -12,7 +13,7 @@ export function ToolBox({}) {
   );
 }
 
-let xrStore = createXRStore({
+export let xrStore = createXRStore({
   //
   //
 });
@@ -40,6 +41,7 @@ export function Runtime({ ui, useStore, io }) {
           <State3D useStore={useStore}></State3D>
           <OutH3D useStore={useStore}></OutH3D>
         </XR>
+
         {/*  */}
         {/* <color attach={"background"} args={["#ffffff"]}></color> */}
         {/*  */}
