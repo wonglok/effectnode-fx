@@ -69,7 +69,6 @@ function Content3D() {
   let onRender = useRef(() => {});
   useEffect(() => {
     let cleans = [];
-    let canRun = true;
     //
     // -  - //
     //
@@ -364,10 +363,13 @@ function Content3D() {
         }
     `;
 
+    //
     let particleVelocityInitTex = gpuParticle.createTexture();
+
     {
       let i = 0;
       let arr = particleVelocityInitTex.image.data;
+
       for (let z = 0; z < pz; z++) {
         for (let y = 0; y < py; y++) {
           for (let x = 0; x < px; x++) {
@@ -380,6 +382,7 @@ function Content3D() {
           }
         }
       }
+
       particleVelocityInitTex.needsUpdate = true;
     }
 
@@ -395,9 +398,6 @@ function Content3D() {
     particleVelocityVar.material.uniforms.pressureFactor = pressureFactor;
     particleVelocityVar.material.uniforms.gravityFactor = gravityFactor;
     let hh = ({ detail }) => {
-      if (!canRun) {
-        return;
-      }
       particleVelocityVar.material.uniforms.pointerWorld.value.fromArray(
         detail
       );
@@ -491,14 +491,14 @@ function Content3D() {
                   //
                   if (
                     true 
-                    && parPosData.x >= max(min(worldPos.x - bounds.x * 0.2, bounds.x), 0.0)
-                    && parPosData.x <= max(min(worldPos.x + bounds.x * 0.2, bounds.x), 0.0)
+                    && parPosData.x >= max(min(worldPos.x - bounds.x * 0.1, bounds.x), 0.0)
+                    && parPosData.x <= max(min(worldPos.x + bounds.x * 0.1, bounds.x), 0.0)
                     //
-                    && parPosData.y >= max(min(worldPos.y - bounds.y * 0.2, bounds.y), 0.0)
-                    && parPosData.y <= max(min(worldPos.y + bounds.y * 0.2, bounds.y), 0.0)
+                    && parPosData.y >= max(min(worldPos.y - bounds.y * 0.1, bounds.y), 0.0)
+                  && parPosData.y <= max(min(worldPos.y + bounds.y * 0.1, bounds.y), 0.0)
                     //
-                    && parPosData.z >= max(min(worldPos.z - bounds.z * 0.2, bounds.z), 0.0)
-                    && parPosData.z <= max(min(worldPos.z + bounds.z * 0.2, bounds.z), 0.0)
+                    && parPosData.z >= max(min(worldPos.z - bounds.z * 0.1, bounds.z), 0.0)
+                    && parPosData.z <= max(min(worldPos.z + bounds.z * 0.1, bounds.z), 0.0)
                     //
                   ) {
                     counter += 1.0;
@@ -970,22 +970,30 @@ void main() {
       let mesh = new Mesh(ibg, mat);
       mesh.frustumCulled = false;
 
-      mounter.clear();
       mounter.add(mesh);
 
-      //
-      //
       //
     }
     //
 
     return () => {
-      canRun = false;
       cleans.forEach((it) => {
         it();
       });
     };
-  }, [dx, dy, dz, gl, mounter, offsetGrid, px, py, pz]);
+  }, [
+    dx,
+    dy,
+    dz,
+    gl,
+    gravityFactor,
+    mounter,
+    offsetGrid,
+    pressureFactor,
+    px,
+    py,
+    pz,
+  ]);
 
   useFrame((st, dt) => {
     onRender.current(st, dt);
