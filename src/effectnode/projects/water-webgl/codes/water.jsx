@@ -6,6 +6,14 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import {
+  BoxGeometry,
+  CircleGeometry,
+  MeshStandardMaterial,
+  NoBlending,
+  SpriteMaterial,
+  Vector3,
+} from "three";
+import {
   Color,
   DataTexture,
   DoubleSide,
@@ -206,7 +214,13 @@ function Content3D() {
 
         uniform float delta;
         uniform sampler2D gridTex;
-
+        uniform vec3 pointerWorld;
+      
+        float sdSphere( vec3 p, float s )
+        {
+          return length(p)-s;
+        }
+          
         void main (void) {
             vec2 myUV = gl_FragCoord.xy / iResolution;
 
@@ -253,13 +267,25 @@ function Content3D() {
 
                   outputVel += diff * -0.0001 * pressure * delta;
                   
-                  /////
+                  /////ß
                 }
               }
             }
 
             // gravity
-            outputVel.y += -0.01 * delta;
+            outputVel.y += -0.01 * delta * outputPos.y * 0.5;
+
+
+            // mouse
+            float mouseRadius = 0.5;
+            float mouseForceSize = sdSphere(pointerWorld, mouseRadius);
+            vec3 normalParticleMouse = normalize(outputPos.rgb - pointerWorld);
+            
+            if (length(pointerWorld- outputPos) <= 3.5) {
+              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.05;
+            }
+
+            
 
             if (outputPos.x >= boundMax.x) {
                 outputVel.x += -1.0 * delta;
@@ -316,6 +342,14 @@ function Content3D() {
       particleVelocityInitTex
     );
     particleVelocityVar.material.uniforms.delta = { value: 0 };
+    particleVelocityVar.material.uniforms.pointerWorld = {
+      value: new Vector3(),
+    };
+    window.addEventListener("pointerWorld", ({ detail }) => {
+      particleVelocityVar.material.uniforms.pointerWorld.value.fromArray(
+        detail
+      );
+    });
 
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
@@ -554,7 +588,7 @@ function Content3D() {
       //
       //
       let ibg = new InstancedBufferGeometry();
-      ibg.copy(new SphereGeometry(1, 8, 8));
+      ibg.copy(new BoxGeometry(1, 1, 1));
 
       //
       ibg.instanceCount = COUNT_PARTICLE;
@@ -572,11 +606,13 @@ function Content3D() {
       );
       ibg.needsUpdate = true;
 
-      let mat = new MeshPhysicalMaterial({
-        color: new Color("#ff0000"),
+      let mat = new MeshStandardMaterial({
+        color: new Color("#ff00ff"),
+        transparent: true,
+        opacity: 0.1,
         side: DoubleSide,
         transparent: true,
-        depthWrite: true,
+        depthWrite: false,
       });
 
       mat.onBeforeCompile = (shader, renderer) => {

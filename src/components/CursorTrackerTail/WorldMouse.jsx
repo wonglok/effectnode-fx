@@ -170,6 +170,10 @@ export function WorldMouse({ src, useStore }) {
         //   distanceLooker.getWorldPosition(cursor.position);
         // }
       }
+
+      window.dispatchEvent(
+        new CustomEvent("pointerWorld", { detail: cursor.position.toArray() })
+      );
     });
 
     new CursorTrackerTail({
