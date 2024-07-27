@@ -60,6 +60,7 @@ function Content3D() {
   let gl = useThree((r) => r.gl);
   let onRender = useRef(() => {});
   useEffect(() => {
+    let cleans = [];
     let canRun = true;
     //
     // -  - //
@@ -279,7 +280,7 @@ function Content3D() {
             }
 
             // gravity
-            outputVel.y += -0.02 * delta * outputPos.y * 0.5;
+            outputVel.y += -0.05 * delta * outputPos.y * 0.5;
 
 
             // mouse
@@ -352,7 +353,7 @@ function Content3D() {
       value: new Vector3(),
     };
 
-    window.addEventListener("pointerWorld", ({ detail }) => {
+    let hh = ({ detail }) => {
       if (!canRun) {
         return;
       }
@@ -360,7 +361,14 @@ function Content3D() {
         detail
       );
       particleVelocityVar.material.uniforms.pointerWorld.value.sub(offsetGrid);
+    };
+    window.addEventListener("pointerWorld", hh);
+
+    cleans.push(() => {
+      window.removeEventListener("pointerWorld", hh);
     });
+
+    //
 
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
@@ -921,6 +929,9 @@ void main() {
 
     return () => {
       canRun = false;
+      cleans.forEach((it) => {
+        it();
+      });
     };
   }, [dx, dy, dz, gl, mounter, offsetGrid, px, py, pz]);
 
