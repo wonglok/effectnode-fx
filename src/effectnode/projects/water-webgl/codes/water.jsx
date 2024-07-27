@@ -985,19 +985,7 @@ void main() {
         it();
       });
     };
-  }, [
-    dx,
-    dy,
-    dz,
-    gl,
-    gravityFactor,
-    mounter,
-    offsetGrid,
-    pressureFactor,
-    px,
-    py,
-    pz,
-  ]);
+  }, []);
 
   useFrame((st, dt) => {
     onRender.current(st, dt);
