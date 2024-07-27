@@ -98,7 +98,6 @@ function Content3D() {
         return vec3(_3dx, _3dy, _3dz);
     }
 
-
     vec2 worldToUV (vec3 pos, vec3 grid) {
         float _3dx = pos.x;
         float _3dy = pos.y;
@@ -175,23 +174,36 @@ function Content3D() {
         }
     `;
 
+    let particleColorInitTex = gpuParticle.createTexture();
     let particlePositionInitTex = gpuParticle.createTexture();
     {
+      let arr2 = particleColorInitTex.image.data;
+
       let arr = particlePositionInitTex.image.data;
       let i = 0;
       for (let z = 0; z < pz; z++) {
         for (let y = 0; y < py; y++) {
           for (let x = 0; x < px; x++) {
-            arr[i * 4 + 0] = dx * Math.random();
+            let r = Math.random();
+            arr[i * 4 + 0] = dx * r;
             arr[i * 4 + 1] = dy * Math.random();
             arr[i * 4 + 2] = dz * Math.random();
             arr[i * 4 + 3] = 0;
+
+            let color = ["#0000ff", "#ffffff", "#ff0000"];
+            let idx = Math.floor(color.length * r);
+            let current = new Color().set(color[idx]).convertLinearToSRGB();
+            arr2[i * 4 + 0] = current.r;
+            arr2[i * 4 + 1] = current.g;
+            arr2[i * 4 + 2] = current.b;
+            arr2[i * 4 + 3] = 0;
 
             i++;
           }
         }
       }
       particlePositionInitTex.needsUpdate = true;
+      particleColorInitTex.needsUpdate = true;
     }
 
     let particlePositionVar = gpuParticle.addVariable(
@@ -204,7 +216,7 @@ function Content3D() {
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
-    let particleVelocityShader = /* glsl */ `
+    let particleVelocityShader = `
         #define iResolution vec2(${pw.toFixed(0)}, ${pw.toFixed(0)})
 
         #define boundMax vec3(${dx.toFixed(1)},${dy.toFixed(1)},${dz.toFixed(1)})
@@ -284,15 +296,15 @@ function Content3D() {
 
 
             // mouse
-            float mouseRadius = 5.0;
+            float mouseRadius = 4.0;
             float mouseForceSize = sdSphere(pointerWorld, mouseRadius);
             vec3 normalParticleMouse = normalize(outputPos.rgb - pointerWorld);
             
             if (length(pointerWorld- outputPos) <= mouseRadius) {
-              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.1;
-            } 
+              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.075;
+            }
 
-            
+
 
             if (outputPos.x >= boundMax.x) {
                 outputVel.x += -1.0 * delta;
@@ -546,28 +558,14 @@ function Content3D() {
     ///////////////
 
     onRender.current = (st, dt) => {
+      if (dt >= 1) {
+        dt = 1;
+      }
+
+      slotComputeGPU.compute();
       particlePositionVar.material.uniforms.delta.value = dt;
       particleVelocityVar.material.uniforms.delta.value = dt;
       gpuParticle.compute();
-
-      slotComputeGPU.compute();
-
-      // //
-      // let rtt = gpuParticle.getCurrentRenderTarget(particlePositionVar);
-      // //
-      // /** @type {WebGLRenderer} */
-      // let gl = st.gl;
-
-      // /////////
-
-      // /////////
-
-      // // let f32Arr = new Float32Array(new Array(rtt.width * rtt.height * 4));
-      // // gl.readRenderTargetPixelsAsync(rtt, 0, 0, rtt.width, rtt.height, f32Arr);
-
-      // //
-
-      // //
     };
 
     //////////////////////////////////////////////////////////////////////
@@ -628,7 +626,7 @@ function Content3D() {
       let mat = new MeshStandardMaterial({
         flatShading: true,
         color: new Color("#000000"),
-        emissive: new Color("#999999"),
+        emissive: new Color("#000000"),
         metalness: 0.3,
         roughness: 0.3,
         transparent: true,
@@ -639,6 +637,11 @@ function Content3D() {
       });
 
       mat.onBeforeCompile = (shader, renderer) => {
+        shader.uniforms.particleColor = {
+          get value() {
+            return particleColorInitTex;
+          },
+        };
         shader.uniforms.particlePosition = {
           get value() {
             return gpuParticle.getCurrentRenderTarget(particlePositionVar)
@@ -679,8 +682,11 @@ varying vec3 vViewPosition;
 attribute vec2 offsetUV;
 uniform sampler2D particlePosition;
 uniform sampler2D particleVelocity;
+uniform sampler2D particleColor;
 
+varying vec4 vColorRGBA;
 varying vec3 vVel;
+varying vec2 vMyUV;
 void main() {
 
 	#include <uv_vertex>
@@ -699,7 +705,11 @@ void main() {
 
   vec4 offsetPos = texture2D(particlePosition, offsetUV);
   vec4 offsetVel = texture2D(particlePosition, offsetUV);
+  vec4 offsetColor = texture2D(particleColor, offsetUV);
 
+  vMyUV = offsetUV;
+
+  vColorRGBA = offsetColor.rgba;
   vVel = offsetVel.rgb;
 
     vec3 transformed = vec3( position + offsetPos.rgb );
@@ -733,6 +743,10 @@ void main() {
 
         shader.fragmentShader = /* glsl */ `
         varying vec3 vVel;
+        varying vec4 vColorRGBA;
+        varying vec2 vMyUV;
+
+        uniform sampler2D particleColor;
 
         #define STANDARD
         
@@ -911,8 +925,12 @@ void main() {
             #include <fog_fragment>
             #include <premultiplied_alpha_fragment>
             #include <dithering_fragment>
-        
-        }
+
+
+            vec4 offsetColor = texture2D(particleColor, vMyUV);
+
+            gl_FragColor.rgb = (offsetColor.rgb);
+          }
         `;
       };
       let mesh = new Mesh(ibg, mat);
