@@ -36,9 +36,9 @@ import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRe
 
 //
 function Content3D() {
-  let dx = 10;
-  let dy = 10;
-  let dz = 10;
+  let dx = 16;
+  let dy = 8;
+  let dz = 16;
 
   let offsetGrid = useMemo(() => {
     return new Vector3(dx * -0.5, 0, dz * -0.5 - 7);
@@ -52,8 +52,8 @@ function Content3D() {
   }, []);
 
   let pz = 256;
-  let px = Math.pow(pz, 1 / 2);
   let py = Math.pow(pz, 1 / 2);
+  let px = Math.pow(pz, 1 / 2);
 
   let [{ mounter, show }] = useMemo(() => {
     let mounter = new Object3D();
@@ -289,13 +289,13 @@ function Content3D() {
                     continue;
                   }
 
-                  vec3 centerPos = outputPos;
+                  vec3 centerPos =  floor(outputPos) + 0.5;
 
                   vec3 sidePos = vec3(
                     float(x), 
                     float(y), 
                     float(z)
-                  ) + floor(outputPos) + 0.5;
+                  ) + centerPos;
 
                   vec2 particleUV = worldToUV(sidePos, particles);
                   vec3 worldPositionSlot = uvToWorld(particleUV, bounds);
@@ -649,7 +649,7 @@ function Content3D() {
       //
       let ibg = new InstancedBufferGeometry();
       ibg.copy(new IcosahedronGeometry(1, 0));
-      ibg.scale(0.05, 0.05, 0.05);
+      ibg.scale(0.1, 0.1, 0.1);
       //
       ibg.instanceCount = COUNT_PARTICLE;
 
