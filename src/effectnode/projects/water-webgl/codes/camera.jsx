@@ -1,4 +1,5 @@
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { XROrigin } from "@react-three/xr";
 // import { Mouse } from "src/components/CursorTrackerTail/Mouse";
 
 export function ToolBox({}) {
@@ -14,15 +15,17 @@ export function Runtime({ ui, useStore, io }) {
       <Insert3D>
         <PerspectiveCamera
           makeDefault
-          position={[0, 1.87, 0.0333 + 20]}
+          position={[0, 1.87 + 0.5, 0 + 15.01]}
         ></PerspectiveCamera>
         {/*  */}
         <OrbitControls
-          object-position={[0, 1.87 + 1, 0.0333 + 20]}
-          target={[0.01, 1.87 + 1, 0.0 + 20.0]}
+          object-position={[0, 1.87 + 0.5, 0.01 + 15]}
+          target={[0, 1.87 + 0.5, 15]}
           makeDefault
           rotateSpeed={1}
         ></OrbitControls>
+
+        <XROrigin position={[0, 1.87 + 0.5, 15]} />
       </Insert3D>
     </>
   );

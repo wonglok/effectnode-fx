@@ -4,6 +4,7 @@
 //
 
 import { useFrame, useThree } from "@react-three/fiber";
+import { XROrigin } from "@react-three/xr";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import {
   BoxGeometry,
@@ -32,6 +33,18 @@ import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRe
 
 //
 function Content3D() {
+  let dx = 10;
+  let dz = 10;
+  let dy = 10;
+
+  let px = 16;
+  let py = 16;
+  let pz = 256;
+
+  let offsetGrid = useMemo(() => {
+    return new Vector3(dx * -0.5, 0, dz * -0.5);
+  }, [dx, dz]);
+
   let [{ mounter, show }] = useMemo(() => {
     let mounter = new Object3D();
     let show = <primitive object={mounter}></primitive>;
@@ -45,6 +58,7 @@ function Content3D() {
   let gl = useThree((r) => r.gl);
   let onRender = useRef(() => {});
   useEffect(() => {
+    let canRun = true;
     //
     // -  - //
     //
@@ -107,16 +121,6 @@ function Content3D() {
     ///////////
     ///////////
     // particle
-
-    // let gravity = -0.1;
-
-    let dx = 10;
-    let dz = 10;
-    let dy = 10;
-
-    let px = 16;
-    let py = 16;
-    let pz = 256;
 
     let pw = px * py;
     let ph = pz;
@@ -273,16 +277,16 @@ function Content3D() {
             }
 
             // gravity
-            outputVel.y += -0.01 * delta * outputPos.y * 0.5;
+            outputVel.y += -0.02 * delta * outputPos.y * 0.5;
 
 
             // mouse
-            float mouseRadius = 0.5;
+            float mouseRadius = 3.0;
             float mouseForceSize = sdSphere(pointerWorld, mouseRadius);
             vec3 normalParticleMouse = normalize(outputPos.rgb - pointerWorld);
             
-            if (length(pointerWorld- outputPos) <= 3.5) {
-              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * -0.075;
+            if (length(pointerWorld- outputPos) <= mouseRadius) {
+              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * -0.1;
             } 
 
             
@@ -345,10 +349,15 @@ function Content3D() {
     particleVelocityVar.material.uniforms.pointerWorld = {
       value: new Vector3(),
     };
+
     window.addEventListener("pointerWorld", ({ detail }) => {
+      if (!canRun) {
+        return;
+      }
       particleVelocityVar.material.uniforms.pointerWorld.value.fromArray(
         detail
       );
+      particleVelocityVar.material.uniforms.pointerWorld.value.sub(offsetGrid);
     });
 
     ////////////////////////////////////////////////////////////////
@@ -589,7 +598,7 @@ function Content3D() {
       //
       let ibg = new InstancedBufferGeometry();
       ibg.copy(new BoxGeometry(1, 1, 1));
-
+      ibg.scale(0.025, 0.025, 0.025);
       //
       ibg.instanceCount = COUNT_PARTICLE;
 
@@ -607,13 +616,11 @@ function Content3D() {
       ibg.needsUpdate = true;
 
       let mat = new MeshPhysicalMaterial({
-        color: new Color("#00ffff"),
-        metalness: 0,
-        roughness: 0,
-        transmission: 1,
-        thickness: 2,
+        color: new Color("#008888"),
+        metalness: 0.3,
+        roughness: 0.3,
         transparent: true,
-        opacity: 1,
+        opacity: 0.5,
         side: DoubleSide,
         transparent: true,
         depthWrite: true,
@@ -683,7 +690,7 @@ void main() {
 
   vVel = offsetVel.rgb;
 
-    vec3 transformed = vec3( position * 0.05 + offsetPos.rgb );
+    vec3 transformed = vec3( position + offsetPos.rgb );
 
     #ifdef USE_ALPHAHASH
     
@@ -884,7 +891,7 @@ void main() {
               diffuseColor.a *= material.transmissionAlpha;
             #endif
 
-            gl_FragColor = vec4( outgoingLight * 0.25 * length(vVel * 0.5 + 0.5), diffuseColor.a );
+            gl_FragColor = vec4( outgoingLight.rgb * 0.18 * (vec3(vVel.x, vVel.y, vVel.z) * 0.5 + 0.5), diffuseColor.a );
 
             //include <opaque_fragment>
             #include <tonemapping_fragment>
@@ -907,7 +914,11 @@ void main() {
       //
     }
     //
-  }, [gl, mounter]);
+
+    return () => {
+      canRun = false;
+    };
+  }, [dx, dy, dz, gl, mounter, offsetGrid, px, py, pz]);
 
   useFrame((st, dt) => {
     onRender.current(st, dt);
@@ -915,8 +926,7 @@ void main() {
   return (
     <>
       {/*  */}
-
-      {show}
+      <group position={offsetGrid.toArray()}>{show}</group>
 
       {/*  */}
     </>
