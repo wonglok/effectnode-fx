@@ -100,10 +100,11 @@ function Content3D() {
     ///////////
     // particle
 
-    let dimension = Math.floor(Math.pow(256 * 256, 1 / 3));
-    let dx = dimension * 1;
-    let dz = dimension * 1;
-    let dy = dimension * 1;
+    // let gravity = -0.1;
+
+    let dx = 10;
+    let dz = 10;
+    let dy = 10;
 
     let px = 16;
     let py = 16;
@@ -204,6 +205,8 @@ function Content3D() {
         })}
 
         uniform float delta;
+        uniform sampler2D gridTex;
+
         void main (void) {
             vec2 myUV = gl_FragCoord.xy / iResolution;
 
@@ -211,59 +214,77 @@ function Content3D() {
             vec4 particleVelocityData = texture2D(particleVelocity, myUV);
 
             vec3 outputPos = particlePositionData.rgb;
-
             vec3 outputVel = particleVelocityData.rgb;
 
-            vec2 uvPos = worldToUV(outputPos, bounds);
-            vec3 posWorld = uvToWorld(uvPos, particles);
+            for (int z = -2; z <= 2; z++) {
+              for (int y = -2; y <= 2; y++) {
+                for (int x = -2; x <= 2; x++) {
 
-            
-            for (int z = -1; z <= 1; z++) {
-              for (int y = -1; y <= 1; y++) {
-                for (int x = -1; x <= 1; x++) {
+                  if (x == 0 && y == 0 && z == 0) {
+                    continue;
+                  }
+                
+                  vec3 centerPos = outputPos;
 
-                  vec2 uvGrid = worldToUV(vec3(
+                  vec3 sidePos = vec3(
                     float(x), 
                     float(y), 
                     float(z)
-                  ) + posWorld, bounds);
+                  ) + floor(outputPos) + 0.5;
 
+                  vec2 particleUV = worldToUV(sidePos, particles);
+                  vec3 worldPositionSlot = uvToWorld(particleUV, bounds);
                   
+                  worldPositionSlot.x = max(min(worldPositionSlot.x, bounds.x), 0.0);
+                  worldPositionSlot.y = max(min(worldPositionSlot.y, bounds.y), 0.0);
+                  worldPositionSlot.z = max(min(worldPositionSlot.z, bounds.z), 0.0);
+                  
+                  vec2 slotUV = worldToUV(worldPositionSlot, bounds);
+
+                  vec4 slot = texture2D(gridTex, slotUV);
+
+                  vec4 posData = texture2D(particlePosition, particleUV);
+
+                  float pressure = slot.r;
+
+                  //////
+
+                  vec3 diff = vec3(sidePos.rgb - outputPos.rgb);
+
+                  outputVel += diff * -0.0001 * pressure * delta;
+                  
+                  /////
                 }
               }
             }
 
+            // gravity
+            outputVel.y += -0.01 * delta;
 
-            
-            //
-
-
-            outputVel.y -= 0.1 * delta;
-            
             if (outputPos.x >= boundMax.x) {
                 outputVel.x += -1.0 * delta;
-                outputVel.x *= delta * 0.5;
+                // outputVel.x *= delta * 0.5;
             }
             if (outputPos.y >= boundMax.y) {
                 outputVel.y += -1.0 * delta;
-                outputVel.y *= delta * 0.5;
+                // outputVel.y *= delta * 0.5;
             }
             if (outputPos.z >= boundMax.z) {
                 outputVel.z += -1.0 * delta;
-                outputVel.z *= delta * 0.5;
+                // outputVel.z *= delta * 0.5;
             }
 
             if (outputPos.x <= boundMin.x) {
                 outputVel.x += 1.0 * delta;
-                outputVel.x *= delta * 0.5;
+                // outputVel.x *= delta * 0.5;
             }
             if (outputPos.y <= boundMin.y) {
                 outputVel.y += 1.0 * delta;
-                outputVel.y *= delta * 0.5;
+                // outputVel.y *= delta * 0.5;
             }
             if (outputPos.z <= boundMin.z) {
                 outputVel.z += 1.0 * delta;
-                outputVel.z *= delta * 0.5;
+                // outputVel.z *= delta * 0.5;
             }
 
             gl_FragColor = vec4(outputVel.rgb, 1.0);
@@ -345,6 +366,7 @@ function Content3D() {
         })}
 
         uniform sampler2D particlePositionTex;
+        uniform sampler2D particleVelocityTex;
 
         void main (void) {
             //
@@ -357,23 +379,27 @@ function Content3D() {
             vec3 worldPos = uvToWorld(uv, bounds);
 
             float counter = 0.0;
+            vec3 velocity = vec3(0.0);
             for (int z = 0; z < ${pz.toFixed(0)}; z++) {
               for (int y = 0; y < ${py.toFixed(0)}; z++) {
                 for (int x = 0; x < ${px.toFixed(0)}; z++) {
                   //
+                  //
+                  vec4 parPosData = texture2D(particlePositionTex, 
+                    worldToUV(vec3(float(x), float(y), float(z)), particles)
+                  );
 
-                  vec4 parPosData = texture2D(particlePositionTex, worldToUV(vec3(float(x), float(y), float(z)), bounds));
-
+                  //
                   if (
                     true 
-                    && parPosData.x >= floor(worldPos.x) - 1.0
-                    && parPosData.x <= floor(worldPos.x) + 1.0 
+                    && parPosData.x >= floor(worldPos.x) + 3.0
+                    && parPosData.x <= floor(worldPos.x) - 3.0 
                     //
-                    && parPosData.y >= floor(worldPos.y) - 1.0
-                    && parPosData.y <= floor(worldPos.y) + 1.0 
+                    && parPosData.y >= floor(worldPos.y) + 3.0
+                    && parPosData.y <= floor(worldPos.y) - 3.0 
                     //
-                    && parPosData.z >= floor(worldPos.z) - 1.0
-                    && parPosData.z <= floor(worldPos.z) + 1.0 
+                    && parPosData.z >= floor(worldPos.z) + 3.0
+                    && parPosData.z <= floor(worldPos.z) - 3.0 
                     //
                   ) {
                     counter += 1.0;
@@ -382,7 +408,7 @@ function Content3D() {
               }
             }
 
-            gl_FragColor = vec4(counter, 0.0, 0.0, 1.0);
+            gl_FragColor = vec4(counter);
 
             ///////////
 
@@ -441,6 +467,11 @@ function Content3D() {
     slotComputeVar.material.uniforms.particlePositionTex = {
       value() {
         return gpuParticle.getCurrentRenderTarget(particlePositionVar).texture;
+      },
+    };
+    slotComputeVar.material.uniforms.particleVelocityTex = {
+      value() {
+        return gpuParticle.getCurrentRenderTarget(particleVelocityVar).texture;
       },
     };
 
@@ -523,7 +554,7 @@ function Content3D() {
       //
       //
       let ibg = new InstancedBufferGeometry();
-      ibg.copy(new SphereGeometry(1, 23, 23));
+      ibg.copy(new SphereGeometry(1, 8, 8));
 
       //
       ibg.instanceCount = COUNT_PARTICLE;
@@ -545,6 +576,7 @@ function Content3D() {
         color: new Color("#ff0000"),
         side: DoubleSide,
         transparent: true,
+        depthWrite: true,
       });
 
       mat.onBeforeCompile = (shader, renderer) => {
