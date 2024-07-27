@@ -14,6 +14,7 @@ import {
   MeshStandardMaterial,
   NoBlending,
   SpriteMaterial,
+  Uniform,
   Vector3,
 } from "three";
 import {
@@ -39,8 +40,12 @@ function Content3D() {
   let dy = 10;
   let dz = 10;
 
-  let gravityFactor = 1.0;
-  let pressureFactor = 1;
+  let gravityFactor = useMemo(() => {
+    return new Uniform(1.0);
+  }, []);
+  let pressureFactor = useMemo(() => {
+    return new Uniform(1.0);
+  }, []);
 
   let pz = 512;
   let px = Math.pow(pz, 1 / 2);
@@ -240,6 +245,10 @@ function Content3D() {
         uniform float delta;
         uniform sampler2D gridTex;
         uniform vec3 pointerWorld;
+
+        uniform float gravityFactor;
+        uniform float pressureFactor;
+        
       
         float sdSphere( vec3 p, float s )
         {
@@ -290,7 +299,7 @@ function Content3D() {
 
                   vec3 diff = vec3(sidePos.rgb - outputPos.rgb);
 
-                  outputVel += diff * -0.0001 * pressure * delta * ${pressureFactor.toFixed(3)};
+                  outputVel += diff * -0.0001 * pressure * delta * pressureFactor;
                   
                   /////
                 }
@@ -298,18 +307,18 @@ function Content3D() {
             }
 
             // gravityFactor
-            outputVel.y += -0.05 * ${gravityFactor.toFixed(3)} * delta * outputPos.y * 0.5;
+            outputVel.y += -0.025 * gravityFactor * delta * outputPos.y;
 
 
             // mouse
-            float mouseRadius = 4.0;
+            float mouseRadius = 3.3333;
             float mouseForceSize = sdSphere(pointerWorld, mouseRadius);
             vec3 normalParticleMouse = normalize(outputPos.rgb - pointerWorld);
             
             if (length(pointerWorld- outputPos) <= mouseRadius) {
               outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.075;
             }
-
+       
 
 
             if (outputPos.x >= boundMax.x) {
@@ -370,7 +379,8 @@ function Content3D() {
     particleVelocityVar.material.uniforms.pointerWorld = {
       value: new Vector3(),
     };
-
+    particleVelocityVar.material.uniforms.pressureFactor = pressureFactor;
+    particleVelocityVar.material.uniforms.gravityFactor = gravityFactor;
     let hh = ({ detail }) => {
       if (!canRun) {
         return;
