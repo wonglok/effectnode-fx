@@ -625,9 +625,9 @@ function Content3D() {
 
       let mat = new MeshStandardMaterial({
         flatShading: true,
-        color: new Color("#000000"),
+        color: new Color("#ffffff"),
         emissive: new Color("#000000"),
-        metalness: 0.3,
+        metalness: 0.0,
         roughness: 0.3,
         transparent: true,
         opacity: 0.5,
@@ -917,7 +917,10 @@ void main() {
               diffuseColor.a *= material.transmissionAlpha;
             #endif
 
-            gl_FragColor = vec4( outgoingLight.rgb * 0.18 * (vec3(vVel.x, vVel.y, vVel.z) * 0.5 + 0.5), diffuseColor.a );
+            vec4 offsetColor = texture2D(particleColor, vMyUV);
+
+
+            gl_FragColor = vec4( offsetColor.rgb * outgoingLight.rgb, diffuseColor.a );
 
             //include <opaque_fragment>
             #include <tonemapping_fragment>
@@ -926,10 +929,7 @@ void main() {
             #include <premultiplied_alpha_fragment>
             #include <dithering_fragment>
 
-
-            vec4 offsetColor = texture2D(particleColor, vMyUV);
-
-            gl_FragColor.rgb = (offsetColor.rgb);
+            // gl_FragColor.rgb = (offsetColor.rgb);
           }
         `;
       };
