@@ -36,12 +36,15 @@ import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRe
 //
 function Content3D() {
   let dx = 10;
-  let dz = 10;
   let dy = 10;
+  let dz = 10;
 
-  let px = 16;
-  let py = 16;
-  let pz = 256;
+  let gravityFactor = 1.0;
+  let pressureFactor = 1;
+
+  let pz = 512;
+  let px = Math.pow(pz, 1 / 2);
+  let py = Math.pow(pz, 1 / 2);
 
   let offsetGrid = useMemo(() => {
     return new Vector3(dx * -0.5, 0, dz * -0.5 - 7);
@@ -192,7 +195,10 @@ function Content3D() {
 
             let color = ["#0000ff", "#ffffff", "#ff0000"];
             let idx = Math.floor(color.length * r);
-            let current = new Color().set(color[idx]).convertLinearToSRGB();
+            let current = new Color()
+              .set(color[idx])
+              .convertLinearToSRGB()
+              .offsetHSL(0, -0.05, 0.0);
             arr2[i * 4 + 0] = current.r;
             arr2[i * 4 + 1] = current.g;
             arr2[i * 4 + 2] = current.b;
@@ -284,15 +290,15 @@ function Content3D() {
 
                   vec3 diff = vec3(sidePos.rgb - outputPos.rgb);
 
-                  outputVel += diff * -0.0001 * pressure * delta;
+                  outputVel += diff * -0.0001 * pressure * delta * ${pressureFactor.toFixed(3)};
                   
-                  /////ß
+                  /////
                 }
               }
             }
 
-            // gravity
-            outputVel.y += -0.05 * delta * outputPos.y * 0.5;
+            // gravityFactor
+            outputVel.y += -0.05 * ${gravityFactor.toFixed(3)} * delta * outputPos.y * 0.5;
 
 
             // mouse
@@ -628,7 +634,7 @@ function Content3D() {
         color: new Color("#ffffff"),
         emissive: new Color("#000000"),
         metalness: 0.0,
-        roughness: 0.3,
+        roughness: 0.0,
         transparent: true,
         opacity: 0.5,
         side: FrontSide,
