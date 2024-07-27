@@ -51,7 +51,7 @@ function Content3D() {
     return new Uniform(1.0);
   }, []);
 
-  let pz = 256;
+  let pz = 128;
   let py = Math.pow(pz, 1 / 2);
   let px = Math.pow(pz, 1 / 2);
 
@@ -343,28 +343,28 @@ function Content3D() {
             }
 
             if (outputPos.x >= boundMax.x) {
-                outputVel.x *= 0.5;
+                // outputVel.x *= 0.5;
                 outputVel.x += -1.0 * delta;
             }
             if (outputPos.y >= boundMax.y) {
-                outputVel.y *= 0.5;
+                // outputVel.y *= 0.5;
                 outputVel.y += -1.0 * delta;
             }
             if (outputPos.z >= boundMax.z) {
-                outputVel.z *= 0.5;
+                // outputVel.z *= 0.5;
                 outputVel.z += -1.0 * delta;
             }
 
             if (outputPos.x <= boundMin.x) {
-                outputVel.x *= 0.5;
+                // outputVel.x *= 0.5;
                 outputVel.x += 1.0 * delta;
             }
             if (outputPos.y <= boundMin.y) {
-                outputVel.y *= 0.5;
+                // outputVel.y *= 0.5;
                 outputVel.y += 1.0 * delta;
             }
             if (outputPos.z <= boundMin.z) {
-                outputVel.z *= 0.5;
+                // outputVel.z *= 0.5;
                 outputVel.z += 1.0 * delta;
             }
 
@@ -483,9 +483,9 @@ function Content3D() {
             float counter = 1.0;
 
             vec3 velocity = vec3(0.0);
-            for (int z = 0; z < ${pz.toFixed(0)}; z++) {
-              for (int y = 0; y < ${py.toFixed(0)}; y++) {
-                for (int x = 0; x < ${px.toFixed(0)}; x++) {
+            for (int z = 0; z < int(bounds.z); z++) {
+              for (int y = 0; y < int(bounds.y); y++) {
+                for (int x = 0; x < int(bounds.x); x++) {
                   //
 
                   vec4 parPosData = texture2D(particlePositionTex, 
