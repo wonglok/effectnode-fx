@@ -182,9 +182,9 @@ function Content3D() {
       for (let z = 0; z < pz; z++) {
         for (let y = 0; y < py; y++) {
           for (let x = 0; x < px; x++) {
-            arr[i * 4 + 0] = 10 * Math.random();
-            arr[i * 4 + 1] = 10 * Math.random();
-            arr[i * 4 + 2] = 10 * Math.random();
+            arr[i * 4 + 0] = dx * Math.random();
+            arr[i * 4 + 1] = dy * Math.random();
+            arr[i * 4 + 2] = dz * Math.random();
             arr[i * 4 + 3] = 0;
 
             i++;
