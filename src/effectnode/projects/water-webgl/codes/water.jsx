@@ -103,10 +103,20 @@ function Content3D() {
         float _3dy = floor(ty);
         float _3dz = floor(dxdz / dx);
 
-        return vec3(_3dx, _3dy, _3dz);
+        vec3 pos = vec3(_3dx, _3dy, _3dz);
+
+        pos.x = max(min(pos.x, grid.x), 0.0);
+        pos.y = max(min(pos.y, grid.y), 0.0);
+        pos.z = max(min(pos.z, grid.z), 0.0);
+
+        return pos;
     }
 
     vec2 worldToUV (vec3 pos, vec3 grid) {
+        pos.x = max(min(pos.x, grid.x), 0.0);
+        pos.y = max(min(pos.y, grid.y), 0.0);
+        pos.z = max(min(pos.z, grid.z), 0.0);
+        
         float _3dx = pos.x;
         float _3dy = pos.y;
         float _3dz = pos.z;
@@ -280,6 +290,10 @@ function Content3D() {
                     float(z)
                   ) + floor(outputPos) + 0.5;
 
+                  sidePos.x = max(min(sidePos.x, particles.x), 0.0);
+                  sidePos.y = max(min(sidePos.y, particles.y), 0.0);
+                  sidePos.z = max(min(sidePos.z, particles.z), 0.0);
+                  
                   vec2 particleUV = worldToUV(sidePos, particles);
                   vec3 worldPositionSlot = uvToWorld(particleUV, bounds);
                   
@@ -299,7 +313,7 @@ function Content3D() {
 
                   vec3 diff = vec3(sidePos.rgb - centerPos.rgb);
 
-                  outputVel += normalize(diff) * -0.0003 * pressure * delta * pressureFactor;
+                  outputVel += normalize(diff) / length(diff) * -0.003 * pressure * delta * pressureFactor;
                   
                   /////
                 }
@@ -322,28 +336,28 @@ function Content3D() {
 
             if (outputPos.x >= boundMax.x) {
                 outputVel.x += -1.0 * delta;
-                // outputVel.x *= delta * 0.5;
+                // outputVel.x *= -1.0;
             }
             if (outputPos.y >= boundMax.y) {
                 outputVel.y += -1.0 * delta;
-                // outputVel.y *= delta * 0.5;
+                // outputVel.y *= -1.0;
             }
             if (outputPos.z >= boundMax.z) {
                 outputVel.z += -1.0 * delta;
-                // outputVel.z *= delta * 0.5;
+                // outputVel.z *= -1.0;
             }
 
             if (outputPos.x <= boundMin.x) {
                 outputVel.x += 1.0 * delta;
-                // outputVel.x *= delta * 0.5;
+                // outputVel.x *= -1.0;
             }
             if (outputPos.y <= boundMin.y) {
                 outputVel.y += 1.0 * delta;
-                // outputVel.y *= delta * 0.5;
+                // outputVel.y *= -1.0;
             }
             if (outputPos.z <= boundMin.z) {
                 outputVel.z += 1.0 * delta;
-                // outputVel.z *= delta * 0.5;
+                // outputVel.z *= -1.0;
             }
 
             gl_FragColor = vec4(outputVel.rgb, 1.0);
