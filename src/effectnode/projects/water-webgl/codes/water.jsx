@@ -98,8 +98,8 @@ function Content3D() {
         float ty = uvy * dz;
         
         float _3dx = (mod(tx, dy) / dx);
-        float _3dz = (ty / dz);
         float _3dy = (mod(tx, dx) / dy);
+        float _3dz = (ty / dz);
 
         vec3 pos = vec3(_3dx, _3dy, _3dz);
 
