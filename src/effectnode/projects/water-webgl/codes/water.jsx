@@ -341,7 +341,6 @@ function Content3D() {
             if (length(pointerWorld - outputPos) <= mouseRadius) {
               outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.1;
             }
-       
 
             if (outputPos.x >= boundMax.x) {
                 outputVel.x *= 0.5;
