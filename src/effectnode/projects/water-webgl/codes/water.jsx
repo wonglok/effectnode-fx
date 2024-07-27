@@ -272,13 +272,13 @@ function Content3D() {
             vec3 outputPos = particlePositionData.rgb;
             vec3 outputVel = particleVelocityData.rgb;
 
-            for (int z = -1; z <= 1; z++) {
-              for (int y = -1; y <= 1; y++) {
-                for (int x = -1; x <= 1; x++) {
+            for (int z = -2; z <= 2; z++) {
+              for (int y = -2; y <= 2; y++) {
+                for (int x = -2; x <= 2; x++) {
 
-                  // if (x == 0 && y == 0 && z == 0) {
-                  //   continue;
-                  // }
+                  if (x == 0 && y == 0 && z == 0) {
+                    continue;
+                  }
                 
                   vec3 centerPos = outputPos;
 
@@ -286,15 +286,10 @@ function Content3D() {
                     float(x), 
                     float(y), 
                     float(z)
-                  ) + floor(outputPos) + 0.5;
-
+                  ) + floor(centerPos) + 0.5;
+                  
                   vec2 particleUV = worldToUV(sidePos, particles);
                   vec3 worldPositionSlot = uvToWorld(particleUV, bounds);
-                  
-                  worldPositionSlot.x = max(min(worldPositionSlot.x, bounds.x), 0.0);
-                  worldPositionSlot.y = max(min(worldPositionSlot.y, bounds.y), 0.0);
-                  worldPositionSlot.z = max(min(worldPositionSlot.z, bounds.z), 0.0);
-                  
                   vec2 slotUV = worldToUV(worldPositionSlot, bounds);
 
                   vec4 slot = texture2D(gridTex, slotUV);
@@ -311,7 +306,7 @@ function Content3D() {
 
                   vec3 diff = vec3(sidePos.rgb - centerPos.rgb);
 
-                  outputVel += normalize(diff) / length(diff) * -0.0025 * pressure * delta * pressureFactor;
+                  outputVel += normalize(diff) / length(diff) * -0.001 * pressure * delta * pressureFactor;
                   
                   /////
                 }

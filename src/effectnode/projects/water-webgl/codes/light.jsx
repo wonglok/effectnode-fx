@@ -1,4 +1,5 @@
 import { Environment, Sky } from "@react-three/drei";
+import { Suspense } from "react";
 
 export function ToolBox({}) {
   return <></>;
@@ -18,11 +19,14 @@ export function Runtime({ ui, useStore, io }) {
           intensity={ui.intensity}
           distance={-1}
         ></pointLight> */}
-        <Environment
-          background={false}
-          environmentIntensity={1.5}
-          files={[files["/hdr/shanghai_bund_1k.hdr"]]}
-        ></Environment>
+        <Suspense fallback={null}>
+          <Environment
+            background={false}
+            environmentIntensity={1.5}
+            files={[files["/hdr/shanghai_bund_1k.hdr"]]}
+          ></Environment>
+        </Suspense>
+
         {/* <Sky></Sky> */}
       </Insert3D>
     </>
