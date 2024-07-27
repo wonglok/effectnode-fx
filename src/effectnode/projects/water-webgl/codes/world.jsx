@@ -1,6 +1,7 @@
 // import { Box, PerspectiveCamera } from "@react-three/drei";
 // import { useFrame } from "@react-three/fiber";
 // useEffect, useRef, useState
+import { Sky } from "@react-three/drei";
 import { Suspense } from "react";
 import { WorldMouse } from "src/components/CursorTrackerTail/WorldMouse";
 
@@ -39,6 +40,7 @@ export function Runtime({ ui, io, useStore, onLoop }) {
             ></WorldMouse>
           )}
         </Suspense>
+        <Sky></Sky>
       </Insert3D>
     </>
   );

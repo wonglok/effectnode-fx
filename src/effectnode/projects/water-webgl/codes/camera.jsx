@@ -26,6 +26,7 @@ export function Runtime({ ui, useStore, io }) {
           object-position={[0, 3.87 + 0.5, 0.01 + 5]}
           target={[0, 3.87 - 0.004 + 0.5, 5]}
           rotateSpeed={1}
+          makeDefault
         ></OrbitControls>
         <CameraSetter></CameraSetter>
       </Insert3D>

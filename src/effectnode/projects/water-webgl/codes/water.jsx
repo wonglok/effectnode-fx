@@ -51,7 +51,7 @@ function Content3D() {
     return new Uniform(1.0);
   }, []);
 
-  let pz = 256;
+  let pz = 128;
   let px = Math.pow(pz, 1 / 2);
   let py = Math.pow(pz, 1 / 2);
 
@@ -94,13 +94,12 @@ function Content3D() {
         // uv to 3d
         float uvx = uv.x;
         float uvy = uv.y;
-        float tx = uvx * dx * dz;
-        float ty = uvy * dy;
+        float tx = uvx * dx * dy;
+        float ty = uvy * dz;
         
-        float dxdz = tx;
-        float _3dx = (dxdz / dz);
-        float _3dy = (ty / dy);
-        float _3dz = (dxdz / dx);
+        float _3dx = (mod(tx, dy) / dx);
+        float _3dz = (ty / dz);
+        float _3dy = (mod(tx, dx) / dy);
 
         vec3 pos = vec3(_3dx, _3dy, _3dz);
 
@@ -126,8 +125,8 @@ function Content3D() {
 
         // 3d to uv
         vec2 myUV = vec2(
-            (_3dx + _3dz * dz) / (dx * dz),
-            (_3dy) / dy
+            (_3dx + _3dy * dx) / (dx * dy),
+            (_3dz) / dz
         );
 
         return myUV;
