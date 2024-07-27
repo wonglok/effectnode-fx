@@ -472,14 +472,14 @@ function Content3D() {
                   //
                   if (
                     true 
-                    && parPosData.x >= floor(worldPos.x) + 5.0
-                    && parPosData.x <= floor(worldPos.x) - 5.0 
+                    && parPosData.x >= floor(worldPos.x - 2.0)
+                    && parPosData.x <= floor(worldPos.x + 2.0)
                     //
-                    && parPosData.y >= floor(worldPos.y) + 5.0
-                    && parPosData.y <= floor(worldPos.y) - 5.0 
+                    && parPosData.y >= floor(worldPos.y - 2.0)
+                    && parPosData.y <= floor(worldPos.y + 2.0)
                     //
-                    && parPosData.z >= floor(worldPos.z) + 5.0
-                    && parPosData.z <= floor(worldPos.z) - 5.0 
+                    && parPosData.z >= floor(worldPos.z - 2.0)
+                    && parPosData.z <= floor(worldPos.z + 2.0)
                     //
                   ) {
                     counter += 1.0;
