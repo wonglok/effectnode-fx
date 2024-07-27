@@ -315,11 +315,10 @@ function Content3D() {
             float mouseForceSize = sdSphere(pointerWorld, mouseRadius);
             vec3 normalParticleMouse = normalize(outputPos.rgb - pointerWorld);
             
-            if (length(pointerWorld- outputPos) <= mouseRadius) {
+            if (length(pointerWorld - outputPos) <= mouseRadius) {
               outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.075;
             }
        
-
 
             if (outputPos.x >= boundMax.x) {
                 outputVel.x += -1.0 * delta;
