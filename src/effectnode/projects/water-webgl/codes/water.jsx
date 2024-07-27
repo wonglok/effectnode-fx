@@ -18,6 +18,7 @@ import {
   Object3D,
   RGBAFormat,
   SphereGeometry,
+  WebGLRenderer,
 } from "three";
 import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer";
 
@@ -36,6 +37,62 @@ function Content3D() {
   let gl = useThree((r) => r.gl);
   let onRender = useRef(() => {});
   useEffect(() => {
+    //
+    // -  - //
+    //
+    let coordFunctions = ({
+      px,
+      py,
+      pz,
+      //
+      dx,
+      dy,
+      dz,
+    }) => `
+
+    #define bounds vec3(${dx.toFixed(1)}, ${dy.toFixed(1)}, ${dz.toFixed(1)})
+    #define particles vec3(${px.toFixed(1)}, ${py.toFixed(1)}, ${pz.toFixed(1)})
+
+     vec3 uvToWorld (vec2 uv, vec3 grid) {
+        // grid
+        float dx = grid.x;
+        float dy = grid.y;
+        float dz = grid.z;
+
+        // uv to 3d
+        float uvx = uv.x;
+        float uvy = uv.y;
+        float tx = uvx * dx * dz;
+        float ty = uvy * dy;
+        
+        float dxdz = tx;
+        float _3dx = floor(dxdz / dz);
+        float _3dy = floor(ty);
+        float _3dz = floor(dxdz / dx);
+
+        return vec3(_3dx, _3dy, _3dz);
+    }
+
+
+    vec2 worldToUV (vec3 pos, vec3 grid) {
+        float _3dx = pos.x;
+        float _3dy = pos.y;
+        float _3dz = pos.z;
+
+        float dx = grid.x;
+        float dy = grid.y;
+        float dz = grid.z;
+
+        // 3d to uv
+        vec2 myUV = vec2(
+            floor(_3dx + _3dz * dz) / (dx * dz),
+            floor(_3dy) / dy
+        );
+
+        return myUV;
+    }
+    `;
+
     ///////////
     ///////////
     ///////////
@@ -126,6 +183,7 @@ function Content3D() {
       particlePositionShader,
       particlePositionInitTex
     );
+    particlePositionVar.material.uniforms.delta = { value: 0 };
 
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
@@ -135,6 +193,15 @@ function Content3D() {
 
         #define boundMax vec3(${dx.toFixed(1)},${dy.toFixed(1)},${dz.toFixed(1)})
         #define boundMin vec3(${(0).toFixed(1)},${(0).toFixed(1)},${(0).toFixed(1)})
+
+        ${coordFunctions({
+          px,
+          py,
+          pz,
+          dx,
+          dy,
+          dz,
+        })}
 
         uniform float delta;
         void main (void) {
@@ -146,6 +213,30 @@ function Content3D() {
             vec3 outputPos = particlePositionData.rgb;
 
             vec3 outputVel = particleVelocityData.rgb;
+
+            vec2 uvPos = worldToUV(outputPos, bounds);
+            vec3 posWorld = uvToWorld(uvPos, particles);
+
+            
+            for (int z = -1; z <= 1; z++) {
+              for (int y = -1; y <= 1; y++) {
+                for (int x = -1; x <= 1; x++) {
+
+                  vec2 uvGrid = worldToUV(vec3(
+                    float(x), 
+                    float(y), 
+                    float(z)
+                  ) + posWorld, bounds);
+
+                  
+                }
+              }
+            }
+
+
+            
+            //
+
 
             outputVel.y -= 0.1 * delta;
             
@@ -224,97 +315,74 @@ function Content3D() {
       return;
     }
 
-    onRender.current = (st, dt) => {
-      particleVelocityVar.material.uniforms.delta.value = dt;
-      slotComputeGPU.compute();
-      gpuParticle.compute();
-    };
-
     //////////////////////////////////////////////////////////////////////
     ///////////
     ///////////
+    /////////////////////////
+    // - particle to uvs - //
+    /////////////////////////
+
     ///////////
     ///////////
-    ///////////
-    // slots
+    ///////////////
+    // - slots - //
+    ///////////////
 
     let tx = dx * dz;
     let ty = dy;
-    let COUNT_DIMENSIONS = dx * dy * dz;
 
     let slotComputeGPU = new GPUComputationRenderer(tx, ty, gl);
     let slotComputeShader = `
         #define iResolution vec2(${tx.toFixed(0)}, ${ty.toFixed(0)})
-        #define dx ${dx.toFixed(1)}
-        #define dy ${dy.toFixed(1)}
-        #define dz ${dz.toFixed(1)}
 
-        uniform sampler2D uvTex;
+        ${coordFunctions({
+          px,
+          py,
+          pz,
+          dx,
+          dy,
+          dz,
+        })}
+
         uniform sampler2D particlePositionTex;
 
-        vec3 uvTo3d (vec2 uv, vec3 grid) {
-            // grid
-            float dx = grid.x;
-            float dy = grid.y;
-            float dz = grid.z;
-            
-            // uv to 3d
-            float uvx = uv.x;
-            float uvy = uv.y;
-            float tx = uvx * dx * dy;
-            float ty = uvy * dy;
-            
-            float dxdz = tx;
-            float _3dx = floor(dxdz / ${dz.toFixed(1)});
-            float _3dy = ty;
-            float _3dz = floor(dxdz / dx);
-
-            return vec3(_3dx, _3dy, _3dz);
-        }
-
-
-        vec2 p3DToUV (vec3 pos, vec3 grid) {
-
-            float _3dx = pos.x;
-            float _3dy = pos.y;
-            float _3dz = pos.z;
-
-            float dx = grid.x;
-            float dy = grid.y;
-            float dz = grid.z;
-
-
-            // 3d to uv
-            vec2 myUV = vec2(
-                (_3dx + _3dz * dz) / (dx * dz),
-                _3dy / dy
-            );
-
-            return myUV;
-        }
-
         void main (void) {
-            // float maxX = dx;
-            // float maxY = ${dy.toFixed(1)};
-            // float maxZ = ${dz.toFixed(1)};
-           
+            //
+
             float uvx = gl_FragCoord.x / iResolution.x;
             float uvy = gl_FragCoord.y / iResolution.y;
 
             vec2 uv = vec2(uvx, uvy);
-            
-            // vec4 uvData = texture2D(uvTex, uv);
 
-            vec4 posData = texture2D(particlePositionTex, uv);
-            
-            ///////
-            
-            /////// vec4 posData = texture2D(particlePositionTex, p3DToUV(worldPos, vec3(dx, dy, dz)));
+            vec3 worldPos = uvToWorld(uv, bounds);
 
+            float counter = 0.0;
+            for (int z = 0; z < ${pz.toFixed(0)}; z++) {
+              for (int y = 0; y < ${py.toFixed(0)}; z++) {
+                for (int x = 0; x < ${px.toFixed(0)}; z++) {
+                  //
 
-            gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+                  vec4 parPosData = texture2D(particlePositionTex, worldToUV(vec3(float(x), float(y), float(z)), bounds));
 
+                  if (
+                    true 
+                    && parPosData.x >= floor(worldPos.x) - 1.0
+                    && parPosData.x <= floor(worldPos.x) + 1.0 
+                    //
+                    && parPosData.y >= floor(worldPos.y) - 1.0
+                    && parPosData.y <= floor(worldPos.y) + 1.0 
+                    //
+                    && parPosData.z >= floor(worldPos.z) - 1.0
+                    && parPosData.z <= floor(worldPos.z) + 1.0 
+                    //
+                  ) {
+                    counter += 1.0;
+                  }
+                }
+              }
+            }
 
+            gl_FragColor = vec4(counter, 0.0, 0.0, 1.0);
 
             ///////////
 
@@ -381,6 +449,42 @@ function Content3D() {
       console.error(err);
       return;
     }
+
+    //////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////
+    ///////////
+    ///////////
+    ///////////
+    ///////////
+    ///////////////
+    // - render kernel - //
+    ///////////////
+
+    onRender.current = (st, dt) => {
+      particlePositionVar.material.uniforms.delta.value = dt;
+      particleVelocityVar.material.uniforms.delta.value = dt;
+      gpuParticle.compute();
+
+      slotComputeGPU.compute();
+
+      // //
+      // let rtt = gpuParticle.getCurrentRenderTarget(particlePositionVar);
+      // //
+      // /** @type {WebGLRenderer} */
+      // let gl = st.gl;
+
+      // /////////
+
+      // /////////
+
+      // // let f32Arr = new Float32Array(new Array(rtt.width * rtt.height * 4));
+      // // gl.readRenderTargetPixelsAsync(rtt, 0, 0, rtt.width, rtt.height, f32Arr);
+
+      // //
+
+      // //
+    };
 
     //////////////////////////////////////////////////////////////////////
     ////// RENDER ////////
