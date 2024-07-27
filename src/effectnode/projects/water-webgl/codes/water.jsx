@@ -86,6 +86,14 @@ function Content3D() {
     #define bounds vec3(${dx.toFixed(1)}, ${dy.toFixed(1)}, ${dz.toFixed(1)})
     #define particles vec3(${px.toFixed(1)}, ${py.toFixed(1)}, ${pz.toFixed(1)})
 
+    float smoothKernel (float smoothRadius, float dist ) {
+      float volume = float(64.0 * ${Math.PI}) * pow(smoothRadius, 9.0) / 315.0;
+
+      float value = max(0.0, pow(smoothRadius, 2.0)) - pow(dist, 2.0);
+
+      return pow(value, 3.0) / volume;
+    }
+
      vec3 uvToWorld (vec2 uv, vec3 grid) {
         // grid
         float dx = grid.x;
@@ -313,7 +321,7 @@ function Content3D() {
 
                   vec3 diff = vec3(sidePos.rgb - centerPos.rgb);
 
-                  outputVel += normalize(diff) / length(diff) * -0.0025 * pressure * delta * pressureFactor;
+                  outputVel += normalize(diff) / length(diff) * -0.0025 * pressure * delta * pressureFactor * smoothKernel(2.0, length(diff));
                   
                   /////
                 }
