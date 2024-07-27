@@ -40,6 +40,10 @@ function Content3D() {
   let dy = 10;
   let dz = 10;
 
+  let offsetGrid = useMemo(() => {
+    return new Vector3(dx * -0.5, 0, dz * -0.5 - 7);
+  }, [dx, dz]);
+
   let gravityFactor = useMemo(() => {
     return new Uniform(1.0);
   }, []);
@@ -47,13 +51,9 @@ function Content3D() {
     return new Uniform(1.0);
   }, []);
 
-  let pz = 512;
+  let pz = 1024;
   let px = Math.pow(pz, 1 / 2);
   let py = Math.pow(pz, 1 / 2);
-
-  let offsetGrid = useMemo(() => {
-    return new Vector3(dx * -0.5, 0, dz * -0.5 - 7);
-  }, [dx, dz]);
 
   let [{ mounter, show }] = useMemo(() => {
     let mounter = new Object3D();
@@ -264,9 +264,9 @@ function Content3D() {
             vec3 outputPos = particlePositionData.rgb;
             vec3 outputVel = particleVelocityData.rgb;
 
-            for (int z = -2; z <= 2; z++) {
-              for (int y = -2; y <= 2; y++) {
-                for (int x = -2; x <= 2; x++) {
+            for (int z = -3; z <= 3; z++) {
+              for (int y = -3; y <= 3; y++) {
+                for (int x = -3; x <= 3; x++) {
 
                   if (x == 0 && y == 0 && z == 0) {
                     continue;
@@ -472,14 +472,14 @@ function Content3D() {
                   //
                   if (
                     true 
-                    && parPosData.x >= floor(worldPos.x - 2.0)
-                    && parPosData.x <= floor(worldPos.x + 2.0)
+                    && parPosData.x >= floor(worldPos.x - 5.0)
+                    && parPosData.x <= floor(worldPos.x + 5.0)
                     //
-                    && parPosData.y >= floor(worldPos.y - 2.0)
-                    && parPosData.y <= floor(worldPos.y + 2.0)
+                    && parPosData.y >= floor(worldPos.y - 5.0)
+                    && parPosData.y <= floor(worldPos.y + 5.0)
                     //
-                    && parPosData.z >= floor(worldPos.z - 2.0)
-                    && parPosData.z <= floor(worldPos.z + 2.0)
+                    && parPosData.z >= floor(worldPos.z - 5.0)
+                    && parPosData.z <= floor(worldPos.z + 5.0)
                     //
                   ) {
                     counter += 1.0;
