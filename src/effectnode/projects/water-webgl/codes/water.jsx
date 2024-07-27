@@ -321,7 +321,7 @@ function Content3D() {
 
                   vec3 diff = vec3(sidePos.rgb - centerPos.rgb);
 
-                  outputVel += normalize(diff) / length(diff) * -0.025 * pressure * delta * pressureFactor * smoothKernel(2.0, length(diff));
+                  outputVel += normalize(diff) / length(diff) * -1.0 * pressure * delta * pressureFactor * smoothKernel(bounds.x, length(diff));
                   
                   /////
                 }
