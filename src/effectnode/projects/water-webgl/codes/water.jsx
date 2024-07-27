@@ -51,7 +51,7 @@ function Content3D() {
     return new Uniform(1.0);
   }, []);
 
-  let pz = 128;
+  let pz = 256;
   let px = Math.pow(pz, 1 / 2);
   let py = Math.pow(pz, 1 / 2);
 
@@ -69,6 +69,7 @@ function Content3D() {
   let onRender = useRef(() => {});
   useEffect(() => {
     let cleans = [];
+    let canRun = true;
     //
     // -  - //
     //
@@ -94,18 +95,19 @@ function Content3D() {
         // uv to 3d
         float uvx = uv.x;
         float uvy = uv.y;
-        float tx = uvx * dx * dy;
-        float ty = uvy * dz;
+        float tx = uvx * dx * dz;
+        float ty = uvy * dy;
         
-        float _3dx = (mod(tx, dy) / dx);
-        float _3dy = (mod(tx, dx) / dy);
-        float _3dz = (ty / dz);
+        float dxdz = tx;
+        float _3dx = floor(dxdz / dz);
+        float _3dy = floor(ty);
+        float _3dz = floor(dxdz / dx);
 
         vec3 pos = vec3(_3dx, _3dy, _3dz);
 
-        pos.x = max(min(pos.x, grid.x), 0.0);
-        pos.y = max(min(pos.y, grid.y), 0.0);
-        pos.z = max(min(pos.z, grid.z), 0.0);
+        // pos.x = max(min(pos.x, grid.x), 0.0);
+        // pos.y = max(min(pos.y, grid.y), 0.0);
+        // pos.z = max(min(pos.z, grid.z), 0.0);
 
         return pos;
     }
@@ -125,8 +127,8 @@ function Content3D() {
 
         // 3d to uv
         vec2 myUV = vec2(
-            (_3dx + _3dy * dx) / (dx * dy),
-            (_3dz) / dz
+            floor(_3dx + _3dz * dz) / (dx * dz),
+            floor(_3dy) / dy
         );
 
         return myUV;
@@ -272,13 +274,13 @@ function Content3D() {
             vec3 outputPos = particlePositionData.rgb;
             vec3 outputVel = particleVelocityData.rgb;
 
-            for (int z = -2; z <= 2; z++) {
-              for (int y = -2; y <= 2; y++) {
-                for (int x = -2; x <= 2; x++) {
+            for (int z = -1; z <= 1; z++) {
+              for (int y = -1; y <= 1; y++) {
+                for (int x = -1; x <= 1; x++) {
 
-                  if (x == 0 && y == 0 && z == 0) {
-                    continue;
-                  }
+                  // if (x == 0 && y == 0 && z == 0) {
+                  //   continue;
+                  // }
                 
                   vec3 centerPos = outputPos;
 
@@ -286,10 +288,15 @@ function Content3D() {
                     float(x), 
                     float(y), 
                     float(z)
-                  ) + floor(centerPos) + 0.5;
-                  
+                  ) + floor(outputPos) + 0.5;
+
                   vec2 particleUV = worldToUV(sidePos, particles);
                   vec3 worldPositionSlot = uvToWorld(particleUV, bounds);
+                  
+                  worldPositionSlot.x = max(min(worldPositionSlot.x, bounds.x), 0.0);
+                  worldPositionSlot.y = max(min(worldPositionSlot.y, bounds.y), 0.0);
+                  worldPositionSlot.z = max(min(worldPositionSlot.z, bounds.z), 0.0);
+                  
                   vec2 slotUV = worldToUV(worldPositionSlot, bounds);
 
                   vec4 slot = texture2D(gridTex, slotUV);
@@ -306,7 +313,7 @@ function Content3D() {
 
                   vec3 diff = vec3(sidePos.rgb - centerPos.rgb);
 
-                  outputVel += normalize(diff) / length(diff) * -0.001 * pressure * delta * pressureFactor;
+                  outputVel += normalize(diff) / length(diff) * -0.0025 * pressure * delta * pressureFactor;
                   
                   /////
                 }
@@ -357,13 +364,10 @@ function Content3D() {
         }
     `;
 
-    //
     let particleVelocityInitTex = gpuParticle.createTexture();
-
     {
       let i = 0;
       let arr = particleVelocityInitTex.image.data;
-
       for (let z = 0; z < pz; z++) {
         for (let y = 0; y < py; y++) {
           for (let x = 0; x < px; x++) {
@@ -376,7 +380,6 @@ function Content3D() {
           }
         }
       }
-
       particleVelocityInitTex.needsUpdate = true;
     }
 
@@ -392,6 +395,9 @@ function Content3D() {
     particleVelocityVar.material.uniforms.pressureFactor = pressureFactor;
     particleVelocityVar.material.uniforms.gravityFactor = gravityFactor;
     let hh = ({ detail }) => {
+      if (!canRun) {
+        return;
+      }
       particleVelocityVar.material.uniforms.pointerWorld.value.fromArray(
         detail
       );
@@ -485,14 +491,14 @@ function Content3D() {
                   //
                   if (
                     true 
-                    && parPosData.x >= max(min(worldPos.x - bounds.x * 0.1, bounds.x), 0.0)
-                    && parPosData.x <= max(min(worldPos.x + bounds.x * 0.1, bounds.x), 0.0)
+                    && parPosData.x >= max(min(worldPos.x - bounds.x * 0.2, bounds.x), 0.0)
+                    && parPosData.x <= max(min(worldPos.x + bounds.x * 0.2, bounds.x), 0.0)
                     //
-                    && parPosData.y >= max(min(worldPos.y - bounds.y * 0.1, bounds.y), 0.0)
-                  && parPosData.y <= max(min(worldPos.y + bounds.y * 0.1, bounds.y), 0.0)
+                    && parPosData.y >= max(min(worldPos.y - bounds.y * 0.2, bounds.y), 0.0)
+                    && parPosData.y <= max(min(worldPos.y + bounds.y * 0.2, bounds.y), 0.0)
                     //
-                    && parPosData.z >= max(min(worldPos.z - bounds.z * 0.1, bounds.z), 0.0)
-                    && parPosData.z <= max(min(worldPos.z + bounds.z * 0.1, bounds.z), 0.0)
+                    && parPosData.z >= max(min(worldPos.z - bounds.z * 0.2, bounds.z), 0.0)
+                    && parPosData.z <= max(min(worldPos.z + bounds.z * 0.2, bounds.z), 0.0)
                     //
                   ) {
                     counter += 1.0;
@@ -964,13 +970,17 @@ void main() {
       let mesh = new Mesh(ibg, mat);
       mesh.frustumCulled = false;
 
+      mounter.clear();
       mounter.add(mesh);
 
+      //
+      //
       //
     }
     //
 
     return () => {
+      canRun = false;
       cleans.forEach((it) => {
         it();
       });
