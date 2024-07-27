@@ -297,7 +297,7 @@ function Content3D() {
 
                   //////
 
-                  vec3 diff = vec3(sidePos.rgb - outputPos.rgb);
+                  vec3 diff = vec3(sidePos.rgb - centerPos.rgb);
 
                   outputVel += diff * -0.0001 * pressure * delta * pressureFactor;
                   
@@ -473,14 +473,14 @@ function Content3D() {
                   //
                   if (
                     true 
-                    && parPosData.x >= floor(worldPos.x) + 2.0
-                    && parPosData.x <= floor(worldPos.x) - 2.0 
+                    && parPosData.x >= floor(worldPos.x) + 5.0
+                    && parPosData.x <= floor(worldPos.x) - 5.0 
                     //
-                    && parPosData.y >= floor(worldPos.y) + 2.0
-                    && parPosData.y <= floor(worldPos.y) - 2.0 
+                    && parPosData.y >= floor(worldPos.y) + 5.0
+                    && parPosData.y <= floor(worldPos.y) - 5.0 
                     //
-                    && parPosData.z >= floor(worldPos.z) + 2.0
-                    && parPosData.z <= floor(worldPos.z) - 2.0 
+                    && parPosData.z >= floor(worldPos.z) + 5.0
+                    && parPosData.z <= floor(worldPos.z) - 5.0 
                     //
                   ) {
                     counter += 1.0;
