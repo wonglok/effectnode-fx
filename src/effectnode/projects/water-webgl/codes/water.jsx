@@ -215,7 +215,7 @@ function Content3D() {
             arr[i * 4 + 2] = dz * Math.random();
             arr[i * 4 + 3] = 0;
 
-            let color = ["#00ffff", "#0000ff", "#ff00ff"];
+            let color = ["#ff0000", "#ffffff", "#0000ff"];
             let idx = Math.floor(color.length * r);
             let current = new Color()
               .set(color[idx])
@@ -790,6 +790,8 @@ void main() {
         varying vec2 vMyUV;
 
         uniform sampler2D particleColor;
+        uniform sampler2D particlePosition;
+        uniform sampler2D particleVelocity;
 
         #define STANDARD
         
@@ -961,9 +963,10 @@ void main() {
             #endif
 
             vec4 offsetColor = texture2D(particleColor, vMyUV);
+            vec4 offsetVelocity = texture2D(particleVelocity, vMyUV);
 
 
-            gl_FragColor = vec4( offsetColor.rgb * outgoingLight.rgb, diffuseColor.a );
+            gl_FragColor = vec4( (length(offsetVelocity.rgb) * 25.0 + 0.5) * offsetColor.rgb * outgoingLight.rgb, diffuseColor.a );
 
             //include <opaque_fragment>
             #include <tonemapping_fragment>
