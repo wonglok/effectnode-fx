@@ -9,6 +9,8 @@ import { Suspense, useEffect, useMemo, useRef } from "react";
 import {
   BoxGeometry,
   CircleGeometry,
+  FrontSide,
+  IcosahedronGeometry,
   MeshStandardMaterial,
   NoBlending,
   SpriteMaterial,
@@ -281,12 +283,12 @@ function Content3D() {
 
 
             // mouse
-            float mouseRadius = 3.0;
+            float mouseRadius = 5.0;
             float mouseForceSize = sdSphere(pointerWorld, mouseRadius);
             vec3 normalParticleMouse = normalize(outputPos.rgb - pointerWorld);
             
             if (length(pointerWorld- outputPos) <= mouseRadius) {
-              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * -0.1;
+              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.1;
             } 
 
             
@@ -597,8 +599,8 @@ function Content3D() {
       //
       //
       let ibg = new InstancedBufferGeometry();
-      ibg.copy(new BoxGeometry(1, 1, 1));
-      ibg.scale(0.015, 0.015, 0.015);
+      ibg.copy(new IcosahedronGeometry(1, 0));
+      ibg.scale(0.075, 0.075, 0.075);
       //
       ibg.instanceCount = COUNT_PARTICLE;
 
@@ -616,13 +618,14 @@ function Content3D() {
       ibg.needsUpdate = true;
 
       let mat = new MeshStandardMaterial({
+        flatShading: true,
         color: new Color("#000000"),
-        emissive: new Color("#ffffff"),
+        emissive: new Color("#999999"),
         metalness: 0.3,
         roughness: 0.3,
         transparent: true,
-        opacity: 1,
-        side: DoubleSide,
+        opacity: 0.5,
+        side: FrontSide,
         transparent: true,
         depthWrite: true,
       });

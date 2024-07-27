@@ -14,19 +14,14 @@ export function Runtime({ ui, useStore, io }) {
   return (
     <>
       <Insert3D>
-        <PerspectiveCamera
-          makeDefault
-          position={[0, 1.87 + 0.5, 0 + 15.01]}
-        ></PerspectiveCamera>
-
         <OrbitControls
-          object-position={[0, 1.87 + 0.5, 0.01 + 15]}
-          target={[0, 1.87 + 0.5, 15]}
+          object-position={[0, 3.87 + 0.5, 0.01 + 5]}
+          target={[0, 3.87 - 0.004 + 0.5, 5]}
           makeDefault
           rotateSpeed={1}
         ></OrbitControls>
 
-        <XROrigin position={new Vector3(0, 10, 10)}></XROrigin>
+        <XROrigin position={new Vector3(0, 3, 10)}></XROrigin>
       </Insert3D>
     </>
   );
