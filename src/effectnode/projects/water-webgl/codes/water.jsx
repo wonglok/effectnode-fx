@@ -105,9 +105,9 @@ function Content3D() {
 
         vec3 pos = vec3(_3dx, _3dy, _3dz);
 
-        pos.x = max(min(pos.x, grid.x), 0.0);
-        pos.y = max(min(pos.y, grid.y), 0.0);
-        pos.z = max(min(pos.z, grid.z), 0.0);
+        // pos.x = max(min(pos.x, grid.x), 0.0);
+        // pos.y = max(min(pos.y, grid.y), 0.0);
+        // pos.z = max(min(pos.z, grid.z), 0.0);
 
         return pos;
     }
@@ -293,9 +293,9 @@ function Content3D() {
                   vec2 particleUV = worldToUV(sidePos, particles);
                   vec3 worldPositionSlot = uvToWorld(particleUV, bounds);
                   
-                  // worldPositionSlot.x = max(min(worldPositionSlot.x, bounds.x), 0.0);
-                  // worldPositionSlot.y = max(min(worldPositionSlot.y, bounds.y), 0.0);
-                  // worldPositionSlot.z = max(min(worldPositionSlot.z, bounds.z), 0.0);
+                  worldPositionSlot.x = max(min(worldPositionSlot.x, bounds.x), 0.0);
+                  worldPositionSlot.y = max(min(worldPositionSlot.y, bounds.y), 0.0);
+                  worldPositionSlot.z = max(min(worldPositionSlot.z, bounds.z), 0.0);
                   
                   vec2 slotUV = worldToUV(worldPositionSlot, bounds);
 
@@ -305,11 +305,15 @@ function Content3D() {
 
                   float pressure = slot.r;
 
+                  if (pressure <= 0.0) {
+                    pressure = 0.0;
+                  }
+
                   //////
 
                   vec3 diff = vec3(sidePos.rgb - centerPos.rgb);
 
-                  outputVel += normalize(diff) / length(diff) * -0.003 * pressure * delta * pressureFactor;
+                  outputVel += normalize(diff) / length(diff) * -0.0025 * pressure * delta * pressureFactor;
                   
                   /////
                 }
@@ -475,26 +479,26 @@ function Content3D() {
               for (int y = 0; y < ${py.toFixed(0)}; z++) {
                 for (int x = 0; x < ${px.toFixed(0)}; z++) {
                   //
-                  //
+
                   vec4 parPosData = texture2D(particlePositionTex, 
                     worldToUV(vec3(float(x), float(y), float(z)), particles)
-                  );  
+                  );
 
-                  // worldPositionSlot.x = max(min(worldPositionSlot.x, bounds.x), 0.0);
-                  // worldPositionSlot.y = max(min(worldPositionSlot.y, bounds.y), 0.0);
-                  // worldPositionSlot.z = max(min(worldPositionSlot.z, bounds.z), 0.0);
+                  parPosData.x = max(min(parPosData.x, bounds.x), 0.0);
+                  parPosData.y = max(min(parPosData.y, bounds.y), 0.0);
+                  parPosData.z = max(min(parPosData.z, bounds.z), 0.0);
 
                   //
                   if (
                     true 
-                    && parPosData.x >= max(min(worldPos.x - bounds.x * 0.1, bounds.x), 0.0)
-                    && parPosData.x <= max(min(worldPos.x + bounds.x * 0.1, bounds.x), 0.0)
+                    && parPosData.x >= max(min(worldPos.x - bounds.x * 0.2, bounds.x), 0.0)
+                    && parPosData.x <= max(min(worldPos.x + bounds.x * 0.2, bounds.x), 0.0)
                     //
-                    && parPosData.y >= max(min(worldPos.y - bounds.y * 0.1, bounds.y), 0.0)
-                    && parPosData.y <= max(min(worldPos.y + bounds.y * 0.1, bounds.y), 0.0)
+                    && parPosData.y >= max(min(worldPos.y - bounds.y * 0.2, bounds.y), 0.0)
+                    && parPosData.y <= max(min(worldPos.y + bounds.y * 0.2, bounds.y), 0.0)
                     //
-                    && parPosData.z >= max(min(worldPos.z - bounds.z * 0.1, bounds.z), 0.0)
-                    && parPosData.z <= max(min(worldPos.z + bounds.z * 0.1, bounds.z), 0.0)
+                    && parPosData.z >= max(min(worldPos.z - bounds.z * 0.2, bounds.z), 0.0)
+                    && parPosData.z <= max(min(worldPos.z + bounds.z * 0.2, bounds.z), 0.0)
                     //
                   ) {
                     counter += 1.0;
