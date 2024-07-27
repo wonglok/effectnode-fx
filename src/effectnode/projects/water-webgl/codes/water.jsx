@@ -197,7 +197,7 @@ function Content3D() {
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
-    let particleVelocityShader = `
+    let particleVelocityShader = /* glsl */ `
         #define iResolution vec2(${pw.toFixed(0)}, ${pw.toFixed(0)})
 
         #define boundMax vec3(${dx.toFixed(1)},${dy.toFixed(1)},${dz.toFixed(1)})
@@ -282,8 +282,8 @@ function Content3D() {
             vec3 normalParticleMouse = normalize(outputPos.rgb - pointerWorld);
             
             if (length(pointerWorld- outputPos) <= 3.5) {
-              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.05;
-            }
+              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.075;
+            } 
 
             
 
