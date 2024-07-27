@@ -1,5 +1,12 @@
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
-import { useXR, useXRStore, XROrigin } from "@react-three/xr";
+import {
+  IfSessionVisible,
+  ShowIfInSessionMode,
+  ShowIfSessionVisible,
+  useXR,
+  useXRStore,
+  XROrigin,
+} from "@react-three/xr";
 import { useEffect, useState } from "react";
 import { Vector3 } from "three";
 // import { Mouse } from "src/components/CursorTrackerTail/Mouse";
@@ -18,7 +25,6 @@ export function Runtime({ ui, useStore, io }) {
         <OrbitControls
           object-position={[0, 3.87 + 0.5, 0.01 + 5]}
           target={[0, 3.87 - 0.004 + 0.5, 5]}
-          makeDefault
           rotateSpeed={1}
         ></OrbitControls>
         <CameraSetter></CameraSetter>
@@ -28,17 +34,11 @@ export function Runtime({ ui, useStore, io }) {
 }
 
 function CameraSetter() {
-  let xr = useXRStore();
-  let [pos, setPos] = useState(new Vector3(0, 3, 10));
-  useEffect(() => {
-    setPos(new Vector3(0, 3, 10));
-    let inter = setInterval(() => {
-      setPos(new Vector3(0, 3, 10));
-    }, 500);
-
-    return () => {
-      clearInterval(inter);
-    };
-  }, [xr]);
-  return <XROrigin position={pos}></XROrigin>;
+  return (
+    <>
+      <IfSessionVisible>
+        <XROrigin position={new Vector3(0, 5, 10)}></XROrigin>
+      </IfSessionVisible>
+    </>
+  );
 }
