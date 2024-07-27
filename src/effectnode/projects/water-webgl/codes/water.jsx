@@ -41,7 +41,7 @@ function Content3D() {
   let dz = 20;
 
   let offsetGrid = useMemo(() => {
-    return new Vector3(dx * -0.5, 0, dz * -0.5 - 5);
+    return new Vector3(dx * -0.5, 0, dz * -0.5 - dz * 0.6);
   }, [dx, dz]);
 
   let gravityFactor = useMemo(() => {
@@ -281,9 +281,9 @@ function Content3D() {
             vec3 outputPos = particlePositionData.rgb;
             vec3 outputVel = particleVelocityData.rgb;
 
-            for (int z = -3; z <= 3; z++) {
-              for (int y = -3; y <= 3; y++) {
-                for (int x = -3; x <= 3; x++) {
+            for (int z = -2; z <= 2; z++) {
+              for (int y = -2; y <= 2; y++) {
+                for (int x = -2; x <= 2; x++) {
 
                   if (x == 0 && y == 0 && z == 0) {
                     continue;
@@ -481,12 +481,12 @@ function Content3D() {
 
             vec3 worldPos = uvToWorld(uv, bounds);
 
-            float counter = 0.0;
+            float counter = 1.0;
 
             vec3 velocity = vec3(0.0);
             for (int z = 0; z < ${pz.toFixed(0)}; z++) {
-              for (int y = 0; y < ${py.toFixed(0)}; z++) {
-                for (int x = 0; x < ${px.toFixed(0)}; z++) {
+              for (int y = 0; y < ${py.toFixed(0)}; y++) {
+                for (int x = 0; x < ${px.toFixed(0)}; x++) {
                   //
 
                   vec4 parPosData = texture2D(particlePositionTex, 
@@ -497,18 +497,16 @@ function Content3D() {
                   parPosData.y = max(min(parPosData.y, bounds.y), 0.0);
                   parPosData.z = max(min(parPosData.z, bounds.z), 0.0);
 
-                  //
                   if (
                     true 
-                    && parPosData.x >= max(min(worldPos.x - bounds.x * 0.2, bounds.x), 0.0)
-                    && parPosData.x <= max(min(worldPos.x + bounds.x * 0.2, bounds.x), 0.0)
-                    //
-                    && parPosData.y >= max(min(worldPos.y - bounds.y * 0.2, bounds.y), 0.0)
-                    && parPosData.y <= max(min(worldPos.y + bounds.y * 0.2, bounds.y), 0.0)
-                    //
-                    && parPosData.z >= max(min(worldPos.z - bounds.z * 0.2, bounds.z), 0.0)
-                    && parPosData.z <= max(min(worldPos.z + bounds.z * 0.2, bounds.z), 0.0)
-                    //
+                    && parPosData.x >= max(min(worldPos.x - 1.0, bounds.x), 0.0)
+                    && parPosData.x <= max(min(worldPos.x + 1.0, bounds.x), 0.0)
+
+                    && parPosData.y >= max(min(worldPos.y - 1.0, bounds.y), 0.0)
+                    && parPosData.y <= max(min(worldPos.y + 1.0, bounds.y), 0.0)
+                    
+                    && parPosData.z >= max(min(worldPos.z - 1.0, bounds.z), 0.0)
+                    && parPosData.z <= max(min(worldPos.z + 1.0, bounds.z), 0.0)
                   ) {
                     counter += 1.0;
                   }
