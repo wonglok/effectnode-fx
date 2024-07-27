@@ -286,9 +286,9 @@ function Content3D() {
               for (int y = -1; y <= 1; y++) {
                 for (int x = -1; x <= 1; x++) {
 
-                  // if (x == 0 && y == 0 && z == 0) {
-                  //   continue;
-                  // }
+                  if (x == 0 && y == 0 && z == 0) {
+                    continue;
+                  }
                 
                   vec3 centerPos = outputPos;
 
