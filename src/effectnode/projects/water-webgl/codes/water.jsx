@@ -640,7 +640,7 @@ function Content3D() {
       //
       let ibg = new InstancedBufferGeometry();
       ibg.copy(new IcosahedronGeometry(1, 0));
-      ibg.scale(0.075, 0.075, 0.075);
+      ibg.scale(0.05, 0.05, 0.05);
       //
       ibg.instanceCount = COUNT_PARTICLE;
 
