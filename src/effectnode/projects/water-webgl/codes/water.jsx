@@ -282,7 +282,7 @@ function Content3D() {
             vec3 normalParticleMouse = normalize(outputPos.rgb - pointerWorld);
             
             if (length(pointerWorld- outputPos) <= 3.5) {
-              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.075;
+              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * -0.075;
             } 
 
             
@@ -426,14 +426,14 @@ function Content3D() {
                   //
                   if (
                     true 
-                    && parPosData.x >= floor(worldPos.x) + 3.0
-                    && parPosData.x <= floor(worldPos.x) - 3.0 
+                    && parPosData.x >= floor(worldPos.x) + 2.0
+                    && parPosData.x <= floor(worldPos.x) - 2.0 
                     //
-                    && parPosData.y >= floor(worldPos.y) + 3.0
-                    && parPosData.y <= floor(worldPos.y) - 3.0 
+                    && parPosData.y >= floor(worldPos.y) + 2.0
+                    && parPosData.y <= floor(worldPos.y) - 2.0 
                     //
-                    && parPosData.z >= floor(worldPos.z) + 3.0
-                    && parPosData.z <= floor(worldPos.z) - 3.0 
+                    && parPosData.z >= floor(worldPos.z) + 2.0
+                    && parPosData.z <= floor(worldPos.z) - 2.0 
                     //
                   ) {
                     counter += 1.0;
@@ -606,25 +606,32 @@ function Content3D() {
       );
       ibg.needsUpdate = true;
 
-      let mat = new MeshStandardMaterial({
-        color: new Color("#ff00ff"),
+      let mat = new MeshPhysicalMaterial({
+        color: new Color("#00ffff"),
+        metalness: 0,
+        roughness: 0,
+        transmission: 1,
+        thickness: 2,
         transparent: true,
-        opacity: 0.1,
+        opacity: 1,
         side: DoubleSide,
         transparent: true,
-        depthWrite: false,
+        depthWrite: true,
       });
 
       mat.onBeforeCompile = (shader, renderer) => {
         shader.uniforms.particlePosition = {
-          value:
-            gpuParticle.getCurrentRenderTarget(particlePositionVar).texture,
+          get value() {
+            return gpuParticle.getCurrentRenderTarget(particlePositionVar)
+              .texture;
+          },
         };
-
-        setInterval(() => {
-          shader.uniforms.particlePosition.value =
-            gpuParticle.getCurrentRenderTarget(particlePositionVar).texture;
-        });
+        shader.uniforms.particleVelocity = {
+          get value() {
+            return gpuParticle.getCurrentRenderTarget(particleVelocityVar)
+              .texture;
+          },
+        };
 
         shader.vertexShader = /* glsl */ `
         #define STANDARD
@@ -652,7 +659,9 @@ varying vec3 vViewPosition;
 
 attribute vec2 offsetUV;
 uniform sampler2D particlePosition;
+uniform sampler2D particleVelocity;
 
+varying vec3 vVel;
 void main() {
 
 	#include <uv_vertex>
@@ -669,9 +678,12 @@ void main() {
 	#include <normal_vertex>
 	//#include <begin_vertex>
 
-    vec4 offset = texture2D(particlePosition, offsetUV);
+  vec4 offsetPos = texture2D(particlePosition, offsetUV);
+  vec4 offsetVel = texture2D(particlePosition, offsetUV);
 
-    vec3 transformed = vec3( position * 0.05 + offset.rgb );
+  vVel = offsetVel.rgb;
+
+    vec3 transformed = vec3( position * 0.05 + offsetPos.rgb );
 
     #ifdef USE_ALPHAHASH
     
@@ -701,6 +713,8 @@ void main() {
         `;
 
         shader.fragmentShader = /* glsl */ `
+        varying vec3 vVel;
+
         #define STANDARD
         
         #ifdef PHYSICAL
@@ -713,6 +727,7 @@ void main() {
         uniform float roughness;
         uniform float metalness;
         uniform float opacity;
+
         
         #ifdef IOR
             uniform float ior;
@@ -801,6 +816,7 @@ void main() {
         #include <logdepthbuf_pars_fragment>
         #include <clipping_planes_pars_fragment>
         
+
         void main() {
         
             vec4 diffuseColor = vec4( diffuse, opacity );
@@ -836,7 +852,7 @@ void main() {
             vec3 totalSpecular = reflectedLight.directSpecular + reflectedLight.indirectSpecular;
         
             #include <transmission_fragment>
-        
+
             vec3 outgoingLight = totalDiffuse + totalSpecular + totalEmissiveRadiance;
         
             #ifdef USE_SHEEN
@@ -858,8 +874,19 @@ void main() {
                 outgoingLight = outgoingLight * ( 1.0 - material.clearcoat * Fcc ) + ( clearcoatSpecularDirect + clearcoatSpecularIndirect ) * material.clearcoat;
         
             #endif
-        
-            #include <opaque_fragment>
+
+            
+            #ifdef OPAQUE
+              diffuseColor.a = 1.0;
+            #endif
+
+            #ifdef USE_TRANSMISSION
+              diffuseColor.a *= material.transmissionAlpha;
+            #endif
+
+            gl_FragColor = vec4( outgoingLight * 0.25 * length(vVel * 0.5 + 0.5), diffuseColor.a );
+
+            //include <opaque_fragment>
             #include <tonemapping_fragment>
             #include <colorspace_fragment>
             #include <fog_fragment>
