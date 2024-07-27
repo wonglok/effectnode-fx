@@ -320,7 +320,7 @@ function Content3D() {
 
                   vec3 diff = vec3(sidePos.rgb - centerPos.rgb);
 
-                  float edge = pow(bounds.x * bounds.y * bounds.z, 1.0/3.0);
+                  float edge = pow(bounds.x * bounds.y * bounds.z, 1.0 / 3.0);
 
                   outputVel += normalize(diff) / length(diff) * -1.0 * pressure * delta * pressureFactor * smoothKernel(edge, length(diff));
                   
@@ -334,12 +334,12 @@ function Content3D() {
 
 
             // mouse
-            float mouseRadius = 3.5;
+            float mouseRadius = 5.0;
             float mouseForceSize = sdSphere(pointerWorld, mouseRadius);
             vec3 normalParticleMouse = normalize(outputPos.rgb - pointerWorld);
             
             if (length(pointerWorld - outputPos) <= mouseRadius) {
-              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.075;
+              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.1;
             }
        
 
