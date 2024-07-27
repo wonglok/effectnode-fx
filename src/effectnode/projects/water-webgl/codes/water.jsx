@@ -41,7 +41,7 @@ function Content3D() {
   let dz = 20;
 
   let offsetGrid = useMemo(() => {
-    return new Vector3(dx * -0.5, 0, dz * -0.5 - 7);
+    return new Vector3(dx * -0.5, 0, dz * -0.5 - 5);
   }, [dx, dz]);
 
   let gravityFactor = useMemo(() => {
@@ -299,7 +299,7 @@ function Content3D() {
 
                   vec2 particleUV = worldToUV(sidePos, particles);
                   vec3 worldPositionSlot = uvToWorld(particleUV, bounds);
-                  
+
                   worldPositionSlot.x = max(min(worldPositionSlot.x, bounds.x), 0.0);
                   worldPositionSlot.y = max(min(worldPositionSlot.y, bounds.y), 0.0);
                   worldPositionSlot.z = max(min(worldPositionSlot.z, bounds.z), 0.0);
