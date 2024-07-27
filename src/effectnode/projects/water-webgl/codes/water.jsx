@@ -290,16 +290,12 @@ function Content3D() {
                     float(z)
                   ) + floor(outputPos) + 0.5;
 
-                  sidePos.x = max(min(sidePos.x, particles.x), 0.0);
-                  sidePos.y = max(min(sidePos.y, particles.y), 0.0);
-                  sidePos.z = max(min(sidePos.z, particles.z), 0.0);
-                  
                   vec2 particleUV = worldToUV(sidePos, particles);
                   vec3 worldPositionSlot = uvToWorld(particleUV, bounds);
                   
-                  worldPositionSlot.x = max(min(worldPositionSlot.x, bounds.x), 0.0);
-                  worldPositionSlot.y = max(min(worldPositionSlot.y, bounds.y), 0.0);
-                  worldPositionSlot.z = max(min(worldPositionSlot.z, bounds.z), 0.0);
+                  // worldPositionSlot.x = max(min(worldPositionSlot.x, bounds.x), 0.0);
+                  // worldPositionSlot.y = max(min(worldPositionSlot.y, bounds.y), 0.0);
+                  // worldPositionSlot.z = max(min(worldPositionSlot.z, bounds.z), 0.0);
                   
                   vec2 slotUV = worldToUV(worldPositionSlot, bounds);
 
