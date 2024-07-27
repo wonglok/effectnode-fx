@@ -19,15 +19,15 @@ import {
 } from "three";
 import {
   Color,
-  DataTexture,
-  DoubleSide,
-  FloatType,
   InstancedBufferAttribute,
   InstancedBufferGeometry,
   Mesh,
+  Object3D,
+  DataTexture,
+  DoubleSide,
+  FloatType,
   MeshBasicMaterial,
   MeshPhysicalMaterial,
-  Object3D,
   RGBAFormat,
   SphereGeometry,
   WebGLRenderer,
@@ -36,9 +36,9 @@ import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRe
 
 //
 function Content3D() {
-  let dx = 16;
-  let dy = 8;
-  let dz = 16;
+  let dx = 20;
+  let dy = 10;
+  let dz = 20;
 
   let offsetGrid = useMemo(() => {
     return new Vector3(dx * -0.5, 0, dz * -0.5 - 7);
