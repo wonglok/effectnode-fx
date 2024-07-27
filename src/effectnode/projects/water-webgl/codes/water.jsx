@@ -103,13 +103,12 @@ function Content3D() {
         // uv to 3d
         float uvx = uv.x;
         float uvy = uv.y;
-        float tx = uvx * dx * dz;
-        float ty = uvy * dy;
+        float tx = uvx * dx * dy;
+        float ty = uvy * dz;
         
-        float dxdz = tx;
-        float _3dx = floor(dxdz / dz);
-        float _3dy = floor(ty);
-        float _3dz = floor(dxdz / dx);
+        float _3dx = (tx / dy);
+        float _3dy = (ty);
+        float _3dz = (tx / dx);
 
         vec3 pos = vec3(_3dx, _3dy, _3dz);
 
@@ -135,8 +134,8 @@ function Content3D() {
 
         // 3d to uv
         vec2 myUV = vec2(
-            floor(_3dx + _3dz * dz) / (dx * dz),
-            floor(_3dy) / dy
+            (_3dx + _3dy * dx) / (dx * dy),
+            (_3dz) / dz
         );
 
         return myUV;
