@@ -268,9 +268,9 @@ function Content3D() {
               for (int y = -3; y <= 3; y++) {
                 for (int x = -3; x <= 3; x++) {
 
-                  if (x == 0 && y == 0 && z == 0) {
-                    continue;
-                  }
+                  // if (x == 0 && y == 0 && z == 0) {
+                  //   continue;
+                  // }
                 
                   vec3 centerPos = outputPos;
 
@@ -299,7 +299,7 @@ function Content3D() {
 
                   vec3 diff = vec3(sidePos.rgb - centerPos.rgb);
 
-                  outputVel += diff * -0.0001 * pressure * delta * pressureFactor;
+                  outputVel += normalize(diff) * -0.0003 * pressure * delta * pressureFactor;
                   
                   /////
                 }
@@ -311,7 +311,7 @@ function Content3D() {
 
 
             // mouse
-            float mouseRadius = 3.3333;
+            float mouseRadius = 3.5;
             float mouseForceSize = sdSphere(pointerWorld, mouseRadius);
             vec3 normalParticleMouse = normalize(outputPos.rgb - pointerWorld);
             
@@ -459,6 +459,7 @@ function Content3D() {
             vec3 worldPos = uvToWorld(uv, bounds);
 
             float counter = 0.0;
+
             vec3 velocity = vec3(0.0);
             for (int z = 0; z < ${pz.toFixed(0)}; z++) {
               for (int y = 0; y < ${py.toFixed(0)}; z++) {
@@ -467,19 +468,23 @@ function Content3D() {
                   //
                   vec4 parPosData = texture2D(particlePositionTex, 
                     worldToUV(vec3(float(x), float(y), float(z)), particles)
-                  );
+                  );  
+
+                  // worldPositionSlot.x = max(min(worldPositionSlot.x, bounds.x), 0.0);
+                  // worldPositionSlot.y = max(min(worldPositionSlot.y, bounds.y), 0.0);
+                  // worldPositionSlot.z = max(min(worldPositionSlot.z, bounds.z), 0.0);
 
                   //
                   if (
                     true 
-                    && parPosData.x >= floor(worldPos.x - 5.0)
-                    && parPosData.x <= floor(worldPos.x + 5.0)
+                    && parPosData.x >= max(min(worldPos.x - bounds.x * 0.1, bounds.x), 0.0)
+                    && parPosData.x <= max(min(worldPos.x + bounds.x * 0.1, bounds.x), 0.0)
                     //
-                    && parPosData.y >= floor(worldPos.y - 5.0)
-                    && parPosData.y <= floor(worldPos.y + 5.0)
+                    && parPosData.y >= max(min(worldPos.y - bounds.y * 0.1, bounds.y), 0.0)
+                    && parPosData.y <= max(min(worldPos.y + bounds.y * 0.1, bounds.y), 0.0)
                     //
-                    && parPosData.z >= floor(worldPos.z - 5.0)
-                    && parPosData.z <= floor(worldPos.z + 5.0)
+                    && parPosData.z >= max(min(worldPos.z - bounds.z * 0.1, bounds.z), 0.0)
+                    && parPosData.z <= max(min(worldPos.z + bounds.z * 0.1, bounds.z), 0.0)
                     //
                   ) {
                     counter += 1.0;
