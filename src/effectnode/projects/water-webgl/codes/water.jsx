@@ -51,7 +51,7 @@ function Content3D() {
     return new Uniform(1.0);
   }, []);
 
-  let pz = 1024;
+  let pz = 256;
   let px = Math.pow(pz, 1 / 2);
   let py = Math.pow(pz, 1 / 2);
 
@@ -198,7 +198,7 @@ function Content3D() {
             arr[i * 4 + 2] = dz * Math.random();
             arr[i * 4 + 3] = 0;
 
-            let color = ["#0000ff", "#ffffff", "#ff0000"];
+            let color = ["#00ffff", "#0000ff", "#ff00ff"];
             let idx = Math.floor(color.length * r);
             let current = new Color()
               .set(color[idx])
