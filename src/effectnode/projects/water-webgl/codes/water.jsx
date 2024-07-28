@@ -114,15 +114,15 @@ function Content3D() {
         float tx = uvx * dx * dy;
         float ty = uvy * dz;
         
-        float _3dx = floor(tx / dx);
-        float _3dy = floor(tx / dy);
-        float _3dz = floor(ty);
+        float _3dx = (tx / dx);
+        float _3dy = (tx / dy);
+        float _3dz = (ty);
 
         vec3 pos = vec3(_3dx, _3dy, _3dz);
 
-        // pos.x = max(min(pos.x, grid.x), 0.0);
-        // pos.y = max(min(pos.y, grid.y), 0.0);
-        // pos.z = max(min(pos.z, grid.z), 0.0);
+        pos.x = max(min(pos.x, grid.x), 0.0);
+        pos.y = max(min(pos.y, grid.y), 0.0);
+        pos.z = max(min(pos.z, grid.z), 0.0);
 
         return pos;
     }
@@ -329,7 +329,7 @@ function Content3D() {
 
                   float edge = pow(bounds.x * bounds.y * bounds.z, 1.0 / 3.0);
 
-                  outputVel += normalize(diff) / length(diff) * -2.0 * pressure * delta * pressureFactor * smoothKernel(edge, length(diff));
+                  outputVel += normalize(diff) / length(diff) * -1.0 * pressure * delta * pressureFactor * smoothKernel(edge, length(diff));
                   
                   /////
                 }
@@ -1045,7 +1045,7 @@ export function ToolBox({}) {
   );
 }
 
-export function Runtime({ ui, io, useStore, onLoop }) {
+export function Runtime({ ui, io, useStore }) {
   let Insert3D = useStore((r) => r.Insert3D) || (() => null);
   //   let InsertHTML = useStore((r) => r.InsertHTML) || (() => null);
 
@@ -1053,7 +1053,7 @@ export function Runtime({ ui, io, useStore, onLoop }) {
     <>
       <Insert3D>
         <Suspense fallback={null}>
-          <Content3D></Content3D>
+          <Content3D ui={ui}></Content3D>
         </Suspense>
       </Insert3D>
     </>
