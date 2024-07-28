@@ -41,7 +41,7 @@ let debugGridCounter = false && process.env.NODE_ENV === "development";
 //
 
 function Content3D({ ui }) {
-  let dx = 10;
+  let dx = 20;
   let dy = 10;
   let dz = 10;
 
@@ -504,20 +504,29 @@ function Content3D({ ui }) {
                   vec4 particlePosition = texture2D(particlePositionTex, 
                     worldToUV(vec3(float(x), float(y), float(z)), bounds)
                   );
-            
-                  if (
-                    true
-                    && particlePosition.x >= worldPos.x - bounds.x * 0.2
-                    && particlePosition.x <= worldPos.x + bounds.x * 0.2
-            
-                    && particlePosition.y >= worldPos.y - bounds.y * 0.2
-                    && particlePosition.y <= worldPos.y + bounds.y * 0.2
-                   
-                    && particlePosition.z >= worldPos.z - bounds.z * 0.2
-                    && particlePosition.z <= worldPos.z + bounds.z * 0.2
-                  ) {
-                    counter += 1.0 / length(particlePosition.rgb - worldPos);
+
+                  float dist = length(particlePosition.rgb - worldPos);
+
+                  float adder = 1.0 / dist;
+                  if (adder >= 10.0) {
+                    adder = 10.0;
                   }
+                  
+                  counter += adder;
+                  
+                  // if (
+                  //   true
+                  //   && particlePosition.x >= worldPos.x - bounds.x * 0.2
+                  //   && particlePosition.x <= worldPos.x + bounds.x * 0.2
+            
+                  //   && particlePosition.y >= worldPos.y - bounds.y * 0.2
+                  //   && particlePosition.y <= worldPos.y + bounds.y * 0.2
+                   
+                  //   && particlePosition.z >= worldPos.z - bounds.z * 0.2
+                  //   && particlePosition.z <= worldPos.z + bounds.z * 0.2
+                  // ) {
+                    
+                  // }
                 }
               }
             }
