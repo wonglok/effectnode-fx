@@ -36,6 +36,8 @@ import {
 import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer";
 import { fromHalfFloat } from "three/src/extras/DataUtils";
 
+let debugGridCounter = false && process.env.NODE_ENV === "development";
+
 //
 function Content3D() {
   let dx = 20;
@@ -592,7 +594,6 @@ function Content3D() {
     // - render kernel - //
     ///////////////
 
-    let debugGridCounter = false && process.env.NODE_ENV === "development";
     onRender.current = (st, dt) => {
       if (dt >= 1) {
         dt = 1;
