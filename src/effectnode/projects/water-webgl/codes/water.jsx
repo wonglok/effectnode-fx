@@ -325,7 +325,7 @@ function Content3D() {
 
                   float edge = pow(bounds.x * bounds.y * bounds.z, 1.0 / 3.0);
 
-                  outputVel += normalize(diff) / length(diff) * -1.0 * pressure * delta * pressureFactor * smoothKernel(edge, length(diff));
+                  outputVel += normalize(diff) / length(diff) * -2.0 * pressure * delta * pressureFactor * smoothKernel(edge, length(diff));
                   
                   /////
                 }
