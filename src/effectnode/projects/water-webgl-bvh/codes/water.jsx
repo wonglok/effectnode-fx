@@ -117,7 +117,7 @@ function Content3D({ ui, files }) {
 
         let merged = mergeGeometries(acc, false);
 
-        merged.translate(-offsetGrid.x, 0, 2.5);
+        merged.translate(-offsetGrid.x, 0, 7.5);
 
         // merged.rotateX(Math.PI);
         // merged.translate(5, 2, 2);
@@ -284,11 +284,11 @@ function Content3D({ ui, files }) {
       for (let z = 0; z < pz; z++) {
         for (let y = 0; y < py; y++) {
           for (let x = 0; x < px; x++) {
-            let r = Math.random();
+            let r = Math.random() * 0.5 + 0.25;
 
             arr[i * 4 + 0] = dx * r;
-            arr[i * 4 + 1] = dy * Math.random() + 1;
-            arr[i * 4 + 2] = dz * Math.random() * 0.5;
+            arr[i * 4 + 1] = dy * Math.random() * 0.3 + dy * 0.2;
+            arr[i * 4 + 2] = dz * Math.random() * 0.25;
             arr[i * 4 + 3] = 0;
 
             let color = ["#ff0000", "#ffffff", "#0000ff"];
@@ -452,11 +452,8 @@ function Content3D({ ui, files }) {
               faceIndices.xyz
             ).xyz;
             
-            if (didHit) {
-              outputVel += outputVel * -0.5;
-
+            if (didHit && dist <= 0.5) {
               outputVel += normal * 0.1;
-              outputVel.y += normal.y * -0.11;
             }
 
 
@@ -623,6 +620,7 @@ function Content3D({ ui, files }) {
             vec3 currentGridSlotPosition = uvToWorld(uv, bounds);
 
             float counter = 0.0;
+            float reset = 0.0;
 
             float edge = pow(bounds.x * bounds.y * bounds.z, 1.0 / 3.0);
             for (int z = 0; z < int(bounds.z); z++) {
@@ -642,6 +640,7 @@ function Content3D({ ui, files }) {
                   }
       
                   counter += adder;
+
                   
                   // if (
                   //   true
@@ -660,7 +659,7 @@ function Content3D({ ui, files }) {
               }
             }
 
-            gl_FragColor = vec4(counter);
+            gl_FragColor = vec4(counter, counter, counter, reset);
 
             ///////////
 
