@@ -492,9 +492,9 @@ function Content3D() {
                     worldToUV(vec3(float(x), float(y), float(z)), particles)
                   );
 
-                  parPosData.x = max(min(parPosData.x, bounds.x), 0.0);
-                  parPosData.y = max(min(parPosData.y, bounds.y), 0.0);
-                  parPosData.z = max(min(parPosData.z, bounds.z), 0.0);
+                  // parPosData.x = max(min(parPosData.x, bounds.x), 0.0);
+                  // parPosData.y = max(min(parPosData.y, bounds.y), 0.0);
+                  // parPosData.z = max(min(parPosData.z, bounds.z), 0.0);
 
                   if (
                     true 
