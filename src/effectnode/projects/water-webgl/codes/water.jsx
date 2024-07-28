@@ -499,7 +499,7 @@ function Content3D({ ui }) {
 
             float counter = 0.0;
 
-            float edge = pow(bounds.x * bounds.y * bounds.z, 1.0 / 3.0)
+            float edge = pow(bounds.x * bounds.y * bounds.z, 1.0 / 3.0);
             for (int z = 0; z < int(bounds.z); z++) {
               for (int y = 0; y < int(bounds.y); y++) {
                 for (int x = 0; x < int(bounds.x); x++) {
