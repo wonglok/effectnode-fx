@@ -5,7 +5,7 @@
 
 import { useFrame, useThree } from "@react-three/fiber";
 // import { XROrigin } from "@react-three/xr";
-import { Suspense, useEffect, useMemo, useRef } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import {
   NoBlending,
   SpriteMaterial,
@@ -38,6 +38,8 @@ import {
 import {
   FloatVertexAttributeTexture,
   MeshBVH,
+  BVHShaderGLSL,
+  SAH,
   MeshBVHUniformStruct,
 } from "three-mesh-bvh";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
@@ -53,8 +55,8 @@ let debugGridCounter = false && process.env.NODE_ENV === "development";
 
 function Content3D({ ui, files }) {
   let dx = 10;
-  let dy = 20;
-  let dz = 10;
+  let dy = 10;
+  let dz = 20;
 
   let offsetGrid = useMemo(() => {
     return new Vector3(dx * -0.5, 0, dz * -0.5 - dz * 0.75);
@@ -67,6 +69,7 @@ function Content3D({ ui, files }) {
     return new Uniform(1.0);
   }, []);
 
+  let slideURL = files[`/mesh/slide.glb`];
   useEffect(() => {
     gravityFactor.value = ui.gravityFactor;
     pressureFactor.value = ui.pressureFactor;
@@ -78,33 +81,22 @@ function Content3D({ ui, files }) {
   let py = Math.pow(pz, 1 / 2);
   let px = Math.pow(pz, 1 / 2);
 
-  let [{ mounter, show }] = useMemo(() => {
-    let mounter = new Object3D();
-    let show = <primitive object={mounter}></primitive>;
-    return [
-      {
-        mounter,
-        show,
-      },
-    ];
-  }, []);
+  let [{ show, show2 }, setMounter] = useState({
+    show: null,
+    show2: null,
+  });
 
   let gl = useThree((r) => r.gl);
   let onRender = useRef(() => {});
   useEffect(() => {
-    if (!mounter) {
-      return;
-    }
-
     let cleans = [];
-    //
 
     let loader = new GLTFLoader();
     let draco = new DRACOLoader();
     draco.setDecoderPath("/draco/");
     loader.setDRACOLoader(draco);
     loader
-      .loadAsync(files[`/mesh/slide.glb`])
+      .loadAsync(slideURL)
       .then((glb) => {
         console.log(glb);
         let acc = [];
@@ -117,15 +109,18 @@ function Content3D({ ui, files }) {
               "position",
               it.geometry.attributes.position.clone()
             );
+            it.updateMatrixWorld(true);
+            buff.applyMatrix4(it.matrixWorld);
             acc.push(it.geometry);
           }
         });
 
         let merged = mergeGeometries(acc, false);
 
-        merged.rotateY(Math.PI);
-        merged.translate(5, 2, 2);
-        console.log(merged);
+        merged.translate(-offsetGrid.x, 0, 2.5);
+
+        // merged.rotateX(Math.PI);
+        // merged.translate(5, 2, 2);
 
         let bvh = new MeshBVH(merged, {});
         let normalAttribute = merged.attributes.normal;
@@ -133,7 +128,16 @@ function Content3D({ ui, files }) {
           new CustomEvent("update-bvh", { detail: { bvh, normalAttribute } })
         );
 
-        mounter.add(new Mesh(merged, new MeshStandardMaterial()));
+        setMounter((s) => {
+          return {
+            ...s,
+            show2: (
+              <primitive
+                object={new Mesh(merged, new MeshStandardMaterial())}
+              ></primitive>
+            ),
+          };
+        });
         //
         //
       })
@@ -283,8 +287,8 @@ function Content3D({ ui, files }) {
             let r = Math.random();
 
             arr[i * 4 + 0] = dx * r;
-            arr[i * 4 + 1] = dy * Math.random();
-            arr[i * 4 + 2] = dz * Math.random();
+            arr[i * 4 + 1] = dy * Math.random() + 1;
+            arr[i * 4 + 2] = dz * Math.random() * 0.5;
             arr[i * 4 + 3] = 0;
 
             let color = ["#ff0000", "#ffffff", "#0000ff"];
@@ -318,6 +322,16 @@ function Content3D({ ui, files }) {
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
     let particleVelocityShader = `
+        precision highp isampler2D;
+			  precision highp usampler2D;
+
+        ${BVHShaderGLSL.common_functions}
+        ${BVHShaderGLSL.bvh_struct_definitions}
+        ${BVHShaderGLSL.bvh_ray_functions}
+        uniform sampler2D normalAttribute;
+			  uniform BVH bvh;
+
+      
         #define iResolution vec2(${pw.toFixed(0)}, ${pw.toFixed(0)})
 
         #define boundMax vec3(${dx.toFixed(1)},${dy.toFixed(1)},${dz.toFixed(1)})
@@ -346,6 +360,9 @@ function Content3D({ ui, files }) {
         }
           
         void main (void) {
+
+
+
             vec2 myUV = gl_FragCoord.xy / iResolution;
 
             vec4 particlePositionData = texture2D(particlePosition, myUV);
@@ -353,7 +370,6 @@ function Content3D({ ui, files }) {
 
             vec3 outputPos = particlePositionData.rgb;
             vec3 outputVel = particleVelocityData.rgb;
-
 
             
             for (int z = -2; z <= 2; z++) {
@@ -402,14 +418,43 @@ function Content3D({ ui, files }) {
             outputVel.y += -0.015 * gravityFactor * delta * outputPos.y;
 
 
+
             // mouse
             float mouseRadius = 5.0;
             float mouseForceSize = sdSphere(pointerWorld, mouseRadius);
             vec3 normalParticleMouse = normalize(outputPos.rgb - pointerWorld);
             
+            
+            // mouse
             if (length(pointerWorld - outputPos) <= mouseRadius) {
               outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.1;
             }
+
+            // bvh
+            vec3 rayOrigin, rayDirection;
+            rayOrigin = outputPos;
+            rayDirection = normalize(outputVel);
+
+            // hit results
+            uvec4 faceIndices = uvec4( 0u );
+            vec3 faceNormal = vec3( 0.0, 0.0, 1.0 );
+            vec3 barycoord = vec3( 0.0 );
+            float side = 1.0;
+            float dist = 0.0;
+
+            // get intersection
+            bool didHit = bvhIntersectFirstHit( bvh, rayOrigin, rayDirection, faceIndices, faceNormal, barycoord, side, dist );
+
+
+            vec3 normal = textureSampleBarycoord(
+              normalAttribute,
+              barycoord,
+              faceIndices.xyz
+            ).xyz;
+            
+            
+            outputVel += normal * 0.001;
+
 
             if (outputPos.x >= boundMax.x) {
                 // outputVel.x *= 0.5;
@@ -483,15 +528,18 @@ function Content3D({ ui, files }) {
       particleVelocityVar.material.uniforms.normalAttribute.value.updateFrom(
         detail.normalAttribute
       );
-      particleVelocityVar.material.uniforms.bvh.value.updateFrom(detail.bvh);
+      particleVelocityVar.material.uniforms.bvh.value.updateFrom(
+        //
+        detail.bvh
+      );
     };
+
     window.addEventListener("update-bvh", bvhHH);
     cleans.push(() => {
       window.removeEventListener("update-bvh", bvhHH);
     });
 
     let hh = ({ detail }) => {
-      console.log(detail);
       particleVelocityVar.material.uniforms.pointerWorld.value.fromArray([
         !isNaN(detail[0]) ? detail[0] : 0,
         !isNaN(detail[1]) ? detail[1] : 0,
@@ -693,6 +741,11 @@ function Content3D({ ui, files }) {
         dt = 1;
       }
 
+      particlePositionVar.material.uniforms.delta.value = dt;
+      particleVelocityVar.material.uniforms.delta.value = dt;
+
+      gpuParticle.compute();
+
       slotComputeVar.material.uniforms.particlePositionTex = {
         value: gpuParticle.getCurrentRenderTarget(particlePositionVar).texture,
       };
@@ -700,11 +753,6 @@ function Content3D({ ui, files }) {
         value: gpuParticle.getCurrentRenderTarget(particleVelocityVar).texture,
       };
       slotComputeGPU.compute();
-
-      particlePositionVar.material.uniforms.delta.value = dt;
-      particleVelocityVar.material.uniforms.delta.value = dt;
-
-      gpuParticle.compute();
 
       //
 
@@ -1101,9 +1149,17 @@ void main() {
       mesh.frustumCulled = false;
 
       // mounter.clear();
-      mounter.add(mesh);
+      // mounter.add(mesh);
 
-      //
+      setMounter((s) => {
+        return {
+          ...s,
+          ...{
+            show: <primitive object={mesh}></primitive>,
+          },
+        };
+      });
+
       //
     }
     //
@@ -1117,7 +1173,19 @@ void main() {
     //
     //
     //
-  }, []);
+  }, [
+    dx,
+    dy,
+    dz,
+    gl,
+    gravityFactor,
+    offsetGrid,
+    pressureFactor,
+    px,
+    py,
+    pz,
+    slideURL,
+  ]);
 
   useFrame((st, dt) => {
     onRender.current(st, dt);
@@ -1126,7 +1194,10 @@ void main() {
     <>
       {/*  */}
 
-      <group position={offsetGrid.toArray()}>{show}</group>
+      <group position={offsetGrid.toArray()}>
+        {show}
+        {show2}
+      </group>
 
       {/* <XROrigin position={[0, 10, 50]} /> */}
       {/*  */}
