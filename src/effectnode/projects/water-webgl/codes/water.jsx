@@ -1010,7 +1010,7 @@ void main() {
 
             //
             
-            gl_FragColor = vec4( mix(vec3(0.0, 0.2, 1.0), vec3(length(offsetVelocity.rgb) + 0.2, 1.0, 0.8), 2.0 * length(offsetVelocity.rgb)), diffuseColor.a );
+            gl_FragColor = vec4(outgoingLight * mix(vec3(0.0, 0.2, 1.0), vec3(length(offsetVelocity.rgb) + 0.2, 1.0, 0.8), 2.0 * length(offsetVelocity.rgb)), diffuseColor.a );
             
             //
 
