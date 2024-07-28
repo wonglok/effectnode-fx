@@ -841,6 +841,8 @@ function Content3D({ ui, files }) {
         new InstancedBufferAttribute(new Float32Array(uv), 2)
       );
 
+      //
+
       let mat = new MeshStandardMaterial({
         flatShading: false,
         color: new Color("#ffffff"),
