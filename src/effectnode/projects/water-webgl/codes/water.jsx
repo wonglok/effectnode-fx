@@ -10,6 +10,7 @@ import {
   BoxGeometry,
   CircleGeometry,
   FrontSide,
+  HalfFloatType,
   IcosahedronGeometry,
   MeshStandardMaterial,
   NoBlending,
@@ -33,6 +34,7 @@ import {
   WebGLRenderer,
 } from "three";
 import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer";
+import { fromHalfFloat } from "three/src/extras/DataUtils";
 
 //
 function Content3D() {
@@ -110,9 +112,9 @@ function Content3D() {
         float tx = uvx * dx * dy;
         float ty = uvy * dz;
         
-        float _3dx = (tx / dy);
-        float _3dy = (ty);
-        float _3dz = (tx / dx);
+        float _3dx = floor(tx / dx);
+        float _3dy = floor(tx / dy);
+        float _3dz = floor(ty);
 
         vec3 pos = vec3(_3dx, _3dy, _3dz);
 
@@ -158,6 +160,7 @@ function Content3D() {
     let COUNT_PARTICLE = pw * ph;
 
     let gpuParticle = new GPUComputationRenderer(pw, ph, gl);
+    // gpuParticle.setDataType(HalfFloatType);
 
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
@@ -285,6 +288,8 @@ function Content3D() {
             vec3 outputPos = particlePositionData.rgb;
             vec3 outputVel = particleVelocityData.rgb;
 
+
+            
             for (int z = -2; z <= 2; z++) {
               for (int y = -2; y <= 2; y++) {
                 for (int x = -2; x <= 2; x++) {
@@ -301,7 +306,7 @@ function Content3D() {
                     float(z)
                   ) + centerPos;
 
-                  vec2 particleUV = worldToUV(sidePos, particles);
+                  vec2 particleUV = worldToUV(sidePos, bounds);
                   vec3 worldPositionSlot = uvToWorld(particleUV, bounds);
 
                   worldPositionSlot.x = max(min(worldPositionSlot.x, bounds.x), 0.0);
@@ -315,12 +320,6 @@ function Content3D() {
                   vec4 posData = texture2D(particlePosition, particleUV);
 
                   float pressure = slot.r;
-
-                  if (pressure <= 1.0) {
-                    pressure = 1.0;
-                  }
-
-                  //////
 
                   vec3 diff = vec3(sidePos.rgb - centerPos.rgb);
 
@@ -459,6 +458,7 @@ function Content3D() {
     let ty = dy;
 
     let slotComputeGPU = new GPUComputationRenderer(tx, ty, gl);
+    slotComputeGPU.setDataType(HalfFloatType);
     let slotComputeShader = `
         #define iResolution vec2(${tx.toFixed(0)}, ${ty.toFixed(0)})
 
@@ -484,32 +484,26 @@ function Content3D() {
 
             vec3 worldPos = uvToWorld(uv, bounds);
 
-            float counter = 1.0;
+            float counter = 0.0;
 
-            vec3 velocity = vec3(0.0);
             for (int z = 0; z < int(bounds.z); z++) {
-              for (int y = 0; y < int(bounds.y); z++) {
-                for (int x = 0; x < int(bounds.x); z++) {
-                  //
-
-                  vec4 parPosData = texture2D(particlePositionTex, 
-                    worldToUV(vec3(float(x), float(y), float(z)), particles)
+              for (int y = 0; y < int(bounds.y); y++) {
+                for (int x = 0; x < int(bounds.x); x++) {
+                  
+                  vec4 particlePosition = texture2D(particlePositionTex, 
+                    worldToUV(vec3(float(x), float(y), float(z)), bounds)
                   );
-
-                  // parPosData.x = max(min(parPosData.x, bounds.x), 0.0);
-                  // parPosData.y = max(min(parPosData.y, bounds.y), 0.0);
-                  // parPosData.z = max(min(parPosData.z, bounds.z), 0.0);
-
+            
                   if (
-                    true 
-                    && parPosData.x >= max(min(worldPos.x - 1.0, bounds.x), 0.0)
-                    && parPosData.x <= max(min(worldPos.x + 1.0, bounds.x), 0.0)
-
-                    && parPosData.y >= max(min(worldPos.y - 1.0, bounds.y), 0.0)
-                    && parPosData.y <= max(min(worldPos.y + 1.0, bounds.y), 0.0)
-                    
-                    && parPosData.z >= max(min(worldPos.z - 1.0, bounds.z), 0.0)
-                    && parPosData.z <= max(min(worldPos.z + 1.0, bounds.z), 0.0)
+                    true
+                    && particlePosition.x >= worldPos.x - 5.0
+                    && particlePosition.x <= worldPos.x + 5.0
+            
+                    && particlePosition.y >= worldPos.y - 5.0
+                    && particlePosition.y <= worldPos.y + 5.0
+                   
+                    && particlePosition.z >= worldPos.z - 5.0
+                    && particlePosition.z <= worldPos.z + 5.0
                   ) {
                     counter += 1.0;
                   }
@@ -527,25 +521,25 @@ function Content3D() {
 
     //
     //
-    let uvTex = slotComputeGPU.createTexture();
-    let vec4UV = [];
-    for (let z = 0; z < dz; z++) {
-      let i = 0;
-      for (let y = 0; y < dy; y++) {
-        for (let x = 0; x < dx; x++) {
-          ///
-          vec4UV.push(i / (dx * dy), z / dz, 0, 0);
-          i++;
-        }
-      }
-    }
-    {
-      for (let i = 0; i < vec4UV.length; i++) {
-        uvTex.image.data[i] = vec4UV[i];
-      }
-      uvTex.needsUpdate = true;
-    }
-    //
+    // let uvTex = slotComputeGPU.createTexture();
+    // let vec4UV = [];
+    // for (let z = 0; z < dz; z++) {
+    //   let i = 0;
+    //   for (let y = 0; y < dy; y++) {
+    //     for (let x = 0; x < dx; x++) {
+    //       ///
+    //       vec4UV.push(i / (dx * dy), z / dz, 0, 0);
+    //       i++;
+    //     }
+    //   }
+    // }
+    // {
+    //   for (let i = 0; i < vec4UV.length; i++) {
+    //     uvTex.image.data[i] = vec4UV[i];
+    //   }
+    //   uvTex.needsUpdate = true;
+    // }
+    // //
     //
 
     let slotInitTex = slotComputeGPU.createTexture();
@@ -572,16 +566,12 @@ function Content3D() {
       slotInitTex
     );
 
-    slotComputeVar.material.uniforms.uvTex = { value: uvTex };
+    // slotComputeVar.material.uniforms.uvTex = { value: uvTex };
     slotComputeVar.material.uniforms.particlePositionTex = {
-      value() {
-        return gpuParticle.getCurrentRenderTarget(particlePositionVar).texture;
-      },
+      value: gpuParticle.getCurrentRenderTarget(particlePositionVar).texture,
     };
     slotComputeVar.material.uniforms.particleVelocityTex = {
-      value() {
-        return gpuParticle.getCurrentRenderTarget(particleVelocityVar).texture;
-      },
+      value: gpuParticle.getCurrentRenderTarget(particleVelocityVar).texture,
     };
 
     let err = slotComputeGPU.init();
@@ -606,10 +596,35 @@ function Content3D() {
         dt = 1;
       }
 
+      slotComputeVar.material.uniforms.particlePositionTex = {
+        value: gpuParticle.getCurrentRenderTarget(particlePositionVar).texture,
+      };
+      slotComputeVar.material.uniforms.particleVelocityTex = {
+        value: gpuParticle.getCurrentRenderTarget(particleVelocityVar).texture,
+      };
       slotComputeGPU.compute();
+
       particlePositionVar.material.uniforms.delta.value = dt;
       particleVelocityVar.material.uniforms.delta.value = dt;
+
       gpuParticle.compute();
+
+      //
+
+      let arr = new Uint16Array(new Array(Math.floor(tx * ty * 4)));
+
+      /** @type {WebGLRenderer} */
+      let gl = st.gl;
+      gl.readRenderTargetPixels(
+        slotComputeGPU.getCurrentRenderTarget(slotComputeVar),
+        0,
+        0,
+        tx,
+        ty,
+        arr
+      );
+
+      console.log(fromHalfFloat(arr[0]));
     };
 
     //////////////////////////////////////////////////////////////////////
