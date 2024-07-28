@@ -489,23 +489,22 @@ function Content3D() {
             for (int z = 0; z < int(bounds.z); z++) {
               for (int y = 0; y < int(bounds.y); y++) {
                 for (int x = 0; x < int(bounds.x); x++) {
-                  
                   vec4 particlePosition = texture2D(particlePositionTex, 
                     worldToUV(vec3(float(x), float(y), float(z)), bounds)
                   );
             
                   if (
                     true
-                    && particlePosition.x >= worldPos.x - 5.0
-                    && particlePosition.x <= worldPos.x + 5.0
+                    && particlePosition.x >= worldPos.x - bounds.x * 0.2
+                    && particlePosition.x <= worldPos.x + bounds.x * 0.2
             
-                    && particlePosition.y >= worldPos.y - 5.0
-                    && particlePosition.y <= worldPos.y + 5.0
+                    && particlePosition.y >= worldPos.y - bounds.y * 0.2
+                    && particlePosition.y <= worldPos.y + bounds.y * 0.2
                    
-                    && particlePosition.z >= worldPos.z - 5.0
-                    && particlePosition.z <= worldPos.z + 5.0
+                    && particlePosition.z >= worldPos.z - bounds.z * 0.2
+                    && particlePosition.z <= worldPos.z + bounds.z * 0.2
                   ) {
-                    counter += 1.0;
+                    counter += 1.0 / length(particlePosition.rgb - worldPos);
                   }
                 }
               }
@@ -591,7 +590,7 @@ function Content3D() {
     // - render kernel - //
     ///////////////
 
-    let debugCOUTNER = false;
+    let debugGridCounter = true;
     onRender.current = (st, dt) => {
       if (dt >= 1) {
         dt = 1;
@@ -612,7 +611,7 @@ function Content3D() {
 
       //
 
-      if (debugCOUTNER) {
+      if (debugGridCounter) {
         let arr = new Uint16Array(new Array(Math.floor(tx * ty * 4)));
 
         /** @type {WebGLRenderer} */
