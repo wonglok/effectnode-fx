@@ -56,9 +56,9 @@ let debugGridCounter = false && process.env.NODE_ENV === "development";
 //
 
 function Content3D({ ui, files }) {
-  let dx = 30;
+  let dx = 20;
   let dy = 20;
-  let dz = 50;
+  let dz = 60;
 
   let offsetGrid = useMemo(() => {
     return new Vector3(dx * -0.5, 0, dz * -1.05 + 20);
@@ -290,9 +290,9 @@ function Content3D({ ui, files }) {
       for (let z = 0; z < pz; z++) {
         for (let y = 0; y < py; y++) {
           for (let x = 0; x < px; x++) {
-            let r = Math.random() * 0.5 + 0.25;
+            let r = Math.random();
 
-            arr[i * 4 + 0] = dx * r * 0.25 + 12.5;
+            arr[i * 4 + 0] = dx * r * 0.15 + (dx * (1.0 - 0.15)) / 2;
             arr[i * 4 + 1] = dy * Math.random() * 0.1 + 8.8;
             arr[i * 4 + 2] = dz * Math.random() * 0.25 + 13.5;
             arr[i * 4 + 3] = 0;
