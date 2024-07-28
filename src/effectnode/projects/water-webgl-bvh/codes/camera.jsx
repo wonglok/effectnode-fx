@@ -23,7 +23,7 @@ export function Runtime({ ui, useStore, io }) {
     <>
       <Insert3D>
         <OrbitControls
-          object-position={[-10, 3.87 + 0.5 + 5, 0.01 + 5 + 15]}
+          object-position={[0, 3.87 + 0.5 + 5, 0.01 + 5 + 25]}
           target={[0, 3.87 - 0.004 + 0.5, 5]}
           rotateSpeed={1}
           makeDefault
@@ -38,7 +38,9 @@ function CameraSetter() {
   return (
     <>
       <IfSessionVisible>
-        <XROrigin position={new Vector3(0, 5, 10)}></XROrigin>
+        <XROrigin
+          position={new Vector3(0, 3.87 + 0.5 + 5, 0.01 + 5 + 25)}
+        ></XROrigin>
       </IfSessionVisible>
     </>
   );
