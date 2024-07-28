@@ -837,7 +837,6 @@ function Content3D({ ui, files }) {
         "offsetUV",
         new InstancedBufferAttribute(new Float32Array(uv), 2)
       );
-      ibg.needsUpdate = true;
 
       let mat = new MeshStandardMaterial({
         flatShading: false,
