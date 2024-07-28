@@ -17,6 +17,7 @@ import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils";
 import { USDZExporter } from "three/examples/jsm/exporters/USDZExporter";
 import BezierEditor from "bezier-easing-editor";
 import bezier from "bezier-easing";
+import { clone } from "three/examples/jsm/utils/SkeletonUtils";
 
 export function ToolBox({ boxData, saveBoxData, useStore, ui, io }) {
   let files = useStore((r) => r.files);
@@ -114,15 +115,26 @@ export function Runtime({ boxData, ui, useStore, io }) {
         ></Content>
       </Insert3D>
       <InsertHTML>
-        <button
-          className=" absolute bottom-3 right-3 p-3 bg-gray-100"
-          onClick={() => {
-            //
-            api.download();
-          }}
-        >
-          View in Apple AR
-        </button>
+        <div className="absolute bottom-3 right-3">
+          <button
+            className="  p-3 bg-gray-100 mr-1"
+            onClick={() => {
+              //
+              api.download();
+            }}
+          >
+            Apple AR (Floor)
+          </button>
+          <button
+            className="  p-3 bg-gray-100  mr-1"
+            onClick={() => {
+              //
+              api.download(true);
+            }}
+          >
+            Apple AR (Wall)
+          </button>
+        </div>
       </InsertHTML>
     </>
   );
@@ -311,13 +323,28 @@ function FlowerExpress({ boxData, at, ui, useStore, onReady }) {
   let scene = useThree((r) => r.scene);
   useEffect(() => {
     let api = {
-      download: () => {
+      download: (flip = false) => {
         //
 
         let exp = new USDZExporter();
         let flower = new Object3D();
-        flower.add(scene.getObjectByName("flower"));
-        flower.scale.setScalar(0.1);
+        let cloned = clone(scene.getObjectByName("flower"));
+        cloned.traverse((it) => {
+          if (it.geometry && !it.geometryOK) {
+            it.geometryOK = it.geometry.clone();
+          }
+        });
+        cloned.traverse((it) => {
+          if (it.geometryOK) {
+            it.geometry = it.geometryOK.clone();
+            it.geometry.scale(0.05, 0.05, 0.05);
+            if (flip) {
+              it.geometry.rotateX(Math.PI * 0.5);
+            }
+          }
+        });
+
+        flower.add(cloned);
         exp.parse(
           flower,
           (resulltBuff) => {
@@ -326,8 +353,11 @@ function FlowerExpress({ boxData, at, ui, useStore, onReady }) {
             });
             let url = URL.createObjectURL(b);
             let an = document.createElement("a");
+            an.rel = "ar";
+            an.relList.add("ar");
             an.href = url;
-            an.download = "flower.usdz";
+            // an.target = "_blank";
+            // an.download = "flower.usdz";
             an.click();
           },
           (err) => {
