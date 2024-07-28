@@ -4,17 +4,17 @@
 //
 
 import { useFrame, useThree } from "@react-three/fiber";
-import { XROrigin } from "@react-three/xr";
+// import { XROrigin } from "@react-three/xr";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import {
+  NoBlending,
+  SpriteMaterial,
   BoxGeometry,
   CircleGeometry,
   FrontSide,
   HalfFloatType,
   IcosahedronGeometry,
   MeshStandardMaterial,
-  NoBlending,
-  SpriteMaterial,
   Uniform,
   Vector3,
 } from "three";
@@ -24,6 +24,8 @@ import {
   InstancedBufferGeometry,
   Mesh,
   Object3D,
+  WebGLRenderer,
+  //
   DataTexture,
   DoubleSide,
   FloatType,
@@ -31,7 +33,6 @@ import {
   MeshPhysicalMaterial,
   RGBAFormat,
   SphereGeometry,
-  WebGLRenderer,
 } from "three";
 import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer";
 import { fromHalfFloat } from "three/src/extras/DataUtils";
@@ -41,12 +42,12 @@ let debugGridCounter = false && process.env.NODE_ENV === "development";
 //
 
 function Content3D({ ui }) {
-  let dx = 20;
-  let dy = 10;
+  let dx = 10;
+  let dy = 20;
   let dz = 10;
 
   let offsetGrid = useMemo(() => {
-    return new Vector3(dx * -0.5, 0, dz * -0.5 - dz * 0.6);
+    return new Vector3(dx * -0.5, 0, dz * -0.5 - dz * 0.75);
   }, [dx, dz]);
 
   let gravityFactor = useMemo(() => {
@@ -1007,8 +1008,11 @@ void main() {
             vec4 offsetColor = texture2D(particleColor, vMyUV);
             vec4 offsetVelocity = texture2D(particleVelocity, vMyUV);
 
-
-            gl_FragColor = vec4( (length(offsetVelocity.rgb) * 25.0 + 0.5) * offsetColor.rgb * outgoingLight.rgb, diffuseColor.a );
+            //
+            
+            gl_FragColor = vec4( mix(vec3(0.0, 0.2, 1.0), vec3(length(offsetVelocity.rgb) + 0.2, 1.0, 0.8), 2.0 * length(offsetVelocity.rgb)), diffuseColor.a );
+            
+            //
 
             //include <opaque_fragment>
             #include <tonemapping_fragment>
