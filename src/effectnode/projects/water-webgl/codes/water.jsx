@@ -334,7 +334,7 @@ function Content3D() {
             }
 
             // gravityFactor
-            outputVel.y += -0.025 * gravityFactor * delta * outputPos.y;
+            outputVel.y += -0.015 * gravityFactor * delta * outputPos.y;
 
 
             // mouse
@@ -488,8 +488,8 @@ function Content3D() {
 
             vec3 velocity = vec3(0.0);
             for (int z = 0; z < int(bounds.z); z++) {
-              for (int y = 0; y < int(bounds.y); y++) {
-                for (int x = 0; x < int(bounds.x); x++) {
+              for (int y = 0; y < int(bounds.y); z++) {
+                for (int x = 0; x < int(bounds.x); z++) {
                   //
 
                   vec4 parPosData = texture2D(particlePositionTex, 
