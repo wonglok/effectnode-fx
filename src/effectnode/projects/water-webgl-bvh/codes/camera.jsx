@@ -23,7 +23,7 @@ export function Runtime({ ui, useStore, io }) {
     <>
       <Insert3D>
         <OrbitControls
-          object-position={[0, 3.87 + 0.5, 0.01 + 5]}
+          object-position={[-10, 3.87 + 0.5, 0.01 + 5 + 10]}
           target={[0, 3.87 - 0.004 + 0.5, 5]}
           rotateSpeed={1}
           makeDefault
