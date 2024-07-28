@@ -496,7 +496,7 @@ function Content3D({ ui }) {
 
             vec2 uv = vec2(uvx, uvy);
 
-            vec3 worldPos = uvToWorld(uv, bounds);
+            vec3 currentGridSlotPosition = uvToWorld(uv, bounds);
 
             float counter = 0.0;
 
@@ -509,26 +509,26 @@ function Content3D({ ui }) {
                     worldToUV(vec3(float(x), float(y), float(z)), bounds)
                   );
 
-                  float dist = length(particlePosition.rgb - worldPos);
+                  float dist = length(particlePosition.rgb - currentGridSlotPosition);
 
                   float smoothingDist = edge * 0.3;
                   float adder = smoothKernel(smoothingDist, dist);
                   if (adder >= 10.0) {
                     adder = 10.0;
                   }
-                  
+      
                   counter += adder;
                   
                   // if (
                   //   true
-                  //   && particlePosition.x >= worldPos.x - bounds.x * 0.2
-                  //   && particlePosition.x <= worldPos.x + bounds.x * 0.2
+                  //   && particlePosition.x >= currentGridSlotPosition.x - bounds.x * 0.2
+                  //   && particlePosition.x <= currentGridSlotPosition.x + bounds.x * 0.2
             
-                  //   && particlePosition.y >= worldPos.y - bounds.y * 0.2
-                  //   && particlePosition.y <= worldPos.y + bounds.y * 0.2
+                  //   && particlePosition.y >= currentGridSlotPosition.y - bounds.y * 0.2
+                  //   && particlePosition.y <= currentGridSlotPosition.y + bounds.y * 0.2
                    
-                  //   && particlePosition.z >= worldPos.z - bounds.z * 0.2
-                  //   && particlePosition.z <= worldPos.z + bounds.z * 0.2
+                  //   && particlePosition.z >= currentGridSlotPosition.z - bounds.z * 0.2
+                  //   && particlePosition.z <= currentGridSlotPosition.z + bounds.z * 0.2
                   // ) {
                     
                   // }
