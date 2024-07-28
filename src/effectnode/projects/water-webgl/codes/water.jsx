@@ -591,6 +591,7 @@ function Content3D() {
     // - render kernel - //
     ///////////////
 
+    let debugCOUTNER = false;
     onRender.current = (st, dt) => {
       if (dt >= 1) {
         dt = 1;
@@ -611,20 +612,22 @@ function Content3D() {
 
       //
 
-      let arr = new Uint16Array(new Array(Math.floor(tx * ty * 4)));
+      if (debugCOUTNER) {
+        let arr = new Uint16Array(new Array(Math.floor(tx * ty * 4)));
 
-      /** @type {WebGLRenderer} */
-      let gl = st.gl;
-      gl.readRenderTargetPixels(
-        slotComputeGPU.getCurrentRenderTarget(slotComputeVar),
-        0,
-        0,
-        tx,
-        ty,
-        arr
-      );
+        /** @type {WebGLRenderer} */
+        let gl = st.gl;
+        gl.readRenderTargetPixels(
+          slotComputeGPU.getCurrentRenderTarget(slotComputeVar),
+          0,
+          0,
+          tx,
+          ty,
+          arr
+        );
 
-      console.log(fromHalfFloat(arr[0]));
+        console.log(fromHalfFloat(arr[0]));
+      }
     };
 
     //////////////////////////////////////////////////////////////////////
