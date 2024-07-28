@@ -56,15 +56,16 @@ let debugGridCounter = false && process.env.NODE_ENV === "development";
 function Content3D({ ui, files }) {
   let dx = 10;
   let dy = 10;
-  let dz = 20;
+  let dz = 50;
 
   let offsetGrid = useMemo(() => {
-    return new Vector3(dx * -0.5, 0, dz * -0.5 - dz * 0.75);
+    return new Vector3(dx * -0.5, 0, dz * -1.05 + 20);
   }, [dx, dz]);
 
   let gravityFactor = useMemo(() => {
     return new Uniform(1.0);
   }, []);
+
   let pressureFactor = useMemo(() => {
     return new Uniform(1.0);
   }, []);
@@ -77,7 +78,7 @@ function Content3D({ ui, files }) {
     console.log(pressureFactor.value);
   }, [gravityFactor, pressureFactor, ui.gravityFactor, ui.pressureFactor]);
 
-  let pz = 128;
+  let pz = 256;
   let py = Math.pow(pz, 1 / 2);
   let px = Math.pow(pz, 1 / 2);
 
@@ -95,6 +96,9 @@ function Content3D({ ui, files }) {
     let draco = new DRACOLoader();
     draco.setDecoderPath("/draco/");
     loader.setDRACOLoader(draco);
+
+    //
+
     loader
       .loadAsync(slideURL)
       .then((glb) => {
@@ -117,7 +121,7 @@ function Content3D({ ui, files }) {
 
         let merged = mergeGeometries(acc, false);
 
-        merged.translate(-offsetGrid.x, 0, 7.5);
+        merged.translate(-offsetGrid.x * 1, 0, 7.5);
 
         // merged.rotateX(Math.PI);
         // merged.translate(5, 2, 2);
@@ -287,8 +291,8 @@ function Content3D({ ui, files }) {
             let r = Math.random() * 0.5 + 0.25;
 
             arr[i * 4 + 0] = dx * r;
-            arr[i * 4 + 1] = dy * Math.random() * 0.3 + dy * 0.2;
-            arr[i * 4 + 2] = dz * Math.random() * 0.25;
+            arr[i * 4 + 1] = dy * Math.random() * 0.3 + dy * 0.2 + 2.8;
+            arr[i * 4 + 2] = dz * Math.random() * 0.25 + 5.5;
             arr[i * 4 + 3] = 0;
 
             let color = ["#ff0000", "#ffffff", "#0000ff"];
@@ -452,8 +456,8 @@ function Content3D({ ui, files }) {
               faceIndices.xyz
             ).xyz;
             
-            if (didHit && dist <= 0.5) {
-              outputVel += normal * 0.1;
+            if (didHit && dist <= 1.5) {
+              outputVel += normal * 0.05 * dist;
             }
 
 
