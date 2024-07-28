@@ -68,6 +68,10 @@ function Content3D() {
   let gl = useThree((r) => r.gl);
   let onRender = useRef(() => {});
   useEffect(() => {
+    if (!mounter) {
+      return;
+    }
+
     let cleans = [];
     let canRun = true;
     //
@@ -979,7 +983,7 @@ void main() {
       let mesh = new Mesh(ibg, mat);
       mesh.frustumCulled = false;
 
-      mounter.clear();
+      // mounter.clear();
       mounter.add(mesh);
 
       //
@@ -994,7 +998,7 @@ void main() {
         it();
       });
     };
-  }, []);
+  }, [mounter]);
 
   useFrame((st, dt) => {
     onRender.current(st, dt);
