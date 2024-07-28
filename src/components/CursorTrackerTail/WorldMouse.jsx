@@ -1,6 +1,6 @@
 import { Box, Gltf, Sphere, Text, useGLTF } from "@react-three/drei";
 import { createPortal, useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { CursorTrackerTail } from "src/components/CursorTrackerTail/CursorTrackerTail";
 import { Mini } from "src/components/CursorTrackerTail/Mini";
 import {
@@ -202,14 +202,16 @@ export function WorldMouse({ src, useStore }) {
       {/* <Box></Box> */}
       {/*  */}
 
-      <primitive object={glb.scene}></primitive>
+      {glb && <primitive object={glb.scene}></primitive>}
 
       {createPortal(
         <group position={[0, 0, -1]}>
           {/* <group name="distanceLooker">
               <Gltf src={cursorGLBURL}></Gltf>
             </group> */}
-          <ShowInfo useStore={useStore}></ShowInfo>
+          <Suspense fallback={null}>
+            <ShowInfo useStore={useStore}></ShowInfo>
+          </Suspense>
         </group>,
         camera
       )}
