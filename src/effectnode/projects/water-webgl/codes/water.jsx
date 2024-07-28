@@ -39,10 +39,11 @@ import { fromHalfFloat } from "three/src/extras/DataUtils";
 let debugGridCounter = false && process.env.NODE_ENV === "development";
 
 //
-function Content3D() {
-  let dx = 20;
+
+function Content3D({ ui }) {
+  let dx = 10;
   let dy = 10;
-  let dz = 20;
+  let dz = 10;
 
   let offsetGrid = useMemo(() => {
     return new Vector3(dx * -0.5, 0, dz * -0.5 - dz * 0.6);
@@ -54,6 +55,13 @@ function Content3D() {
   let pressureFactor = useMemo(() => {
     return new Uniform(1.0);
   }, []);
+
+  useEffect(() => {
+    gravityFactor.value = ui.gravityFactor;
+    pressureFactor.value = ui.pressureFactor;
+
+    console.log(pressureFactor.value);
+  }, [gravityFactor, pressureFactor, ui.gravityFactor, ui.pressureFactor]);
 
   let pz = 128;
   let py = Math.pow(pz, 1 / 2);
