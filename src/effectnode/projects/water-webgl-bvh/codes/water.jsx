@@ -452,8 +452,12 @@ function Content3D({ ui, files }) {
               faceIndices.xyz
             ).xyz;
             
-            
-            outputVel += normal * 0.001;
+            if (didHit) {
+              outputVel += outputVel * -0.5;
+
+              outputVel += normal * 0.1;
+              outputVel.y += normal.y * -0.11;
+            }
 
 
             if (outputPos.x >= boundMax.x) {
