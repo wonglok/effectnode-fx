@@ -4,6 +4,7 @@
 import { Suspense } from "react";
 import { WorldMouse } from "src/components/CursorTrackerTail/WorldMouse";
 import { Insert3D } from "./main";
+import { Bvh, Gltf } from "@react-three/drei";
 
 export function ToolBox({}) {
   return (
@@ -20,12 +21,12 @@ export function Runtime({ ui, io, useStore, files }) {
     <>
       <Insert3D>
         <Suspense fallback={null}>
-          {
+          {/* {
             <WorldMouse
               useStore={useStore}
               src={files["/places/church-2.glb"]}
             ></WorldMouse>
-          }
+          } */}
         </Suspense>
       </Insert3D>
     </>

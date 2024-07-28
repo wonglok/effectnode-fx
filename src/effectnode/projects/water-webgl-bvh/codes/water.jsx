@@ -18,6 +18,7 @@ import {
   Uniform,
   Vector3,
   BufferGeometry,
+  MeshNormalMaterial,
 } from "three";
 import {
   Color,
@@ -48,14 +49,15 @@ import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRe
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils";
 import { fromHalfFloat } from "three/src/extras/DataUtils";
 import { Insert3D } from "./main";
+import { Bvh, Gltf } from "@react-three/drei";
 
 let debugGridCounter = false && process.env.NODE_ENV === "development";
 
 //
 
 function Content3D({ ui, files }) {
-  let dx = 10;
-  let dy = 10;
+  let dx = 30;
+  let dy = 20;
   let dz = 50;
 
   let offsetGrid = useMemo(() => {
@@ -121,7 +123,7 @@ function Content3D({ ui, files }) {
 
         let merged = mergeGeometries(acc, false);
 
-        merged.translate(-offsetGrid.x * 1, 0, 7.5);
+        merged.translate(-offsetGrid.x * 1, 0, 15.0);
 
         // merged.rotateX(Math.PI);
         // merged.translate(5, 2, 2);
@@ -136,9 +138,9 @@ function Content3D({ ui, files }) {
           return {
             ...s,
             show2: (
-              <primitive
-                object={new Mesh(merged, new MeshStandardMaterial())}
-              ></primitive>
+              <mesh geometry={merged}>
+                <meshNormalMaterial></meshNormalMaterial>
+              </mesh>
             ),
           };
         });
@@ -290,9 +292,9 @@ function Content3D({ ui, files }) {
           for (let x = 0; x < px; x++) {
             let r = Math.random() * 0.5 + 0.25;
 
-            arr[i * 4 + 0] = dx * r;
-            arr[i * 4 + 1] = dy * Math.random() * 0.3 + 5.8;
-            arr[i * 4 + 2] = dz * Math.random() * 0.25 + 10.5;
+            arr[i * 4 + 0] = dx * r * 0.25 + 12.5;
+            arr[i * 4 + 1] = dy * Math.random() * 0.1 + 8.8;
+            arr[i * 4 + 2] = dz * Math.random() * 0.25 + 13.5;
             arr[i * 4 + 3] = 0;
 
             let color = ["#ff0000", "#ffffff", "#0000ff"];
@@ -1155,14 +1157,32 @@ void main() {
       let mesh = new Mesh(ibg, mat);
       mesh.frustumCulled = false;
 
-      // mounter.clear();
-      // mounter.add(mesh);
+      let ball = new Mesh(
+        new SphereGeometry(1, 32, 32),
+        new MeshNormalMaterial({
+          //
+          //
+        })
+      );
 
+      // mounter.clear();
+
+      setInterval(() => {
+        ball.position.copy(
+          particleVelocityVar.material.uniforms.pointerWorld.value
+        );
+      });
+      //
       setMounter((s) => {
         return {
           ...s,
           ...{
-            show: <primitive object={mesh}></primitive>,
+            show: (
+              <>
+                <primitive object={mesh}></primitive>
+                <primitive object={ball}></primitive>
+              </>
+            ),
           },
         };
       });
@@ -1201,9 +1221,34 @@ void main() {
     <>
       {/*  */}
 
-      <group position={offsetGrid.toArray()}>
-        {show}
-        {show2}
+      <group
+        onPointerMove={(ev) => {
+          window.dispatchEvent(
+            new CustomEvent("pointerWorld", { detail: ev.point.toArray() })
+          );
+        }}
+      >
+        {/*  */}
+        {/*  */}
+        {/*  */}
+
+        {files["/places/church-2.glb"] && (
+          <>
+            <Suspense fallback={null}>
+              <Bvh>
+                <Gltf useDraco src={files["/places/church-2.glb"]}></Gltf>
+              </Bvh>
+            </Suspense>
+          </>
+        )}
+        {/*  */}
+        {/*  */}
+        {/*  */}
+
+        <group position={offsetGrid.toArray()}>
+          {show}
+          {show2}
+        </group>
       </group>
 
       {/* <XROrigin position={[0, 10, 50]} /> */}
