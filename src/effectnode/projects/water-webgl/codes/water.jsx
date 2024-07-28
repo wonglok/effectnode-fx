@@ -40,10 +40,6 @@ let debugGridCounter = false && process.env.NODE_ENV === "development";
 
 //
 
-//
-
-//
-
 function Content3D({ ui }) {
   let dx = 20;
   let dy = 10;
@@ -486,7 +482,8 @@ function Content3D({ ui }) {
           dy,
           dz,
         })}
-
+        
+        
         uniform sampler2D particlePositionTex;
         uniform sampler2D particleVelocityTex;
 
@@ -502,16 +499,19 @@ function Content3D({ ui }) {
 
             float counter = 0.0;
 
+            float edge = pow(bounds.x * bounds.y * bounds.z, 1.0 / 3.0)
             for (int z = 0; z < int(bounds.z); z++) {
               for (int y = 0; y < int(bounds.y); y++) {
                 for (int x = 0; x < int(bounds.x); x++) {
+
                   vec4 particlePosition = texture2D(particlePositionTex, 
                     worldToUV(vec3(float(x), float(y), float(z)), bounds)
                   );
 
                   float dist = length(particlePosition.rgb - worldPos);
 
-                  float adder = 1.0 / dist;
+                  float smoothingDist = edge * 0.3;
+                  float adder = smoothKernel(smoothingDist, dist);
                   if (adder >= 10.0) {
                     adder = 10.0;
                   }
