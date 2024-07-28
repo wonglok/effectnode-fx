@@ -58,10 +58,10 @@ let debugGridCounter = false && process.env.NODE_ENV === "development";
 function Content3D({ ui, files }) {
   let dx = 20;
   let dy = 20;
-  let dz = 60;
+  let dz = 70;
 
   let offsetGrid = useMemo(() => {
-    return new Vector3(dx * -0.5, 0, dz * -1.05 + 20);
+    return new Vector3(dx * -0.5, 0, dz * -1.05 + dz / 3);
   }, [dx, dz]);
 
   let gravityFactor = useMemo(() => {
@@ -282,6 +282,7 @@ function Content3D({ ui, files }) {
 
     let particleColorInitTex = gpuParticle.createTexture();
     let particlePositionInitTex = gpuParticle.createTexture();
+
     {
       let arr2 = particleColorInitTex.image.data;
 
@@ -293,8 +294,8 @@ function Content3D({ ui, files }) {
             let r = Math.random();
 
             arr[i * 4 + 0] = dx * r * 0.15 + (dx * (1.0 - 0.15)) / 2;
-            arr[i * 4 + 1] = dy * Math.random() * 0.1 + 8.8;
-            arr[i * 4 + 2] = dz * Math.random() * 0.25 + 13.5;
+            arr[i * 4 + 1] = dy * Math.random() * 0.3 + 10 + dy * 0.2;
+            arr[i * 4 + 2] = dz * Math.random() * 0.1 + 13.5;
             arr[i * 4 + 3] = 0;
 
             let color = ["#ff0000", "#ffffff", "#0000ff"];
@@ -433,7 +434,7 @@ function Content3D({ ui, files }) {
             
             // mouse
             if (length(pointerWorld - outputPos) <= mouseRadius) {
-              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.1;
+              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.075;
             }
 
             // bvh
@@ -839,11 +840,11 @@ function Content3D({ ui, files }) {
       ibg.needsUpdate = true;
 
       let mat = new MeshStandardMaterial({
-        flatShading: true,
+        flatShading: false,
         color: new Color("#ffffff"),
         emissive: new Color("#000000"),
-        metalness: 0.0,
-        roughness: 0.0,
+        metalness: 0.5,
+        roughness: 0.1,
         transparent: true,
         opacity: 0.5,
         side: FrontSide,
@@ -1220,35 +1221,36 @@ void main() {
   return (
     <>
       {/*  */}
+      <Bvh>
+        <group
+          onPointerMove={(ev) => {
+            window.dispatchEvent(
+              new CustomEvent("pointerWorld", { detail: ev.point.toArray() })
+            );
+          }}
+        >
+          {/*  */}
+          {/*  */}
+          {/*  */}
 
-      <group
-        onPointerMove={(ev) => {
-          window.dispatchEvent(
-            new CustomEvent("pointerWorld", { detail: ev.point.toArray() })
-          );
-        }}
-      >
-        {/*  */}
-        {/*  */}
-        {/*  */}
+          {files["/places/church-2.glb"] && (
+            <>
+              <Suspense fallback={null}>
+                <Gltf useDraco src={files["/places/church-2.glb"]}></Gltf>
+              </Suspense>
+            </>
+          )}
+          {/*  */}
+          {/*  */}
+        </group>
+        <group position={offsetGrid.toArray()}>
+          {show2}
+          {show}
+        </group>
 
-        {files["/places/church-2.glb"] && (
-          <>
-            <Suspense fallback={null}>
-              <Gltf useDraco src={files["/places/church-2.glb"]}></Gltf>
-            </Suspense>
-          </>
-        )}
+        {/* <XROrigin position={[0, 10, 50]} /> */}
         {/*  */}
-        {/*  */}
-      </group>
-      <group position={offsetGrid.toArray()}>
-        {show2}
-        {show}
-      </group>
-
-      {/* <XROrigin position={[0, 10, 50]} /> */}
-      {/*  */}
+      </Bvh>
     </>
   );
 }
