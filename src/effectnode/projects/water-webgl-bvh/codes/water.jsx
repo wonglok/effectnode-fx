@@ -1235,20 +1235,16 @@ void main() {
         {files["/places/church-2.glb"] && (
           <>
             <Suspense fallback={null}>
-              <Bvh>
-                <Gltf useDraco src={files["/places/church-2.glb"]}></Gltf>
-              </Bvh>
+              <Gltf useDraco src={files["/places/church-2.glb"]}></Gltf>
             </Suspense>
           </>
         )}
         {/*  */}
         {/*  */}
-        {/*  */}
-
-        <group position={offsetGrid.toArray()}>
-          {show}
-          {show2}
-        </group>
+      </group>
+      <group position={offsetGrid.toArray()}>
+        {show2}
+        {show}
       </group>
 
       {/* <XROrigin position={[0, 10, 50]} /> */}
