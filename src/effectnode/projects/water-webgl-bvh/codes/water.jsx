@@ -92,6 +92,7 @@ function Content3D({ ui, files }) {
   let gl = useThree((r) => r.gl);
   let onRender = useRef(() => {});
   useEffect(() => {
+    let loops = [];
     let cleans = [];
 
     let loader = new GLTFLoader();
@@ -582,6 +583,11 @@ function Content3D({ ui, files }) {
       return;
     }
 
+    loops.push((st, dt) => {
+      particlePositionVar.material.uniforms.delta.value = dt;
+      particleVelocityVar.material.uniforms.delta.value = dt;
+    });
+
     //////////////////////////////////////////////////////////////////////
     ///////////
     ///////////
@@ -734,6 +740,15 @@ function Content3D({ ui, files }) {
       console.error(err);
       return;
     }
+    loops.push(() => {
+      slotComputeGPU.compute();
+      slotComputeVar.material.uniforms.particlePositionTex = {
+        value: gpuParticle.getCurrentRenderTarget(particlePositionVar).texture,
+      };
+      slotComputeVar.material.uniforms.particleVelocityTex = {
+        value: gpuParticle.getCurrentRenderTarget(particleVelocityVar).texture,
+      };
+    });
 
     //////////////////////////////////////////////////////////////////////
 
@@ -746,26 +761,7 @@ function Content3D({ ui, files }) {
     // - render kernel - //
     ///////////////
 
-    onRender.current = (st, dt) => {
-      if (dt >= 1) {
-        dt = 1;
-      }
-
-      particlePositionVar.material.uniforms.delta.value = dt;
-      particleVelocityVar.material.uniforms.delta.value = dt;
-
-      gpuParticle.compute();
-
-      slotComputeVar.material.uniforms.particlePositionTex = {
-        value: gpuParticle.getCurrentRenderTarget(particlePositionVar).texture,
-      };
-      slotComputeVar.material.uniforms.particleVelocityTex = {
-        value: gpuParticle.getCurrentRenderTarget(particleVelocityVar).texture,
-      };
-      slotComputeGPU.compute();
-
-      //
-
+    loops.push((st, dt) => {
       if (debugGridCounter) {
         let arr = new Uint16Array(new Array(Math.floor(tx * ty * 4)));
 
@@ -782,6 +778,15 @@ function Content3D({ ui, files }) {
 
         console.log(fromHalfFloat(arr[0]));
       }
+    });
+
+    onRender.current = (st, dt) => {
+      if (dt >= 1) {
+        dt = 1;
+      }
+
+      loops.forEach((r) => r(st, dt));
+      //
     };
 
     //////////////////////////////////////////////////////////////////////
@@ -823,16 +828,14 @@ function Content3D({ ui, files }) {
       let ibg = new InstancedBufferGeometry();
       ibg.copy(new IcosahedronGeometry(1, 0));
       ibg.scale(0.1, 0.1, 0.1);
-      //
+
       ibg.instanceCount = COUNT_PARTICLE;
 
-      //////////
       ibg.setAttribute(
         "offsetPositionAttr",
         new InstancedBufferAttribute(new Float32Array(offset), 3)
       );
 
-      //////////
       ibg.setAttribute(
         "offsetUV",
         new InstancedBufferAttribute(new Float32Array(uv), 2)
@@ -853,23 +856,31 @@ function Content3D({ ui, files }) {
 
       mat.onBeforeCompile = (shader, renderer) => {
         shader.uniforms.particleColor = {
-          get value() {
-            return particleColorInitTex;
-          },
+          value: particleColorInitTex,
         };
         shader.uniforms.particlePosition = {
-          get value() {
-            return gpuParticle.getCurrentRenderTarget(particlePositionVar)
-              .texture;
-          },
+          value:
+            gpuParticle.getCurrentRenderTarget(particlePositionVar).texture,
         };
         shader.uniforms.particleVelocity = {
-          get value() {
-            return gpuParticle.getCurrentRenderTarget(particleVelocityVar)
-              .texture;
-          },
+          value:
+            gpuParticle.getCurrentRenderTarget(particleVelocityVar).texture,
         };
 
+        loops.push(() => {
+          shader.uniforms.particleColor = {
+            value: particleColorInitTex,
+          };
+          shader.uniforms.particlePosition = {
+            value:
+              gpuParticle.getCurrentRenderTarget(particlePositionVar).texture,
+          };
+          shader.uniforms.particleVelocity = {
+            value:
+              gpuParticle.getCurrentRenderTarget(particleVelocityVar).texture,
+          };
+          gpuParticle.compute();
+        });
         shader.vertexShader = /* glsl */ `
         #define STANDARD
 
