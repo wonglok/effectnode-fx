@@ -126,6 +126,8 @@ function Content3D() {
     }
 
     vec2 worldToUV (vec3 pos, vec3 grid) {
+        //
+
         pos.x = max(min(pos.x, grid.x), 0.0);
         pos.y = max(min(pos.y, grid.y), 0.0);
         pos.z = max(min(pos.z, grid.z), 0.0);
@@ -590,7 +592,7 @@ function Content3D() {
     // - render kernel - //
     ///////////////
 
-    let debugGridCounter = true;
+    let debugGridCounter = false && process.env.NODE_ENV === "development";
     onRender.current = (st, dt) => {
       if (dt >= 1) {
         dt = 1;
