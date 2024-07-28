@@ -291,8 +291,8 @@ function Content3D({ ui, files }) {
             let r = Math.random() * 0.5 + 0.25;
 
             arr[i * 4 + 0] = dx * r;
-            arr[i * 4 + 1] = dy * Math.random() * 0.3 + dy * 0.2 + 2.8;
-            arr[i * 4 + 2] = dz * Math.random() * 0.25 + 5.5;
+            arr[i * 4 + 1] = dy * Math.random() * 0.3 + 5.8;
+            arr[i * 4 + 2] = dz * Math.random() * 0.25 + 10.5;
             arr[i * 4 + 3] = 0;
 
             let color = ["#ff0000", "#ffffff", "#0000ff"];
