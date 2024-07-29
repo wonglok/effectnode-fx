@@ -454,7 +454,6 @@ function Content3D({ ui, files }) {
             // get intersection
             bool didHit = bvhIntersectFirstHit( bvh, rayOrigin, rayDirection, faceIndices, faceNormal, barycoord, side, dist );
 
-
             vec3 normal = textureSampleBarycoord(
               normalAttribute,
               barycoord,
@@ -464,7 +463,6 @@ function Content3D({ ui, files }) {
             if (didHit && dist <= 1.5) {
               outputVel += normal * 0.08 * dist;
             }
-
 
             if (outputPos.x >= boundMax.x) {
                 // outputVel.x *= 0.5;
@@ -784,8 +782,8 @@ function Content3D({ ui, files }) {
     });
 
     onRender.current = (st, dt) => {
-      if (dt >= 1) {
-        dt = 1;
+      if (dt >= 5) {
+        dt = 5;
       }
 
       loops.forEach((r) => r(st, dt));
