@@ -49,7 +49,7 @@ import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRe
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils";
 import { fromHalfFloat } from "three/src/extras/DataUtils";
 import { Insert3D } from "./main";
-import { Bvh, Gltf } from "@react-three/drei";
+import { Bvh, Gltf, MeshTransmissionMaterial } from "@react-three/drei";
 
 let debugGridCounter = false && process.env.NODE_ENV === "development";
 
@@ -125,7 +125,7 @@ function Content3D({ ui, files }) {
 
         let merged = mergeGeometries(acc, false);
 
-        merged.translate(-offsetGrid.x * 1, 0, 15.0);
+        merged.translate(-offsetGrid.x * 1, 0, 10.0);
 
         // merged.rotateX(Math.PI);
         // merged.translate(5, 2, 2);
@@ -141,7 +141,12 @@ function Content3D({ ui, files }) {
             ...s,
             show2: (
               <mesh geometry={merged}>
-                <meshNormalMaterial></meshNormalMaterial>
+                <MeshTransmissionMaterial
+                  transmission={1}
+                  thickness={1.2}
+                  roughness={0}
+                  reflectivity={0.6}
+                ></MeshTransmissionMaterial>
               </mesh>
             ),
           };
@@ -411,6 +416,10 @@ function Content3D({ ui, files }) {
                   vec4 posData = texture2D(particlePosition, particleUV);
 
                   float pressure = slot.r;
+
+                  if (isnan(pressure)) {
+                    pressure = 0.0;
+                  }
 
                   vec3 diff = vec3(sidePos.rgb - centerPos.rgb);
 
@@ -855,7 +864,7 @@ function Content3D({ ui, files }) {
         metalness: 0.5,
         roughness: 0.1,
         transparent: true,
-        opacity: 0.5,
+        opacity: 0.7,
         side: FrontSide,
         transparent: true,
         depthWrite: true,
