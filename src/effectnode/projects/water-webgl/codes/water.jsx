@@ -60,7 +60,7 @@ const DebugGridCounter = false && process.env.NODE_ENV === "development";
 //
 
 function Content3D({ ui, files }) {
-  let dx = 30;
+  let dx = 20;
   let dy = 10;
   let dz = 15;
 
@@ -123,20 +123,20 @@ function Content3D({ ui, files }) {
       return pow(value, 3.0) / volume;
     }
 
-     vec3 uvToWorld (vec2 uv, vec3 grid, vec3 uvGrid) {
-        // grid
-        float dx = grid.x;
-        float dy = grid.y;
-        float dz = grid.z;
+     vec3 uvToWorld (vec2 uv, vec3 sourceGrid, vec3 targetGrid) {
+        // sourceGrid
+        float dx = sourceGrid.x;
+        float dy = sourceGrid.y;
+        float dz = sourceGrid.z;
 
         // uv to 3d
         float uvx = uv.x;
         float uvy = uv.y;
         float tx = uvx * dx * dy;
-        float ty = uvy * uvGrid.z;
+        float ty = uvy * targetGrid.z;
         
-        float _3dx = (tx / uvGrid.x);
-        float _3dy = (tx / uvGrid.y);
+        float _3dx = (tx / targetGrid.x);
+        float _3dy = (tx / targetGrid.y);
         float _3dz = (ty);
 
         vec3 pos = vec3(_3dx, _3dy, _3dz);
@@ -148,24 +148,24 @@ function Content3D({ ui, files }) {
         return pos;
     }
 
-    vec2 worldToUV (vec3 pos, vec3 grid, vec3 uvGrid) {
+    vec2 worldToUV (vec3 pos, vec3 sourceGrid, vec3 targetGrid) {
         //
-        pos.x = max(min(pos.x, grid.x), 0.0);
-        pos.y = max(min(pos.y, grid.y), 0.0);
-        pos.z = max(min(pos.z, grid.z), 0.0);
+        pos.x = max(min(pos.x, sourceGrid.x), 0.0);
+        pos.y = max(min(pos.y, sourceGrid.y), 0.0);
+        pos.z = max(min(pos.z, sourceGrid.z), 0.0);
         
         float _3dx = pos.x;
         float _3dy = pos.y;
         float _3dz = pos.z;
 
-        float dx = grid.x;
-        float dy = grid.y;
-        float dz = grid.z;
+        float dx = sourceGrid.x;
+        float dy = sourceGrid.y;
+        float dz = sourceGrid.z;
 
         // 3d to uv
         vec2 myUV = vec2(
-            (_3dx + _3dy * dx) / (uvGrid.x * uvGrid.y),
-            (_3dz) / uvGrid.z
+            (_3dx + _3dy * dx) / (targetGrid.x * targetGrid.y),
+            (_3dz) / targetGrid.z
         );
 
         return myUV;
@@ -341,19 +341,18 @@ function Content3D({ ui, files }) {
                   vec4 posData = texture2D(particlePosition, particleUV);
               
                   vec3 pressure = slot.rgb;
-
-                  vec3 diff = vec3(
-                    float(x),
-                    float(y), 
-                    float(z)
-                  );
+                  
+                  float sdf = sdSphere(posData.rgb - outputPos.rgb, 0.01);
+                  vec3 diff = normalize(vec3(
+                    outputPos
+                  ) - posData.rgb);
 
                   float dist = length(diff);
 
                   float edge = pow(bounds.x * bounds.y * bounds.z, 1.0 / 3.0);
 
                   if (!isnan(pressure.x)) {
-                    velPressure += diff * -1.0 * length(pressure.x) * delta * pressureFactor * smoothKernel(edge, dist);
+                    velPressure += 0.0;//sdf * diff * 1.0 * 0.1 * length(pressure.x) * delta * pressureFactor * smoothKernel(edge, dist);
                   }
 
                   //
@@ -383,28 +382,28 @@ function Content3D({ ui, files }) {
 
             if (outputPos.x == boundMax.x) {
                 // outputVel.x *= -0.95;
-                outputVel.x += -0.4 * delta;
+                outputVel.x += -1.0 * delta;
             }
             if (outputPos.y == boundMax.y) {
                 // outputVel.y *= -0.95;
-                outputVel.y += -0.4 * delta;
+                outputVel.y += -1.0 * delta;
             }
             if (outputPos.z == boundMax.z) {
                 // outputVel.z *= -0.95;
-                outputVel.z += -0.4 * delta;
+                outputVel.z += -1.0 * delta;
             }
 
             if (outputPos.x == boundMin.x) {
                 // outputVel.x *= -0.95;
-                outputVel.x += 0.4 * delta;
+                outputVel.x += 1.0 * delta;
             }
             if (outputPos.y == boundMin.y) {
                 // outputVel.y *= -0.95;
-                outputVel.y += 0.4 * delta;
+                outputVel.y += 1.0 * delta;
             }
             if (outputPos.z == boundMin.z) {
                 // outputVel.z *= -0.95;
-                outputVel.z += 0.4 * delta;
+                outputVel.z += 1.0 * delta;
             }
 
             gl_FragColor = vec4(outputVel.rgb, 1.0);
@@ -512,8 +511,7 @@ function Content3D({ ui, files }) {
           dy,
           dz,
         })}
-        
-        
+
         uniform sampler2D particlePositionTex;
         uniform sampler2D particleVelocityTex;
 
