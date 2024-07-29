@@ -17,14 +17,14 @@ export function Runtime({ ui, useStore, io }) {
     <>
       <Insert3D>
         {/*  */}
-        {
-          // <OrbitControls
-          //   object-position={[0, 1.87, 0.01]}
-          //   target={[0, 1.87, 0]}
-          //   makeDefault
-          //   rotateSpeed={1}
-          // ></OrbitControls>
-        }
+        {!orientation && (
+          <OrbitControls
+            object-position={[0, 1.87, 0.01]}
+            target={[0, 1.87, 0]}
+            makeDefault
+            rotateSpeed={1}
+          ></OrbitControls>
+        )}
 
         <Sync useStore={useStore}></Sync>
       </Insert3D>
