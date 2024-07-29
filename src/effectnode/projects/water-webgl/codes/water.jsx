@@ -61,7 +61,7 @@ const DebugGridCounter = false && process.env.NODE_ENV === "development";
 
 function Content3D({ ui, files }) {
   let dx = 15;
-  let dy = 15;
+  let dy = 10;
   let dz = 15;
 
   let offsetGrid = useMemo(() => {
@@ -334,11 +334,12 @@ function Content3D({ ui, files }) {
                   );
                   vec3 sidePos = nextby + outputPos;
 
-                  vec2 particleUV = worldToUV(sidePos, bounds, bounds);
+                  vec2 particleUV = worldToUV(sidePos, bounds, particles);
+                  vec2 slotUV = worldToUV(sidePos, bounds, bounds);
 
-                  vec4 slot = texture2D(gridTex, particleUV);
+                  vec4 slot = texture2D(gridTex, slotUV);
 
-                  vec4 posData = texture2D(particlePosition, particleUV);
+                  // vec4 posData = texture2D(particlePosition, particleUV);
               
                   float pressure = slot.x;
                   
@@ -349,7 +350,7 @@ function Content3D({ ui, files }) {
                   float edge = pow(bounds.x * bounds.y * bounds.z, 1.0 / 3.0);
 
                   if (!isnan(pressure)) {
-                    velPressure += diff / dist * pressure * delta * pressureFactor * smoothKernel(edge, dist);
+                    velPressure += diff * -0.1 * dist * pressure * delta * pressureFactor * smoothKernel(edge, dist);
                   }
 
                   //
@@ -359,6 +360,8 @@ function Content3D({ ui, files }) {
 
             // pressure
             outputVel += velPressure; 
+            outputVel.x += velPressure.x * 5.0; 
+            outputVel.z += velPressure.z * 5.0; 
 
             // gravityFactor
             outputVel.y += -0.01 * gravityFactor * delta * outputPos.y;
@@ -1146,8 +1149,10 @@ void main() {
           {/*  */}
         </group>
         <group position={offsetGrid.toArray()}>
-          {show2}
-          {show}
+          <group>
+            {show2}
+            {show}
+          </group>
         </group>
 
         {/* <XROrigin position={[0, 10, 50]} /> */}
