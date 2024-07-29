@@ -550,7 +550,7 @@ function Content3D({ ui, files }) {
                   float adder = smoothKernel(edge * 1.75, dist);
 
                   if (!isnan(counter + adder) && !isnan(adder)) {
-                    counter += adder;
+                    counter += adder * 5.0;
                   }
 
                   // if (
