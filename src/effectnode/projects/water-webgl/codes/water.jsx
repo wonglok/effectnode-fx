@@ -350,7 +350,7 @@ function Content3D({ ui, files }) {
                   float edge = pow(grids.x * grids.y * grids.z, 1.0 / 3.0);
 
                   if (!isnan(pressure)) {
-                    velPressure += diff * dist * pressure * delta * pressureFactor * smoothKernel(edge, dist);
+                    velPressure += diff * dist * pressure * delta * pressureFactor * smoothKernel(edge * 1.5, dist);
                   }
 
                   //
@@ -547,23 +547,22 @@ function Content3D({ ui, files }) {
 
                   float dist = length(particlePosition.rgb - slotPosition);
         
-                  float adder = smoothKernel(edge, dist);
+                  float adder = smoothKernel(edge * 1.75, dist);
 
                   if (!isnan(counter + adder) && !isnan(adder)) {
                     counter += adder;
                   }
 
-                  if (
-                    true
-                    && particlePosition.x >= slotPosition.x - 10.0 / grids.x
-                    && particlePosition.x <= slotPosition.x + 10.0 / grids.x
-                    && particlePosition.y >= slotPosition.y - 10.0 / grids.y
-                    && particlePosition.y <= slotPosition.y + 10.0 / grids.y
-                    && particlePosition.z >= slotPosition.z - 10.0 / grids.z
-                    && particlePosition.z <= slotPosition.z + 10.0 / grids.z
-                  ) {
-                    
-                  }
+                  // if (
+                  //   true
+                  //   && particlePosition.x >= slotPosition.x - 10.0 / grids.x
+                  //   && particlePosition.x <= slotPosition.x + 10.0 / grids.x
+                  //   && particlePosition.y >= slotPosition.y - 10.0 / grids.y
+                  //   && particlePosition.y <= slotPosition.y + 10.0 / grids.y
+                  //   && particlePosition.z >= slotPosition.z - 10.0 / grids.z
+                  //   && particlePosition.z <= slotPosition.z + 10.0 / grids.z
+                  // ) {
+                  // }
                  
                   i++;
 
