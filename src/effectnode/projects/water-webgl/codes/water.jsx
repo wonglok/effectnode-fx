@@ -60,8 +60,8 @@ const DebugGridCounter = false && process.env.NODE_ENV === "development";
 //
 
 function Content3D({ ui, files }) {
-  let dx = 20;
-  let dy = 10;
+  let dx = 15;
+  let dy = 15;
   let dz = 15;
 
   let offsetGrid = useMemo(() => {
@@ -141,18 +141,18 @@ function Content3D({ ui, files }) {
 
         vec3 pos = vec3(_3dx, _3dy, _3dz);
 
-        pos.x = max(min(pos.x, bounds.x), 0.0);
-        pos.y = max(min(pos.y, bounds.y), 0.0);
-        pos.z = max(min(pos.z, bounds.z), 0.0);
+        // pos.x = max(min(pos.x, bounds.x), 0.0);
+        // pos.y = max(min(pos.y, bounds.y), 0.0);
+        // pos.z = max(min(pos.z, bounds.z), 0.0);
 
         return pos;
     }
 
     vec2 worldToUV (vec3 pos, vec3 sourceGrid, vec3 targetGrid) {
         //
-        pos.x = max(min(pos.x, sourceGrid.x), 0.0);
-        pos.y = max(min(pos.y, sourceGrid.y), 0.0);
-        pos.z = max(min(pos.z, sourceGrid.z), 0.0);
+        // pos.x = max(min(pos.x, sourceGrid.x), 0.0);
+        // pos.y = max(min(pos.y, sourceGrid.y), 0.0);
+        // pos.z = max(min(pos.z, sourceGrid.z), 0.0);
         
         float _3dx = pos.x;
         float _3dy = pos.y;
