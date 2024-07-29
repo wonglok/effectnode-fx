@@ -651,8 +651,10 @@ function Content3D({ ui, files }) {
                   if (adder >= 10.0) {
                     adder = 10.0;
                   }
-      
-                  counter += adder;
+
+                  if (!isnan(adder) && !isnan(counter)) {
+                    counter += adder;
+                  }
 
                   
                   // if (

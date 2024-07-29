@@ -55,7 +55,7 @@ import { fromHalfFloat } from "three/src/extras/DataUtils";
 import { Insert3D } from "./main";
 import { Bvh, Gltf, Stats } from "@react-three/drei";
 
-const DebugGridCounter = true && process.env.NODE_ENV === "development";
+const DebugGridCounter = false && process.env.NODE_ENV === "development";
 
 //
 
@@ -85,11 +85,13 @@ function Content3D({ ui, files }) {
       pressureFactor.value = ui.pressureFactor;
     }
   }, [gravityFactor, pressureFactor, ui.gravityFactor, ui.pressureFactor]);
-  let pxx = 256;
-  let pyy = 256;
-  let px = Math.floor(Math.sqrt(pxx));
-  let py = Math.floor(Math.sqrt(pxx));
-  let pz = Math.floor(pyy);
+  //
+
+  let sideCount = 64;
+
+  let px = Math.floor(Math.sqrt(sideCount));
+  let py = Math.floor(Math.sqrt(sideCount));
+  let pz = sideCount;
 
   let [{ show, show2 }, setMounter] = useState({
     show: null,
@@ -350,8 +352,8 @@ function Content3D({ ui, files }) {
 
                   float edge = pow(bounds.x * bounds.y * bounds.z, 1.0 / 3.0);
 
-                  if (!isnan(pressure.x) && !isnan(pressure.y) && !isnan(pressure.z)) {
-                    velPressure += diff * -1.0 * length(pressure) * delta * pressureFactor * smoothKernel(edge, dist);
+                  if (!isnan(pressure.x)) {
+                    velPressure += diff * -1.0 * length(pressure.x) * delta * pressureFactor * smoothKernel(edge, dist);
                   }
                   //
                 }
@@ -374,6 +376,7 @@ function Content3D({ ui, files }) {
             if (length(pointerWorld - outputPos) <= mouseRadius) {
               outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.15;
             }
+
 
             if (outputPos.x == boundMax.x) {
                 // outputVel.x *= -0.95;
@@ -549,7 +552,7 @@ function Content3D({ ui, files }) {
                   
                   vec3 diff = particlePosition.rgb - currentGridSlotPosition.rgb;
                   if (!isnan(adder) && !isnan(pressure.x) && !isnan(pressure.y) && !isnan(pressure.z)) {
-                    pressure += adder * (diff);
+                    pressure += adder;
                   }
 
 
@@ -727,7 +730,7 @@ function Content3D({ ui, files }) {
 
       let ibg = new InstancedBufferGeometry();
       ibg.copy(new IcosahedronGeometry(1, 0));
-      ibg.scale(0.1, 0.1, 0.1);
+      ibg.scale(0.06, 0.06, 0.06);
 
       ibg.instanceCount = COUNT_PARTICLE;
 
