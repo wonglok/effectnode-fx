@@ -72,7 +72,8 @@ function Content3D({ ui, files }) {
     return new Uniform(1.0);
   }, []);
 
-  let slideURL = files[`/mesh/slide.glb`];
+  //
+  let slideURL = files[`/mesh/slide1.glb`];
   useEffect(() => {
     gravityFactor.value = ui.gravityFactor;
     pressureFactor.value = ui.pressureFactor;
@@ -435,7 +436,7 @@ function Content3D({ ui, files }) {
             
             // mouse
             if (length(pointerWorld - outputPos) <= mouseRadius) {
-              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.075;
+              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.05;
             }
 
             // bvh
@@ -461,7 +462,7 @@ function Content3D({ ui, files }) {
             ).xyz;
             
             if (didHit && dist <= 1.5) {
-              outputVel += normal * 0.05 * dist;
+              outputVel += normal * 0.08 * dist;
             }
 
 
@@ -646,7 +647,7 @@ function Content3D({ ui, files }) {
 
                   float dist = length(particlePosition.rgb - currentGridSlotPosition);
 
-                  float smoothingDist = edge * 0.3;
+                  float smoothingDist = edge;
                   float adder = smoothKernel(smoothingDist, dist);
                   if (adder >= 10.0) {
                     adder = 10.0;
