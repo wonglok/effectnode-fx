@@ -235,11 +235,7 @@
         "spaceID": "new-space",
         "_id": "_ne7rk2f_qwuxwti",
         "title": "main",
-        "position": [
-          -1.9806363422995945,
-          0,
-          -1.8960938527448536
-        ],
+        "position": [-1.9806363422995945, 0, -1.8960938527448536],
         "inputs": [
           {
             "_id": "_jryjlwi_5v5h9n5",
@@ -309,11 +305,7 @@
         "spaceID": "new-space",
         "_id": "_q77qs09_mwqkfse",
         "title": "mesh",
-        "position": [
-          1.6693271605607969,
-          0,
-          1.214855184169393
-        ],
+        "position": [1.6693271605607969, 0, 1.214855184169393],
         "inputs": [
           {
             "_id": "_qiynf9j_6a60fn3",
@@ -383,11 +375,7 @@
         "spaceID": "new-space",
         "_id": "_ck2nyne_fksh47i",
         "title": "light",
-        "position": [
-          -2.1545818480705297,
-          0,
-          -0.6601093322665752
-        ],
+        "position": [-2.1545818480705297, 0, -0.6601093322665752],
         "inputs": [
           {
             "_id": "_xa0pr15_13dvvis",
@@ -457,11 +445,7 @@
         "spaceID": "new-space",
         "_id": "_5zdzfzx_t2sevtt",
         "title": "camera",
-        "position": [
-          0.4419795941867046,
-          0,
-          -1.9620379072164305
-        ],
+        "position": [0.4419795941867046, 0, -1.9620379072164305],
         "inputs": [
           {
             "_id": "_afnl8q0_ostxx2k",
@@ -531,11 +515,7 @@
         "spaceID": "new-space",
         "_id": "_x801t0d_2qm4x7k",
         "title": "color",
-        "position": [
-          1.0900707027400338,
-          0,
-          -0.4794609663633524
-        ],
+        "position": [1.0900707027400338, 0, -0.4794609663633524],
         "inputs": [
           {
             "_id": "_k31qdzs_dvuk8qj",
@@ -605,11 +585,7 @@
         "spaceID": "cursor-webgl",
         "_id": "_ajypeo5_",
         "title": "world",
-        "position": [
-          -2.3259323678487083,
-          0,
-          1.320809627388254
-        ],
+        "position": [-2.3259323678487083, 0, 1.320809627388254],
         "inputs": [
           {
             "_id": "_eqv9md3_",
@@ -679,11 +655,7 @@
         "spaceID": "bvh-water",
         "_id": "_v6oyskf_",
         "title": "water",
-        "position": [
-          -0.30408060133544346,
-          0,
-          2.290134089642983
-        ],
+        "position": [-0.30408060133544346, 0, 2.290134089642983],
         "inputs": [
           {
             "_id": "_x24tx3d_",

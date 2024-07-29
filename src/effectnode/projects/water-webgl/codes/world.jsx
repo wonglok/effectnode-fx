@@ -1,9 +1,11 @@
 // import { Box, PerspectiveCamera } from "@react-three/drei";
 // import { useFrame } from "@react-three/fiber";
 // useEffect, useRef, useState
-import { Sky } from "@react-three/drei";
+// import { Gltf, Sky } from "@react-three/drei";
 import { Suspense } from "react";
-import { WorldMouse } from "src/components/CursorTrackerTail/WorldMouse";
+// import { WorldMouse } from "src/components/CursorTrackerTail/WorldMouse";
+import { Insert3D } from "./main";
+import { Gltf } from "@react-three/drei";
 
 export function ToolBox({}) {
   return (
@@ -16,8 +18,6 @@ export function ToolBox({}) {
 }
 
 export function Runtime({ ui, io, useStore, onLoop }) {
-  let Insert3D = useStore((r) => r.Insert3D) || (() => null);
-  let InsertHTML = useStore((r) => r.InsertHTML) || (() => null);
   let files = useStore((r) => r.files);
 
   return (
@@ -34,13 +34,16 @@ export function Runtime({ ui, io, useStore, onLoop }) {
 
         <Suspense fallback={null}>
           {files["/places/church-2.glb"] && (
-            <WorldMouse
+            <>
+              {/* <WorldMouse
               useStore={useStore}
               src={files["/places/church-2.glb"]}
-            ></WorldMouse>
+            ></WorldMouse> */}
+              {/* <Gltf useDraco src={files["/places/church-2.glb"]}></Gltf> */}
+            </>
           )}
         </Suspense>
-        <Sky></Sky>
+        {/* <Sky></Sky> */}
       </Insert3D>
     </>
   );

@@ -5,91 +5,103 @@
 
 import { useFrame, useThree } from "@react-three/fiber";
 // import { XROrigin } from "@react-three/xr";
-import { Suspense, useEffect, useMemo, useRef } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import {
-  NoBlending,
-  SpriteMaterial,
-  BoxGeometry,
-  CircleGeometry,
   FrontSide,
   HalfFloatType,
   IcosahedronGeometry,
   MeshStandardMaterial,
   Uniform,
   Vector3,
+  MeshNormalMaterial,
+
+  //
+  BufferGeometry,
+  NoBlending,
+  SpriteMaterial,
+  BoxGeometry,
+  CircleGeometry,
+  Clock,
 } from "three";
 import {
   Color,
   InstancedBufferAttribute,
   InstancedBufferGeometry,
   Mesh,
-  Object3D,
   WebGLRenderer,
+  SphereGeometry,
+
   //
+  Object3D,
   DataTexture,
   DoubleSide,
   FloatType,
   MeshBasicMaterial,
   MeshPhysicalMaterial,
   RGBAFormat,
-  SphereGeometry,
 } from "three";
+import {
+  FloatVertexAttributeTexture,
+  MeshBVH,
+  BVHShaderGLSL,
+  SAH,
+  MeshBVHUniformStruct,
+} from "three-mesh-bvh";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer";
+import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils";
 import { fromHalfFloat } from "three/src/extras/DataUtils";
+import { Insert3D } from "./main";
+import { Bvh, Gltf, Stats } from "@react-three/drei";
 
-let debugGridCounter = false && process.env.NODE_ENV === "development";
+const DebugGridCounter = true && process.env.NODE_ENV === "development";
 
 //
 
-function Content3D({ ui }) {
-  let dx = 10;
-  let dy = 20;
-  let dz = 10;
+function Content3D({ ui, files }) {
+  let dx = 15;
+  let dy = 15;
+  let dz = 15;
 
   let offsetGrid = useMemo(() => {
-    return new Vector3(dx * -0.5, 0, dz * -0.5 - dz * 0.75);
+    return new Vector3(dx * -0.5, 0, dz * -1.5);
   }, [dx, dz]);
 
   let gravityFactor = useMemo(() => {
     return new Uniform(1.0);
   }, []);
+
   let pressureFactor = useMemo(() => {
     return new Uniform(1.0);
   }, []);
 
+  let slideURL = files[`/mesh/slide.glb`];
   useEffect(() => {
-    gravityFactor.value = ui.gravityFactor;
-    pressureFactor.value = ui.pressureFactor;
-
-    console.log(pressureFactor.value);
+    if (!isNaN(ui.gravityFactor)) {
+      gravityFactor.value = ui.gravityFactor;
+    }
+    if (!isNaN(ui.pressureFactor)) {
+      pressureFactor.value = ui.pressureFactor;
+    }
   }, [gravityFactor, pressureFactor, ui.gravityFactor, ui.pressureFactor]);
+  let pxx = 256;
+  let pyy = 256;
+  let px = Math.floor(Math.sqrt(pxx));
+  let py = Math.floor(Math.sqrt(pxx));
+  let pz = Math.floor(pyy);
 
-  let pz = 128;
-  let py = Math.pow(pz, 1 / 2);
-  let px = Math.pow(pz, 1 / 2);
+  let [{ show, show2 }, setMounter] = useState({
+    show: null,
+    show2: null,
+  });
 
-  let [{ mounter, show }] = useMemo(() => {
-    let mounter = new Object3D();
-    let show = <primitive object={mounter}></primitive>;
-    return [
-      {
-        mounter,
-        show,
-      },
-    ];
-  }, []);
   let gl = useThree((r) => r.gl);
   let onRender = useRef(() => {});
   useEffect(() => {
-    if (!mounter) {
-      return;
-    }
-
+    let loops = [];
     let cleans = [];
-    let canRun = true;
-    //
-    // -  - //
-    //
+
     let coordFunctions = ({
       px,
       py,
@@ -102,16 +114,14 @@ function Content3D({ ui }) {
 
     #define bounds vec3(${dx.toFixed(1)}, ${dy.toFixed(1)}, ${dz.toFixed(1)})
     #define particles vec3(${px.toFixed(1)}, ${py.toFixed(1)}, ${pz.toFixed(1)})
-
+    
     float smoothKernel (float smoothRadius, float dist ) {
       float volume = float(64.0 * ${Math.PI}) * pow(smoothRadius, 9.0) / 315.0;
-
       float value = max(0.0, pow(smoothRadius, 2.0)) - pow(dist, 2.0);
-
       return pow(value, 3.0) / volume;
     }
 
-     vec3 uvToWorld (vec2 uv, vec3 grid) {
+     vec3 uvToWorld (vec2 uv, vec3 grid, vec3 uvGrid) {
         // grid
         float dx = grid.x;
         float dy = grid.y;
@@ -121,24 +131,23 @@ function Content3D({ ui }) {
         float uvx = uv.x;
         float uvy = uv.y;
         float tx = uvx * dx * dy;
-        float ty = uvy * dz;
+        float ty = uvy * uvGrid.z;
         
-        float _3dx = (tx / dx);
-        float _3dy = (tx / dy);
+        float _3dx = (tx / uvGrid.x);
+        float _3dy = (tx / uvGrid.y);
         float _3dz = (ty);
 
         vec3 pos = vec3(_3dx, _3dy, _3dz);
 
-        pos.x = max(min(pos.x, grid.x), 0.0);
-        pos.y = max(min(pos.y, grid.y), 0.0);
-        pos.z = max(min(pos.z, grid.z), 0.0);
+        pos.x = max(min(pos.x, bounds.x), 0.0);
+        pos.y = max(min(pos.y, bounds.y), 0.0);
+        pos.z = max(min(pos.z, bounds.z), 0.0);
 
         return pos;
     }
 
-    vec2 worldToUV (vec3 pos, vec3 grid) {
+    vec2 worldToUV (vec3 pos, vec3 grid, vec3 uvGrid) {
         //
-
         pos.x = max(min(pos.x, grid.x), 0.0);
         pos.y = max(min(pos.y, grid.y), 0.0);
         pos.z = max(min(pos.z, grid.z), 0.0);
@@ -153,8 +162,8 @@ function Content3D({ ui }) {
 
         // 3d to uv
         vec2 myUV = vec2(
-            (_3dx + _3dy * dx) / (dx * dy),
-            (_3dz) / dz
+            (_3dx + _3dy * dx) / (uvGrid.x * uvGrid.y),
+            (_3dz) / uvGrid.z
         );
 
         return myUV;
@@ -195,23 +204,23 @@ function Content3D({ ui }) {
 
             outputPos += particleVelocityData.rgb;
             
-            if (outputPos.x >= boundMax.x) {
+            if (outputPos.x > boundMax.x) {
                 outputPos.x = boundMax.x;
             }
-            if (outputPos.y >= boundMax.y) {
+            if (outputPos.y > boundMax.y) {
                 outputPos.y = boundMax.y;
             }
-            if (outputPos.z >= boundMax.z) {
+            if (outputPos.z > boundMax.z) {
                 outputPos.z = boundMax.z;
             }
 
-            if (outputPos.x <= boundMin.x) {
+            if (outputPos.x < boundMin.x) {
                 outputPos.x = boundMin.x;
             }
-            if (outputPos.y <= boundMin.y) {
+            if (outputPos.y < boundMin.y) {
                 outputPos.y = boundMin.y;
             }
-            if (outputPos.z <= boundMin.z) {
+            if (outputPos.z < boundMin.z) {
                 outputPos.z = boundMin.z;
             }
 
@@ -221,6 +230,7 @@ function Content3D({ ui }) {
 
     let particleColorInitTex = gpuParticle.createTexture();
     let particlePositionInitTex = gpuParticle.createTexture();
+
     {
       let arr2 = particleColorInitTex.image.data;
 
@@ -230,6 +240,7 @@ function Content3D({ ui }) {
         for (let y = 0; y < py; y++) {
           for (let x = 0; x < px; x++) {
             let r = Math.random();
+
             arr[i * 4 + 0] = dx * r;
             arr[i * 4 + 1] = dy * Math.random();
             arr[i * 4 + 2] = dz * Math.random();
@@ -240,7 +251,8 @@ function Content3D({ ui }) {
             let current = new Color()
               .set(color[idx])
               .convertLinearToSRGB()
-              .offsetHSL(0, -0.05, 0.0);
+              .offsetHSL(0, 0.0, 0.0);
+
             arr2[i * 4 + 0] = current.r;
             arr2[i * 4 + 1] = current.g;
             arr2[i * 4 + 2] = current.b;
@@ -260,6 +272,9 @@ function Content3D({ ui }) {
       particlePositionInitTex
     );
     particlePositionVar.material.uniforms.delta = { value: 0 };
+    loops.push((st, dt) => {
+      particlePositionVar.material.uniforms.delta.value = dt;
+    });
 
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
@@ -301,12 +316,10 @@ function Content3D({ ui }) {
             vec3 outputPos = particlePositionData.rgb;
             vec3 outputVel = particleVelocityData.rgb;
 
-
-            
-            for (int z = -2; z <= 2; z++) {
-              for (int y = -2; y <= 2; y++) {
-                for (int x = -2; x <= 2; x++) {
-
+            vec3 velPressure = vec3(0.0);
+            for (int z = -1; z <= 1; z++) {
+              for (int y = -1; y <= 1; y++) {
+                for (int x = -1; x <= 1; x++) {
                   if (x == 0 && y == 0 && z == 0) {
                     continue;
                   }
@@ -319,69 +332,73 @@ function Content3D({ ui }) {
                     float(z)
                   ) + centerPos;
 
-                  vec2 particleUV = worldToUV(sidePos, bounds);
-                  vec3 worldPositionSlot = uvToWorld(particleUV, bounds);
+                  vec2 particleUV = worldToUV(sidePos, bounds, particles);
 
-                  worldPositionSlot.x = max(min(worldPositionSlot.x, bounds.x), 0.0);
-                  worldPositionSlot.y = max(min(worldPositionSlot.y, bounds.y), 0.0);
-                  worldPositionSlot.z = max(min(worldPositionSlot.z, bounds.z), 0.0);
-                  
-                  vec2 slotUV = worldToUV(worldPositionSlot, bounds);
-
-                  vec4 slot = texture2D(gridTex, slotUV);
+                  vec4 slot = texture2D(gridTex, particleUV);
 
                   vec4 posData = texture2D(particlePosition, particleUV);
+              
+                  vec3 pressure = slot.rgb;
 
-                  float pressure = slot.r;
+                  vec3 diff = vec3(
+                    float(x),
+                    float(y), 
+                    float(z)
+                  );
 
-                  vec3 diff = vec3(sidePos.rgb - centerPos.rgb);
+                  float dist = length(diff);
 
                   float edge = pow(bounds.x * bounds.y * bounds.z, 1.0 / 3.0);
 
-                  outputVel += normalize(diff) / length(diff) * -1.0 * pressure * delta * pressureFactor * smoothKernel(edge, length(diff));
-                  
-                  /////
+                  if (!isnan(pressure.x) && !isnan(pressure.y) && !isnan(pressure.z)) {
+                    velPressure += diff * -1.0 * length(pressure) * delta * pressureFactor * smoothKernel(edge, dist);
+                  }
+                  //
                 }
               }
             }
 
-            // gravityFactor
-            outputVel.y += -0.015 * gravityFactor * delta * outputPos.y;
+            // pressure
+            outputVel += velPressure; 
 
+
+            // gravityFactor
+            outputVel.y += -0.01 * gravityFactor * delta * outputPos.y;
 
             // mouse
             float mouseRadius = 5.0;
             float mouseForceSize = sdSphere(pointerWorld, mouseRadius);
             vec3 normalParticleMouse = normalize(outputPos.rgb - pointerWorld);
             
+            // mouse
             if (length(pointerWorld - outputPos) <= mouseRadius) {
-              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.1;
+              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.15;
             }
 
-            if (outputPos.x >= boundMax.x) {
-                // outputVel.x *= 0.5;
-                outputVel.x += -1.0 * delta;
+            if (outputPos.x == boundMax.x) {
+                // outputVel.x *= -0.95;
+                outputVel.x += -0.4 * delta;
             }
-            if (outputPos.y >= boundMax.y) {
-                // outputVel.y *= 0.5;
-                outputVel.y += -1.0 * delta;
+            if (outputPos.y == boundMax.y) {
+                // outputVel.y *= -0.95;
+                outputVel.y += -0.4 * delta;
             }
-            if (outputPos.z >= boundMax.z) {
-                // outputVel.z *= 0.5;
-                outputVel.z += -1.0 * delta;
+            if (outputPos.z == boundMax.z) {
+                // outputVel.z *= -0.95;
+                outputVel.z += -0.4 * delta;
             }
 
-            if (outputPos.x <= boundMin.x) {
-                // outputVel.x *= 0.5;
-                outputVel.x += 1.0 * delta;
+            if (outputPos.x == boundMin.x) {
+                // outputVel.x *= -0.95;
+                outputVel.x += 0.4 * delta;
             }
-            if (outputPos.y <= boundMin.y) {
-                // outputVel.y *= 0.5;
-                outputVel.y += 1.0 * delta;
+            if (outputPos.y == boundMin.y) {
+                // outputVel.y *= -0.95;
+                outputVel.y += 0.4 * delta;
             }
-            if (outputPos.z <= boundMin.z) {
-                // outputVel.z *= 0.5;
-                outputVel.z += 1.0 * delta;
+            if (outputPos.z == boundMin.z) {
+                // outputVel.z *= -0.95;
+                outputVel.z += 0.4 * delta;
             }
 
             gl_FragColor = vec4(outputVel.rgb, 1.0);
@@ -413,18 +430,21 @@ function Content3D({ ui }) {
       particleVelocityInitTex
     );
     particleVelocityVar.material.uniforms.delta = { value: 0 };
+    loops.push((st, dt) => {
+      particleVelocityVar.material.uniforms.delta.value = dt;
+    });
     particleVelocityVar.material.uniforms.pointerWorld = {
       value: new Vector3(),
     };
     particleVelocityVar.material.uniforms.pressureFactor = pressureFactor;
     particleVelocityVar.material.uniforms.gravityFactor = gravityFactor;
+
     let hh = ({ detail }) => {
-      if (!canRun) {
-        return;
-      }
-      particleVelocityVar.material.uniforms.pointerWorld.value.fromArray(
-        detail
-      );
+      particleVelocityVar.material.uniforms.pointerWorld.value.fromArray([
+        !isNaN(detail[0]) ? detail[0] : 0,
+        !isNaN(detail[1]) ? detail[1] : 0,
+        !isNaN(detail[2]) ? detail[2] : 0,
+      ]);
       particleVelocityVar.material.uniforms.pointerWorld.value.sub(offsetGrid);
     };
     window.addEventListener("pointerWorld", hh);
@@ -454,12 +474,16 @@ function Content3D({ ui }) {
       return;
     }
 
+    loops.push((st, dt) => {
+      particlePositionVar.material.uniforms.delta.value = dt;
+    });
+
     //////////////////////////////////////////////////////////////////////
-    ///////////
     ///////////
     /////////////////////////
     // - particle to uvs - //
     /////////////////////////
+    ///////////
 
     ///////////
     ///////////
@@ -471,7 +495,6 @@ function Content3D({ ui }) {
     let ty = dy;
 
     let slotComputeGPU = new GPUComputationRenderer(tx, ty, gl);
-    slotComputeGPU.setDataType(HalfFloatType);
     let slotComputeShader = `
         #define iResolution vec2(${tx.toFixed(0)}, ${ty.toFixed(0)})
 
@@ -489,54 +512,65 @@ function Content3D({ ui }) {
         uniform sampler2D particleVelocityTex;
 
         void main (void) {
-            //
-
             float uvx = gl_FragCoord.x / iResolution.x;
             float uvy = gl_FragCoord.y / iResolution.y;
 
             vec2 uv = vec2(uvx, uvy);
 
-            vec3 currentGridSlotPosition = uvToWorld(uv, bounds);
+            vec3 currentGridSlotPosition = uvToWorld(uv, particles, bounds);
 
             float counter = 0.0;
+            float reset = 0.0;
+
+            vec3 pressure = vec3(0.0);
 
             float edge = pow(bounds.x * bounds.y * bounds.z, 1.0 / 3.0);
-            for (int z = 0; z < int(bounds.z); z++) {
-              for (int y = 0; y < int(bounds.y); y++) {
-                for (int x = 0; x < int(bounds.x); x++) {
+            for (int z = 0; z < int(particles.z); z++) {
+              float i = 0.0;
+              for (int y = 0; y < int(particles.y); y++) {
+                for (int x = 0; x < int(particles.x); x++) {
+                  //
 
-                  vec4 particlePosition = texture2D(particlePositionTex, 
-                    worldToUV(vec3(float(x), float(y), float(z)), bounds)
+                  vec4 particlePosition = texture2D(
+                    particlePositionTex, 
+                    vec2(i / particles.x * particles.y, float(z) / particles.z)
                   );
 
                   float dist = length(particlePosition.rgb - currentGridSlotPosition);
+        
+                 
 
-                  float smoothingDist = edge * 0.3;
+                  float smoothingDist = edge;
                   float adder = smoothKernel(smoothingDist, dist);
-                  if (adder >= 10.0) {
-                    adder = 10.0;
+                    
+                  if (!isnan(counter + adder) && !isnan(adder)) {
+                    counter += adder;
                   }
-      
-                  counter += adder;
                   
+                  vec3 diff = particlePosition.rgb - currentGridSlotPosition.rgb;
+                  if (!isnan(adder) && !isnan(pressure.x) && !isnan(pressure.y) && !isnan(pressure.z)) {
+                    pressure += adder * (diff);
+                  }
+
+
                   // if (
                   //   true
-                  //   && particlePosition.x >= currentGridSlotPosition.x - bounds.x * 0.2
-                  //   && particlePosition.x <= currentGridSlotPosition.x + bounds.x * 0.2
-            
-                  //   && particlePosition.y >= currentGridSlotPosition.y - bounds.y * 0.2
-                  //   && particlePosition.y <= currentGridSlotPosition.y + bounds.y * 0.2
-                   
-                  //   && particlePosition.z >= currentGridSlotPosition.z - bounds.z * 0.2
-                  //   && particlePosition.z <= currentGridSlotPosition.z + bounds.z * 0.2
+                  //   && particlePosition.x >= currentGridSlotPosition.x - bounds.x * 0.15
+                  //   && particlePosition.x <= currentGridSlotPosition.x + bounds.x * 0.15
+                  //   && particlePosition.y >= currentGridSlotPosition.y - bounds.y * 0.15
+                  //   && particlePosition.y <= currentGridSlotPosition.y + bounds.y * 0.15
+                  //   && particlePosition.z >= currentGridSlotPosition.z - bounds.z * 0.15
+                  //   && particlePosition.z <= currentGridSlotPosition.z + bounds.z * 0.15
                   // ) {
-                    
                   // }
+                 
+                  i++;
+
                 }
               }
             }
 
-            gl_FragColor = vec4(counter);
+            gl_FragColor = vec4(pressure, counter);
 
             ///////////
 
@@ -564,7 +598,7 @@ function Content3D({ ui }) {
     //   }
     //   uvTex.needsUpdate = true;
     // }
-    // //
+    //
     //
 
     let slotInitTex = slotComputeGPU.createTexture();
@@ -598,12 +632,21 @@ function Content3D({ ui }) {
     slotComputeVar.material.uniforms.particleVelocityTex = {
       value: gpuParticle.getCurrentRenderTarget(particleVelocityVar).texture,
     };
-
+    slotComputeGPU.setDataType(FloatType);
     let err = slotComputeGPU.init();
     if (err) {
       console.error(err);
       return;
     }
+    loops.push(() => {
+      slotComputeGPU.compute();
+      slotComputeVar.material.uniforms.particlePositionTex = {
+        value: gpuParticle.getCurrentRenderTarget(particlePositionVar).texture,
+      };
+      slotComputeVar.material.uniforms.particleVelocityTex = {
+        value: gpuParticle.getCurrentRenderTarget(particleVelocityVar).texture,
+      };
+    });
 
     //////////////////////////////////////////////////////////////////////
 
@@ -616,28 +659,9 @@ function Content3D({ ui }) {
     // - render kernel - //
     ///////////////
 
-    onRender.current = (st, dt) => {
-      if (dt >= 1) {
-        dt = 1;
-      }
-
-      slotComputeVar.material.uniforms.particlePositionTex = {
-        value: gpuParticle.getCurrentRenderTarget(particlePositionVar).texture,
-      };
-      slotComputeVar.material.uniforms.particleVelocityTex = {
-        value: gpuParticle.getCurrentRenderTarget(particleVelocityVar).texture,
-      };
-      slotComputeGPU.compute();
-
-      particlePositionVar.material.uniforms.delta.value = dt;
-      particleVelocityVar.material.uniforms.delta.value = dt;
-
-      gpuParticle.compute();
-
-      //
-
-      if (debugGridCounter) {
-        let arr = new Uint16Array(new Array(Math.floor(tx * ty * 4)));
+    loops.push((st, dt) => {
+      if (DebugGridCounter) {
+        let arr = new Float32Array(new Array(Math.floor(tx * ty * 4)));
 
         /** @type {WebGLRenderer} */
         let gl = st.gl;
@@ -650,8 +674,23 @@ function Content3D({ ui }) {
           arr
         );
 
-        console.log(fromHalfFloat(arr[0]));
+        console.log(
+          arr.map((r) => r)[0],
+          arr.map((r) => r)[1],
+          arr.map((r) => r)[2],
+          arr.map((r) => r)[3]
+        );
       }
+    });
+    let myClock = new Clock();
+    onRender.current = (st) => {
+      let dt = myClock.getDelta();
+      if (dt >= 1) {
+        dt = 1;
+      }
+
+      loops.forEach((r) => r(st, dt));
+      //
     };
 
     //////////////////////////////////////////////////////////////////////
@@ -659,9 +698,6 @@ function Content3D({ ui }) {
     //////////////////////////////////////////////////////////////////////
 
     {
-      //
-      //
-      //
       //
 
       let uv = [];
@@ -682,39 +718,40 @@ function Content3D({ ui }) {
 
       let offset = [];
       for (let i = 0; i < COUNT_PARTICLE; i++) {
-        //
         offset.push(0, 0, 0);
-        //
       }
 
       //
       //
       //
+
       let ibg = new InstancedBufferGeometry();
       ibg.copy(new IcosahedronGeometry(1, 0));
       ibg.scale(0.1, 0.1, 0.1);
-      //
+
       ibg.instanceCount = COUNT_PARTICLE;
 
-      //////////
       ibg.setAttribute(
         "offsetPositionAttr",
         new InstancedBufferAttribute(new Float32Array(offset), 3)
       );
 
-      //////////
       ibg.setAttribute(
         "offsetUV",
         new InstancedBufferAttribute(new Float32Array(uv), 2)
       );
-      ibg.needsUpdate = true;
+
+      //
+      //
+      //
+      //
 
       let mat = new MeshStandardMaterial({
-        flatShading: true,
+        flatShading: false,
         color: new Color("#ffffff"),
         emissive: new Color("#000000"),
-        metalness: 0.0,
-        roughness: 0.0,
+        metalness: 0.5,
+        roughness: 0.1,
         transparent: true,
         opacity: 0.5,
         side: FrontSide,
@@ -724,22 +761,28 @@ function Content3D({ ui }) {
 
       mat.onBeforeCompile = (shader, renderer) => {
         shader.uniforms.particleColor = {
-          get value() {
-            return particleColorInitTex;
-          },
+          value: particleColorInitTex,
         };
         shader.uniforms.particlePosition = {
-          get value() {
-            return gpuParticle.getCurrentRenderTarget(particlePositionVar)
-              .texture;
-          },
+          value:
+            gpuParticle.getCurrentRenderTarget(particlePositionVar).texture,
         };
         shader.uniforms.particleVelocity = {
-          get value() {
-            return gpuParticle.getCurrentRenderTarget(particleVelocityVar)
-              .texture;
-          },
+          value:
+            gpuParticle.getCurrentRenderTarget(particleVelocityVar).texture,
         };
+
+        loops.push(() => {
+          shader.uniforms.particleColor.value = particleColorInitTex;
+          shader.uniforms.particlePosition.value =
+            gpuParticle.getCurrentRenderTarget(particlePositionVar).texture;
+          shader.uniforms.particleVelocity.value =
+            gpuParticle.getCurrentRenderTarget(particleVelocityVar).texture;
+
+          gpuParticle.compute();
+        });
+
+        //
 
         shader.vertexShader = /* glsl */ `
         #define STANDARD
@@ -1005,12 +1048,12 @@ void main() {
               diffuseColor.a *= material.transmissionAlpha;
             #endif
 
-            vec4 offsetColor = texture2D(particleColor, vMyUV);
+            // vec4 offsetColor = texture2D(particleColor, vMyUV);
             vec4 offsetVelocity = texture2D(particleVelocity, vMyUV);
 
             //
             
-            gl_FragColor = vec4(outgoingLight * mix(vec3(0.0, 0.2, 1.0), vec3(length(offsetVelocity.rgb) + 0.2, 1.0, 0.8), 2.0 * length(offsetVelocity.rgb)), diffuseColor.a );
+            gl_FragColor = vec4(outgoingLight * mix(vec3(0.0, 0.1, 1.0), vec3(0.2, 1.0, 0.8), 2.0 * length(offsetVelocity.rgb)), diffuseColor.a );
             
             //
 
@@ -1028,22 +1071,64 @@ void main() {
       let mesh = new Mesh(ibg, mat);
       mesh.frustumCulled = false;
 
-      // mounter.clear();
-      mounter.add(mesh);
+      let ball = new Mesh(
+        new SphereGeometry(1, 32, 32),
+        new MeshNormalMaterial({
+          //
+          //
+        })
+      );
+
+      console.log("building", ball);
 
       //
-      //
+
+      loops.push(() => {
+        ball.position.copy(
+          particleVelocityVar.material.uniforms.pointerWorld.value
+        );
+      });
+
+      setMounter((s) => {
+        return {
+          ...s,
+          ...{
+            show: (
+              <>
+                <primitive object={mesh}></primitive>
+                <primitive object={ball}></primitive>
+              </>
+            ),
+          },
+        };
+      });
+
       //
     }
     //
 
     return () => {
-      canRun = false;
       cleans.forEach((it) => {
         it();
       });
     };
-  }, [mounter]);
+
+    //
+    //
+    //
+  }, [
+    dx,
+    dy,
+    dz,
+    gl,
+    gravityFactor,
+    offsetGrid,
+    pressureFactor,
+    px,
+    py,
+    pz,
+    slideURL,
+  ]);
 
   useFrame((st, dt) => {
     onRender.current(st, dt);
@@ -1051,11 +1136,36 @@ void main() {
   return (
     <>
       {/*  */}
+      <Bvh>
+        <group
+          onPointerMove={(ev) => {
+            window.dispatchEvent(
+              new CustomEvent("pointerWorld", { detail: ev.point.toArray() })
+            );
+          }}
+        >
+          {/*  */}
+          {/*  */}
+          {/*  */}
 
-      <group position={offsetGrid.toArray()}>{show}</group>
+          {files["/places/church-2.glb"] && (
+            <>
+              <Suspense fallback={null}>
+                <Gltf useDraco src={files["/places/church-2.glb"]}></Gltf>
+              </Suspense>
+            </>
+          )}
+          {/*  */}
+          {/*  */}
+        </group>
+        <group position={offsetGrid.toArray()}>
+          {show2}
+          {show}
+        </group>
 
-      {/* <XROrigin position={[0, 10, 50]} /> */}
-      {/*  */}
+        {/* <XROrigin position={[0, 10, 50]} /> */}
+        {/*  */}
+      </Bvh>
     </>
   );
 }
@@ -1070,15 +1180,13 @@ export function ToolBox({}) {
   );
 }
 
-export function Runtime({ ui, io, useStore }) {
-  let Insert3D = useStore((r) => r.Insert3D) || (() => null);
-  //   let InsertHTML = useStore((r) => r.InsertHTML) || (() => null);
-
+export function Runtime({ ui, io, useStore, files }) {
   return (
     <>
       <Insert3D>
+        <Stats></Stats>
         <Suspense fallback={null}>
-          <Content3D ui={ui}></Content3D>
+          <Content3D files={files} ui={ui}></Content3D>
         </Suspense>
       </Insert3D>
     </>
