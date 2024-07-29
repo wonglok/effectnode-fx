@@ -319,43 +319,38 @@ function Content3D({ ui, files }) {
             vec3 outputVel = particleVelocityData.rgb;
 
             vec3 velPressure = vec3(0.0);
-            for (int z = -1; z <= 1; z++) {
-              for (int y = -1; y <= 1; y++) {
-                for (int x = -1; x <= 1; x++) {
+            for (int z = -2; z <= 2; z++) {
+              for (int y = -2; y <= 2; y++) {
+                for (int x = -2; x <= 2; x++) {
                   if (x == 0 && y == 0 && z == 0) {
                     continue;
                   }
 
-                  vec3 centerPos =  floor(outputPos) + 0.5;
-
-                  vec3 sidePos = vec3(
+                  vec3 centerSlot =  floor(outputPos) + 0.5;
+                  vec3 nextby = vec3(
                     float(x), 
                     float(y), 
                     float(z)
-                  ) + centerPos;
+                  );
+                  vec3 sidePos = nextby + outputPos;
 
-                  vec2 particleUV = worldToUV(sidePos, bounds, particles);
+                  vec2 particleUV = worldToUV(sidePos, bounds, bounds);
 
                   vec4 slot = texture2D(gridTex, particleUV);
 
                   vec4 posData = texture2D(particlePosition, particleUV);
               
-                  vec3 pressure = slot.rgb;
+                  float pressure = slot.x;
                   
-                  float sdf = sdSphere(posData.rgb - outputPos.rgb, 0.01);
-                  vec3 diff = normalize(vec3(
-                    outputPos
-                  ) - posData.rgb);
+                  vec3 diff = nextby;
 
                   float dist = length(diff);
 
                   float edge = pow(bounds.x * bounds.y * bounds.z, 1.0 / 3.0);
 
-                  if (!isnan(pressure.x)) {
-                    velPressure += 0.0;//sdf * diff * 1.0 * 0.1 * length(pressure.x) * delta * pressureFactor * smoothKernel(edge, dist);
+                  if (!isnan(pressure)) {
+                    velPressure += diff / dist * pressure * delta * pressureFactor * smoothKernel(edge, dist);
                   }
-
-                  //
 
                   //
                 }
@@ -364,7 +359,6 @@ function Content3D({ ui, files }) {
 
             // pressure
             outputVel += velPressure; 
-
 
             // gravityFactor
             outputVel.y += -0.01 * gravityFactor * delta * outputPos.y;
@@ -439,7 +433,7 @@ function Content3D({ ui, files }) {
       particleVelocityVar.material.uniforms.delta.value = dt;
     });
     particleVelocityVar.material.uniforms.pointerWorld = {
-      value: new Vector3(),
+      value: new Vector3(0, 0, -10).sub(offsetGrid),
     };
     particleVelocityVar.material.uniforms.pressureFactor = pressureFactor;
     particleVelocityVar.material.uniforms.gravityFactor = gravityFactor;
@@ -526,8 +520,6 @@ function Content3D({ ui, files }) {
             float counter = 0.0;
             float reset = 0.0;
 
-            vec3 pressure = vec3(0.0);
-
             float edge = pow(bounds.x * bounds.y * bounds.z, 1.0 / 3.0);
             for (int z = 0; z < int(particles.z); z++) {
               float i = 0.0;
@@ -542,20 +534,11 @@ function Content3D({ ui, files }) {
 
                   float dist = length(particlePosition.rgb - currentGridSlotPosition);
         
-                 
-
-                  float smoothingDist = edge;
-                  float adder = smoothKernel(smoothingDist, dist);
+                  float adder = smoothKernel(edge, dist);
                     
                   if (!isnan(counter + adder) && !isnan(adder)) {
                     counter += adder;
                   }
-                  
-                  vec3 diff = particlePosition.rgb - currentGridSlotPosition.rgb;
-                  if (!isnan(adder) && !isnan(pressure.x) && !isnan(pressure.y) && !isnan(pressure.z)) {
-                    pressure += adder;
-                  }
-
 
                   // if (
                   //   true
@@ -574,7 +557,7 @@ function Content3D({ ui, files }) {
               }
             }
 
-            gl_FragColor = vec4(pressure, counter);
+            gl_FragColor = vec4(counter, counter, counter, counter);
 
             ///////////
 
