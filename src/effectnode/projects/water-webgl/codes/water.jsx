@@ -55,7 +55,7 @@ import { fromHalfFloat } from "three/src/extras/DataUtils";
 import { Insert3D } from "./main";
 import { Bvh, Gltf, Stats } from "@react-three/drei";
 
-const DebugGridCounter = false && process.env.NODE_ENV === "development";
+const DebugGridCounter = true && process.env.NODE_ENV === "development";
 
 //
 
@@ -76,7 +76,6 @@ function Content3D({ ui, files }) {
     return new Uniform(1.0);
   }, []);
 
-  let slideURL = files[`/mesh/slide.glb`];
   useEffect(() => {
     if (!isNaN(ui.gravityFactor)) {
       gravityFactor.value = ui.gravityFactor;
@@ -87,7 +86,7 @@ function Content3D({ ui, files }) {
   }, [gravityFactor, pressureFactor, ui.gravityFactor, ui.pressureFactor]);
   //
 
-  let sideCount = 64 * 4;
+  let sideCount = 256;
 
   let px = Math.floor(Math.sqrt(sideCount));
   let py = Math.floor(Math.sqrt(sideCount));
@@ -114,7 +113,7 @@ function Content3D({ ui, files }) {
       dz,
     }) => `
 
-    #define bounds vec3(${dx.toFixed(1)}, ${dy.toFixed(1)}, ${dz.toFixed(1)})
+    #define grids vec3(${dx.toFixed(1)}, ${dy.toFixed(1)}, ${dz.toFixed(1)})
     #define particles vec3(${px.toFixed(1)}, ${py.toFixed(1)}, ${pz.toFixed(1)})
     
     float smoothKernel (float smoothRadius, float dist ) {
@@ -123,37 +122,37 @@ function Content3D({ ui, files }) {
       return pow(value, 3.0) / volume;
     }
 
-     vec3 uvToWorld (vec2 uv, vec3 sourceGrid, vec3 targetGrid) {
-        // sourceGrid
-        float dx = sourceGrid.x;
-        float dy = sourceGrid.y;
-        float dz = sourceGrid.z;
+     vec3 uvToWorld (vec2 uv, vec3 sourceGrid) {
+        // // sourceGrid
+        // float dx = sourceGrid.x;
+        // float dy = sourceGrid.y;
+        // float dz = sourceGrid.z;
 
         // uv to 3d
         float uvx = uv.x;
         float uvy = uv.y;
-        float tx = uvx * dx * dy;
-        float ty = uvy * targetGrid.z;
+        float tx = uvx * sourceGrid.x * sourceGrid.z;
+        float ty = uvy * sourceGrid.z;
         
-        float _3dx = (tx / targetGrid.x);
-        float _3dy = (tx / targetGrid.y);
+        float _3dx = (tx / sourceGrid.x);
+        float _3dy = (tx / sourceGrid.y);
         float _3dz = (ty);
 
         vec3 pos = vec3(_3dx, _3dy, _3dz);
 
-        // pos.x = max(min(pos.x, bounds.x), 0.0);
-        // pos.y = max(min(pos.y, bounds.y), 0.0);
-        // pos.z = max(min(pos.z, bounds.z), 0.0);
+        // pos.x = max(min(pos.x, grids.x), 0.0);
+        // pos.y = max(min(pos.y, grids.y), 0.0);
+        // pos.z = max(min(pos.z, grids.z), 0.0);
 
         return pos;
     }
 
-    vec2 worldToUV (vec3 pos, vec3 sourceGrid, vec3 targetGrid) {
-        //
+    vec2 worldToUV (vec3 pos, vec3 sourceGrid) {
         // pos.x = max(min(pos.x, sourceGrid.x), 0.0);
         // pos.y = max(min(pos.y, sourceGrid.y), 0.0);
         // pos.z = max(min(pos.z, sourceGrid.z), 0.0);
-        
+
+        //
         float _3dx = pos.x;
         float _3dy = pos.y;
         float _3dz = pos.z;
@@ -164,8 +163,8 @@ function Content3D({ ui, files }) {
 
         // 3d to uv
         vec2 myUV = vec2(
-            (_3dx + _3dy * dx) / (targetGrid.x * targetGrid.y),
-            (_3dz) / targetGrid.z
+            (_3dx + _3dy * dx) / (sourceGrid.x * sourceGrid.y),
+            (_3dz) / sourceGrid.z
         );
 
         return myUV;
@@ -302,6 +301,7 @@ function Content3D({ ui, files }) {
 
         uniform float gravityFactor;
         uniform float pressureFactor;
+        uniform float mouseDown;
         
       
         float sdSphere( vec3 p, float s )
@@ -319,9 +319,9 @@ function Content3D({ ui, files }) {
             vec3 outputVel = particleVelocityData.rgb;
 
             vec3 velPressure = vec3(0.0);
-            for (int z = -2; z <= 2; z++) {
-              for (int y = -2; y <= 2; y++) {
-                for (int x = -2; x <= 2; x++) {
+            for (int z = -1; z <= 1; z++) {
+              for (int y = -1; y <= 1; y++) {
+                for (int x = -1; x <= 1; x++) {
                   if (x == 0 && y == 0 && z == 0) {
                     continue;
                   }
@@ -334,35 +334,36 @@ function Content3D({ ui, files }) {
                   );
                   vec3 sidePos = nextby + outputPos;
 
-                  vec2 particleUV = worldToUV(sidePos, bounds, particles);
-                  vec2 slotUV = worldToUV(sidePos, bounds, bounds);
+                  vec2 particleUV = worldToUV(sidePos, grids);
+                  vec2 slotUV = worldToUV(sidePos, grids);
 
                   vec4 slot = texture2D(gridTex, slotUV);
 
                   // vec4 posData = texture2D(particlePosition, particleUV);
               
-                  float pressure = slot.x * 0.3;
+                  float pressure = slot.x;
                   
-                  vec3 diff = -nextby;
+                  vec3 diff = nextby;
 
                   float dist = length(diff);
 
-                  float edge = pow(bounds.x * bounds.y * bounds.z, 1.0 / 3.0);
+                  float edge = pow(grids.x * grids.y * grids.z, 1.0 / 3.0);
 
                   if (!isnan(pressure)) {
                     velPressure += diff * dist * pressure * delta * pressureFactor * smoothKernel(edge, dist);
                   }
 
                   //
+                  //
                 }
               }
             }
 
             // pressure
-            outputVel += velPressure; 
-            outputVel.x += velPressure.x * 0.2; 
-            outputVel.y += velPressure.y * 0.2; 
-            outputVel.z += velPressure.z * 0.2; 
+            // outputVel += velPressure; 
+            outputVel.x += velPressure.x * 1.0; 
+            outputVel.y += velPressure.y * 1.0; 
+            outputVel.z += velPressure.z * 1.0; 
 
             // gravityFactor
             outputVel.y += -0.01 * gravityFactor * delta * outputPos.y;
@@ -374,33 +375,33 @@ function Content3D({ ui, files }) {
             
             // mouse
             if (length(pointerWorld - outputPos) <= mouseRadius) {
-              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.05;
+              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.05 * mouseDown;
             }
 
 
             if (outputPos.x >= boundMax.x) {
-                outputVel.x += -1.0 * delta;
+                outputVel.x += -0.5 * delta;
                 // outputVel.x *= 0.1;
             }
             if (outputPos.y >= boundMax.y) {
-                outputVel.y += -1.0 * delta;
+                outputVel.y += -0.5 * delta;
                 // outputVel.y *= 0.1;
             }
             if (outputPos.z >= boundMax.z) {
-                outputVel.z += -1.0 * delta;
+                outputVel.z += -0.5 * delta;
                 // outputVel.z *= 0.1;
             }
 
             if (outputPos.x <= boundMin.x) {
-                outputVel.x += 1.0 * delta;
+                outputVel.x += 0.5 * delta;
                 // outputVel.x *= 0.1;
             }
             if (outputPos.y <= boundMin.y) {
-                outputVel.y += 1.0 * delta;
+                outputVel.y += 0.5 * delta;
                 // outputVel.y *= 0.1;
             }
             if (outputPos.z <= boundMin.z) {
-                outputVel.z += 1.0 * delta;
+                outputVel.z += 0.5 * delta;
                 // outputVel.z *= 0.1;
             }
 
@@ -432,6 +433,14 @@ function Content3D({ ui, files }) {
       particleVelocityShader,
       particleVelocityInitTex
     );
+    particleVelocityVar.material.uniforms.mouseDown = { value: 1 };
+    window.addEventListener("mousedown", () => {
+      particleVelocityVar.material.uniforms.mouseDown.value = -1;
+    });
+    window.addEventListener("mouseup", () => {
+      particleVelocityVar.material.uniforms.mouseDown.value = 1;
+    });
+
     particleVelocityVar.material.uniforms.delta = { value: 0 };
     loops.push((st, dt) => {
       particleVelocityVar.material.uniforms.delta.value = dt;
@@ -510,8 +519,8 @@ function Content3D({ ui, files }) {
           dz,
         })}
 
-        uniform sampler2D particlePositionTex;
-        uniform sampler2D particleVelocityTex;
+        uniform sampler2D particlePositionTexture;
+        uniform sampler2D particleVelocityTexture;
 
         void main (void) {
             float uvx = gl_FragCoord.x / iResolution.x;
@@ -519,12 +528,12 @@ function Content3D({ ui, files }) {
 
             vec2 uv = vec2(uvx, uvy);
 
-            vec3 currentGridSlotPosition = uvToWorld(uv, particles, bounds);
+            vec3 slotPosition = uvToWorld(uv, grids);
 
             float counter = 0.0;
             float reset = 0.0;
 
-            float edge = pow(bounds.x * bounds.y * bounds.z, 1.0 / 3.0);
+            float edge = pow(grids.x * grids.y * grids.z, 1.0 / 3.0);
             for (int z = 0; z < int(particles.z); z++) {
               float i = 0.0;
               for (int y = 0; y < int(particles.y); y++) {
@@ -532,28 +541,29 @@ function Content3D({ ui, files }) {
                   //
 
                   vec4 particlePosition = texture2D(
-                    particlePositionTex, 
+                    particlePositionTexture, 
                     vec2(i / particles.x * particles.y, float(z) / particles.z)
                   );
 
-                  float dist = length(particlePosition.rgb - currentGridSlotPosition);
+                  float dist = length(particlePosition.rgb - slotPosition);
         
                   float adder = smoothKernel(edge, dist);
-                    
+
                   if (!isnan(counter + adder) && !isnan(adder)) {
                     counter += adder;
                   }
 
-                  // if (
-                  //   true
-                  //   && particlePosition.x >= currentGridSlotPosition.x - bounds.x * 0.15
-                  //   && particlePosition.x <= currentGridSlotPosition.x + bounds.x * 0.15
-                  //   && particlePosition.y >= currentGridSlotPosition.y - bounds.y * 0.15
-                  //   && particlePosition.y <= currentGridSlotPosition.y + bounds.y * 0.15
-                  //   && particlePosition.z >= currentGridSlotPosition.z - bounds.z * 0.15
-                  //   && particlePosition.z <= currentGridSlotPosition.z + bounds.z * 0.15
-                  // ) {
-                  // }
+                  if (
+                    true
+                    && particlePosition.x >= slotPosition.x - 10.0 / grids.x
+                    && particlePosition.x <= slotPosition.x + 10.0 / grids.x
+                    && particlePosition.y >= slotPosition.y - 10.0 / grids.y
+                    && particlePosition.y <= slotPosition.y + 10.0 / grids.y
+                    && particlePosition.z >= slotPosition.z - 10.0 / grids.z
+                    && particlePosition.z <= slotPosition.z + 10.0 / grids.z
+                  ) {
+                    
+                  }
                  
                   i++;
 
@@ -617,10 +627,10 @@ function Content3D({ ui, files }) {
     );
 
     // slotComputeVar.material.uniforms.uvTex = { value: uvTex };
-    slotComputeVar.material.uniforms.particlePositionTex = {
+    slotComputeVar.material.uniforms.particlePositionTexture = {
       value: gpuParticle.getCurrentRenderTarget(particlePositionVar).texture,
     };
-    slotComputeVar.material.uniforms.particleVelocityTex = {
+    slotComputeVar.material.uniforms.particleVelocityTexture = {
       value: gpuParticle.getCurrentRenderTarget(particleVelocityVar).texture,
     };
     slotComputeGPU.setDataType(FloatType);
@@ -631,10 +641,10 @@ function Content3D({ ui, files }) {
     }
     loops.push(() => {
       slotComputeGPU.compute();
-      slotComputeVar.material.uniforms.particlePositionTex = {
+      slotComputeVar.material.uniforms.particlePositionTexture = {
         value: gpuParticle.getCurrentRenderTarget(particlePositionVar).texture,
       };
-      slotComputeVar.material.uniforms.particleVelocityTex = {
+      slotComputeVar.material.uniforms.particleVelocityTexture = {
         value: gpuParticle.getCurrentRenderTarget(particleVelocityVar).texture,
       };
     });
@@ -1107,19 +1117,7 @@ void main() {
     //
     //
     //
-  }, [
-    dx,
-    dy,
-    dz,
-    gl,
-    gravityFactor,
-    offsetGrid,
-    pressureFactor,
-    px,
-    py,
-    pz,
-    slideURL,
-  ]);
+  }, [dx, dy, dz, gl, gravityFactor, offsetGrid, pressureFactor, px, py, pz]);
 
   useFrame((st, dt) => {
     onRender.current(st, dt);
