@@ -60,12 +60,12 @@ const DebugGridCounter = false && process.env.NODE_ENV === "development";
 //
 
 function Content3D({ ui, files }) {
-  let dx = 15;
-  let dy = 15;
+  let dx = 30;
+  let dy = 10;
   let dz = 15;
 
   let offsetGrid = useMemo(() => {
-    return new Vector3(dx * -0.5, 0, dz * -1.5);
+    return new Vector3(dx * -0.5, 0, dz * -1.25);
   }, [dx, dz]);
 
   let gravityFactor = useMemo(() => {
@@ -87,7 +87,7 @@ function Content3D({ ui, files }) {
   }, [gravityFactor, pressureFactor, ui.gravityFactor, ui.pressureFactor]);
   //
 
-  let sideCount = 64;
+  let sideCount = 64 * 4;
 
   let px = Math.floor(Math.sqrt(sideCount));
   let py = Math.floor(Math.sqrt(sideCount));
@@ -355,6 +355,9 @@ function Content3D({ ui, files }) {
                   if (!isnan(pressure.x)) {
                     velPressure += diff * -1.0 * length(pressure.x) * delta * pressureFactor * smoothKernel(edge, dist);
                   }
+
+                  //
+
                   //
                 }
               }
