@@ -436,7 +436,7 @@ function Content3D({ ui, files }) {
             
             // mouse
             if (length(pointerWorld - outputPos) <= mouseRadius) {
-              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.05;
+              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.06;
             }
 
             // bvh
@@ -454,15 +454,19 @@ function Content3D({ ui, files }) {
             // get intersection
             bool didHit = bvhIntersectFirstHit( bvh, rayOrigin, rayDirection, faceIndices, faceNormal, barycoord, side, dist );
 
-            vec3 normal = textureSampleBarycoord(
-              normalAttribute,
-              barycoord,
-              faceIndices.xyz
-            ).xyz;
+            // vec3 normal = textureSampleBarycoord(
+            //   normalAttribute,
+            //   barycoord,
+            //   faceIndices.xyz
+            // ).xyz;
             
             if (didHit && dist <= 1.5) {
-              outputVel += normal * 0.08 * dist;
-            }
+              if (dist >= 0.0) {
+                outputVel += faceNormal * 0.1 * dist;
+              } else {
+                outputVel += faceNormal * 0.2;
+              }
+            } 
 
             if (outputPos.x >= boundMax.x) {
                 // outputVel.x *= 0.5;
