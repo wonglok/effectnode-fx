@@ -22,6 +22,7 @@
     "bezier-easing": "^2.1.0",
     "bezier-easing-editor": "^0.8.0",
     "chart.js": "^4.4.3",
+    "detect-device-orientation": "^0.2.1",
     "dropzone": "^6.0.0-beta.2",
     "next": "14.2.4",
     "react": "^18",
