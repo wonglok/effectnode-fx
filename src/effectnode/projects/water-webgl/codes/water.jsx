@@ -341,16 +341,16 @@ function Content3D({ ui, files }) {
 
                   // vec4 posData = texture2D(particlePosition, particleUV);
               
-                  float pressure = slot.x;
+                  float pressure = slot.x * 0.3;
                   
-                  vec3 diff = nextby;
+                  vec3 diff = -nextby;
 
                   float dist = length(diff);
 
                   float edge = pow(bounds.x * bounds.y * bounds.z, 1.0 / 3.0);
 
                   if (!isnan(pressure)) {
-                    velPressure += diff * -0.1 * dist * pressure * delta * pressureFactor * smoothKernel(edge, dist);
+                    velPressure += diff * dist * pressure * delta * pressureFactor * smoothKernel(edge, dist);
                   }
 
                   //
@@ -360,8 +360,9 @@ function Content3D({ ui, files }) {
 
             // pressure
             outputVel += velPressure; 
-            outputVel.x += velPressure.x * 5.0; 
-            outputVel.z += velPressure.z * 5.0; 
+            outputVel.x += velPressure.x * 0.2; 
+            outputVel.y += velPressure.y * 0.2; 
+            outputVel.z += velPressure.z * 0.2; 
 
             // gravityFactor
             outputVel.y += -0.01 * gravityFactor * delta * outputPos.y;
@@ -373,34 +374,34 @@ function Content3D({ ui, files }) {
             
             // mouse
             if (length(pointerWorld - outputPos) <= mouseRadius) {
-              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.15;
+              outputVel.rgb += normalParticleMouse * mouseForceSize * delta * 0.05;
             }
 
 
-            if (outputPos.x == boundMax.x) {
-                // outputVel.x *= -0.95;
+            if (outputPos.x >= boundMax.x) {
                 outputVel.x += -1.0 * delta;
+                // outputVel.x *= 0.1;
             }
-            if (outputPos.y == boundMax.y) {
-                // outputVel.y *= -0.95;
+            if (outputPos.y >= boundMax.y) {
                 outputVel.y += -1.0 * delta;
+                // outputVel.y *= 0.1;
             }
-            if (outputPos.z == boundMax.z) {
-                // outputVel.z *= -0.95;
+            if (outputPos.z >= boundMax.z) {
                 outputVel.z += -1.0 * delta;
+                // outputVel.z *= 0.1;
             }
 
-            if (outputPos.x == boundMin.x) {
-                // outputVel.x *= -0.95;
+            if (outputPos.x <= boundMin.x) {
                 outputVel.x += 1.0 * delta;
+                // outputVel.x *= 0.1;
             }
-            if (outputPos.y == boundMin.y) {
-                // outputVel.y *= -0.95;
+            if (outputPos.y <= boundMin.y) {
                 outputVel.y += 1.0 * delta;
+                // outputVel.y *= 0.1;
             }
-            if (outputPos.z == boundMin.z) {
-                // outputVel.z *= -0.95;
+            if (outputPos.z <= boundMin.z) {
                 outputVel.z += 1.0 * delta;
+                // outputVel.z *= 0.1;
             }
 
             gl_FragColor = vec4(outputVel.rgb, 1.0);
