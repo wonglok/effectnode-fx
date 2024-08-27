@@ -183,9 +183,9 @@
         "_id": "_njrfn9c_",
         "title": "avatar",
         "position": [
-          1.8537553668065425,
+          1.9030200605025387,
           0,
-          -0.78110456568581
+          -0.8125159345112415
         ],
         "inputs": [
           {
@@ -255,5 +255,5 @@
     ],
     "edges": []
   },
-  "title": "tsl-particle-gpu-001"
+  "title": "webgpu-particles-001"
 }

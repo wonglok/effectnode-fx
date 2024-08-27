@@ -293,7 +293,7 @@ function AppRun({ useStore, io, ui }) {
         // });
 
         let motion = await fbx
-          .loadAsync(files["/rpm/moiton/flair.fbx"])
+          .loadAsync(files["/rpm/moiton/hiphop.fbx"])
           .then((r) => r.animations[0]);
 
         mixer.clipAction(motion, glb.scene).play();
@@ -606,7 +606,7 @@ let setup = async ({ skinnedMesh, mounter, renderer, onLoop, io, ui }) => {
     // })
 
     const life = lifeBuffer.node.element(instanceIndex);
-    life.addAssign(rand(position.xy).mul(-0.02));
+    life.addAssign(rand(position.xy).mul(-0.02 * 0.5));
 
     If(
       life.y.lessThan(0.01),
@@ -655,7 +655,7 @@ let setup = async ({ skinnedMesh, mounter, renderer, onLoop, io, ui }) => {
 
   particleMaterial.positionNode = posAttr;
 
-  particleMaterial.scaleNode = fader;
+  particleMaterial.scaleNode = fader.mul(2);
   particleMaterial.opacity = 1.0; //(float(0.14).add(lifeBuffer.node.toAttribute().length().mul(-1).mul(size)))
   particleMaterial.depthTest = true;
   particleMaterial.depthWrite = false;
