@@ -86,7 +86,7 @@ function Content3D({ ui, files }) {
   }, [gravityFactor, pressureFactor, ui.gravityFactor, ui.pressureFactor]);
   //
 
-  let sideCount = 64 * 1;
+  let sideCount = 64;
 
   let px = Math.floor(Math.sqrt(sideCount));
   let py = Math.floor(Math.sqrt(sideCount));
